@@ -148,3 +148,9 @@ are kept as `Rewind_cinematic_sfx_mix_v2.mp3`, `cues_v2.json`, `sfx_only_v2.wav`
   11 % masked); new `b_boost` 130.04 (whoosh leads in from 129.79, palm-slap on the beat) and `b_pileup` 130.94, both
   optional; `b_atomize` / `b_implode` unchanged. 42 cues. Verify: bit-exact outside the cues, loudness delta 0.0, lyrics
   transcribe as before.
+- Third rebuild (B's corner restage and the thinning rainbow Jades): `b_spawn` now three blips on/off/on at
+  107.75 / 107.79 / 107.83 (−24); `b_skid` replaced by a short scuff 108.35–108.58 (−32), gone before "With" (108.67);
+  new `b_fall_short` 136.96 (six descending 8-bit blips, one per copy every 60 ms, −34) and `b_wall_burst` 137.32
+  (shorter `b_atomize` sparkle, −32), both optional and under the drop (measure 100 % / 54 % masked; drop them if they
+  fight it). 44 cues. Verify: bit-exact outside the cues, loudness delta 0.0, lyrics transcribe as before. The
+  previous mix is kept as `*_v3b.*`.

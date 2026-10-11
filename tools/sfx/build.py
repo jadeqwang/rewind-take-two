@@ -656,26 +656,26 @@ def _():
     return miss(10200, -0.1), 0.0
 
 
-@cue("b_spawn", 107.75, "V2k an agent flickers into existence at the hotel corner: two tiny 8-bit blips 40 ms apart",
-     "procedural (pulse wave)", "essential", -24)   # B: +6 dB (masked at -30)
+@cue("b_spawn", 107.75, "V2k an agent flickers into existence at the hotel corner, on/off/on: three tiny 8-bit blips "
+     "at 107.75 / 107.79 / 107.83", "procedural (pulse wave)", "essential", -24)   # B: +6 dB (masked at -30)
 def _():
     b = pulse(NOTE["C7"], 0.022, duty=0.5) * expdec(N(0.022), 0.008)
-    y = np.zeros(N(0.09))
-    y[:len(b)] += b
-    y[N(0.04):N(0.04) + len(b)] += 0.8 * b
+    y = np.zeros(N(0.13))
+    for t0, g in [(0.0, 1.0), (0.04, 0.8), (0.08, 0.9)]:
+        y[N(t0):N(t0) + len(b)] += g * b
     return pan(hp(y, 1500, 2), -0.4), 0.0
 
 
-@cue("b_skid", 108.18, "V2k her sneakers skid to a stop on pavement (108.18-108.60), gone before 'With' (108.67)",
-     "procedural", "optional", -32)
+@cue("b_skid", 108.35, "V2k she reaches the corner, nearly runs into him and recoils to a stop: short sneaker scuff "
+     "(108.35-108.58), gone before 'With' (108.67)", "procedural", "optional", -32)
 def _():
-    d = 0.42
+    d = 0.23
     t = tt(d)
     f = 2300 - 500 * t / d + 60 * np.sin(2 * np.pi * 23 * t)
     sq = np.sin(2 * np.pi * np.cumsum(f) / SR)
     scr = bp(noise(len(t), 10818), 800, 5000, 2)
     y = 0.35 * sq + scr / np.max(np.abs(scr))
-    return fade(y * np.interp(t, [0, 0.03, 0.3, d], [0, 1, 0.6, 0]), 0.0, 0.06), 0.0
+    return fade(y * np.interp(t, [0, 0.02, 0.14, d], [0, 1, 0.6, 0]), 0.0, 0.05), 0.0
 
 
 @cue("b_boost", 130.04, "E5 the blue ghost launches her straight up out of the agents' swarm: short upward air-whoosh "
@@ -715,6 +715,24 @@ def _():
     y = hp(pings(0.4, 70, 3500, 9500, 13138), 3000, 2)[::-1][:N(0.44)]
     y = y * np.linspace(0.3, 1.0, len(y)) ** 2
     return np.stack([np.roll(y, N(0.004)), y]), 0.0
+
+
+@cue("b_fall_short", 136.96, "E8 six rainbow copies give out over the chasm and drop away (136.96-137.26, every 60 ms): "
+     "a tiny descending 8-bit pitch-blip per copy, like a lost life", "procedural (pulse wave)", "optional", -34)
+def _():
+    y = np.zeros((2, N(0.36)))
+    for k in range(6):
+        f0 = NOTE["F6"] * 2 ** (-k / 12)
+        b = pulse(f0, 0.05, duty=0.25, sweep=f0 / 3) * np.interp(tt(0.05), [0, 0.003, 0.05], [0, 1, 0])
+        add_at(y, pan(b, -0.5 + 0.2 * k), 0.06 * k)
+    return reverb(y, room(), -20), 0.0
+
+
+@cue("b_wall_burst", 137.32, "E8 four copies clip the far wall and burst into motes: a small sparkle cluster (b_atomize, "
+     "shorter)", "procedural", "optional", -32)
+def _():
+    y = hp(pings(0.15, 28, 3500, 9500, 13732, tau=0.035), 3000, 2)
+    return np.stack([y, np.roll(y, N(0.004))]), 0.0
 
 # ============================================================================= framework
 def vocal_env_db():
