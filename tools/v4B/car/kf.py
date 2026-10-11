@@ -90,9 +90,11 @@ WIDE = ("Image 1 is a rough 3D staging blockout in which ONE thing is already fi
         "running across the frame to the right; the centre console and radio at the lower right; the edge of the empty "
         "front passenger seat at the far right. Through the wide windshield: a dark expressway at night with white lane "
         "dashes rushing toward us and curving gently to the left, low concrete barriers, and only two or three small "
-        "distant streetlights close to the horizon. Between her head and the mirror, above the steering wheel, the "
-        "windshield shows a LARGE EMPTY area of plain black night sky with nothing in it at all (no sign, no gantry, no "
-        "lamp posts, no moon, no clouds). The windshield header and the dark headliner run across the top; the mirror "
+        "distant streetlights close to the horizon. Between her head and the mirror, above the steering wheel, an "
+        "overhead highway sign gantry spans the road ahead: two thin steel posts and a truss, carrying ONE LARGE flat "
+        "rectangular sign panel, dark, with a thin pale border, seen nearly face-on, filling most of the windshield "
+        "between her head and the mirror; the panel is COMPLETELY BLANK, plain dark with nothing written on it. The "
+        "windshield header and the dark headliner run across the top; the mirror "
         "hangs from the header. " + JADE + NIGHT +
         "The car interior, the road and the night are black-and-white engraving; the ONLY color in the picture is the "
         "girl (her skin, the yellow pencils with their pink and pale-blue erasers, the orange headphones, the orange "
@@ -118,27 +120,44 @@ JOBS = {
     "wide_b": (F3, WIDE, [F3 + "/canvas.png", "media/design/jade_canon_turnaround.png", "media/design/jade_bun_two_pencils.png"]),
 }
 
-# where the finished mirror sits in the wide frame (1920x1080 design px): the close keyframe, whole, is pasted here.
-# From the blockout: the mirror body is 360 px wide in the wide reference and ~1757 px in the close reference.
-INSET = dict(cx=1310, cy=452, k=0.205)   # centre of the pasted close frame, and its scale (wide px per close px)
+# where the finished mirror sits in the wide frame. Only the mirror BODY of the close keyframe is laid in (rounded
+# rectangle, feathered): MIRROR_SRC is its box in the close keyframe's own pixels (2731x1536), MIRROR_DST its box in the
+# wide frame in design px (from the blockout: glass + housing ~354 px wide at x 1134-1488).
+MIRROR_SRC = (40, 320, 2695, 1345)
+MIRROR_DST = dict(x=1131, y=372, w=360)
 
 
-def canvas(close_path):
-    """media/shots/V2f3/canvas.png: the wide blockout with the finished close keyframe laid in at the mirror."""
-    base = Image.open(os.path.join(ROOT, F3, "blockout_wide.png")).convert("RGB")
+def mirror_mask(w, h, r_frac=0.13, feather=2):
+    from PIL import ImageDraw, ImageFilter
+    m = Image.new("L", (w, h), 0)
+    ImageDraw.Draw(m).rounded_rectangle([feather, feather, w - 1 - feather, h - 1 - feather], radius=int(h * r_frac), fill=255)
+    return m.filter(ImageFilter.GaussianBlur(feather))
+
+
+def lay_mirror(base, close_path):
+    """Paste the close keyframe's mirror body into base (an RGB image of 16:9 at any size). Returns the dst box (design px)."""
     W, H = base.size
     s = W / 1920
     cl = Image.open(os.path.join(ROOT, close_path)).convert("RGB")
-    w = round(1920 * INSET["k"] * s)
-    h = round(w * cl.height / cl.width)
-    cl = cl.resize((w, h), Image.LANCZOS)
-    x, y = round(INSET["cx"] * s - w / 2), round(INSET["cy"] * s - h / 2)
-    base.paste(cl, (x, y))
+    sx = cl.width / 2731
+    crop = cl.crop(tuple(round(v * sx) for v in MIRROR_SRC))
+    w = round(MIRROR_DST["w"] * s)
+    h = round(w * crop.height / crop.width)
+    crop = crop.resize((w, h), Image.LANCZOS)
+    x, y = round(MIRROR_DST["x"] * s), round(MIRROR_DST["y"] * s)
+    base.paste(crop, (x, y), mirror_mask(w, h, feather=max(1, round(2 * s))))
+    return [x / s, y / s, w / s, h / s]
+
+
+def canvas(close_path):
+    """media/shots/V2f3/canvas.png: the wide blockout with the finished mirror laid in."""
+    base = Image.open(os.path.join(ROOT, F3, "blockout_wide.png")).convert("RGB")
+    box = lay_mirror(base, close_path)
     out = os.path.join(ROOT, F3, "canvas.png")
     base.save(out)
-    json.dump({"close": close_path, "rect_design_px": [x / s, y / s, w / s, h / s], **INSET},
+    json.dump({"close": close_path, "src_box_close_px": MIRROR_SRC, "dst_box_design_px": box},
               open(os.path.join(ROOT, F3, "canvas.json"), "w"), indent=1)
-    print("wrote", out, "inset rect (design px)", [round(v / s, 1) for v in (x, y, w, h)])
+    print("wrote", out, "mirror box (design px)", [round(v, 1) for v in box])
 
 
 def run(name, dry=False):
@@ -166,6 +185,8 @@ if __name__ == "__main__":
             print(k, shot, refs)
     elif a[0] == "canvas":
         canvas(a[1])
+    elif a[0] == "relay":   # relay WIDE.jpg CLOSE.jpg OUT: lay the close keyframe's mirror back into a generated wide
+        im = Image.open(os.path.join(ROOT, a[1])).convert("RGB"); lay_mirror(im, a[2]); im.save(os.path.join(ROOT, a[3]), quality=94); print("wrote", a[3])
     elif a[0] == "run":
         dry = "--dry-run" in a
         names = [x for x in a[1:] if not x.startswith("--")]

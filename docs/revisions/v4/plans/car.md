@@ -5,7 +5,7 @@
 
 ## Execution (kept current; a fresh session can resume from here)
 
-**Status: building option C.** Jade chose C on 2026-10-11 ("animatic_C.mp4 is the best of the 3, split lyric is
+**Status: option C built and in the cut (540p check done); waiting for Jade's review.** Jade chose C on 2026-10-11 ("animatic_C.mp4 is the best of the 3, split lyric is
 good, start over the shoulder is good, front readable is good"). Spend cap $8, tag `v4B_car_`.
 
 Decisions (v4-B, from Jade): one take, hold wide over her right shoulder then push between the seats to the
@@ -17,13 +17,19 @@ hero `TVA 1729`, `TVA 4104` if a second can read; shot runs 89.26-92.79 (V2f1 tr
 | Step | State | Files |
 |---|---|---|
 | 1. Layout references for the keyframes (`car_scene.html?kf=wide|close`) | done | `media/shots/V2f3/blockout_wide.png`, `media/shots/V2f4/blockout_close.png` |
-| 2. Keyframes: `tools/v4B/car/kf.py` (close first, then the wide painted outward from it) | running: `run close_a close_b` ($0.27) | `media/shots/V2f3/` (wide), `media/shots/V2f4/` (mirror close), `kf_log.jsonl` in each |
-| 3. Takes / move | not started | |
-| 4. Engrave | not started | |
-| 5. Timeline (`render/timeline/C.js`, V2f rows + `C_lyr_sirens` only) | not started | |
-| 6. Hand-over clip, stills, `docs/revisions/v4/fragments/car.json` | not started | |
+| 2. Keyframes: `tools/v4B/car/kf.py` | done. Close: `media/shots/V2f4/kf_close_b2.png` (close_b with badges removed; close_a too busy). Wide: `media/shots/V2f3/kf_wide_b.jpg` (wide_a had no sign and hid her face), fixed free by `tools/v4B/car/fix_wide.py` -> `kf_wide_b_fix.png` (left eraser recoloured pale blue; the close mirror laid back in) | `media/shots/V2f3/`, `media/shots/V2f4/`, `kf_log.jsonl` in each |
+| 3. Move | done: method (b), two stills + engine push (no Seedance). `tools/v4B/car/car_shot.js`: zoom about a fixed point so the wide's mirror lands on the close still; hand-over in two steps (mirror body, then the rest) in the fast part; sign, bezel words and plates pinned by the engine | `tools/v4B/car/car_shot.js`, solo check `tools/v4B/car/_car_solo.js` |
+| 4. Engrave | done: `engrave_still.py` on both stills (under `media/.engrave.lock`) | `*_engraved.png`, close also `_feather.png` / `_body.png` (alpha) |
+| 5. Timeline | done: `render/timeline/C.js` (import + `CAR_START = 89.26`, V2f1 row ends at CAR_START, V2f2 row removed, one `shots.push(carShot(...))`, `C_lyr_sirens` commented out; v3 values in comments). Back to 90.14: change `CAR_START` | |
+| 6. Hand-over | done: clip 87.5-93.8 s (4.8 MB), stills at the widest (90.42) and the end (92.75), fragment | `media/reviews/v4/B/0130_car.mp4`, `0130_car_wide.png`, `0130_car_end.png`, `docs/revisions/v4/fragments/car.json` |
 
-Spend so far: $0.
+Spend so far: $0.67 (5 keyframes at $0.134). No video takes.
+Checked at 540p: wheel and dash in frame, left-hand drive; mirror real-shaped and pushed into. SIRENS about 40 px tall
+on the sign; `TVA 1729` about 70 px wide at the end, `TVA 4104` / `4096` about 45 px (they read, small). Weak: the picture
+is still under the move (no road motion, strobes do not flash); for about 0.2 s around 91.8 a blurred border of the wide
+shows round the mirror; the gantry is seen above the windshield header; the HUD (`C_hud_car`, to 90.14) and the
+"back on the road" slam (to 89.40) still overlap the start of the shot (outside the rows this note may edit).
+ Session stopped once at 17:44 on an API login error; resumed.
 
 ---
 

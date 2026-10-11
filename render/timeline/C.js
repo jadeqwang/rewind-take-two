@@ -2,6 +2,8 @@
 // Cut list locked to the timing.json beat grid. Each row = one cut: [start, end, clip, take, clipIn, rate, extra].
 // Plates are engraved takes (tools/engrave); clips with Jade carry the engrave matte so she stays in colour.
 import verse2B from './_B_verse2.js';   // rev-B: 94.06–112.96 (the restaged chase) lives in _B_verse2.js
+import carShot from '../../tools/v4B/car/car_shot.js';   // v4: the 1:30 car shot (V2f)
+const CAR_START = 89.26;   // v4: the car shot starts on this tracked beat (89.26 = bar 51 beat 3); 90.14 = v3's cut
 const S = 'media/shots/';
 const GIRL = new Set(['V2a3', 'V2b3', 'V2c4', 'V2c5', 'V2d2', 'V2e2', 'V2f2', 'V2h1', 'V2i1', 'V2i2', 'V2i3', 'V2i4',
   'V2j1', 'V2j2', 'V2k1', 'V2k2', 'V2k3', 'V2l1', 'V2l2', 'V2m1', 'V2n1']);
@@ -55,9 +57,10 @@ const CUTS = [
   [84.86, 86.18, 'V2e1', 1, 0.0, 1, { slam: true }],
   [86.18, 87.06, 'V2e2', 2, 0.3, 1, { scale: 1.4, x: -330, y: 200 }],
   [87.06, 88.38, 'V2e3', 1, 0.0, 1.2],
-  // V2f sirens in my mirror (bar 51)
-  [88.38, 90.14, 'V2f1', 1, 0.0, 1],
-  [90.14, 92.79, 'V2f2', 2, 0.5, 1],
+  // V2f sirens in my mirror (bar 51). v4 (Jade's 1:30 note, option C): V2f2 is replaced by the over-the-shoulder push
+  // into the rear-view mirror, built in tools/v4B/car/car_shot.js and added in sectionC() below; it starts at CAR_START.
+  // v3 rows, to switch back: [88.38, 90.14, 'V2f1', 1, 0.0, 1], [90.14, 92.79, 'V2f2', 2, 0.5, 1] (+ C_lyr_sirens etch)
+  [88.38, CAR_START, 'V2f1', 1, 0.0, 1],
   // V2g kaizo trap: 5 frames of L train, 2 frames black
   [92.79, 93.00, 'V2g1', 1, 0.72, 1, { scale: 1.3, y: 40, flash: true }],
   // V2h respawn (bar 54), V2i race, V2j field (top-down), V2k too fast, V2l ring, V2m shot
@@ -119,6 +122,7 @@ function shotFor([start, end, clip, take, clipIn, rate, x = {}], i, T) {
 export default function sectionC({ T }) {
   const shots = [...CUTS.map((c, i) => shotFor(c, i, T)), ...verse2B({ T }).shots];
 
+  shots.push(carShot(CAR_START, 92.79));   // v4: V2f car shot (SIRENS on the sign, IN MY MIRROR on the mirror, TVA plates)
   // 92.79 kaizo trap → 2 frames of black → "Reload." LOADING screen (V2h)
   shots.push({ id: 'C_V2g_black', start: 93.00, end: 93.07, layers: [{ type: 'solid', color: '#000000' }] });
   shots.push({ id: 'C_V2h_loading', start: 93.07, end: 93.66, background: INK, layers: [
@@ -129,16 +133,17 @@ export default function sectionC({ T }) {
   const ov = (id, start, end, layer) => ({ id, start, end, layers: [layer] });
   const overlays = [
     // HUD cluster (top-right, this section only); 4-frame pop on bar 33
-    ov('C_hud_car', 56.54, 90.14, { type: 'canvas', module: 'hud', opacity: [[0, 0, 'hold'], [0.042, 1, 'hold'], [0.083, 0.25, 'hold'], [0.125, 1]],
+    ov('C_hud_car', 56.54, CAR_START,   /* v4: ends with the car shot's cut (v3: 90.14) */ { type: 'canvas', module: 'hud', opacity: [[0, 0, 'hold'], [0.042, 1, 'hold'], [0.083, 0.25, 'hold'], [0.125, 1]],
       params: { mode: 'platformer', side: 'right', iteration: 4097, deaths: 4096, timer: { from: '56.54' } } }),
     ov('C_hud_respawn', 93.66, 94.06, { type: 'canvas', module: 'hud', params: { mode: 'platformer', side: 'right', color: INK, margin: 104, iteration: 4097, deaths: 4097, timer: { from: '56.54' } } }),
 
     // lyrics
     ov('C_lyr_nowim', 83.40, 84.86, { type: 'canvas', module: 'lowerthird', params: { color: PAPER, text: 'And now I’m', sync: 'lyric', size: 76 } }),
-    ov('C_lyr_back', 84.86, 89.40, { type: 'canvas', module: 'slam', params: { text: 'back on the road', sync: 'lyric', font: 'fell', size: 120, x: 1340, y: 200, maxWidth: 1000,
+    ov('C_lyr_back', 84.86, Math.min(89.40, CAR_START),   /* v4: never over the car interior (v3: 89.40) */ { type: 'canvas', module: 'slam', params: { text: 'back on the road', sync: 'lyric', font: 'fell', size: 120, x: 1340, y: 200, maxWidth: 1000,
       color: PAPER, accent: ORANGE, impact: 1.4, tilt: 3 } }),
-    ov('C_lyr_sirens', 90.14, 92.79, { type: 'canvas', module: 'pin', params: { style: 'etch', text: 'sirens in my mirror …', sync: 'lyric', size: 74, color: '#fbf8f1', panel: 'rgba(11,11,12,0.6)',
-      corners: [800, 682, 1780, 746, 1776, 812, 800, 752] } }),
+    // v4: "sirens in my mirror" now sits on two surfaces of the car shot (tools/v4B/car/car_shot.js). v3 overlay:
+    // ov('C_lyr_sirens', 90.14, 92.79, { type: 'canvas', module: 'pin', params: { style: 'etch', text: 'sirens in my mirror …', sync: 'lyric', size: 74, color: '#fbf8f1', panel: 'rgba(11,11,12,0.6)',
+    //   corners: [800, 682, 1780, 746, 1776, 812, 800, 752] } }),
     ...verse2B({ T }).overlays,
   ];
   return { section: 'C', shots, overlays };

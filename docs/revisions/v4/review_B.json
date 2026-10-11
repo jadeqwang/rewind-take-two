@@ -31,6 +31,24 @@
   "question": "Big enough? An alternative with a slow push onto the mirror is in media/reviews/v4/B/0026_plate_alt_push.mp4: the plate is larger, but the push crops her bun and both pencils."
  },
  {
+  "note": "1:30 - are we in an impossible view here? because she's doesn't have a steering wheel. maybe we can use threejs and do an over the shoulder shot and look at her mirror in perspective? and maybe there can be some TVA markings on the license plates?",
+  "v3_time": "1:30",
+  "shots": [
+   "V2f1",
+   "V2f3",
+   "V2f4"
+  ],
+  "status": "done",
+  "after": "media/reviews/v4/B/0130_car.mp4",
+  "before_range": [
+   87.5,
+   93.8
+  ],
+  "what_changed": "Option C, staged in a three.js blockout (tools/v4B/car/): the shot now starts at 89.26 over her right shoulder in the left-hand-drive Acura (steering wheel, dash, both pencils, her cheek and headphones in colour), holds, then pushes between the front seats into the rear-view mirror, which is full of the fleet. SIRENS lands on an overhead road sign on its sung onset, IN MY MIRROR on the mirror's lower edge on its onset; the three nearest sedans read TVA 1729, TVA 4104 and TVA 4096 (right-reading, pinned by the engine). Built from two generated stills with the push done in the engine. Weak: the picture is a still under a camera move (no road motion; the strobes don't flash); for about 0.2 s mid-push a blurred border of the wide shows round the mirror; the sign gantry is seen above the windshield header, which is a cheat; the side plates are 1.75x a true plate and small at 540p. v4-B also ended the HUD and the \"back on the road\" lyric at the new cut, so neither spills onto the car interior.",
+  "question": "The shot starts at 89.26 (V2f1 trimmed to one bar). Keep that, or start it at 90.14 as in v3 (one number in render/timeline/C.js)? Also: the sedans in the mirror came out grey with roof light bars (police-style, which suits \"sirens\"); canon says plain black sedans. Keep, or redo the mirror still with plain black cars (about $0.30)?",
+  "still": "media/reviews/v4/B/0130_car_end.png"
+ },
+ {
   "note": "2:00 this REWIND singing seems unnecessary and we could have more exciting video game shots here. like, the whole banach tarski plot can happen a smidge earlier, and we can put it to good use because we can have a two-player co-op level (think of something from Portal 2, where one player has to move something for the other one to cross), either before or after the super meat boy style multiverse traces, possibly before",
   "v3_time": "2:00",
   "shots": [
