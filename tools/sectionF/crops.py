@@ -28,7 +28,7 @@ for shot in CHOSEN:
         return k
     t = border(lambda a, k: a[k, :], H); b = border(lambda a, k: a[H - 1 - k, :], H)
     l = border(lambda a, k: a[:, k], W); r = border(lambda a, k: a[:, W - 1 - k], W)
-    if not (t or b or l or r) or shot == "F7_08":
+    if not (t or b or l or r):
         res[shot] = None
         continue
     pad = 6

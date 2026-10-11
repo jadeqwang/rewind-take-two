@@ -55,9 +55,9 @@ small, in a clear patch of the world (graphite on light, pale pencil on dark), a
 | F4 | 180.02–183.56 | she dives at the Bean, touches her reflection, plunges into ripples (white flash 183.46) · *never stop* | F4 take 2 (0 / 1.3) |
 | F5a | 183.56–187.08 | **swell 183.72, HERO**: airborne, giant pencil drawn back like a sword, the melting clock | F5a take 1 |
 | F5b | 187.08–190.58 | the clock drips agents onto the Loop (deliberate wide); warm flash on swell 189.54 | F5b take 1 |
-| F6a | 190.58–192.34 | she draws the loop round the clock in gold | F6a take 1 |
-| F6b_3d | 192.34–195.86 | the camera keeps turning with her gesture and **clunks into the magic angle on 194.10**: the clock's hands close into *Ascending and Descending*, agents drip on and march it | 3D `render/three/scenes/f6_clock.js` (section E's, offered to F) `{from: 192.34, snap: 194.10}` |
-| F6c | 195.86–197.60 | **Super Meat Boy replay**: she sprints with a stream of colour ghosts in step · *never stop* | F6c take 2 (0.3), ghosts drawn into the keyframe |
+| F6a | 190.58–192.34 | she draws the loop round the clock in gold | F6a take 2 (de-rainbowed) |
+| F6b | 192.34–195.42 | **the payoff**: the clock's hands *are* Ascending and Descending, agents march it; slow push-in, shake on 194.10 | F6b take 2 (2D) |
+| F6c | 195.42–197.60 | **Super Meat Boy replay**: she sprints with a stream of colour ghosts in step · *never stop* | F6c take 3 (0.3), ghosts drawn into the keyframe |
 | F7_01 | 197.60–198.48 | ghost stampede on the L tracks | F7a |
 | F7_02 | 198.48–199.38 | her grin | F7b |
 | F7_03 | 199.38–200.24 | agents on the clock's infinite stairs | F6b (2.6 / 1.3) |
@@ -65,26 +65,40 @@ small, in a clear patch of the world (graphite on light, pale pencil on dark), a
 | F7_05 | 202.02–202.88 | the melting clock folds into itself | F7d (0 / 1.4) |
 | F7_06 | 202.88–203.76 | stampede, closer | F7a (2.0, 1.12×) |
 | F7_07 | 203.76–205.52 | **swell 203.78, BIG 2: Banach–Tarski reunion**, two Jades merge into one | F7e (0.15) |
-| F7_08 | 205.52–207.28 | ◀◀ ×2 → ×4: **the rewind that paints** | F6c take 1, reversed, `take_1_rewindpaint.mp4` |
+| F7_08 | 205.52–207.28 | ◀◀ ×2 → ×4: **the rewind that paints** | F6c take 3 reversed, `take_3_rewindpaint.mp4` (clean matte) |
 | F7_09 | 207.28–208.14 | (blip 207.31) the folded clock collapses to a gold star | F7d (2.2 / 1.15) |
 | F7_10–13 | 208.14 / 208.58 / 209.02 / 209.46 | one-beat recap strobe: flood, sword, loop, gold | F1, F5a, F6a, F7c |
 | F8 | 209.90–211.64 | she stops, breathing; the committee of ghosts in a line; band out 210.90 · *never stop* | F8 take 1 |
 | O1 | 211.64–218.92 | (section E's 3D Penrose pull-back.) **F overlay:** the variance report slides in, types, **un-writes itself** last line first (bar 123→124) and `TIMELINE IS NOW CANON` stamps on 217.04 | overlay `tools/sectionF/modules/variance_report.js` |
 | O2 | 218.92–222.78 | dawn: she twists her hair up, pencil back in, opens the door and walks in; paper notice `DISSERTATION DEFENSE / 9:00 AM` pinned on the door (hand-keyed 6-key track) | O2 take 1 (0 / 1.3) |
 | O3 | 222.78 | hard cut to black (solid until 226.00) | engine |
-| O4 | 226.00–227.96 | black; *never stop.* written in pencil as she whispers; `ITERATION 4,097` (HUD `iteration`) starts rolling at 226.45; fade from 227.0 | engine |
+| O4 | 226.00–227.96 | black; *never stop.* written large (216 px, graphite gray, centred) as she whispers; `ITERATION 4,097` Press Start 2P 28 px bottom-right, rolling from 226.45; fade from 227.0 | engine |
 
 Shot-list deviations, and why:
-- **F6** is split across GEN and 3D. Her gesture is generated (F6a). The impossible-object reveal is section E's
-  `f6_clock.js`: a real camera move that lands the Penrose closure on bar 111's downbeat. A 2D clip can't do that
-  trick, and the 3D shot matches the 3D O1 that follows. The generated 2D "clock hands = stairs" clip (F6b) is
-  reused at F7_03.
+- **F6** is all 2D. Section E's 3D `f6_clock.js` was in the first cut (192.34–195.86). On review it read as a flat gold
+  disc in a different hand at the 194.10 clunk, so F now cuts from her gesture (F6a) straight to the generated payoff,
+  where the clock's hands are the Penrose stairs (F6b take 2). The module is still there if anyone wants the
+  rotation back.
 - **F2** became one take cut in two: the wall-run (bar 99), then reaching the top and leaping off (bar 100). It's still
   one idea, with a punch.
 - **F7** has 13 cuts on the 2-beat grid (one-beat strobe in bar 119), built from 5 new clips + reuses. The two swells
   get the two biggest images (Klimt gold, the Banach–Tarski reunion). The extra small swell at 207.31 gets the gold star.
 - **O2's door sign** is a paper notice under the brass plaque. The plaque is ~110 px wide in this framing, too small
   for the text to read.
+
+## Polish pass (coordinator notes)
+
+- **Rainbows out.** nano-banana-pro edited 9 keyframes (`tools/sectionF/derainbow.py`; before/after in
+  `media/shots/F_derainbow_sheet.jpg`) to remove the rainbow arcs and checkerboard confetti while keeping the Kandinsky
+  circles and triangles and the Klimt gold. Re-rendered with Seedance from the same prompts: F2 t3, F5a t2, F5b t2,
+  F6a t2, F6b t2, F6c t3, F7a t2, F7b t2, F8 t2. The first edits for F7b (added a ghost doodle) and F6b (a rainbow
+  stayed) were redone. F6a t2 goes photographic after ~2 s, so only 0–1.76 s is used.
+- **O4:** "never stop." is now 216 px (3×), graphite gray (#9a958b on black), centred, written as she whispers. The
+  counter is Press Start 2P 28 px, bottom-right, rolling.
+- **The 3D beat:** dropped (see F6 above).
+- **F1 matte leak, fixed.** `tools/sectionF/clean_matte.py` runs tools/engrave's matte with `world_color=True`, so
+  colour no longer extends the matte. The engraved copy was re-engraved with `--matte-in` that matte, and the wipe
+  rebuilt. Before the wipe, only Jade is in colour. The same fix went into F7_08.
 
 ## Chosen takes and costs
 
@@ -96,22 +110,18 @@ prompts, takes and verdicts are in `media/shots/<shot>/NOTES.md`. `chosen.json` 
 | F1 | take 3 (full-colour keyframe `kf_full1`) → wipe | take 1 (half-bloom keyframe, slow jog; its wipe `take_1_wipe.mp4` kept), take 2 (same keyframe, ends on a face close-up) |
 | F2 | take 2 (true wall-run up and off the top) | take 1 (facade turned into a floor) |
 | F4 | take 2 (dive → reflection → ripples) | take 1 (turned photographic at 2 s, then a hand-over-face close-up) |
-| F6c | take 2 (keyframe with the ghost stream drawn in) | take 1 + engine `ghosts` layer (smeared afterimages); take 1 is still used reversed at F7_08 |
-| others | take 1 | — |
+| F6c | take 3 (de-rainbowed ghost keyframe) | take 2 (same keyframe with rainbows), take 1 + engine `ghosts` layer (smeared afterimages) |
+| F2, F5a, F5b, F6a, F6b, F7a, F7b, F8 | the polish take (de-rainbowed keyframe) | the earlier takes (rainbow arcs) |
+| F3, F7c, F7d, F7e, O2 | take 1 | — |
 
-**Section F spend: $21.31 of the $70 budget** (list-price estimate, `tools/gen/spend.py --tags`, tags `F*`/`O2`):
-style test $1.44, keyframes $4.57 (34 images), video $15.30 (21 takes, 102 s at 720p). Project total at hand-off: $135.83 of $400.
+**Section F spend: $29.24 of the $70 budget** (list-price estimate, `tools/gen/spend.py --tags`, tags `F*`/`O2`).
+The polish pass cost $7.93 (11 keyframe edits plus 9 Seedance takes). Project total at hand-off: $143.76 of $400.
 
 ## What's weak
 
 - **Engine ghosts were dropped**: on F6c take 1 the engine's `ghosts` layer smeared, because the tools/engrave matte
   carries patches of background. F6c was regenerated with the ghosts drawn into the keyframe (take 2, crisp). Anyone
   else relying on matte-driven ghosts should expect the same smear.
-- **Matte leak in the engraved twins** (F1, F7_08): the matte keeps some wave/colour pixels round her, so a small
-  colour patch already sits behind her before the wipe arrives. It reads as the colour starting at her.
-- **F6b_3d look**: E's 3D clock (gold mosaic on blue paper sky) is a different hand from the anime-plus-pencil GEN
-  shots either side. It's 3.5 s, rhymes with O1, and the idea needs it, but the cut into it is the section's biggest
-  style jump.
 - **Seedance softening**: over 5 s some takes drift from hatched pencil towards smoother painted colour (F6c, F2's
   sky). I only use the first 1–3.5 s of most takes, which hides most of it.
 - **The O2 notice track** is hand-keyed from 6 frames. It holds well until the door swings (the last 0.4 s), where it

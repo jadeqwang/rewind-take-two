@@ -18,8 +18,10 @@ refs=['media/style_tests/refs/jade_pencil_flare_t2.jpg', 'media/style_tests/refs
 - take_1: bytedance/seedance-2.0 720p 5 s, est $0.75, state done, first frame `media/shots/F6a/kf_2.jpg`. 
   - prompt: The girl sweeps her pencil in one huge circle above her head, the glowing gold line from its tip drawing a full loop around the giant clock in the sky; the camera orbits around her fast, in the same direction as her arm. Her face keeps the first frame's design, forehead smooth, brows relaxed, never a face close-up. Keep the exact hand-drawn look of the first frame: colored pencil over black engraved hatching on warm paper, the girl in clean anime cel shading. No text, no letters, no logos, no watermark.
   - verdict: the gold line draws several loops rather than one, the camera swings round. Used.
+- take_2: bytedance/seedance-2.0 720p 5 s, est $0.75, state done, first frame `media/shots/F6a/kf_2.jpg`. polish: rainbows removed from keyframe (prompt of take 1)
+  - prompt: The girl sweeps her pencil in one huge circle above her head, the glowing gold line from its tip drawing a full loop around the giant clock in the sky; the camera orbits around her fast, in the same direction as her arm. Her face keeps the first frame's design, forehead smooth, brows relaxed, never a face close-up. Keep the exact hand-drawn look of the first frame: colored pencil over black engraved hatching on warm paper, the girl in clean anime cel shading. No text, no letters, no logos, no watermark.
 
-Video cost for this shot: $0.75 (list-price estimate).
+Video cost for this shot: $1.50 (list-price estimate).
 
 ## Judgement
 
@@ -29,13 +31,13 @@ Good energy; 'a single loop' became several, acceptable.
 
 ```json
 {
- "take": 1,
- "file": "media/shots/F6a/take_1_engraved.mp4",
+ "take": 2,
+ "file": "media/shots/F6a/take_2_engraved.mp4",
  "in_sec": 0.0,
  "out_sec": null,
  "rate": 1.0,
  "reverse": false,
  "notes": "the loop gesture; gold line encircles the clock",
- "matte": "media/shots/F6a/take_1_matte/matte.mp4"
+ "matte": "media/shots/F6a/take_2_matte/matte.mp4"
 }
 ```

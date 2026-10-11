@@ -18,8 +18,10 @@ refs=['media/style_tests/refs/jade_pencil_flare_t2.jpg', 'media/style_tests/refs
 - take_1: bytedance/seedance-2.0 720p 4 s, est $0.6, state done, first frame `media/shots/F7a/kf_2.jpg`. 
   - prompt: Extremely fast: the real girl and the crowd of translucent colored ghost copies of her stampede toward the camera along the tracks; the camera pulls back fast, low to the tracks. Keep the exact hand-drawn look of the first frame: colored pencil over black engraved hatching on warm paper, the girl in clean anime cel shading. No text, no letters, no logos, no watermark.
   - verdict: good. Used.
+- take_2: bytedance/seedance-2.0 720p 4 s, est $0.6, state done, first frame `media/shots/F7a/kf_2.jpg`. polish: rainbows removed from keyframe (prompt of take 1)
+  - prompt: Extremely fast: the real girl and the crowd of translucent colored ghost copies of her stampede toward the camera along the tracks; the camera pulls back fast, low to the tracks. Keep the exact hand-drawn look of the first frame: colored pencil over black engraved hatching on warm paper, the girl in clean anime cel shading. No text, no letters, no logos, no watermark.
 
-Video cost for this shot: $0.60 (list-price estimate).
+Video cost for this shot: $1.20 (list-price estimate).
 
 ## Judgement
 
@@ -29,13 +31,13 @@ Video cost for this shot: $0.60 (list-price estimate).
 
 ```json
 {
- "take": 1,
- "file": "media/shots/F7a/take_1_engraved.mp4",
+ "take": 2,
+ "file": "media/shots/F7a/take_2_engraved.mp4",
  "in_sec": 0.0,
  "out_sec": null,
  "rate": 1.0,
  "reverse": false,
  "notes": "ghost stampede; reused at F7_06",
- "matte": "media/shots/F7a/take_1_matte/matte.mp4"
+ "matte": "media/shots/F7a/take_2_matte/matte.mp4"
 }
 ```

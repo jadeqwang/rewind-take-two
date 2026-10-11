@@ -22,8 +22,10 @@ refs=['media/style_tests/refs/jade_pencil_flare_t2.jpg', 'media/style_tests/refs
 - take_2: bytedance/seedance-2.0 720p 5 s, est $0.75, state done, first frame `media/shots/F2/kf_2.jpg`. r2 true wall-run
   - prompt: Extremely fast: the girl and her two translucent ghost copies sprint straight UP the vertical glass facade of the skyscraper, away from the camera, toward the top of the tower and the sky; gravity is sideways, their feet slam onto the wall with every stride, hair hanging down toward the camera. The camera is fixed to the wall below them, looking straight up the tower, and rushes upward after them. The colored line from her pencil streaks along the wall behind her. Keep the exact hand-drawn look of the first frame: colored pencil over black engraved hatching on warm paper, the girl in clean anime cel shading. No text, no letters, no logos, no watermark.
   - verdict: true wall-run: they sprint up the facade away from camera, reach the top and launch off it. Used (0-1.76 for bar 99, 3.24-5.0 for bar 100).
+- take_3: bytedance/seedance-2.0 720p 5 s, est $0.75, state done, first frame `media/shots/F2/kf_2.jpg`. polish: rainbows removed from keyframe (prompt of take 2)
+  - prompt: Extremely fast: the girl and her two translucent ghost copies sprint straight UP the vertical glass facade of the skyscraper, away from the camera, toward the top of the tower and the sky; gravity is sideways, their feet slam onto the wall with every stride, hair hanging down toward the camera. The camera is fixed to the wall below them, looking straight up the tower, and rushes upward after them. The colored line from her pencil streaks along the wall behind her. Keep the exact hand-drawn look of the first frame: colored pencil over black engraved hatching on warm paper, the girl in clean anime cel shading. No text, no letters, no logos, no watermark.
 
-Video cost for this shot: $1.50 (list-price estimate).
+Video cost for this shot: $2.25 (list-price estimate).
 
 ## Judgement
 
@@ -33,13 +35,13 @@ Take 2 is a clean wall-run with the ghosts in step and the pencil line on the gl
 
 ```json
 {
- "take": 2,
- "file": "media/shots/F2/take_2_engraved.mp4",
+ "take": 3,
+ "file": "media/shots/F2/take_3_engraved.mp4",
  "in_sec": 0.0,
  "out_sec": null,
  "rate": 1.0,
  "reverse": false,
  "notes": "true wall-run up the tower (take 2); bar 100 jumps to 3.24 s (reaching the top and launching off it) with a 1.12x punch-in",
- "matte": "media/shots/F2/take_2_matte/matte.mp4"
+ "matte": "media/shots/F2/take_3_matte/matte.mp4"
 }
 ```

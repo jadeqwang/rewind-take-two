@@ -22,8 +22,10 @@ refs=['media/style_tests/refs/jade_pencil_flare_t2.jpg', 'media/style_tests/refs
 - take_2: bytedance/seedance-2.0 720p 5 s, est $0.75, state done, first frame `media/shots/F6c/kf_2.jpg`. r2 ghost stream in the keyframe
   - prompt: Side-on tracking shot: the girl sprints extremely fast from left to right along the elevated tracks, long powerful strides, hair streaming; the stream of translucent colored ghost copies of her runs right behind her in perfect step, every ghost repeating her stride a moment later like a motion trail. The camera tracks sideways with her at the same speed, keeping her in the same place in frame while the buildings scroll past from right to left. Keep the exact hand-drawn look of the first frame: colored pencil over black engraved hatching on warm paper, the girl in clean anime cel shading. No text, no letters, no logos, no watermark.
   - verdict: new keyframe kf_ghosts2 with the ghost stream drawn in: crisp colour ghosts in step behind her. Used (0.3-2.04 s).
+- take_3: bytedance/seedance-2.0 720p 5 s, est $0.75, state done, first frame `media/shots/F6c/kf_2.jpg`. polish: rainbows removed from keyframe (prompt of take 2)
+  - prompt: Side-on tracking shot: the girl sprints extremely fast from left to right along the elevated tracks, long powerful strides, hair streaming; the stream of translucent colored ghost copies of her runs right behind her in perfect step, every ghost repeating her stride a moment later like a motion trail. The camera tracks sideways with her at the same speed, keeping her in the same place in frame while the buildings scroll past from right to left. Keep the exact hand-drawn look of the first frame: colored pencil over black engraved hatching on warm paper, the girl in clean anime cel shading. No text, no letters, no logos, no watermark.
 
-Video cost for this shot: $1.50 (list-price estimate).
+Video cost for this shot: $2.25 (list-price estimate).
 
 ## Judgement
 
@@ -33,13 +35,13 @@ Take 2 replaces the engine-ghost version; the ghosts are drawn by nano and anima
 
 ```json
 {
- "take": 2,
- "file": "media/shots/F6c/take_2_engraved.mp4",
+ "take": 3,
+ "file": "media/shots/F6c/take_3_engraved.mp4",
  "in_sec": 0.3,
  "out_sec": null,
  "rate": 1.0,
  "reverse": false,
  "notes": "take 2: side-on sprint with the ghost stream drawn in (keyframe kf_ghosts2); take 1 is reused reversed at F7_08 (the rewind that paints)",
- "matte": "media/shots/F6c/take_2_matte/matte.mp4"
+ "matte": "media/shots/F6c/take_3_matte/matte.mp4"
 }
 ```

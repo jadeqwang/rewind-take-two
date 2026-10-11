@@ -18,8 +18,10 @@ refs=['media/style_tests/refs/jade_pencil_flare_t2.jpg', 'media/style_tests/worl
 - take_1: bytedance/seedance-2.0 720p 5 s, est $0.75, state done, first frame `media/shots/F5b/kf_2.jpg`. 
   - prompt: The colossal melting clock sags further over the skyline; thick drips of black ink stretch and fall from its lower edge and turn into black-suited agents tumbling down onto the rooftops; the girl's hair and jacket blow in the wind. Slow camera push-in toward the clock. Keep the exact hand-drawn look of the first frame: colored pencil over black engraved hatching on warm paper, the girl in clean anime cel shading. No text, no letters, no logos, no watermark.
   - verdict: good drips and falling agents; the camera drifts right and crops Jade after ~3 s. Used 0-3.5 s.
+- take_2: bytedance/seedance-2.0 720p 5 s, est $0.75, state done, first frame `media/shots/F5b/kf_2.jpg`. polish: rainbows removed from keyframe (prompt of take 1)
+  - prompt: The colossal melting clock sags further over the skyline; thick drips of black ink stretch and fall from its lower edge and turn into black-suited agents tumbling down onto the rooftops; the girl's hair and jacket blow in the wind. Slow camera push-in toward the clock. Keep the exact hand-drawn look of the first frame: colored pencil over black engraved hatching on warm paper, the girl in clean anime cel shading. No text, no letters, no logos, no watermark.
 
-Video cost for this shot: $0.75 (list-price estimate).
+Video cost for this shot: $1.50 (list-price estimate).
 
 ## Judgement
 
@@ -29,13 +31,13 @@ Reads. Jade is small by design (the one deliberate wide).
 
 ```json
 {
- "take": 1,
- "file": "media/shots/F5b/take_1_engraved.mp4",
+ "take": 2,
+ "file": "media/shots/F5b/take_2_engraved.mp4",
  "in_sec": 0.0,
  "out_sec": null,
  "rate": 1.0,
  "reverse": false,
  "notes": "wide; ink drips become agents",
- "matte": "media/shots/F5b/take_1_matte/matte.mp4"
+ "matte": "media/shots/F5b/take_2_matte/matte.mp4"
 }
 ```

@@ -15,22 +15,22 @@ S = "media/shots/"
 CHOSEN = {
     "F1": dict(take=3, file=S + "F1/take_3_wipe.mp4", in_sec=0.0, rate=1.1, reverse=False,
                notes="colour-flood wipe (tools/sectionF/wipe.py): engraved twin -> colour clip, radial from her, gold leading edge"),
-    "F2": dict(take=2, in_sec=0.0, rate=1.0, reverse=False, notes="true wall-run up the tower (take 2); bar 100 jumps to 3.24 s (reaching the top and launching off it) with a 1.12x punch-in"),
+    "F2": dict(take=3, in_sec=0.0, rate=1.0, reverse=False, notes="true wall-run up the tower (take 2); bar 100 jumps to 3.24 s (reaching the top and launching off it) with a 1.12x punch-in"),
     "F3": dict(take=1, in_sec=0.0, rate=1.0, reverse=False, notes="Relativity hall; the engine snaps a 90-degree roll on the downbeat"),
     "F4": dict(take=2, in_sec=0.0, rate=1.3, reverse=False, notes="take 2: dive, touches her reflection at ~3 s, plunges into concentric ripples"),
-    "F5a": dict(take=1, in_sec=0.0, rate=1.0, reverse=False, notes="hero; Seedance slow push-in, giant pencil as sword"),
-    "F5b": dict(take=1, in_sec=0.0, rate=1.0, reverse=False, notes="wide; ink drips become agents"),
-    "F6a": dict(take=1, in_sec=0.0, rate=1.0, reverse=False, notes="the loop gesture; gold line encircles the clock"),
-    "F6b": dict(take=1, in_sec=0.0, rate=1.0, reverse=False, notes="clock hands = Penrose stairs, agents march; reused at F7_03"),
-    "F6c": dict(take=2, in_sec=0.3, rate=1.0, reverse=False, notes="take 2: side-on sprint with the ghost stream drawn in (keyframe kf_ghosts2); take 1 is reused reversed at F7_08 (the rewind that paints)"),
-    "F7a": dict(take=1, in_sec=0.0, rate=1.0, reverse=False, notes="ghost stampede; reused at F7_06"),
-    "F7b": dict(take=1, in_sec=0.0, rate=1.0, reverse=False, notes="her grin"),
+    "F5a": dict(take=2, in_sec=0.0, rate=1.0, reverse=False, notes="hero; Seedance slow push-in, giant pencil as sword"),
+    "F5b": dict(take=2, in_sec=0.0, rate=1.0, reverse=False, notes="wide; ink drips become agents"),
+    "F6a": dict(take=2, in_sec=0.0, rate=1.0, reverse=False, notes="the loop gesture; gold line encircles the clock"),
+    "F6b": dict(take=2, in_sec=0.0, rate=1.0, reverse=False, notes="clock hands = Penrose stairs, agents march; reused at F7_03"),
+    "F6c": dict(take=3, in_sec=0.3, rate=1.0, reverse=False, notes="take 2: side-on sprint with the ghost stream drawn in (keyframe kf_ghosts2); take 1 is reused reversed at F7_08 (the rewind that paints)"),
+    "F7a": dict(take=2, in_sec=0.0, rate=1.0, reverse=False, notes="ghost stampede; reused at F7_06"),
+    "F7b": dict(take=2, in_sec=0.0, rate=1.0, reverse=False, notes="her grin"),
     "F7c": dict(take=1, in_sec=0.0, rate=1.0, reverse=False, notes="BIG 1: Klimt gold sky"),
     "F7d": dict(take=1, in_sec=0.0, rate=1.4, reverse=False, notes="clock folds into itself; tail (collapse to a gold point) reused at F7_09"),
     "F7e": dict(take=1, in_sec=0.15, rate=1.0, reverse=False, notes="BIG 2: Banach-Tarski reunion, two Jades merge at ~0.8 s"),
-    "F7_08": dict(take=1, file=S + "F6c/take_1_rewindpaint.mp4", matte=S + "F6c/take_1_matte/matte.mp4", in_sec=3.24, rate=1.0,
+    "F7_08": dict(take=3, file=S + "F6c/take_3_rewindpaint.mp4", matte=S + "F6c/take_3_cleanmatte.mp4", in_sec=3.24, rate=1.0,
                   reverse=True, notes="F6c played backward; wipe computed on the reversed clock so colour paints IN as it rewinds"),
-    "F8": dict(take=1, in_sec=0.0, rate=1.0, reverse=False, notes="the committee"),
+    "F8": dict(take=2, in_sec=0.3, rate=1.0, reverse=False, notes="the committee"),
     "O2": dict(take=1, in_sec=0.0, rate=1.3, reverse=False, notes="dawn door: hair up + pencil at ~2.4-3.6 s source, door opens ~4.6 s"),
 }
 OVR = os.path.join(ROOT, "tools/sectionF/chosen_overrides.json")
@@ -110,17 +110,15 @@ def build():
         cut("F5b", 187.08, 190.58, "F5b", fx=[FLASH(0.5), FLASH(0.35, "#ffe9a8", 0.1, at=round(189.54 - 187.08, 2))]),
         # ---- bars 109-112: the perspective move --------------------------------------------------------------------------------
         cut("F6a", 190.58, 192.34, "F6a", fx=[FLASH(0.5)]),
-        # bars 110-111: the camera keeps rotating with her gesture (3D, render/three/scenes/f6_clock.js by the section E
-        # agent) and clunks into the magic angle on 194.10, where the clock's hands close into Ascending and Descending
-        {"shot": "F6b_3d", "in": 192.34, "out": 195.86, "background": "#ECE7DC",
-         "layers": [{"id": "3d", "type": "three", "module": "render/three/scenes/f6_clock.js", "linear": False, "samples": 1,
-                     "params": {"from": 192.34, "snap": 194.10, "color": 1}}],
-         "fx": [FLASH(0.35), {"type": "shake", "on": [194.10], "amp": 12, "decay": 0.22}, {"type": "paper", "amount": 0.3}]},
-        cut("F6c", 195.86, 197.60, "F6c", fx=[FLASH(0.4)], text=[never_stop(196.68, 197.48, 1120, 1052, rot=-2, size=50)]),
+        # the payoff: the clock's hands are Ascending and Descending, agents march it (2D, same hand as the rest of F).
+        # Section E's 3D render/three/scenes/f6_clock.js was tried here (192.34-195.86, then 194.10-195.42) and dropped:
+        # at the clunk it reads as a flat gold disc in a different hand. It is still available if wanted.
+        cut("F6b", 192.34, 195.42, "F6b", fx=[FLASH(0.4), {"type": "shake", "on": [194.10], "amp": 10, "decay": 0.22}]),
+        cut("F6c", 195.42, 197.60, "F6c", fx=[FLASH(0.4)], text=[never_stop(196.68, 197.48, 1120, 1052, rot=-2, size=50)]),
         # ---- bars 113-119: escalating hero cuts every 2 beats ---------------------------------------------------------------------
         cut("F7_01", 197.60, 198.48, "F7a", fx=[FLASH(0.5)]),
         cut("F7_02", 198.48, 199.38, "F7b", fx=[FLASH(0.4)]),
-        cut("F7_03", 199.38, 200.24, "F6b", clip_in=2.6, rate=1.3, fx=[FLASH(0.4)]),
+        cut("F7_03", 199.38, 200.24, "F6b", clip_in=3.6, rate=1.0, fx=[FLASH(0.4)]),
         cut("F7_04", 200.24, 202.02, "F7c", fx=[FLASH(1.0, "#ffe9a8", 0.16)]),                                               # BIG 1
         cut("F7_05", 202.02, 202.88, "F7d", fx=[FLASH(0.5)]),
         cut("F7_06", 202.88, 203.76, "F7a", clip_in=2.0, scale=1.12, fx=[FLASH(0.4)]),
@@ -145,9 +143,9 @@ def build():
     shots.append({"shot": "O3_black", "in": 222.78, "out": 226.00, "layers": [{"type": "solid", "color": "#000000"}]})
     shots.append({"shot": "O4", "in": 226.00, "out": 227.96, "layers": [{"type": "solid", "color": "#000000"}],
                   "text": [{"style": "pencil", "in": 226.00, "out": 227.96, "text": "never stop.", "at": 0, "cps": 13,
-                            "x": 960, "y": 560, "size": 72, "color": "#cfcac0", "align": "center", "point": True},
-                           {"style": "iteration", "in": 226.00, "out": 227.96, "side": "left", "base": 4097, "from": 226.45,
-                            "rate": 2.5, "flicker": 0.5, "size": 22, "color": "#ece7dc"}],
+                            "x": 960, "y": 610, "size": 216, "color": "#9a958b", "align": "center", "point": True},
+                           {"style": "iteration", "in": 226.00, "out": 227.96, "side": "right", "margin": 64, "y": 1016,
+                            "base": 4097, "from": 0.45, "rate": 3.0, "flicker": 0.35, "size": 28, "color": "#ece7dc"}],
                   "fx": [{"type": "fade", "out": [227.0, 227.96]}]})
     overlays = [{"id": "O1_variance_report", "start": 211.64, "end": 218.92, "layers": [
         {"type": "canvas", "module": "tools/sectionF/modules/variance_report.js", "stage": "post", "params": {

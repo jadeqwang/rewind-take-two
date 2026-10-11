@@ -18,8 +18,10 @@ refs=['media/style_tests/world/3_loop_L_tracks_seedream-5-pro.jpg', 'media/desig
 - take_1: bytedance/seedance-2.0 720p 5 s, est $0.75, state done, first frame `media/shots/F6b/kf_2.jpg`. 
   - prompt: The single file of black-suited agents marches around the endless square staircase on the clock face, round and round, climbing forever; the clock face slowly droops and drips. Slow camera push-in. Keep the exact hand-drawn look of the first frame: colored pencil over black engraved hatching on warm paper, the girl in clean anime cel shading. No text, no letters, no logos, no watermark.
   - verdict: slow push-in, marching reads. Used.
+- take_2: bytedance/seedance-2.0 720p 5 s, est $0.75, state done, first frame `media/shots/F6b/kf_2.jpg`. polish: rainbows removed from keyframe (prompt of take 1)
+  - prompt: The single file of black-suited agents marches around the endless square staircase on the clock face, round and round, climbing forever; the clock face slowly droops and drips. Slow camera push-in. Keep the exact hand-drawn look of the first frame: colored pencil over black engraved hatching on warm paper, the girl in clean anime cel shading. No text, no letters, no logos, no watermark.
 
-Video cost for this shot: $0.75 (list-price estimate).
+Video cost for this shot: $1.50 (list-price estimate).
 
 ## Judgement
 
@@ -29,13 +31,13 @@ Clear one-idea image.
 
 ```json
 {
- "take": 1,
- "file": "media/shots/F6b/take_1_engraved.mp4",
+ "take": 2,
+ "file": "media/shots/F6b/take_2_engraved.mp4",
  "in_sec": 0.0,
  "out_sec": null,
  "rate": 1.0,
  "reverse": false,
  "notes": "clock hands = Penrose stairs, agents march; reused at F7_03",
- "matte": "media/shots/F6b/take_1_matte/matte.mp4"
+ "matte": "media/shots/F6b/take_2_matte/matte.mp4"
 }
 ```
