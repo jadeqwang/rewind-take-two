@@ -58,9 +58,23 @@
    87.5,
    93.8
   ],
-  "what_changed": "Option C, staged in a three.js blockout (tools/v4B/car/): the shot now starts at 89.26 over her right shoulder in the left-hand-drive Acura (steering wheel, dash, both pencils, her cheek and headphones in colour), holds, then pushes between the front seats into the rear-view mirror, which is full of the fleet. SIRENS lands on an overhead road sign on its sung onset, IN MY MIRROR on the mirror's lower edge on its onset; the three nearest sedans read TVA 1729, TVA 4104 and TVA 4096 (right-reading, pinned by the engine). Built from two generated stills with the push done in the engine. Weak: the picture is a still under a camera move (no road motion; the strobes don't flash); for about 0.2 s mid-push a blurred border of the wide shows round the mirror; the sign gantry is seen above the windshield header, which is a cheat; the side plates are 1.75x a true plate and small at 540p. v4-B also ended the HUD and the \"back on the road\" lyric at the new cut, so neither spills onto the car interior.",
-  "question": "The shot starts at 89.26 (V2f1 trimmed to one bar). Keep that, or start it at 90.14 as in v3 (one number in render/timeline/C.js)? Also: the sedans in the mirror came out grey with roof light bars (police-style, which suits \"sirens\"); canon says plain black sedans. Keep, or redo the mirror still with plain black cars (about $0.30)?",
-  "still": "media/reviews/v4/B/0130_car_end.png"
+  "what_changed": "Option C, staged in a three.js blockout (tools/v4B/car/): the shot now starts at 89.26 over her right shoulder in the left-hand-drive Acura (steering wheel, dash, both pencils, her cheek and headphones in colour), holds, then pushes between the front seats into the rear-view mirror, which is full of the fleet. SIRENS lands on an overhead road sign on its sung onset, IN MY MIRROR on the mirror's lower edge on its onset; the three nearest sedans read TVA 1729, TVA 4104 and TVA 4096 (right-reading, pinned by the engine). Built from two generated stills with the push done in the engine. See the next entry for the animation pass."
+ },
+ {
+  "note": "0130_car.mp4 would be better if it were animated (even if you could just feel the cars moving)",
+  "v3_time": "1:30",
+  "shots": [
+   "V2f3",
+   "V2f4"
+  ],
+  "status": "done",
+  "after": "media/reviews/v4/B/0130_car.mp4",
+  "before_range": [
+   87.5,
+   93.8
+  ],
+  "what_changed": "Animated for free in the engine from the same two stills (no generated video): the cabin rides on its springs (slow bob and roll, faint road judder); the road and streetlights stream toward us through the windshield; a streetlight sweeps through the cabin every two beats; the gantry approaches and climbs out of frame; in the mirror the three nearest sedans are separate cut-outs that sway, bob, drift across their lanes and close in, with their roof bars flashing white. The plates and both phrases stay locked to their surfaces through the motion. Also from Jade's note on the lettering: SIRENS is now cut into the sign as woodcut letters, and IN MY MIRROR is cut into the mirror's edge the same way. The blurred border during the hand-over into the mirror is gone. Weak: the road is a looping 2D zoom, so lamps ghost briefly; there is no true parallax; at the very end a thin reflected sliver of the mirror's ends can show at the screen edges.",
+  "question": "Is the engine motion enough, or should we pay for a Seedance take under each still (about $1.20) for real road motion?"
  },
  {
   "note": "1:39 - I’m glad she’s zigzagging, but their positioning doesn’t seem to make sense here because they’re so close and missing her at close range and the bullets are traveling in incoherent directions. instead we should have an over the shoulder shot, where they are facing her (away from the camera), and the camera is panning in towards her (past their shoulders)",
