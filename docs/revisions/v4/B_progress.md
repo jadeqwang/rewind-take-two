@@ -97,6 +97,10 @@ shooters B, B, C, C with A only aiming, or all three fire.
 left on notes 2, 4, 5, 6, 7 waits for Jade's go; total asked for is about $12-16 of B's $90. When she answers,
 spawn one Opus sub-agent per note with the plan file as its brief (each plan ends with build notes).
 
+19:10: `v4-A` reports the v4 singer has landed (`media/sing/S1/v4_sync_1080.mp4` + `v4_sync_1080_matte/`, same for
+V3S) and is swapping `S1_SRC`, the S1 `HER.src`, `V3S_SRC` and the V3S `HER.src` in `A.js`/`E.js`. Build the Bean
+push on those paths; her scale and bottom span match v3 within a few px.
+
 ## Jade's decisions (verbatim, with time)
 
 None yet in this pane. Defaults from the brief: plates `TVA 1729` (hero), `TVA 4104`, `TVA 4096`, `TVA 0900`;
