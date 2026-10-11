@@ -59,7 +59,7 @@ export default ({ T }) => ({
       const arc = (text, times, r, at) => ({ text, times, cx: 965, cy: 981, r, ...at, size: 88, style: 'pencil', color: '#F08A24' });
       const LEGEND = [arc('THE NIGHT', ['word:the@153', 'word:night@153'], 1014, { to: -31 }), arc('BEFORE', ['word:before@154'], 930, { to: -31 }),
         arc('MY', ['word:my@157'], 1014, { from: 31 }), arc('DISSERTATION', ['word:dissertation@157'], 930, { from: 31 }),
-        arc('DEFENSE,', ['word:defense@158'], 846, { from: 31 })];
+        arc('DEFENSE', ['word:defense@158'], 846, { from: 31 })];
       const cut = (start, end, legend) => [
         ...legend.map(params => ({ type: 'canvas', module: ARC, stage: 'pre', keepColor: true, start, end, params })),
         { type: 'video', stage: 'pre', keepColor: true, start, end, src: V3S_SRC, in: start + V3S_LAG, rate: 1, fit: 'cover', matte: HER },

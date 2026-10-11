@@ -232,7 +232,7 @@ export default ({ T }) => ({
     // v3: V1-1 lives in the world, not in a lower third, and no word is shown in more than one shot (Jade). S1: "THE
     // NIGHT BEFORE" cut into the Bean's mirror on arcs just inside its rim (white-line woodcut capitals,
     // render/timeline/_arc_lyric.js), one word per sung onset, behind her (her matte is laid back over it). S1x: "MY
-    // DISSERTATION DEFENSE," on the plaza paving of the reflection. Layer times are local to 12.60: S1 0-3.54, S1x 3.54-7.04.
+    // DISSERTATION DEFENSE" (no comma, Jade v4) on the plaza paving of the reflection. Layer times are local to 12.60: S1 0-3.54, S1x 3.54-7.04.
     { id: 'A_S1_lyric', start: 12.6, end: 19.64, layers: (() => {
       const ARC = 'render/timeline/_arc_lyric.js', HER = { src: S1_MATTE, mode: 'luma' };   // v4 A: 'media/sing/S1/v4_sync_1080_matte/'
       const arc = (text, times, r, at) => ({ text, times, cx: 965, cy: 981, r, ...at, size: 88, style: 'woodcut' });
@@ -244,7 +244,7 @@ export default ({ T }) => ({
         ...LEFT.map(params => ({ type: 'canvas', module: ARC, stage: 'pre', noRewind: true, start: 0, end: 3.54, ...BEAN.bean, params })),
         { type: 'video', stage: 'pre', noRewind: true, start: 0, end: 3.54, src: S1_SRC, in: S1_IN, rate: 1, fit: 'cover', ...BEAN.her, matte: HER },
         { type: 'canvas', module: 'pin', stage: 'pre', noRewind: true, start: 3.54, end: 7.04, scale: 1.04, blend: 'multiply',
-          params: { style: 'ground', font: 'slab', uppercase: true, text: 'MY\nDISSERTATION\nDEFENSE,', times: ['word:my@16', 'word:dissertation@16', 'word:defense@17'],
+          params: { style: 'ground', font: 'slab', uppercase: true, text: 'MY\nDISSERTATION\nDEFENSE', times: ['word:my@16', 'word:dissertation@16', 'word:defense@17'],
             size: 92, color: INK, grain: 0.3, corners: [[0, PLAZA(8, -2)], [3.5, PLAZA(-125, 22)]] } },
       ];
     })() },
