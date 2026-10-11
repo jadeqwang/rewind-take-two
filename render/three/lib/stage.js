@@ -19,19 +19,30 @@ export class Stage {
     this.viewH = 20;
   }
 
-  // az/el in radians; viewH = world units visible vertically; target = look-at point
-  setCamera(target, viewH, az = ISO_AZ, el = ISO_EL, roll = 0) {
+  // az/el in radians; viewH = world units visible vertically at the target; target = look-at point.
+  // persp 0 = orthographic (the magic camera), 1 = perspective with vertical fov `fov` (deg) framing the same viewH
+  // at the target. In between, the projection matrices are blended: the "snap to orthographic" move.
+  setCamera(target, viewH, az = ISO_AZ, el = ISO_EL, roll = 0, persp = 0, fov = 38) {
     this.target.copy(target); this.viewH = viewH;
     const c = this.camera, aspect = this.width / this.height;
     c.left = -viewH * aspect / 2; c.right = viewH * aspect / 2; c.top = viewH / 2; c.bottom = -viewH / 2;
     const d = new THREE.Vector3(Math.cos(el) * Math.sin(az), Math.sin(el), Math.cos(el) * Math.cos(az));
-    c.position.copy(target).addScaledVector(d, 150);
+    const dist = persp > 0 ? viewH / 2 / Math.tan(fov * Math.PI / 360) : 150;
+    c.position.copy(target).addScaledVector(d, dist);
     c.up.set(Math.sin(roll), Math.cos(roll), 0);
     c.lookAt(target);
-    c.near = 1; c.far = 400;
+    c.near = persp > 0 ? -300 : 1; c.far = 400;
     c.updateProjectionMatrix(); c.updateMatrixWorld();
+    if (persp > 0) {
+      const P = new THREE.Matrix4().makePerspective(-0.5 * aspect, 0.5 * aspect, 0.5, -0.5, 0.5 / Math.tan(fov * Math.PI / 360), 400);
+      const O = c.projectionMatrix.clone();
+      const e = c.projectionMatrix.elements, pe = P.elements, oe = O.elements;
+      // blend in a smoothed space so the move reads as a snap, not a slow dolly
+      for (let i = 0; i < 16; i++) e[i] = oe[i] + (pe[i] - oe[i]) * persp;
+      c.projectionMatrixInverse.copy(c.projectionMatrix).invert();
+    }
     // the illusion only holds at the magic angle: depth pushes fade out as the camera leaves it
-    const dev = Math.hypot(az - ISO_AZ, el - ISO_EL) * 180 / Math.PI;
+    const dev = Math.hypot(az - ISO_AZ, el - ISO_EL) * 180 / Math.PI + persp * 10;
     const m = 1 - Math.min(1, Math.max(0, (dev - 0.15) / 1.5));
     this.eng.shared.uMagic.value = m * m * (3 - 2 * m);
     this.magic = this.eng.shared.uMagic.value;

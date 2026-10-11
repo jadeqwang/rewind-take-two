@@ -34,6 +34,7 @@ function encodePNG(rgba, w, h) {
 }
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const REPO = path.resolve(ROOT, '../..');   // served root: scenes may load media/ from the repo
 const argv = process.argv.slice(2);
 const args = {};
 for (let i = 0; i < argv.length; i++) if (argv[i].startsWith('--')) { const k = argv[i].slice(2); const v = argv[i + 1] && !argv[i + 1].startsWith('--') ? argv[++i] : '1'; args[k] = v; }
@@ -48,7 +49,7 @@ const out = path.resolve(args.out || path.join(ROOT, '../../media/three_proto', 
 const frameDir = isVideo ? (args.framedir ? path.resolve(args.framedir) : out.replace(/\.mp4$/, '') + '_frames') : out;
 fs.mkdirSync(frameDir, { recursive: true });
 
-const TYPES = { '.html': 'text/html', '.js': 'text/javascript', '.mjs': 'text/javascript', '.json': 'application/json', '.png': 'image/png', '.jpg': 'image/jpeg', '.webp': 'image/webp' };
+const TYPES = { '.ttf': 'font/ttf', '.woff2': 'font/woff2', '.html': 'text/html', '.js': 'text/javascript', '.mjs': 'text/javascript', '.json': 'application/json', '.png': 'image/png', '.jpg': 'image/jpeg', '.webp': 'image/webp' };
 let done = 0, received = 0, lastProgress = Date.now();
 const server = http.createServer((req, res) => {
   const u = new URL(req.url, 'http://x');
@@ -69,9 +70,9 @@ const server = http.createServer((req, res) => {
     });
     return;
   }
-  let p = decodeURIComponent(u.pathname); if (p === '/') p = '/harness.html';
-  const file = path.join(ROOT, p);
-  if (!file.startsWith(ROOT)) { res.writeHead(403); return res.end(); }
+  let p = decodeURIComponent(u.pathname); if (p === '/') p = '/render/three/harness.html';
+  const file = path.join(REPO, p);
+  if (!file.startsWith(REPO)) { res.writeHead(403); return res.end(); }
   fs.readFile(file, (err, data) => {
     if (err) { res.writeHead(404); return res.end('not found'); }
     res.writeHead(200, { 'Content-Type': TYPES[path.extname(file)] || 'application/octet-stream', 'Cache-Control': 'no-store' });
@@ -82,7 +83,7 @@ await new Promise((r) => server.listen(0, '127.0.0.1', r));
 const port = server.address().port;
 
 const extra = Object.entries(args).filter(([k]) => k.startsWith('p.')).map(([k, v]) => `&${k}=${encodeURIComponent(v)}`).join('');
-const base = `http://127.0.0.1:${port}/harness.html?scene=${scene}&w=${W}&h=${H}&ss=${args.ss || 2}&capture=1${extra}${args.debug ? "&debug=1" : ""}`;
+const base = `http://127.0.0.1:${port}/render/three/harness.html?scene=${scene}&w=${W}&h=${H}&ss=${args.ss || 2}&capture=1${extra}${args.debug ? "&debug=1" : ""}`;
 const procs = [];
 const t0 = Date.now();
 for (let j = 0; j < JOBS; j++) {

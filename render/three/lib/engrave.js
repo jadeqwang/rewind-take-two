@@ -17,7 +17,7 @@ export const MAT = {
   bg: 0, stone: 1, brick: 2, steel: 3, ties: 4, rail: 5, roof: 6, ground: 7, glass: 8,
   suit: 9, skin: 10, shades: 11, shirt: 12,
   jJacket: 13, jBand: 14, jHair: 15, jPants: 16, jShoe: 17, jTop: 18, jPencil: 19,
-  brass: 20, tower: 21, door: 22, darkStone: 23, phones: 24,
+  brass: 20, tower: 21, door: 22, darkStone: 23, phones: 24, sprite: 25, car: 26, road: 27, water: 28,
 };
 export const N_MAT = 32;
 
@@ -29,6 +29,7 @@ export const PALETTE = {
   [MAT.jJacket]: '#F6F3EC', [MAT.jBand]: '#FF7A1A', [MAT.jHair]: '#17151A', [MAT.jPants]: '#1C2A4A',
   [MAT.jShoe]: '#F8F6F0', [MAT.jTop]: '#121216', [MAT.jPencil]: '#F2C230', [MAT.brass]: '#E0A526',
   [MAT.tower]: '#D9A21E', [MAT.door]: '#B23A26', [MAT.darkStone]: '#C9672F', [MAT.phones]: '#FF7A1A',
+  [MAT.car]: '#1A1B22', [MAT.road]: '#C9C2B4', [MAT.water]: '#4FA3E0',
 };
 
 export const DEFAULT_STYLE = {
@@ -46,17 +47,17 @@ export const DEFAULT_STYLE = {
 
 const GBUF_VS = /* glsl */`
 precision highp float;
-in vec3 position; in vec3 normal; in float aId;
+in vec3 position; in vec3 normal; in float aId; in vec2 uv;
 uniform mat4 modelMatrix, viewMatrix, projectionMatrix;
 // depth push: the Monument Valley occlusion fix. A piece that is really k*(1,1,1) nearer than the piece it
 // visually joins is pushed back along the view axis by k*sqrt(3), so it depth-sorts like the piece it joins.
 // Screen position is unchanged (orthographic). Scaled by uMagic (1 at the magic angle, 0 off-angle).
 uniform vec3 uPushAxis, uPushOrigin;
 uniform float uPushRate, uPushMax, uPushConst, uMagic;
-out vec3 vN; out vec3 vP; out float vId; out float vViewZ;
+out vec3 vN; out vec3 vP; out float vId; out float vViewZ; out vec2 vUv;
 void main() {
   vec4 wp = modelMatrix * vec4(position, 1.0);
-  vP = wp.xyz;
+  vP = wp.xyz; vUv = uv;
   vN = normalize(mat3(modelMatrix) * normal);
   vec4 mv = viewMatrix * wp;
   vViewZ = -mv.z;
@@ -72,12 +73,13 @@ precision highp sampler2D;
 layout(location = 0) out vec4 o0;
 layout(location = 1) out vec4 o1;
 layout(location = 2) out vec4 o2;
-in vec3 vN; in vec3 vP; in float vId; in float vViewZ;
+in vec3 vN; in vec3 vP; in float vId; in float vViewZ; in vec2 vUv;
 uniform float uMat, uAlbedo, uObjId;
+uniform sampler2D uDecal; uniform float uDecalOn; // text/lines painted on the surface (alpha = ink); uDecalOn 2 = residue orange
 uniform vec3 uSun;
 uniform sampler2D uShadowMap;
 uniform mat4 uLightVP;
-uniform float uShadowOn, uShadowTexel, uReceive;
+uniform float uShadowOn, uShadowTexel, uReceive, uFlatLight;
 uniform vec4 uWin;      // cell w, cell h, glass w frac, glass h frac  (x=0: no windows)
 uniform vec4 uWinBox;   // x0, z0, size x, size z  (facade origin for centring the window grid)
 uniform vec4 uWinY;     // y min, y max of window band, chicago-window flag, belt courses flag
@@ -133,10 +135,35 @@ void main() {
   float diff = clamp(max(dot(n, L), 0.0) / max(L.y, 0.3), 0.0, 1.15);
   float sh = diff > 0.0 ? shadowAt(vP, n) : 1.0;
   sh = mix(0.18, 1.0, sh);
+  if (uFlatLight > 0.0) { diff = mix(diff, 0.78, uFlatLight); sh = mix(sh, 1.0, uFlatLight * 0.6); }
   float pat = facade(vP, n);
+  float idPat = pat;
+  if (uDecalOn > 0.5) {
+    float m = texture(uDecal, vUv).a;
+    if (m > 0.02) { pat = (uDecalOn > 1.5 ? 4.0 : 2.0) + min(m, 0.999); idPat = 0.0; }
+  }
   o0 = vec4(n, uMat);
   o1 = vec4(vP, vViewZ);
-  o2 = vec4(diff * sh, uAlbedo, pat, uObjId + vId * 0.0137 + pat * 0.31);
+  o2 = vec4(diff * sh, uAlbedo, pat, uObjId + vId * 0.0137 + idPat * 0.31);
+}`;
+
+const SPRITE_FS = /* glsl */`
+precision highp float;
+precision highp sampler2D;
+layout(location = 0) out vec4 o0;
+layout(location = 1) out vec4 o1;
+layout(location = 2) out vec4 o2;
+in vec3 vN; in vec3 vP; in float vId; in float vViewZ; in vec2 vUv;
+uniform sampler2D uAtlas;
+uniform vec4 uCell;    // u0, v0, du, dv of the current frame in the atlas
+uniform float uFlipX, uObjId, uAlphaCut;
+void main() {
+  vec2 st = vec2(uFlipX > 0.5 ? 1.0 - vUv.x : vUv.x, vUv.y);
+  vec4 c = texture(uAtlas, uCell.xy + st * uCell.zw);
+  if (c.a < uAlphaCut) discard;
+  o0 = vec4(normalize(vN), 25.0);
+  o1 = vec4(vP, vViewZ);
+  o2 = vec4(c.rgb, uObjId);
 }`;
 
 const QUAD_VS = /* glsl */`
@@ -161,8 +188,7 @@ uniform float uHatchPx, uEdgePx, uContrast, uWobblePx, uAmbient, uSkyLines;
 uniform vec2 uFade;
 uniform vec4 uIsland;
 uniform vec3 uPal[${N_MAT}];
-uniform vec2 uBloomC;       // bloom centre, in composite pixels
-uniform float uBloomR;      // bloom radius, composite pixels (<0: none)
+uniform vec4 uBlooms[4];    // colour blooms: centre xy, radius (composite px; r <= 0: unused), softness
 uniform float uBloomAll;    // 1 = everything coloured
 uniform vec2 uSunPx;        // Kandinsky sun centre (composite px)
 uniform float uSunR;        // sun radius (composite px), 0 = none
@@ -240,7 +266,8 @@ float toneOf(G g) {
   float sky = 0.5 + 0.5 * g.n.y;
   float t = g.alb * (uAmbient * (0.75 + 0.25 * sky) + (1.0 - uAmbient) * g.light);
   // facade: glass is dark, frames light
-  if (g.pat > 0.9) t *= 0.22 + 0.25 * g.light;
+  if (g.pat > 1.5) {}
+  else if (g.pat > 0.9) t *= 0.22 + 0.25 * g.light;
   else if (g.pat > 0.4) t = max(t, 0.55);
   else if (g.pat > 0.2) t *= 0.8;
   // hand-modulated tone
@@ -348,16 +375,32 @@ void main() {
   float ink = 0.0;
   vec3 col = paper;
   float bloom = 0.0;
-  if (uBloomR > 0.0 || uBloomAll > 0.0) {
-    // colour floods out from the pivot as pencil strokes that end at staggered lengths
+  bloom = uBloomAll;
+  {
+    // colour floods out from each centre as pencil strokes that end at staggered lengths
     vec2 dd = vec2(cos(1.05), sin(1.05));
     float sIdx = floor(dot(frag, vec2(-dd.y, dd.x)) / (2.4 * uSS));
-    float dist = length(frag - uBloomC);
-    float jag = (h11(sIdx * 1.7) - 0.5) * 34.0 * uSS + (fbm(frag / (uSS * 90.0)) - 0.5) * 160.0 * uSS;
-    bloom = max(uBloomAll, 1.0 - smoothstep(uBloomR - 10.0 * uSS, uBloomR, dist + jag));
+    float jag0 = (h11(sIdx * 1.7) - 0.5) * 34.0 * uSS;
+    float wan = (fbm(frag / (uSS * 90.0)) - 0.5);
+    for (int k = 0; k < 4; k++) {
+      vec4 B = uBlooms[k];
+      if (B.z <= 0.0) continue;
+      float dist = length(frag - B.xy);
+      float jag = jag0 * min(1.0, B.z / (200.0 * uSS)) + wan * min(160.0 * uSS, B.z * 0.45);
+      bloom = max(bloom, 1.0 - smoothstep(B.z - 10.0 * uSS, B.z, dist + jag));
+    }
   }
 
-  if (g.mat < 0.5) {
+  if (g.mat > 24.5 && g.mat < 25.5) {
+    // ---------- anime sprite (Jade): her own colour, on the paper, with an ink outline from the edge pass
+    col = mix(g.light * vec3(1.0), g.light * vec3(1.0), 0.0);
+    col = vec3(g.light, g.alb, g.pat);
+    col *= mix(vec3(1.0), uPaper / max(max(uPaper.r, uPaper.g), uPaper.b), 0.35);
+    vec2 ew = vec2(vnoise(frag / (uSS * 23.0) + uSeed * 0.71), vnoise(frag / (uSS * 23.0) + 9.1 + uSeed * 0.71)) - 0.5;
+    vec2 uvE = uvW + ew * 1.0 * uSS / uRes;
+    G ge = fetchG(uvE);
+    ink = edgeAt(uvE, ge, uEdgePx * uSS * 0.8) * 0.85;
+  } else if (g.mat < 0.5) {
     // ---------- sky: fine horizontal engraved lines, swelling toward the top; clouds are reserved paper ----------
     float pitch = uHatchPx * uSS * 1.25;
     float u = frag.y / pitch + 0.12 * (vnoise(vec2(frag.x / (uSS * 300.0), frag.y / (uSS * 500.0)) + uSeed * 0.11) - 0.5);
@@ -407,7 +450,19 @@ void main() {
     float l2 = lineFamily(g.p, n, w2, c2 * hatchAmt, 2.0, pitch * 1.08, fin * 0.92);
     float l3 = lineFamily(g.p, n, w3, c3 * hatchAmt, 3.0, pitch * 1.2, fin * 0.85);
     ink = max(l1, max(l2 * 0.95, l3 * 0.9));
+    if (g.mat == 28.0) {
+      // water: horizontal engraved wave lines in screen space, sparser toward the light
+      float wp = pitch * 2.0;
+      float u = frag.y / wp + 0.35 * sin(frag.x / (uSS * 37.0) + floor(frag.y / wp) * 1.7) + 0.15 * vnoise(frag / (uSS * 60.0) + uSeed * 0.2);
+      float li = floor(u);
+      float w0 = clamp((1.0 - t) * 0.5 + 0.06, 0.0, 0.42) * (0.5 + 0.9 * vnoise(vec2(frag.x / (uSS * 25.0) + li * 5.3, li)));
+      w0 *= step(0.48, vnoise(vec2(frag.x / (uSS * 70.0) + li * 2.1, li * 0.7)));
+      ink = (1.0 - smoothstep(w0 * 0.5 - 0.5 / wp, w0 * 0.5 + 0.5 / wp, abs(fract(u) - 0.5))) * smoothstep(0.0, 0.07, w0) * fin;
+    }
     if (g.mat == 11.0 || g.mat == 15.0 || g.mat == 18.0) ink = max(ink, 0.93 * fin); // solid blacks: shades, hair, crop top
+    float decal = g.pat > 1.5 && g.pat < 3.5 ? g.pat - 2.0 : 0.0;          // painted text/lines (ink)
+    float decalO = g.pat > 3.5 ? g.pat - 4.0 : 0.0;                         // painted residue (orange pencil)
+    if (decal > 0.0) ink = max(ink * (1.0 - decal), decal);
 
     if (coloured > 0.0) {
       vec3 base = uPal[int(g.mat)];
@@ -426,14 +481,19 @@ void main() {
       if (g.mat == 13.0 || g.mat == 17.0 || g.mat == 12.0) c = mix(vec3(1.0), vec3(0.72, 0.8, 0.95), covS * coloured * (1.0 - tone) * 0.9);
       col = paper * mix(vec3(1.0), c, fin);
     }
+    if (decalO > 0.0) {
+      float cov = pencil(frag, 0.6, 1.2, 9.0);
+      col = mix(col, col * vec3(0.94, 0.47, 0.13) * 1.05, clamp(decalO * (0.55 + 0.45 * cov), 0.0, 1.0));
+      ink *= 1.0 - 0.8 * decalO;
+    }
     // engraver's halo: reserve a thin band of white paper around figures so they read against hatching
-    bool isFig = (g.mat >= 9.0 && g.mat <= 19.0) || g.mat == 24.0;
+    bool isFig = (g.mat >= 9.0 && g.mat <= 19.0) || g.mat == 24.0 || g.mat == 25.0;
     if (!isFig) {
       float halo = 0.0;
       for (int k = 0; k < 12; k++) {
         float ang = float(k) * 0.5235988;
         G f = fetchG(uvW + vec2(cos(ang), sin(ang)) * 3.2 * uSS / uRes);
-        bool fFig = (f.mat >= 9.0 && f.mat <= 19.0) || f.mat == 24.0;
+        bool fFig = (f.mat >= 9.0 && f.mat <= 19.0) || f.mat == 24.0 || f.mat == 25.0;
         if (fFig && dot(f.p - g.p, uCamV) > 0.05) halo = 1.0;
       }
       ink *= 1.0 - halo;
@@ -519,7 +579,7 @@ export class Engraver {
         uHatchPx: { value: this.style.hatchPx }, uEdgePx: { value: this.style.edgePx }, uContrast: { value: this.style.contrast },
         uWobblePx: { value: this.style.wobblePx }, uAmbient: { value: this.style.ambient }, uSkyLines: { value: this.style.skyLines },
         uFade: { value: new THREE.Vector2(...this.style.fadeY) }, uIsland: { value: new THREE.Vector4(...this.style.island) },
-        uPal: { value: this.palette }, uBloomC: { value: new THREE.Vector2() }, uBloomR: { value: -1 }, uBloomAll: { value: 0 },
+        uPal: { value: this.palette }, uBlooms: { value: [0, 1, 2, 3].map(() => new THREE.Vector4(0, 0, -1, 0)) }, uBloomAll: { value: 0 },
         uSunPx: { value: new THREE.Vector2() }, uSunR: { value: 0 }, uSkyBox: { value: new THREE.Vector4(...(this.style.skyBox || [0.58, 1.0, 0, 0])) },
         uTarget: { value: new THREE.Vector3() }, uAerial: { value: new THREE.Vector2(...(this.style.aerial || [6, 22])) },
       },
@@ -548,7 +608,7 @@ export class Engraver {
   // A G-buffer material. opts: mat (MAT id), albedo 0..1, id (object id for outlines), receive (shadows),
   // windows: { cell:[w,h], glass:[fw,fh], box:[x0,z0,sx,sz], y:[y0,y1], chicago, belts }
   // push: { origin:[x,y,z], axis:[x,y,z] (unit), max, rate } depth ramp; pushConst: shared {value} uniform (figures)
-  material({ mat = MAT.stone, albedo = 0.9, id = 0, receive = true, windows = null, side = THREE.FrontSide, push = null, pushConst = null } = {}) {
+  material({ mat = MAT.stone, albedo = 0.9, id = 0, receive = true, windows = null, side = THREE.FrontSide, push = null, pushConst = null, decal = null, decalMode = 1, flatLight = 0 } = {}) {
     const W = windows;
     const m = new THREE.RawShaderMaterial({
       glslVersion: THREE.GLSL3, vertexShader: GBUF_VS, fragmentShader: GBUF_FS, side, blending: THREE.NoBlending,
@@ -562,9 +622,35 @@ export class Engraver {
         uPushOrigin: { value: new THREE.Vector3(...(push ? push.origin : [0, 0, 0])) },
         uPushRate: { value: push ? push.rate : 0 }, uPushMax: { value: push ? push.max : 0 },
         uPushConst: pushConst || { value: 0 },
+        uDecal: { value: decal }, uDecalOn: { value: decal ? decalMode : 0 }, uFlatLight: { value: flatLight },
       },
     });
     return m;
+  }
+
+  // Alpha-tested anime sprite drawn INTO the G-buffer (depth-tested against the set, inked, haloed, never hatched).
+  // atlas: THREE.Texture holding cols x rows frames. Set frame with spriteFrame(m, index, flipX).
+  spriteMaterial({ atlas, cols = 1, rows = 1, id = 77.7, pushConst = null, alphaCut = 0.5 }) {
+    const m = new THREE.RawShaderMaterial({
+      glslVersion: THREE.GLSL3, vertexShader: GBUF_VS, fragmentShader: SPRITE_FS, side: THREE.DoubleSide, blending: THREE.NoBlending,
+      uniforms: {
+        uMagic: this.shared.uMagic,
+        uAtlas: { value: atlas }, uCell: { value: new THREE.Vector4(0, 0, 1 / cols, 1 / rows) }, uFlipX: { value: 0 },
+        uObjId: { value: id }, uAlphaCut: { value: alphaCut },
+        uPushAxis: { value: new THREE.Vector3(0, 0, 1) }, uPushOrigin: { value: new THREE.Vector3() },
+        uPushRate: { value: 0 }, uPushMax: { value: 0 }, uPushConst: pushConst || { value: 0 },
+      },
+    });
+    m.userData.grid = [cols, rows];
+    return m;
+  }
+  spriteFrame(m, index, flipX = false) {
+    const [cols, rows] = m.userData.grid;
+    const i = ((Math.floor(index) % (cols * rows)) + cols * rows) % (cols * rows);
+    const c = i % cols, r = Math.floor(i / cols);
+    // atlas row 0 is the TOP row of the image (flipY texture): v grows upward
+    m.uniforms.uCell.value.set(c / cols, 1 - (r + 1) / rows, 1 / cols, 1 / rows);
+    m.uniforms.uFlipX.value = flipX ? 1 : 0;
   }
 
   // fit the sun's orthographic shadow camera around a world-space box
@@ -577,7 +663,7 @@ export class Engraver {
     this.lightCam.updateProjectionMatrix(); this.lightCam.updateMatrixWorld();
   }
 
-  // frame: { seed, bloom: {x,y (output px), r (output px)} | null, bloomAll, sun: {x,y,r} (output px) }
+  // frame: { seed, bloom: {x,y,r} | blooms: [{x,y,r} x<=4] (output px), bloomAll, sun: {x,y,r} (output px), target }
   render(scene, camera, frame = {}) {
     const r = this.r;
     const out = r.getRenderTarget();
@@ -616,8 +702,11 @@ export class Engraver {
     u.uPPU.value = (this.h * this.ss) / viewH;
     u.uSeed.value = frame.seed ?? 0;
     const S = this.ss;
-    if (frame.bloom) { u.uBloomC.value.set(frame.bloom.x * S, (this.h - frame.bloom.y) * S); u.uBloomR.value = frame.bloom.r * S; }
-    else u.uBloomR.value = -1;
+    const blooms = frame.blooms || (frame.bloom ? [frame.bloom] : []);
+    for (let k = 0; k < 4; k++) {
+      const b = blooms[k];
+      if (b && b.r > 0) u.uBlooms.value[k].set(b.x * S, (this.h - b.y) * S, b.r * S, 0); else u.uBlooms.value[k].set(0, 0, -1, 0);
+    }
     u.uBloomAll.value = frame.bloomAll ?? 0;
     if (frame.sun) { u.uSunPx.value.set(frame.sun.x * S, (this.h - frame.sun.y) * S); u.uSunR.value = frame.sun.r * S; }
     else u.uSunR.value = 0;

@@ -13,14 +13,16 @@ import { createLoopSet, loopPath, loopPush, PIVOT } from '../lib/loopset.js';
 import { makeFigure } from '../lib/figures.js';
 import { clunk, smoother, inv } from '../lib/util.js';
 
-export const meta = { name: 'penrose_loop', duration: 10, fps: 24, loop: 10, width: 1920, height: 1080 };
+export const meta = { name: 'penrose_loop', duration: 10, fps: 24, loop: 10, width: 1920, height: 1080, output: 'srgb' };
 
 export function createScene() {
   let st, path, agents, L, v, s0, stride, params;
   const N = 6, LAP = 30;
 
   function init(renderer, p = {}) {
-    params = { orbit: true, orbitAz: 0.65, orbitEl: -0.2, ...p };
+    params = { orbit: true, orbitAz: 0.65, orbitEl: -0.2, color: 0, pull: null, pullDur: 7.28, pullFrom: [12.6, 4.6, -3.6], ...p };
+    if (typeof params.pull === 'string') params.pull = params.pull.split(',').map(Number);
+    if (params.pull) { params.orbit = false; meta.duration = params.pullDur; }
     st = new Stage(renderer, params);
     const set = createLoopSet(st.eng, { turntable: true, spur: false, exit: false });
     st.scene.add(set.root);
@@ -48,7 +50,13 @@ export function createScene() {
   }
 
   function update(t) {
-    const c = params.orbit ? camAt(t) : { az: ISO_AZ, el: ISO_EL, tgt: new THREE.Vector3(6.6, 5.0, -3.2), viewH: 25 };
+    let c = params.orbit ? camAt(t) : { az: ISO_AZ, el: ISO_EL, tgt: new THREE.Vector3(6.6, 5.0, -3.2), viewH: 25 };
+    if (params.pull) {
+      // O1: slow pull-back from the agents climbing flight B to the whole circuit (pull = [viewH start, viewH end])
+      const u = smoother(0, params.pullDur, t), e = 1 - Math.pow(1 - u, 1.6);
+      c = { az: ISO_AZ, el: ISO_EL, viewH: params.pull[0] + (params.pull[1] - params.pull[0]) * e,
+        tgt: new THREE.Vector3(...params.pullFrom).lerp(new THREE.Vector3(6.6, 5.4, -3.2), e) };
+    }
     st.setCamera(c.tgt, c.viewH, c.az, c.el);
     const phase = (v * t) / stride * Math.PI * 2;
     for (let i = 0; i < N; i++) {
@@ -64,7 +72,7 @@ export function createScene() {
 
   function draw(t) {
     update(t);
-    st.render({ seed: boilSeed(t, meta.loop), sun: { x: 250, y: 165, r: 64 }, target: st.target });
+    st.render({ seed: boilSeed(t, meta.loop), sun: { x: 250, y: 165, r: 64 }, target: st.target, bloomAll: params.color });
   }
 
   // compositing anchors: where a 2D Jade billboard could stand (the seam corner and the turntable)

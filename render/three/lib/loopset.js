@@ -88,10 +88,15 @@ export function loopPush(path, s) {
 }
 
 // ---------------------------------------------------------------- builders
-export function createLoopSet(eng, { turntable = true, spur = true, exit = true } = {}) {
+export function createLoopSet(eng, { turntable = true, spur = true, exit = true, split = false, stoopCrank = false } = {}) {
   const root = new THREE.Group();
   const mats = new Map();
   let meshId = 1;
+  // assembly bookkeeping: every top-level piece is recorded with a tag (G4 assembles the city piece by piece)
+  let TAG = 'misc', SEQ = 0;
+  const pieces = [];
+  const tagged = new Set();
+  const rec = (o) => { if (o && !tagged.has(o)) { tagged.add(o); pieces.push({ obj: o, tag: TAG, seq: SEQ }); } return o; };
   const M = (key, opts) => { if (!mats.has(key)) mats.set(key, eng.material(opts)); return mats.get(key); };
   function addMesh(b, matOpts, { parent = root, noShadow = false, key = null } = {}) {
     if (b.empty) return null;
@@ -99,11 +104,14 @@ export function createLoopSet(eng, { turntable = true, spur = true, exit = true 
     if (key) m.material.uniforms.uObjId.value = (meshId++) * 0.1;
     m.userData.noShadow = noShadow;
     parent.add(m);
+    if (parent === root) rec(m);
     return m;
   }
+  const addObj = (o) => { root.add(o); rec(o); return o; };
   const dPush = { origin: [XD, Y0 + K, D_PUSH0], axis: [0, 0, 1], max: D_END - D_PUSH0, rate: K * Math.sqrt(3) / (D_END - D_PUSH0) };
 
   // ---- ground island ----
+  TAG = 'ground';
   {
     const b = new Builder();
     b.box(-7, -3.5, -17, 21, 0, 11, { skip: 'px nx pz nz ny' }); // just the drawn ground plane; edges dissolve
@@ -167,7 +175,7 @@ export function createLoopSet(eng, { turntable = true, spur = true, exit = true 
 
   // ---- stone stair flight. start = centreline at the foot of the first riser; dir = unit plan vector ----
   function stairs({ start, dir, n = NSTEP, run = RUN, rise = RISE, hw = HW, baseY, push = null }) {
-    const b = new Builder();
+    let b = new Builder();
     const perp = V(-dir.z, 0, dir.x);
     const P = (a, y, c) => V(start.x + dir.x * a + perp.x * c, y, start.z + dir.z * a + perp.z * c);
     for (let i = 0; i < n; i++) {
@@ -179,8 +187,10 @@ export function createLoopSet(eng, { turntable = true, spur = true, exit = true 
       b.quad(P(a0, baseY, -hw), P(a1, baseY, -hw), P(a1, yt, -hw), P(a0, yt, -hw), id, perp.clone().negate());
       // nosing: thin overhang lip per tread (adds the engraved step edge)
       b.box(...[P(a0 - 0.04, yt - 0.05, -hw - 0.03), P(a0 + 0.08, yt, hw + 0.03)].flatMap((p, k) => (k === 0 ? [p.x, p.y, p.z] : [p.x, p.y, p.z])), { id });
+      if (split) { SEQ = i; addMesh(b, { mat: MAT.stone, albedo: 0.93, push }); b = new Builder(); }
     }
-    addMesh(b, { mat: MAT.stone, albedo: 0.93, push });
+    if (!split) addMesh(b, { mat: MAT.stone, albedo: 0.93, push });
+    SEQ = 0;
   }
 
   // ---- building with Chicago windows, cornice and parapet ----
@@ -204,7 +214,7 @@ export function createLoopSet(eng, { turntable = true, spur = true, exit = true 
   }
 
   function waterTower(x, y, z) {
-    const g = new THREE.Group(); g.position.set(x, y, z); root.add(g);
+    const g = new THREE.Group(); g.position.set(x, y, z); addObj(g);
     const legs = new Builder();
     for (const [a, c] of [[-0.4, -0.4], [0.4, -0.4], [0.4, 0.4], [-0.4, 0.4]]) legs.box(a - 0.05, 0, c - 0.05, a + 0.05, 1.0, c + 0.05);
     legs.beam(V(-0.4, 0.15, 0.42), V(0.4, 0.9, 0.42), 0.025); legs.beam(V(0.4, 0.15, 0.42), V(-0.4, 0.9, 0.42), 0.025);
@@ -228,15 +238,21 @@ export function createLoopSet(eng, { turntable = true, spur = true, exit = true 
   // ================================================================ the circuit
   // Leg A: L track at Y0 along +x from the seam corner S to building B (turntable gap at the pivot)
   const gap0 = PIVOT.x - BR_HALF, gap1 = PIVOT.x + BR_HALF;
+  TAG = 'trackA';
   girderTrack({ axis: 'x', from: -HW, to: gap0, at: 0, y: Y0, bents: [0, 3.2, 6.4] });
   girderTrack({ axis: 'x', from: gap1, to: AX - HW, at: 0, y: Y0, bents: [11.9] });
 
   // Building B (east): roof at Y0 carries flight B
+  TAG = 'bldB';
   building({ x0: AX - HW, z0: -6.65, x1: 16.9, z1: HW, h: Y0, parapet: 'px pz', cell: [0.85, 1.2] });
+  TAG = 'stairsB';
   stairs({ start: V(AX, Y0, -HW), dir: V(0, 0, -1), baseY: Y0 });
+  TAG = 'bldC';
   // Building C (north): roof at Y0+3 carries flight C
   building({ x0: XD - HW, z0: -11.6, x1: 16.9, z1: ZBC + HW, h: Y0 + 3, parapet: 'px nz', cell: [0.85, 1.2] });
+  TAG = 'stairsC';
   stairs({ start: V(AX - HW, Y0 + 3, ZBC), dir: V(-1, 0, 0), baseY: Y0 + 3 });
+  TAG = 'turret';
   // turret at the C/D corner: carries the top landing at Y0+K
   {
     const b = new Builder();
@@ -246,9 +262,11 @@ export function createLoopSet(eng, { turntable = true, spur = true, exit = true 
   }
   // Leg D: the impossible leg. Track at Y0+K along +z ending (open, no end faces) at E = S + K(1,1,1).
   // Stub columns stop at y = K, which at the magic angle is exactly the street under the seam corner.
+  TAG = 'trackD';
   girderTrack({ axis: 'z', from: ZBC + HW, to: D_END, at: XD, y: Y0 + K, bents: [-3.6, -0.4, 2.8], colBottom: K - 0.0, skipEnd: true, push: dPush, stubs: true });
 
   // ---- surrounding city ----
+  TAG = 'city';
   building({ x0: -6.6, z0: -16.5, x1: -2.0, z1: -10.5, h: 9.2, cell: [0.8, 1.15] });
   building({ x0: -6.6, z0: -10.0, x1: -2.0, z1: -5.0, h: 6.0, mat: MAT.stone, albedo: 0.88, cell: [0.8, 1.0], chicago: false });
   building({ x0: 2.0, z0: -16.5, x1: 4.6, z1: -7.8, h: 7.6, mat: MAT.stone, albedo: 0.86, cell: [0.75, 1.1], chicago: false });
@@ -256,6 +274,7 @@ export function createLoopSet(eng, { turntable = true, spur = true, exit = true 
   building({ x0: 17.3, z0: -12.0, x1: 20.6, z1: -4.0, h: 8.2, mat: MAT.stone, albedo: 0.88, cell: [0.8, 1.05], chicago: false });
   building({ x0: 17.3, z0: -3.6, x1: 20.6, z1: 1.0, h: 5.0, cell: [0.8, 1.15] });
   // the tower (a nod to the Board of Trade): stepped shaft and pyramid roof
+  TAG = 'tower';
   {
     const tx0 = 5.0, tx1 = 12.0, tz0 = -16.5, tz1 = -12.3;
     building({ x0: tx0, z0: tz0, x1: tx1, z1: tz1, h: 11.5, mat: MAT.tower, albedo: 0.9, cell: [0.7, 1.15], glass: [0.5, 0.66], chicago: false, parapet: '' });
@@ -263,23 +282,25 @@ export function createLoopSet(eng, { turntable = true, spur = true, exit = true 
     building({ x0: tx0 + 2.2, z0: tz0 + 1.1, x1: tx1 - 2.2, z1: tz1 - 1.1, y0: 15.5, h: 2.4, mat: MAT.tower, albedo: 0.9, cell: [0.5, 0.8], glass: [0.4, 0.7], chicago: false, parapet: '', base: false, cornice: true });
     const roof = new THREE.Mesh(new THREE.ConeGeometry(1.6, 2.2, 4, 1), eng.material({ mat: MAT.roof, albedo: 0.75, id: (meshId++) * 0.1 }));
     roof.geometry = roof.geometry.toNonIndexed(); roof.geometry.computeVertexNormals();
-    roof.rotation.y = Math.PI / 4; roof.position.set((tx0 + tx1) / 2, 17.9 + 1.1, (tz0 + tz1) / 2); root.add(roof);
+    roof.rotation.y = Math.PI / 4; roof.position.set((tx0 + tx1) / 2, 17.9 + 1.1, (tz0 + tz1) / 2); addObj(roof);
     const st = new Builder(); const cx = (tx0 + tx1) / 2, cz = (tz0 + tz1) / 2;
     st.box(cx - 0.1, 20.1, cz - 0.1, cx + 0.1, 20.8, cz + 0.1); st.box(cx - 0.2, 20.5, cz - 0.05, cx + 0.2, 20.6, cz + 0.05);
     addMesh(st, { mat: MAT.brass, albedo: 0.7 });
   }
+  TAG = 'props';
   waterTower(15.2, Y0 + 3 + 0.0, -9.6);
   waterTower(-4.0, 9.2, -13.6);
   for (const [x, z] of [[-2.8, 3.2], [2.0, 3.2], [7.6, 3.2], [12.2, 3.2], [16.0, 3.2], [-2.5, -0.2]]) lamp(x, z);
 
   // ================================================================ turntable (Monument Valley crank piece)
-  const tt = { group: null, bridge: null, crank: null };
+  const tt = { group: null, bridge: null, crank: null, stoopCrank: null };
+  TAG = 'turntable';
   if (turntable) {
     const fixed = new Builder();
     const pier = new THREE.Mesh(new THREE.CylinderGeometry(0.62, 0.75, Y0 - 1.05 + 0.0, 24, 1), eng.material({ mat: MAT.stone, albedo: 0.88, id: (meshId++) * 0.1 }));
-    pier.position.set(PIVOT.x, (Y0 - 1.05) / 2, PIVOT.z); root.add(pier);
+    pier.position.set(PIVOT.x, (Y0 - 1.05) / 2, PIVOT.z); addObj(pier);
     const drum = new THREE.Mesh(new THREE.CylinderGeometry(1.22, 1.22, 0.16, 40, 1), eng.material({ mat: MAT.brass, albedo: 0.78, id: (meshId++) * 0.1 }));
-    drum.position.set(PIVOT.x, Y0 - 1.0, PIVOT.z); root.add(drum);
+    drum.position.set(PIVOT.x, Y0 - 1.0, PIVOT.z); addObj(drum);
     // gear teeth on the drum rim
     for (let i = 0; i < 28; i++) {
       const a = (i / 28) * Math.PI * 2;
@@ -289,7 +310,7 @@ export function createLoopSet(eng, { turntable = true, spur = true, exit = true 
     // crank housing on the front of the pier
     fixed.box(PIVOT.x - 0.28, 0.9, PIVOT.z + 0.62, PIVOT.x + 0.28, 1.55, PIVOT.z + 0.9);
     addMesh(fixed, { mat: MAT.brass, albedo: 0.72 });
-    const crank = new THREE.Group(); crank.position.set(PIVOT.x, 1.22, PIVOT.z + 0.9); root.add(crank);
+    const crank = new THREE.Group(); crank.position.set(PIVOT.x, 1.22, PIVOT.z + 0.9); addObj(crank);
     const cb = new Builder();
     cb.box(-0.05, -0.05, 0, 0.05, 0.05, 0.12);              // axle
     cb.box(-0.06, -0.06, 0.12, 0.06, 0.62, 0.2);            // arm
@@ -298,7 +319,7 @@ export function createLoopSet(eng, { turntable = true, spur = true, exit = true 
     const cw = new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.2, 0.06, 18, 1), eng.material({ mat: MAT.brass, albedo: 0.8, id: (meshId++) * 0.1 }));
     cw.rotation.x = Math.PI / 2; cw.position.z = 0.1; crank.add(cw);
     // rotating bridge (local x along the bridge)
-    const g = new THREE.Group(); g.position.copy(PIVOT); g.position.y = 0; root.add(g);
+    const g = new THREE.Group(); g.position.copy(PIVOT); g.position.y = 0; addObj(g);
     const bridge = new THREE.Group(); g.add(bridge);
     girderTrackLocal(bridge);
     tt.group = g; tt.bridge = bridge; tt.crank = crank;
@@ -315,9 +336,11 @@ export function createLoopSet(eng, { turntable = true, spur = true, exit = true 
   }
 
   // ================================================================ Jade's spur and the exit
+  TAG = 'spur';
   if (spur) {
     girderTrack({ axis: 'z', from: BR_HALF + 0.05, to: 10.6, at: PIVOT.x, y: Y0, bents: [4.0, 7.2, 10.2], skipStart: false });
   }
+  TAG = 'exit';
   if (exit) {
     // P2: a stone stoop at street level + J_DROP... starting exactly J_DROP*(1,1,1) behind the bridge's far end
     const b = new Builder();
@@ -334,7 +357,21 @@ export function createLoopSet(eng, { turntable = true, spur = true, exit = true 
     addMesh(v, { mat: MAT.stone, albedo: 0.92 });
     d.quad(V(x0, y0, z0 + 0.01), V(x1, y0, z0 + 0.01), V(x1, y1, z0 + 0.01), V(x0, y1, z0 + 0.01), 1, V(0, 0, 1));
     addMesh(d, { mat: MAT.door, albedo: 0.04 });
+    if (stoopCrank) {
+      // a crank post on the stoop: Jade turns it to swing the bridge (M3)
+      const post = new Builder(), px = P2_START.x + 0.42, pz = P2_START.z - 1.15;
+      post.box(px - 0.09, P2_START.y, pz - 0.09, px + 0.09, P2_START.y + 0.62, pz + 0.09);
+      post.box(px - 0.14, P2_START.y + 0.6, pz - 0.14, px + 0.14, P2_START.y + 0.7, pz + 0.14);
+      addMesh(post, { mat: MAT.brass, albedo: 0.7 });
+      const ck = new THREE.Group(); ck.position.set(px, P2_START.y + 0.72, pz); addObj(ck);
+      const kb = new Builder();
+      kb.box(-0.03, 0, -0.03, 0.03, 0.08, 0.03); kb.box(-0.03, 0.06, -0.03, 0.32, 0.11, 0.03); kb.box(0.27, 0.06, -0.04, 0.33, 0.26, 0.04);
+      addMesh(kb, { mat: MAT.brass, albedo: 0.66 }, { parent: ck });
+      const wheel = new THREE.Mesh(new THREE.CylinderGeometry(0.16, 0.16, 0.04, 18, 1), eng.material({ mat: MAT.brass, albedo: 0.8, id: (meshId++) * 0.1 }));
+      wheel.position.y = 0.04; ck.add(wheel);
+      tt.stoopCrank = ck;
+    }
   }
 
-  return { root, tt };
+  return { root, tt, pieces };
 }

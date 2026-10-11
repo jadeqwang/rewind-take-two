@@ -41,7 +41,7 @@ renderer.setPixelRatio(1);
 renderer.setSize(W, H, false);
 const params = { width: W, height: H, ss: +(q.get('ss') || 2) };
 for (const [k, v] of q) if (k.startsWith('p.')) params[k.slice(2)] = v === 'true' ? true : v === 'false' ? false : (isNaN(+v) ? v : +v);
-const meta = mod.init(renderer, params) || mod.meta || {};
+const meta = (await mod.init(renderer, params)) || mod.meta || {};
 const gl = renderer.getContext();
 window.renderAt = (t) => { mod.draw(t); gl.finish(); };
 window.__meta = meta;

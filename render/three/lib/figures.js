@@ -16,7 +16,7 @@ function boxPart(eng, parent, mat, albedo, size, pos, pushConst, { pivot = null,
 }
 
 // kind: 'agent' | 'jade'
-export function makeFigure(eng, kind = 'agent') {
+export function makeFigure(eng, kind = 'agent', { hairDown = false } = {}) {
   const root = new THREE.Group();
   const body = new THREE.Group(); root.add(body);
   const pushConst = { value: 0 };
@@ -53,13 +53,22 @@ export function makeFigure(eng, kind = 'agent') {
     const arm = boxPart(eng, sh, J ? MAT.jJacket : MAT.suit, J ? 0.93 : 0.16, [0.09, 0.36, 0.11], [0, -0.17, 0], pushConst);
     if (J) boxPart(eng, sh, MAT.jBand, 0.65, [0.095, 0.05, 0.115], [0, -0.09, 0], pushConst);
     boxPart(eng, sh, MAT.skin, 0.85, [0.07, 0.07, 0.08], [0, -0.38, 0], pushConst);
+    if (J && hairDown && s === 1) { const pc = boxPart(eng, sh, MAT.jPencil, 0.85, [0.025, 0.025, 0.24], [0, -0.4, 0.08], pushConst); pc.rotation.x = 0.3; }
     arms.push(sh);
   }
   // head
   const head = new THREE.Group(); head.position.set(0, 0.92, 0); body.add(head);
   boxPart(eng, head, MAT.skin, J ? 0.9 : 0.8, [0.08, 0.06, 0.08], [0, 0.03, 0], pushConst);           // neck
   boxPart(eng, head, MAT.skin, J ? 0.92 : 0.82, [0.19, 0.22, 0.2], [0, 0.17, 0], pushConst);           // face
-  if (J) {
+  if (J && hairDown) {
+    boxPart(eng, head, MAT.jHair, 0.08, [0.21, 0.1, 0.22], [0, 0.27, -0.01], pushConst);              // hair cap
+    boxPart(eng, head, MAT.jHair, 0.08, [0.23, 0.62, 0.07], [0, 0.0, -0.1], pushConst);               // long hair down the back
+    boxPart(eng, head, MAT.jHair, 0.08, [0.04, 0.34, 0.12], [0.1, 0.1, 0.02], pushConst);             // side strands
+    boxPart(eng, head, MAT.jHair, 0.08, [0.04, 0.34, 0.12], [-0.1, 0.1, 0.02], pushConst);
+    boxPart(eng, head, MAT.phones, 0.7, [0.27, 0.06, 0.06], [0, -0.01, 0.06], pushConst);
+    boxPart(eng, head, MAT.phones, 0.7, [0.05, 0.1, 0.1], [0.13, 0.0, 0.03], pushConst);
+    boxPart(eng, head, MAT.phones, 0.7, [0.05, 0.1, 0.1], [-0.13, 0.0, 0.03], pushConst);
+  } else if (J) {
     boxPart(eng, head, MAT.jHair, 0.08, [0.21, 0.1, 0.22], [0, 0.27, -0.01], pushConst);              // hair cap
     boxPart(eng, head, MAT.jHair, 0.08, [0.21, 0.2, 0.06], [0, 0.18, -0.09], pushConst);              // back hair
     boxPart(eng, head, MAT.jHair, 0.08, [0.12, 0.11, 0.11], [0, 0.34, -0.06], pushConst);             // bun
