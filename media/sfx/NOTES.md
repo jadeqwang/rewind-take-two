@@ -159,3 +159,5 @@ are kept as `Rewind_cinematic_sfx_mix_v2.mp3`, `cues_v2.json`, `sfx_only_v2.wav`
   `scuff()` helper, −32) and `b_wallslap` 109.85 (palm on stone, −32), both optional. At B's levels `b_bump` and
   `b_wallslap` measure fully masked and `b_stagger` 42 %. 46 cues. Verify: bit-exact outside the cues, loudness delta
   0.001, lyrics transcribe as before. The previous mix is kept as `*_v3c.*`.
+- Fifth rebuild: `b_bump` moved from 108.16 to 108.31, where her shoulder meets his chest (108.29–108.33, checked
+  frame by frame by A and B); same gain, now 4 % masked. Verify unchanged. The previous mix is kept as `*_v3d.*`.

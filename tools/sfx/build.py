@@ -676,7 +676,7 @@ def scuff(d, seed):
     return fade(y * np.interp(t, [0, 0.02, 0.6 * d, d], [0, 1, 0.6, 0]), 0.0, 0.05)
 
 
-@cue("b_bump", 108.16, "V2k she rounds the corner and runs smack into the agent's chest, on the beat: soft body-thump, "
+@cue("b_bump", 108.31, "V2k she rounds the corner and runs smack into the agent's chest (shoulder meets chest 108.29-108.33): soft body-thump, "
      "cloth, no impact sting (replaces b_skid)", "procedural", "optional", -30)
 def _():
     y = np.zeros(N(0.25))
