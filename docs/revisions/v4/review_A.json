@@ -1,0 +1,12 @@
+[
+  {
+    "note": "singing clips: (1) can we make my hair in the water color style more glossy and natural looking? Can you try a couple image models to see if that can be done? (2) reduce smiling magnitude in order to fit the mood of the song? maybe we try some still images to see if we can make that work and then try animating it?",
+    "v3_time": "0:12",
+    "shots": ["S1", "V3S"],
+    "status": "question",
+    "after": "media/reviews/v4/A/stills_contact_sheet.jpg",
+    "before_range": [12.6, 16.14],
+    "what_changed": "Stills only so far, nothing animated. Hair and expression were edited separately on the reference portrait: 8 hair candidates (H1-H8, five image models) and 10 expression candidates (F1-F10, three models, from a small closed-lip smile to none and tense). H5 (flux-kontext) repainted her face and dropped her glasses, so it is out; H4 (grok) barely changed the hair; H6-H8 turned the hair brown.",
+    "question": "Which hair (H1-H8) and which expression (F1-F10)? The two get combined into one still, then S1 and V3S are animated from it."
+  }
+]
