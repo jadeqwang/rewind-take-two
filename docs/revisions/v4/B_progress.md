@@ -140,7 +140,7 @@ How v4-B reads it (v4-B's interpretation, told to Jade at 19:22 so she can corre
 were all before 17:45 CDT). Jade's decisions above came at about 17:40.
 
 **17:44: all four sub-agents died mid-step on an API login error** ("Not logged in · Please run /login"). Jade
-resumed the session at 17:55; v4-B restarted each from its plan's "Execution" section at 17:57. Spend at the
+resumed the session at 17:55; v4-B restarted co-op at 17:55; bean, car and gunfire were hung, so v4-B stopped them and restarted all three at 17:58 (Jade: "restart the other three now, don't wait"). Spend at the
 restart: $234.68 total; B's v4 calls so far about $2.6 (bean $0.72, car $0.40, coop $0.40, gun $1.08).
 
 Four Opus sub-agents, the same ones that wrote the plans, continued with Jade's decisions. They die with this
