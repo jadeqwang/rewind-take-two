@@ -153,6 +153,19 @@ swaying and closing, light bars flashing), Seedance only if that still reads as 
 **18:49, Jade, verbatim:** "SIRENS text should feel more woodblock textured". Sent to `v4B-car`: re-letter with
 `tools/sectionA/modules/woodcut.js`.
 
+**19:10, Jade, verbatim:**
+
+> * co-op is really good! just a few fixes:
+>   * before the pencil bridge comes down, their feet are missing and part of the pencil bridge mechanism is missing
+>   * agents look frozen instead of reacting to the pencil bridge
+>   * maybe the pencil bridge can lift the other way up and when they let go of the second button and the agents then get thrown back
+>   * is this a job for threejs or a video model to help with?
+
+Sent to `v4B-coop`: fix feet and layer order; pencil + visible hinge as rigid engine sprites; agents run onto the
+bridge, and on BLUE's release (134.00) the bridge lifts the other way and flings them back onto the near desk
+(slapstick, nobody falls). Agents' motion from one Seedance take (matted), bridge in the engine. v4-B's answer to
+her question: engine for the bridge, video model for the agents, three.js not needed.
+
 ## Execution round
 
 **Correction:** clock times written in this file before 17:55 ran ahead of the real clock (the "19:xx" entries
