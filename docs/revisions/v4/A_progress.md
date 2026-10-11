@@ -138,6 +138,10 @@ B will re-render its 0:13 clip from the committed swap.
 - After watching `0012_singing_S1.mp4` and `0233_singing_V3S.mp4`, Jade: "both of those look good, i didn't even notice
   blinking". Both takes approved; no blink-free V3S take needed (step 7 is off).
 
+- ~18:20, Jade: "leave the pose as is, can you remove the comma after \"my dissertation defense\"". Done: `A.js`
+  `A_S1_lyric` text and `E.js` `V3S_lyric` arc now read `DEFENSE` (commit 9e4dd70, B agreed); both review clips
+  re-rendered. The "Dissertation defense, 9:00 AM" card in `media/shots/F_edl.json` is a different text, left as is.
+
 ## What B needs (v4-B, 2026-10-11 ~17:25)
 
 - S1: her on the plate as `media/sing/S1/v4_sync_1080.mp4` **and** a per-frame matte dir
