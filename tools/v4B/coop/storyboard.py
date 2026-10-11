@@ -418,6 +418,7 @@ def animatic():
         img = Image.new("RGB", (1920, 1080), PAPER)
         d = ImageDraw.Draw(img)
         fn(0, 0)
+        rect(0, 37, PW * 0.45, 48, fill=PAPER, outline=None)   # the panel's own top-left note is said by the caption
         rect(0, 0, PW + 2, 37, fill="#22201d", outline=None)
         text(8, 4, head.split("  (")[0], f_t, "#ffd978")
         text(8, 21, " ".join(cap), f_c, "#eee9dc")

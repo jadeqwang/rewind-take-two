@@ -31,6 +31,30 @@
   "question": "Big enough? An alternative with a slow push onto the mirror is in media/reviews/v4/B/0026_plate_alt_push.mp4: the plate is larger, but the push crops her bun and both pencils."
  },
  {
+  "note": "2:00 this REWIND singing seems unnecessary and we could have more exciting video game shots here. like, the whole banach tarski plot can happen a smidge earlier, and we can put it to good use because we can have a two-player co-op level (think of something from Portal 2, where one player has to move something for the other one to cross), either before or after the super meat boy style multiverse traces, possibly before",
+  "v3_time": "2:00",
+  "shots": [
+   "R1_unclimb",
+   "E4a",
+   "E4b",
+   "E5",
+   "E6a",
+   "E6b",
+   "E6c",
+   "C1_hold",
+   "C2_swap"
+  ],
+  "status": "partial",
+  "after": "media/reviews/v4/B/0200_coop_retime_animatic.mp4",
+  "still": "media/reviews/v4/B/plans/coop/storyboard.jpg",
+  "before_range": [
+   116.5,
+   135.3
+  ],
+  "what_changed": "The singing shot is out. On the held \"Rewind.\" the failed climb runs backwards for half a second, then the ladder, haul, book slide with the BANACH–TARSKI hint, swarm boost and the split all play two bars (3.5 s) earlier, so there are two Jades at 128.32 instead of 131.82. The freed 4.4 s before the replay (129.62–134.00) is the co-op level, shown here as a storyboard animatic cut on its beats: the two real shots are not generated yet. Four sound cues moved with the picture. Known rough spots: the reversed climb reads as a rewind but her pose jumps between frames, and the last 0.3 s before the level is the agent heap alone.",
+  "question": "Go for the two generated shots (about $4)? And four choices in docs/revisions/v4/plans/coop.md: bridge as a giant pencil prop or drawn by the two Jades; show the second \"Rewind.\" at 2:03 or not; tags 1P/1P, 1P/2P or none; keep the level at 4.4 s or take two more beats from the replay's stopwatch insert."
+ },
+ {
   "note": "3:33 - let’s go with “anomaly report”",
   "v3_time": "3:33",
   "shots": [

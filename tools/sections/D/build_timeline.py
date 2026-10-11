@@ -6,7 +6,9 @@ from the rev-B level clips (media/shots/B_<take>/take_1*, tools/sections/B/). Re
 opening (E1 + E2a, ghosts 1-3) is restored, then chops 4-8 replay the v3 level as retries and 9-13 build the wall
 ladder; "Rewind." #2 climbs that ghost ladder and is hauled onto the roof; the hint is compressed into the slide (the
 gold ghost points at the BANACH-TARSKI spine while they slide); the blue ghost boosts her over the swarm, the agents
-collide beneath her, she atomizes and splits; the rainbow Jades follow. E3 is rev-A's watercolor singing take (lip sync baked in). E7's meter insert and E8 still
+collide beneath her, she atomizes and splits; the rainbow Jades follow. v4 (docs/revisions/v4/plans/coop.md): E3, the
+sung "Rewind.", is out; R1 (the failed climb run backwards) takes the word at 119.44; E4a-E6c sit two bars earlier; the
+co-op level C1/C2 (an animatic for now) fills 129.62-134.00. E7's meter insert and E8 still
 use v2 takes from media/shots/_D/takes.json. Ghost twins: tools/sections/D/split2.py (split the shared matte),
 patch.py (clean-plate patch), ghostseq.py (moving line-art ghost), ghostfill.py (opaque ghost, no plate); assets in
 media/shots/_D/v3/.
@@ -22,7 +24,7 @@ import sys
 import cv2
 import numpy as np
 
-# E3 singing take (rev 5): rev-A's watercolor singer, lip sync baked in: file time 0 = song 119.44, rate 1, no lag
+# (not used since v4: E3 was removed; kept for reference)  E3 singing take (rev 5): rev-A's watercolor singer, lip sync baked in: file time 0 = song 119.44, rate 1, no lag
 E3_TAKE = "media/sing/E3/v3_sync_1080.mp4"
 E3_MATTE = "media/sing/E3/v3_sync_1080_matte/"             # her per-frame matte (24 fps PNGs): the ribbon occluder
 
@@ -370,39 +372,11 @@ def build():
             type="canvas", module="hud", stage="post", params=dict(mode="iteration", label="GHOSTS", value=keys[1:] if keys[1][0] <= 0 else keys,
                                                                    snap=True, side="right", color=INK, size=26))]))
 
-    # ---------------- E3: SINGING #2 "Rewind." (rev-A's watercolor take; lip sync baked in) ----------------
-    t0, t1 = 119.44, 122.95
-    HEAD = (960, 380)
-    KB = {"kenBurns": {"from": {"scale": 1.0, "x": 0, "y": 0},
-                       "to": {"scale": 1.08, "x": r4(-(HEAD[0] - 960) * 0.08), "y": r4(-(HEAD[1] - 540) * 0.08)}, "ease": "linear"}}
-    # ribbons spiral in from beyond the frame edges and settle on an orbit round her head and shoulders; the occluder
-    # (the same take matted by her own per-frame matte) is drawn over them, so they always pass BEHIND her.
-    CX, CY, RX, RY, TILT = 960, 600, 780, 400, math.radians(-8)
-    e3_ribs = []
-    for k in range(7):
-        st = 0.18 * k
-        a0 = math.radians(25 + 52 * k)
-        sc = 0.92 + 0.07 * (k % 3)
-        w = 2 * math.pi / (2.6 + 0.25 * (k % 3))
-        pts = []
-        for j in range(int((t1 - t0 - st) * 12) + 1):
-            tt = j / 12
-            r = sc * (1 + 1.25 * math.exp(-tt / 0.45))
-            a = a0 + w * tt
-            x, y = RX * r * math.cos(a), RY * r * math.sin(a)
-            xr, yr = x * math.cos(TILT) - y * math.sin(TILT), x * math.sin(TILT) + y * math.cos(TILT)
-            pts.append([r4(st + tt), r4(CX + xr), r4(CY + yr)])
-        e3_ribs.append(dict(type="canvas", module="ribbon", keepColor=True, params=dict(
-            path=pts, colors=[RES[k % 2], RES[(k + 1) % 2]], width=40 + 10 * (k % 3), trail=1.5, twist=0.7, bloom=0.9,
-            grain=0.75, pencil=False, motes=0.3, seed=120 + k)))
-    shots.append(dict(id="E3_sing", start=t0, end=t1, background=INK, layers=[
-        dict(id="jade", type="video", src=E3_TAKE, fit="cover", **{"in": 0.0, "rate": 1.0}, **KB),
-        *e3_ribs,
-        dict(id="occluder", type="video", src=E3_TAKE, fit="cover", **{"in": 0.0, "rate": 1.0}, **KB,
-             matte=dict(src=E3_MATTE, mode="luma")),
-        dict(type="canvas", module="lowerthird", stage="post", params=dict(color=INK, size=112, y=1000, halo=1.0))],
-        fx=[dict(type="flash", at=[0], dur=0.06, amount=0.35, color="#ffffff")]))
-    notes["E3"] = dict(take=E3_TAKE, clip_in=0.0, push="1.0 -> 1.08 on her head", orbit=[CX, CY, RX, RY, -8])
+    # ---------------- E3: removed in v4 (Jade, v3 review at 2:00: "this REWIND singing seems unnecessary") ----------------
+    # v3: shot E3_sing 119.44-122.95 = E3_TAKE (in 0, rate 1) under a 1.0 -> 1.08 push on her head (960, 380), seven
+    # residue ribbons on an orbit (centre 960,600, radii 780x400, -8 deg) behind an occluder matted by E3_MATTE, and a
+    # "Rewind." lower third (ink, size 112, y 1000). The code is in git (commit 2fb9b82). media/sing/E3/ is untouched.
+    # v4 plan: docs/revisions/v4/plans/coop.md. Everything from the ghost ladder to the split moves two bars earlier.
 
     def twin_shot(id_, tk, gname, t0, t1, src_in, rate, g_t0, extra=(), under=(), fx=(), patch=True, g_op=0.9):
         """a two-Jade take: the plate, a clean-plate patch where the ghost girl ever is, the ghost girl redrawn as a
@@ -423,10 +397,41 @@ def build():
     # so they are the rungs of a ladder of herself; each brightens as she passes through it) and arrives in ghost 13's
     # pose at the cornice on the cut. climb 3.45 -> 5.95 at x1.75 over 122.95-124.38, same x1.4 framing as E2.
     c = bclip("climb")
-    E4_IN, E4_RATE, E4_T0, E4_T1 = 3.45, 1.75, 122.95, 124.38
+    # v4: R1 119.44-119.98 then E4a 119.98-121.30, same 3.45 -> 5.95 of the take (x1.894).  v3: 122.95-124.38 at x1.75
+    E4_IN, E4_T0, E4_T1 = 3.45, 119.98, 121.30
+    E4_RATE = r4((5.95 - E4_IN) / (E4_T1 - E4_T0))
+    # v4: the word is sung at 119.44 (word:rewind#3) and painted from R1 on.  v3: times=["word:rewind#4"] (123.00)
     word = dict(type="canvas", module="pin", keepColor=True, blend="multiply", params=dict(
-        style="ground", font="fell", text="Rewind.", times=["word:rewind#4"], size=170, color="#E07A14", grain=0.25,
+        style="ground", font="fell", text="Rewind.", times=["word:rewind#3"], size=170, color="#E07A14", grain=0.25,
         corners=E4_WORD))
+    # ---- R1 (v4, new): on the held "Rewind." #1 the climb that just failed un-happens. Same wall framing; she runs
+    # backwards from ghost 13's pose (5.85, where E2 9-13 froze her) down to 3.45 in 0.54 s (about x4.4 in reverse)
+    # under the VHS search look and the Drop 1 rewind HUD. The five ghosts stay (a rewind leaves its ghosts); 11 and
+    # 12, which stepped aside in E2, slide back to their frozen poses, so the ladder is whole when she turns round.
+    R1_T0, R1_T1, R1_FROM = 119.44, 119.98, 5.85
+    r1d = r4(R1_T1 - R1_T0)
+    r1T = [[0, R1_FROM], [r1d, E4_IN]]
+    r1_rungs = []
+    for j, (k, path, frz) in enumerate(ladder):
+        dx, dy = CL[j][2]
+        tp = (R1_FROM - frz) / (R1_FROM - E4_IN) * r1d      # shot time she passes back through this pose
+        op = [[0, 0.85]] + ([[r4(max(0.0, tp - 0.06)), 0.85], [r4(tp), 1.0], [r4(tp + 0.2), 0.75]] if 0.06 < tp < r1d else [[r1d, 0.75]])
+        g = dict(id=f"rung{k + 1}", type="image", src=path, keepColor=True, fit="cover", scale=SC, x=PL["x"], y=PL["y"], opacity=op)
+        if dx or dy:
+            g["x"] = [[0, PL["x"] + dx, "inOutCubic"], [r4(r1d - 0.08), PL["x"]]]
+            g["y"] = [[0, PL["y"] + dy, "inOutCubic"], [r4(r1d - 0.08), PL["y"]]]
+        r1_rungs.append(g)
+    shots.append(dict(id="R1_unclimb", start=R1_T0, end=R1_T1, layers=[
+        dict(id="bg", type="video", src=c["eng"], srcTime=r1T, **PL),
+        word, *r1_rungs,
+        dict(id="jade", type="video", src=c["eng"], matte=dict(src=c["matte"], mode="luma"), keepColor=True, srcTime=r1T, **PL),
+        # the Drop 1 rewind HUD on a paper chip (as the GHOSTS counter's chip), so it reads over the dark cornice
+        dict(type="solid", stage="post", color=PAPER, opacity=0.88, rect=[40, 56, 236, 84]),
+        dict(type="canvas", module="hud", stage="post", params=dict(mode="rewind", x=40, y=120, color=INK, accent="#F08A24",
+                                                                   multiplier=4, steady=True))],
+        fx=[dict(type="flash", at=[0], dur=0.12, amount=0.5, color="#ffffff"),
+            dict(type="rewind", amount=[[0, 0.85], [r4(r1d - 0.1), 0.85], [r1d, 0]])]))
+    notes["R1"] = dict(clip=c["eng"], srcTime=r1T, what="the failed climb runs backwards on 'Rewind.' #1; ghosts 11/12 slide home")
     rungs = []
     for (k, path, frz) in ladder:
         tp = (frz - E4_IN) / E4_RATE                    # shot time she passes through this pose
@@ -439,14 +444,18 @@ def build():
         dict(id="jade", type="video", src=c["eng"], matte=dict(src=c["matte"], mode="luma"), keepColor=True,
              **{"in": E4_IN, "rate": E4_RATE}, **PL),
         ribbon("res_ladder", None, follow=dict(layer="jade", point="centroid", smooth=3), colors=[HUE[8], HUE[12]], width=18)],
-        fx=[dict(type="flash", at=["word:rewind#4"], dur=0.12, amount=0.5, color="#ffffff"),
+        # v4: the word's flash moved to R1; here a small flash on the bar line where she turns forwards again.
+        # v3: dict(type="flash", at=["word:rewind#4"], dur=0.12, amount=0.5, color="#ffffff")
+        fx=[dict(type="flash", at=[0], dur=0.06, amount=0.35, color="#8DB8E8"),
             dict(type="punch", on="beat", amount=0.02)]))
     shots[-1]["layers"][-1]["params"].pop("path")
     notes["E4a"] = dict(clip=c["eng"], in_=E4_IN, rate=E4_RATE, rungs="ghosts 9-13 at their frozen poses")
-    shots.append(twin_shot("E4b_haul", "haul_b", "haul", 124.38, 126.25, 0.05, 1.3, 0.0,
+    # v4: 121.30-123.00 at x1.43 (the same 0.05 -> 2.48 of the take).  v3: 124.38, 126.25, 0.05, 1.3
+    E4B_T0, E4B_T1, E4B_RATE = 121.30, 123.00, 1.43
+    shots.append(twin_shot("E4b_haul", "haul_b", "haul", E4B_T0, E4B_T1, 0.05, E4B_RATE, 0.0,
                            fx=[dict(type="flash", at=[0], dur=0.06, amount=0.35, color="#ffffff"),
                                dict(type="punch", on="beat", amount=0.02)]))
-    notes["E4b"] = dict(clip=bclip("haul_b")["eng"], ghost="girl lying on the roof, gold #C9A227", in_=0.05, rate=1.3)
+    notes["E4b"] = dict(clip=bclip("haul_b")["eng"], ghost="girl lying on the roof, gold #C9A227", in_=0.05, rate=E4B_RATE)
 
     # ---------------- E5 (rev 5b): the hint while sliding. slide_point: hand in hand down the giant book (Escher, Still
     # Life and Street); the leading girl (gold ghost) points at the blank label on the spine of the upright book at
@@ -460,9 +469,12 @@ def build():
         style="plain", font="fell", text="BANACH–\nTARSKI", size=96, color=INK, padding=4,
         corners=[1523, 222, 1687, 222, 1687, 345, 1523, 345]))
     cover = dict(id="cover", type="image", src=f"{V3}/patch_slideptb_cover.png", fit="cover")
-    shots.append(twin_shot("E5_slide_point", "slide_point_b", "slideptb", 126.25, 128.76, 0.9, 1.37, 0.85, under=[cover, lab],
+    # v4: 123.00-125.26 at x1.52 (the same 0.9 -> 4.34 of the take), under "Rewind." #2, which is not lettered here.
+    # v3: 126.25, 128.76, 0.9, 1.37
+    E5_T0, E5_T1, E5_RATE = 123.00, 125.26, 1.52
+    shots.append(twin_shot("E5_slide_point", "slide_point_b", "slideptb", E5_T0, E5_T1, 0.9, E5_RATE, 0.85, under=[cover, lab],
                            fx=[dict(type="flash", at=[0], dur=0.06, amount=0.35, color="#ffffff")]))
-    notes["E5"] = dict(clip=bclip("slide_point_b")["eng"], ghost="leading (pointing) girl, gold", in_=0.9, rate=1.37,
+    notes["E5"] = dict(clip=bclip("slide_point_b")["eng"], ghost="leading (pointing) girl, gold", in_=0.9, rate=E5_RATE,
                        label="BANACH–/TARSKI pinned on the upright book's spine label; both girls turn to look at it")
 
     # ---------------- E6 (rev 5b): swarm boost, atomize, two Jades ----------------
@@ -471,14 +483,20 @@ def build():
     # source 1.77 = 130.04 (beat); the agents from both sides crash into each other beneath her at source 2.80 = 130.94
     # (beat); she hangs at the peak to the freeze at source 3.30 (frame 79) = 131.38.
     E6_IN, E6_RATE = 0.315, 1.14
-    shots.append(twin_shot("E6a_swarm", "swarm_boost", "swarm", 128.76, 131.38, E6_IN, E6_RATE, 0.3, patch=False, g_op=0.95,
+    # v4: the whole E6 block two bars earlier, same in-point and rate: 125.26-127.88, launch 126.56 (beat), collision
+    # 127.44 (beat), freeze 127.88.  v3: 128.76-131.38, launch 130.04, collision 130.94, freeze 131.38
+    E6_T0, E6_T1 = 125.26, 127.88
+    E6_HIT = r4(E6_T0 + 2.18)                            # the collision, 2.18 s into the shot as in v3
+    shots.append(twin_shot("E6a_swarm", "swarm_boost", "swarm", E6_T0, E6_T1, E6_IN, E6_RATE, 0.3, patch=False, g_op=0.95,
                            fx=[dict(type="flash", at=[0], dur=0.06, amount=0.35, color="#ffffff"),
-                               dict(type="punch", at=[r4(130.94 - 128.76)], amount=0.05, decay=0.14),
-                               dict(type="shake", at=[r4(130.94 - 128.76)], amp=10, decay=0.2)]))
-    notes["E6a"] = dict(clip=bclip("swarm_boost")["eng"], ghost="kneeling girl, blue #3E6FD8 (opaque fill)", in_=E6_IN, rate=E6_RATE, launch=130.04, collision=130.94)
+                               dict(type="punch", at=[r4(E6_HIT - E6_T0)], amount=0.05, decay=0.14),
+                               dict(type="shake", at=[r4(E6_HIT - E6_T0)], amp=10, decay=0.2)]))
+    notes["E6a"] = dict(clip=bclip("swarm_boost")["eng"], ghost="kneeling girl, blue #3E6FD8 (opaque fill)", in_=E6_IN, rate=E6_RATE,
+                        launch=r4(E6_T0 + (1.77 - E6_IN) / E6_RATE), collision=E6_HIT)
     # 131.38 (source 3.30, frame 79): freeze + flash; she bursts into 150 motes in mid-air over the frozen heap
     BX, BY = -8, -272
-    shots.append(dict(id="E6b_atomize", start=131.38, end=131.82, layers=[
+    E6B_T0, E6B_T1 = 127.88, 128.32                      # v3: 131.38, 131.82
+    shots.append(dict(id="E6b_atomize", start=E6B_T0, end=E6B_T1, layers=[
         dict(id="clean", type="image", src=f"{V3}/swarm_clean_79.png", fit="cover"),
         dict(id="ghost", type="image", src=f"{V3}/ghost_swarm_00079.png", keepColor=True, fit="cover", opacity=0.95),
         dict(id="jade", type="image", src=f"{V3}/swarm_her_79.png", keepColor=True, fit="cover", opacity=[[0, 1.0], [0.1, 0.0, "inCubic"]]),
@@ -497,7 +515,10 @@ def build():
     # her own path (read off the frames): off the mark at 0.6, out of the frame edge by about 1.05
     rib_l = [[r4(run(s)), r4(LX - 1000 * max(0.0, s - 0.6) / 0.45), r4(GY + 10 + 30 * math.sin(9 * s))] for s in [0.58 + 0.04 * q for q in range(16)]]
     rib_r = [[r4(run(s)), r4(RX_ + 1000 * max(0.0, s - 0.6) / 0.45), r4(GY + 10 + 30 * math.cos(9 * s))] for s in [0.58 + 0.04 * q for q in range(16)]]
-    shots.append(dict(id="E6c_two", start=131.82, end=134.00, layers=[
+    # v4: 128.32-129.62: implode 0.44 s, the sprint on the 128.76 bar line, cut as they leave frame (the v3 tail of
+    # dazed agents is trimmed; the co-op level takes 129.62-134.00).  v3: start=131.82, end=134.00, sprint on 132.26
+    E6C_T0, E6C_T1 = 128.32, 129.62
+    shots.append(dict(id="E6c_two", start=E6C_T0, end=E6C_T1, layers=[
         dict(id="still", type="video", src=c["eng"], end=0.44, **{"in": 0.4, "rate": 1.0}, freeze=0),
         dict(id="clean", type="image", src=f"{V3}/patch_two.png", fit="cover", end=0.44, opacity=[[0, 1.0], [0.28, 1.0], [0.42, 0.0]]),
         dict(id="play", type="video", src=c["eng"], start=0.44, **{"in": 0.55, "rate": 1.0}, grade=dict(residueRim=1.0)),
@@ -509,6 +530,19 @@ def build():
         ribbon("resL", rib_l, colors=[RES[0], "#C9A227"], width=150, trail=0.9, twist=0.9) | dict(start=0.44),
         ribbon("resR", rib_r, colors=[RES[1], "#3E6FD8"], width=150, trail=0.9, twist=0.9) | dict(start=0.44)],
         fx=[dict(type="flash", at=[0.44], dur=0.08, amount=0.6, color="#ffffff"), dict(type="punch", on="beat", amount=0.025)]))
+
+    # ---------------- C1, C2 (v4): the co-op level, 129.62-134.00. ANIMATIC for now: the storyboard panels 2-9 as
+    # full-frame stills (tools/v4B/coop/storyboard.py --animatic -> media/shots/C_coop/animatic/p<n>.png), each cut in
+    # on its own beat. When the real takes exist, replace each shot's layers; ids and times stay.
+    AN = f"{SH}/C_coop/animatic"
+    for (id_, a, b, panels) in (("C1_hold", 129.62, 131.82, ((2, 129.62), (3, 130.50), (4, 130.94), (5, 131.38))),
+                                ("C2_swap", 131.82, 134.00, ((6, 131.82), (7, 132.26), (8, 133.12), (9, 133.56)))):
+        ends = [t for _, t in panels[1:]] + [b]
+        shots.append(dict(id=id_, start=a, end=b, background=PAPER, layers=[
+            dict(id=f"p{n}", type="image", src=f"{AN}/p{n}.png", keepColor=True, fit="cover", start=r4(t - a), end=r4(e - a))
+            for (n, t), e in zip(panels, ends)],
+            fx=[dict(type="flash", at=[r4(t - a) for _, t in panels], dur=0.05, amount=0.25, color="#ffffff")]))
+        notes[id_] = dict(animatic=[[n, t] for n, t in panels], plan="docs/revisions/v4/plans/coop.md")
 
     # ---------------- E7: the rainbow Jades, after the split. Doubling on every beat 134.00-135.32 ----------------
     DB = [134.00, 134.44, 134.88, 135.32]
@@ -680,7 +714,7 @@ def to_edl(sec):
 
 if __name__ == "__main__":
     sec, notes = build()
-    js = ("// Section D: drop 2 + \"Anomaly detected\" (112.96-141.00, incl. E3 singing take). Revision 5 (v3 pass).\n"
+    js = ("// Section D: drop 2 + \"Anomaly detected\" (112.96-141.00). Revision 6 (v4 pass: E3 out, R1, co-op C1/C2).\n"
           "// GENERATED by tools/sections/D/build_timeline.py from media/shots/_D/takes.json: edit those, not this file.\n"
           "// Ghost choreography (clip, freeze/offset, hue, opacity, position) is tabulated in docs/sections/D.md.\n"
           "export default " + json.dumps(sec, indent=1, ensure_ascii=False) + ";\n")

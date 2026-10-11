@@ -687,8 +687,11 @@ def _():
     return lp(y, 1800, 2), 0.0
 
 
-@cue("b_boost", 130.04, "E5 the blue ghost launches her straight up out of the agents' swarm: short upward air-whoosh "
-     "(heave from about 129.15) with a soft palm-slap on 130.04", "procedural", "optional", -28)
+# v4 (docs/revisions/v4/plans/coop.md): E3 is out and the picture from the ghost ladder to the split sits two bars
+# earlier, so these four cues move 3.50 s earlier with it, onto the same beats of the earlier bars.
+# v3: b_boost 130.04, b_pileup 130.94, b_atomize 131.38, b_implode 131.82 (swelling into 132.26).
+@cue("b_boost", 126.56, "E6a the blue ghost launches her straight up out of the agents' swarm: short upward air-whoosh "
+     "(heave from about 125.65) with a soft palm-slap on 126.56", "procedural", "optional", -28)
 def _():
     pre = 0.25
     w = whoosh_rise(0.45, 400, 6000, 13004) * np.interp(tt(0.45), [0, 0.2, 0.3, 0.45], [0, 0.6, 1.0, 0])
@@ -696,10 +699,10 @@ def _():
     y = np.zeros((2, N(0.5)))
     add_at(y, w, 0.0)
     add_at(y, 0.6 * slap / np.max(np.abs(slap)), pre)
-    return reverb(y, room(), -16), -pre        # the whoosh leads in; the slap lands on 130.04
+    return reverb(y, room(), -16), -pre        # the whoosh leads in; the slap lands on the anchor (v3: 130.04)
 
 
-@cue("b_pileup", 130.94, "E5 the agents crash into each other beneath her: dull cloth-and-bodies thump, low-passed, "
+@cue("b_pileup", 127.44, "E6a the agents crash into each other beneath her: dull cloth-and-bodies thump, low-passed, "
      "no impact sting", "procedural", "optional", -30)
 def _():
     y = np.zeros(N(0.35))
@@ -711,14 +714,14 @@ def _():
     return lp(y, 1200, 2), 0.0
 
 
-@cue("b_atomize", 131.38, "E6 freeze, flash, burst into motes mid-air: crystalline shatter sparkle, high-passed above "
+@cue("b_atomize", 127.88, "E6b freeze, flash, burst into motes mid-air: crystalline shatter sparkle, high-passed above "
      "the supersaw", "procedural", "optional", -28)
 def _():
     y = hp(pings(0.4, 70, 3500, 9500, 13138), 3000, 2)
     return np.stack([y, np.roll(y, N(0.004))]), 0.0
 
 
-@cue("b_implode", 131.82, "E6 the motes implode into two Jades: the sparkle reversed, swelling into the 132.26 downbeat",
+@cue("b_implode", 128.32, "E6c the motes implode into two Jades: the sparkle reversed, swelling into the 128.76 downbeat",
      "procedural", "optional", -30)
 def _():
     y = hp(pings(0.4, 70, 3500, 9500, 13138), 3000, 2)[::-1][:N(0.44)]

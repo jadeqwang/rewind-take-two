@@ -2,17 +2,38 @@
 
 ## Execution (free part, ordered by v4-B at about 17:20; no paid calls, no commits)
 
-**Status: in progress.** Jade has not yet decided on C1/C2; this builds the retime and an animatic so she can see it.
+**Status: all four steps done (17:25).** Jade has not yet decided on C1/C2; the cut now holds the retime and an animatic of the level so she can see it. Nothing is committed.
 
 | Step | What | Status |
 |---|---|---|
 | 1 | `tools/sections/D/build_timeline.py`: E3 out, R1 in (119.44–119.98), E4a–E6c retimed, `D.js` regenerated | **done** (25 shots, no gap or overlap 112.96–141.00; shots before 119.44, E7, E8 and overlays identical to v3; `takes.json` untouched) |
 | 2 | Animatic stills of storyboard panels 2–9 in `media/shots/C_coop/animatic/`, shots C1 and C2 at 129.62–134.00 | **done** (`storyboard.py --animatic` writes `p2.png`–`p9.png`; shots `C1_hold`, `C2_swap`) |
-| 3 | `tools/sfx/build.py`: four cues 3.50 s earlier; v3 mix copied to `media/sfx/Rewind_cinematic_sfx_mix_v3.mp3`; rebuild only if free | not started |
-| 4 | `--list` check, preview render 116.5–135.3, `media/reviews/v4/B/0200_coop_retime_animatic.mp4`, contact sheet | not started |
+| 3 | `tools/sfx/build.py`: four cues 3.50 s earlier; v3 mix copied to `media/sfx/Rewind_cinematic_sfx_mix_v3.mp3`; rebuild only if free | **done**: `b_boost` 126.56, `b_pileup` 127.44, `b_atomize` 127.88, `b_implode` 128.32 (v3 times in a comment). No other cue sits in 119.44–134.00 (E3, the wall word, the haul and the slide never had one). The build is local DSP plus cached sources in `media/sfx/gen/`, no paid call, so the mix was rebuilt: `media/sfx/Rewind_cinematic_sfx_mix.mp3`; v3 copies: `Rewind_cinematic_sfx_mix_v3.mp3`, `cues_v3.json` |
+| 4 | `--list` check, preview render 116.5–135.3, `media/reviews/v4/B/0200_coop_retime_animatic.mp4`, contact sheet | **done**: `--list --preview` shows 25 shots back to back, 112.96–141.00. Clip: `media/reviews/v4/B/0200_coop_retime_animatic.mp4` (960×540, 18.8 s, 7.4 MB, rebuilt mix as audio). Sheet: `media/reviews/v4/B/0200_coop_retime_contact.jpg` |
 
-To resume: `git diff tools/sections/D/build_timeline.py tools/sfx/build.py` shows what is done; v3 values are kept
-in comments marked `v3:`. Rebuild with `tools/engrave/.venv/bin/python tools/sections/D/build_timeline.py`.
+Commands: `tools/engrave/.venv/bin/python tools/sections/D/build_timeline.py` (rebuilds `D.js`);
+`~/Documents/moongazing/.venv/bin/python tools/v4B/coop/storyboard.py --animatic` (the stills);
+`~/Documents/moongazing/.venv/bin/python tools/sfx/build.py` (the mix, local, free);
+`node render/engine/render.mjs --timeline render/timeline/_D_solo.js --range 116.5 135.3 --preview --encode --force --audio media/sfx/Rewind_cinematic_sfx_mix.mp3`
+(`--force` because the engine does not notice a changed still). v3 values are in comments marked `v3:`;
+`git diff tools/sections/D/build_timeline.py tools/sfx/build.py` shows every change.
+
+**Checked on the contact sheet and a frame-by-frame strip of R1:**
+
+- R1 goes the right way: from ghost 13's pose at the cornice down to the foot of the stairs in 13 frames, under the
+  VHS search look, with a `◀◀ ×4` chip and the word on the brickwork; ghosts 11 and 12 slide back into the ladder.
+  It reads as a rewind, not as smooth backwards running: at about 4.4× her pose jumps between frames, and the first
+  frame is washed out by the word's flash.
+- Launch (126.56), crash (127.44), mote burst (127.88) and the implode into two (128.32) sit on their beats, and the
+  four sounds are on them. The launch picture is 0.02 s ahead of its sound (half a frame).
+- E7 from 134.00, E8 and everything before 119.44 are identical to v3 in `D.js`.
+- Not judged from stills: whether E4a (×1.89, was ×1.75) and E5 (×1.52, was ×1.37) look hurried. Watch the clip.
+- E6c's last 0.3 s is the heap alone with the take's own white speed streaks and the two ribbons.
+- "Rewind." #2 (123.00) has no lettering, as planned (question 2).
+- No button or bridge sounds yet: 129.62–134.00 is music only.
+
+**To swap in the real takes later:** replace the `layers` of `C1_hold` and `C2_swap` in `build_timeline.py`
+(the block marked `C1, C2 (v4)`); ids and times stay.
 
 ---
 

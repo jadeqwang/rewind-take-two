@@ -1,7 +1,7 @@
 # v4-B progress (everything except the singer)
 
 Brief: `docs/revisions/v4/B.md`. Rules: `docs/revisions/README.md`, `docs/revisions/v4/README.md`.
-A fresh session can carry on from this file alone. Last updated: 2026-10-11 18:12.
+A fresh session can carry on from this file alone. Last updated: 2026-10-11 18:27.
 
 ## Setup facts (saves re-discovering them)
 
@@ -21,7 +21,7 @@ A fresh session can carry on from this file alone. Last updated: 2026-10-11 18:1
 | 4 | 1:30 | car: over-the-shoulder, real mirror, TVA plates (Three.js) | not started (plan to Jade first) | `render/timeline/C.js` V2f1/V2f2 |
 | 5 | 1:39 | gunfire: behind the agents, push in past shoulders | not started (plan to Jade first) | `render/timeline/_B_verse2.js` |
 | 6 | 1:41 | one fires, two on earpieces | not started (plan to Jade first) | same |
-| 7 | 2:00 | replace E3 with co-op level; Banach–Tarski earlier | **plan ready** 17:58 (`docs/revisions/v4/plans/coop.md`, storyboard `media/reviews/v4/B/plans/coop/storyboard.jpg`), shown to Jade 18:00, waiting for her go on the two generated shots; free retime in progress (see Running) | `tools/sections/D/build_timeline.py` |
+| 7 | 2:00 | replace E3 with co-op level; Banach–Tarski earlier | **plan ready** 17:58 (`docs/revisions/v4/plans/coop.md`, storyboard `media/reviews/v4/B/plans/coop/storyboard.jpg`), shown to Jade 18:00, waiting for her go on the two generated shots (C1, C2). **Free retime done 18:25 and in the cut**: E3 out, `R1_unclimb`, E4a-E6c 3.50 s earlier, `C1_hold`/`C2_swap` as animatic stills (`media/shots/C_coop/animatic/`), four SFX cues moved and the mix rebuilt (v3 mix kept as `media/sfx/Rewind_cinematic_sfx_mix_v3.mp3`). Check clip `media/reviews/v4/B/0200_coop_retime_animatic.mp4`. Rough: R1's pose jumps (4.4x reverse); E6c's last 0.3 s is the agent heap alone; `docs/sections/D.md` not yet updated. | `tools/sections/D/build_timeline.py` |
 | 8 | 3:33 | "ANOMALY REPORT" | **done** 17:35; after `media/reviews/v4/B/0333_report_stamp_credit.mp4` | `tools/sectionF/edl.py` |
 | 9 | 3:37 | stamp wording | **in the cut as `TIMELINE NOW CANON`**, 1.4x larger; both wordings in `media/reviews/v4/B/0337_stamp_both.jpg`; Jade to pick (`STAMP` in edl.py) | same |
 | 10 | end | title credit in HUD face beside "never stop." | **built** 17:35 (overlay `O_credit`, module `tools/sectionF/modules/end_credit.js`, wording = `CREDIT` in edl.py); Jade to confirm wording | `tools/sectionF/edl.py` O4 |
