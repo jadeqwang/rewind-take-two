@@ -4,6 +4,15 @@ Status: **built** (v4B-gun, 2026-10-11, 18:40); see Execution. Blockout: `media/
 
 ## Execution (keep current; resume from here)
 
+**State 2026-10-11 19:05: third pass (Jade: "aiming for where the torso would have been if she hadn't zagged") built.**
+Clip, stills and fragment (5 entries) re-made as below; SFX mix muxed. Spend $4.89 (one more nano edit: `B_g2noC`, C
+painted out of the G2 keyframe). Chest-high aim: `_B_glayout.js` `torsoOf`/`landOf`; G1 shots drawn by the new
+`render/timeline/_B_gunshot.js` (line muzzle -> empty chest spot -> a little past; far turf only if clear of her).
+G2: `B_g2noC/patch.png` (engraved, feathered) over the take's C, then the cut-out `B_gcut/body.png` + `arm.png`
+(arm aimed by the engine, spring tracking + kickback), each round through the chest spot into the notice board
+(`_B_hole.js`). `node tools/v4B/gunfire/geometry_check.mjs` -> `geometry.json`: all 6 chest high on the old line,
+66-103 px clear at the shot frame. Weak: faint ghost of the old C at the patch's left edge in G2.
+
 **State 2026-10-11 18:50: second pass (Jade's lead / kickback / HILBERT HOTEL notes) built and handed over.** After clip
 `media/reviews/v4/B/0139_gunfire.mp4` (96.3-105.5, 540p, SFX mix muxed in: `media/sfx/Rewind_cinematic_sfx_mix.mp3`
 from 96.29167 s), stills `media/reviews/v4/B/0139_gunfire_{99.4,101.2,103.0}.jpg`, fragment

@@ -149,6 +149,23 @@
   "question": "Where the sign has one panel, HILBERT stacked over HOTEL (as now), or keep it one word there?"
  },
  {
+  "note": "the agents should be aiming for body/torso and not for the feet. they should be aiming for where the torso would have been if she hadn't zagged.",
+  "v3_time": "1:39",
+  "shots": [
+   "B2_G1",
+   "B2_G2",
+   "B_gcut",
+   "B_g2noC"
+  ],
+  "status": "done",
+  "after": "media/reviews/v4/B/0139_gunfire.mp4",
+  "before_range": [
+   98.28,
+   102.46
+  ],
+  "what_changed": "Every shot in G1 and G2 is now aimed at chest height (1.3 m) at the spot her torso would occupy at the shot if she had not cut. The ruled line runs from the muzzle that flares, through that empty spot (marked with a small ring), and a little past it. In G1 the round goes on to land on the grass about 100 m beyond her; in G2 it goes into the notice board behind her (a hole). In G2 the take's C, whose pistol pointed at the grass, is painted out and replaced by the cut-out agent: his arm is a separate piece, aimed level, tracking her between shots, with a kickback on each. Checks are in media/reviews/v4/B/plans/gunfire/geometry.json: all six aim points are chest high on the line she left; at the shot frame each line stays 66-103 px clear of her (1080p px); the barrel is on the line. Weak: in G1 the far landing is a few px from her on screen (it is straight behind her), so no turf is drawn there; a faint ghost of the old C shows at the left edge of the G2 patch."
+ },
+ {
   "note": "2:00 this REWIND singing seems unnecessary and we could have more exciting video game shots here. like, the whole banach tarski plot can happen a smidge earlier, and we can put it to good use because we can have a two-player co-op level (think of something from Portal 2, where one player has to move something for the other one to cross), either before or after the super meat boy style multiverse traces, possibly before",
   "v3_time": "2:00",
   "shots": [

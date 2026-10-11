@@ -25,13 +25,25 @@ export function agentAt(name, t) {
 }
 export const LAG = 0.25;                                    // (traceMiss bookkeeping only: see impactOf)
 export const FIRES = [[98.94, 'B'], [99.38, 'C'], [99.82, 'B'], [100.26, 'C']];          // A only aims
-// a lead: where she would be at the shot if she had kept the line she was on before her last cut
+// a lead: where she would be at the shot if she had kept the line she was on before her last cut (on the grass)
 export function impactOf(tb) {
   const i = legOf(tb), T = TURNS[i][0], v = jadeVel(T - 1e-3), P = jadeAt(T);
   return [P[0] + v[0] * (tb - T), 0, P[2] + v[2] * (tb - T)];
 }
-const AIM_LEAD = 0.3;                                         // between shots they aim this far ahead of her, on her line
-export const aimPoint = t => { const P = jadeAt(t), v = jadeVel(t); return [P[0] + v[0] * AIM_LEAD, 0.2, P[2] + v[2] * AIM_LEAD]; };
+// v4c (Jade: "aiming for where the torso would have been if she hadn't zagged"): the aim point is that spot at chest
+// height; the round goes on through the empty air and lands on the grass far beyond her (landOf)
+export const CHEST = 1.3;
+export const torsoOf = tb => { const g = impactOf(tb); return [g[0], CHEST, g[2]]; };
+const muzzle3 = (name, T, tb) => {                     // the pistol in metres: 0.75 m from his shoulder toward the aim point
+  const a = agentAt(name, tb), S = [a[0], CUT.shoulderY, a[2]], d = [T[0] - S[0], T[1] - S[1], T[2] - S[2]], n = Math.hypot(...d);
+  return [S[0] + d[0] / n * 0.75, S[1] + d[1] / n * 0.75, S[2] + d[2] / n * 0.75];
+};
+export function landOf(name, tb) {
+  const T = torsoOf(tb), M = muzzle3(name, T, tb), s = Math.min(M[1] / (M[1] - T[1]), 6);   // capped at 6x the range
+  return [M[0] + (T[0] - M[0]) * s, Math.max(0, M[1] + (T[1] - M[1]) * s), M[2] + (T[2] - M[2]) * s];
+}
+const AIM_LEAD = 0.3;                                         // between shots they aim this far ahead of her, chest high
+export const aimPoint = t => { const P = jadeAt(t), v = jadeVel(t); return [P[0] + v[0] * AIM_LEAD, CHEST, P[2] + v[2] * AIM_LEAD]; };
 
 // G1 camera: starts behind A and B, drives between their shoulders (ease in), settles over C's; lens 47 -> 31 deg
 const G1 = { t0: 98.28, t1: 100.70, p0: [0.05, 1.78, -3.05], p1: [-0.22, 1.68, 2.85], yaw: [0, 0.6], pitch: 0.45, fov: [47, 31] };
@@ -71,7 +83,7 @@ const sub = (a, b) => [a[0] - b[0], a[1] - b[1]];
 const MIRROR = { A: 1, B: -1, C: 1 };
 const smooth = u => { u = Math.min(1, Math.max(0, u)); return u * u * (3 - 2 * u); };
 // barrel angle (rad) that puts screen point T on the barrel line (slide -> muzzle) of a cut-out pivoting at pv
-function aimAngle(T, pv, off) {
+export function aimAngle(T, pv, off) {
   let r = Math.atan2(T[1] - pv[1], T[0] - pv[0]) - Math.atan2(off(CUT.muzzle)[1], off(CUT.muzzle)[0]);
   for (let i = 0; i < 4; i++) {
     const M = rot(r, off(CUT.muzzle)), Sd = rot(r, off(CUT.slide)), D = sub(M, Sd), n = Math.hypot(D[0], D[1]);
@@ -91,7 +103,7 @@ function wantAngle(name, t) {
   let T = project(F.cam, aimPoint(t));
   for (const tb of mine) {
     const w = smooth((t - (tb - 0.30)) / 0.12) * (1 - smooth((t - (tb + 0.10)) / 0.10));
-    if (w > 0) { const I = project(F.cam, impactOf(tb)); T = [T[0] + (I[0] - T[0]) * w, T[1] + (I[1] - T[1]) * w]; }
+    if (w > 0) { const I = project(F.cam, landOf(name, tb)); T = [T[0] + (I[0] - T[0]) * w, T[1] + (I[1] - T[1]) * w]; }
   }
   return aimAngle(T, F.pv, F.off);
 }

@@ -8,7 +8,8 @@
 //   G3 102.46-104.22 earpiece close-up (one take): both callers speak; she is tiny, running to the hotel.
 // Every miss is traceMiss() from _B_fx.js, its origin the muzzle that flares, its target the spot she left.
 import { traceMiss } from './_B_fx.js';
-import { DW, DH, camAt, project, proj, jadeAt, agentAt, agentPose, plateAt, onPlate, FIRES, LAG, impactOf, CUT } from './_B_glayout.js';
+import { DW, DH, camAt, project, proj, jadeAt, agentAt, agentPose, plateAt, onPlate, FIRES, LAG, impactOf, landOf, torsoOf, CUT, aimAngle } from './_B_glayout.js';
+const sm = u => { u = Math.min(1, Math.max(0, u)); return u * u * (3 - 2 * u); };
 import { G1WORLD } from './_B_gtrack.js';
 import { G2GUN } from './_B_ggun.js';
 
@@ -55,11 +56,17 @@ function g1() {
   // "I ZIGZAG" painted on the grass between the shoulders: 'I zig' then 'zag' (the second z in the vocal, 98.78)
   const X0 = -1.15, X1 = 2.75, Z0 = 7.0, Z1 = 16.5, XS = X0 + (X1 - X0) * 0.565;
   const ground = (xa, xb) => lt => flat([[xa, 0, Z1], [xb, 0, Z1], [xb, 0, Z0], [xa, 0, Z0]].map(P => proj(T(lt), P).slice(0, 2)));
+  // v4c: every shot is aimed at the chest-high spot she left (torsoOf); the line runs through it and a little past;
+  // the round lands far beyond (landOf), shown as a kick of turf only where that spot is clear of her on screen
+  const clear = (tb, P) => { const c = camAt(tb), J = jadeAt(tb), f = project(c, J), hd = project(c, [J[0], 1.62, J[2]]), half = c.f * 0.25 / f[2];
+    let m = 1e9; for (let k = 0; k <= 10; k++) { const y = f[1] + (hd[1] - f[1]) * k / 10; m = Math.min(m, Math.hypot(P[0] - f[0], P[1] - y)); } return m - half; };
   const misses = FIRES.map(([tb, who], k) => {
-    const I = impactOf(tb);
-    return traceMiss({ id: `g1miss${k}`, origin: lt => agentPose(who, T(lt)).muzzle, times: [tb], shotStart: st, lag: LAG,
-      targets: [proj(tb - LAG, I).slice(0, 2)], scroll: lt => proj(T(lt), I).slice(0, 2),
-      size: Math.max(0.55, 1.62 * camAt(tb).f / project(camAt(tb), I)[2] / 300), width: 8 });   // marks scale with her on screen; line ~4 px
+    const A3 = torsoOf(tb), Ld = landOf(who, tb), landOK = clear(tb, project(camAt(tb), Ld)) > 80;
+    const z = Math.max(0.45, 1.62 * camAt(tb).f / project(camAt(tb), A3)[2] / 330);
+    const O0 = agentPose(who, tb).muzzle, A0s = project(camAt(tb), A3), len = Math.hypot(A0s[0] - O0[0], A0s[1] - O0[1]);
+    return { id: `g1shot${k}`, type: 'canvas', module: 'render/timeline/_B_gunshot.js', params: { at: tb - st, size: z, tail: Math.min(0.3, 40 / len),
+      origin: lt => agentPose(who, T(lt)).muzzle, aim: lt => proj(T(lt), A3).slice(0, 2),
+      land: landOK ? (lt => proj(T(lt), Ld).slice(0, 2)) : null } };
   });
   const BB = [1309, 129, 1484, 65, 1484, 136, 1309, 190];          // the plate's left billboard panel (design px at 98.28)
   const bb = lt => flat([0, 2, 4, 6].map(i => onPlate(T(lt), [BB[i], BB[i + 1]])));
@@ -72,59 +79,82 @@ function g1() {
     hilbert(hb, 'HOTEL', 'hotel', [360, 140]),
     { id: 'zig', ...pin(ground(X0, XS), 'I zig', { style: 'ground', times: ['98.28', '98.47'], padding: 0, grain: 0.2 }), blend: 'multiply' },
     { id: 'zag', ...pin(ground(XS, X1), 'zag', { style: 'ground', times: ['98.78'], padding: 0, grain: 0.2 }), blend: 'multiply' },
-    ...misses.flatMap(m => m.under),
     { id: 'ribbon', type: 'canvas', module: 'render/timeline/_B_gunribbon.js', keepColor: true, params: {} },
     { id: 'jade', ...jade },
     agent('C'), agent('A'), agent('B'),
-    ...misses.flatMap(m => m.over),
+    ...misses,
   ] };
 }
 
-// ---- G2: long lens behind A, B, C (agents-only take of B_g2clean). C alone fires; A is on his earpiece, B's hand goes
-// up to his (source 0.6-1.4 -> 100.88-101.40). The take is retimed so C's two recoils (source 0.80 / 2.15, read off
-// the pistol track) follow the shots on 101.14 and 102.00. Jade is her G1 take, placed on a screen path that is
-// on C's barrel line exactly where each miss lands: she was there a beat (101.14) / two beats (102.00) before.
+// ---- G2: long lens behind A, B, C (agents-only take of B_g2clean; A is on his earpiece, B's hand goes up to his,
+// source 0.6-1.4 -> 100.88-101.40). v4c: the take's C (pistol pointed at the grass) is painted out with the engraved
+// no-C plate (B_g2noC/patch.png) and replaced by the G1 cut-out, his arm a separate piece (B_gcut/arm.png) the engine
+// aims chest high. Jade: "aiming for where the torso would have been if she hadn't zagged": she cuts 4 frames before
+// each shot (100.97, 101.83), and each round passes through the empty chest-high spot on the line she left and goes on
+// into the notice board behind it (a hole). Between shots his arm tracks her predicted chest point on a spring.
 function g2() {
   const st = 100.70, en = 102.46;
   const SRC = [[0, 0.09], [0.44, 0.78], [1.30, 2.13], [1.76, 2.85]];
   const lin = K => lt => { for (let i = 1; i < K.length; i++) if (lt <= K[i][0] || i === K.length - 1) {
-    const [a, b] = [K[i - 1], K[i]], u = (lt - a[0]) / (b[0] - a[0]); return Array.isArray(a[1]) ? a[1].map((v, k) => v + (b[1][k] - v) * u) : a[1] + (b[1] - a[1]) * u; } };
-  const srcOf = lin(SRC);
-  const gun = lt => { const f = Math.min(G2GUN.length - 1.001, Math.max(0, srcOf(lt) * 24)), i = Math.floor(f), u = f - i;
-    return G2GUN[i].map((v, k) => v + (G2GUN[i + 1][k] - v) * u); };                  // [mx, my, dx, dy]
-  const onBarrel = (lt, x) => { const g = gun(lt); return [x, g[1] + (x - g[0]) / g[2] * g[3]]; };
-  // v4b: leads. C's barrel hardly moves in the take, so her path is laid so that each line she is on runs into his
-  // barrel line: she cuts 4 frames before the shot and the round lands where she would have been, ahead of her, on the
-  // line she left. Cuts at 100.97 and 101.83 (shots 101.14, 102.00); a third at 101.40 between them.
-  const tb = [101.14, 102.00], LD = 0.167, lag = [0.25, 0.25];      // lag: traceMiss bookkeeping only (explicit targets)
+    const [a, b] = [K[i - 1], K[i]], u = Math.min(1, Math.max(0, (lt - a[0]) / (b[0] - a[0])));
+    return Array.isArray(a[1]) ? a[1].map((v, k) => v + (b[1][k] - v) * u) : a[1] + (b[1] - a[1]) * u; } };
+  const tb = [101.14, 102.00], LD = 0.167;
   const add = (p, v, k) => [p[0] + v[0] * k, p[1] + v[1] * k];
-  const I1 = onBarrel(tb[0] - st, 1019), v1 = [-330, -41];
-  const P1 = add(I1, v1, -LD), A0 = add(P1, v1, -0.27);              // 100.70 -> 100.97: left and away, toward his line
-  const P2 = add(P1, [330, -60], 0.43);                              // 100.97 -> 101.40: right
-  const g2_ = gun(tb[1] - st), I2 = [g2_[0] + (709 - g2_[1]) / g2_[3] * g2_[2], 709];  // his barrel line at y 709
-  const v2 = [(I2[0] - P2[0]) / 0.60, (I2[1] - P2[1]) / 0.60], P3 = add(P2, v2, 0.43);   // 101.40 -> 101.83: left again
-  const P4 = add(P3, [380, -50], 0.63);                              // 101.83 -> 102.46: right, toward the hotel
-  // her feet on screen (local time); height from the plate's ground: 1.33 px per px below the horizon (y 523)
+  const hgt = y => 1.33 * (y - 523), chest = P => [P[0], P[1] - 0.8 * hgt(P[1])];       // her height: plate ground
+  // her feet path (local time): left toward her lead point, cut right; right; left toward the second; cut right
+  const v1 = [-330, -40], vN = [380, -50], I1f = [1080, 745], I2f = [1110, 700];
+  const P1 = add(I1f, v1, -LD), A0 = add(P1, v1, -0.27), P2 = add(P1, vN, 0.43);
+  const v2 = [(I2f[0] - P2[0]) / 0.60, (I2f[1] - P2[1]) / 0.60], P3 = add(P2, v2, 0.43), P4 = add(P3, vN, 0.63);
   const path = lin([[0, A0], [0.27, P1], [0.70, P2], [1.13, P3], [1.76, P4]]);
+  const velAt = lt => { const a = path(lt), b = path(lt + 0.02); return [(b[0] - a[0]) / 0.02, (b[1] - a[1]) / 0.02]; };
+  // C: the cut-out at its own spot in the keyframe it came from (B_g2/kf_v3.png, cover-fit 0.703)
+  const K = 1920 / 2731, PV = [(CUT.shoulder[0] + 780) * K, (CUT.shoulder[1] + 420) * K];
+  const off = q => [K * (q[0] - CUT.shoulder[0]), K * (q[1] - CUT.shoulder[1])];
+  const rot = (r, [x, y]) => [Math.cos(r) * x - Math.sin(r) * y, Math.sin(r) * x + Math.cos(r) * y];
+  const muzzleAt = r => { const m = rot(r, off(CUT.muzzle)); return [PV[0] + m[0], PV[1] + m[1]]; };
+  const A3 = [chest(I1f), chest(I2f)];                                   // the empty chest-high spots
+  const H = A3.map(a => { const M = muzzleAt(aimAngle(a, PV, off)); return [a[0] + (a[0] - M[0]) * 0.05, a[1] + (a[1] - M[1]) * 0.05]; });  // the board, just behind
+  const want = lt => { const P = path(lt), v = velAt(lt); let T = chest(add(P, v, 0.3));
+    for (let k = 0; k < 2; k++) { const l = tb[k] - st, w = sm((lt - (l - 0.30)) / 0.12) * (1 - sm((lt - (l + 0.10)) / 0.10));
+      if (w > 0) T = [T[0] + (H[k][0] - T[0]) * w, T[1] + (H[k][1] - T[1]) * w]; }
+    return aimAngle(T, PV, off); };
+  const memo = new Map();
+  const spring = lt => { const key = Math.round(lt * 960); if (memo.has(key)) return memo.get(key);
+    let th = want(0), om = 0; for (let tt = 0; tt < lt; tt += 1 / 240) { const h = Math.min(1 / 240, lt - tt);
+      om += (400 * (want(tt + h) - th) - 2 * 0.42 * 20 * om) * h; th += om * h; }
+    if (memo.size > 3000) memo.clear(); memo.set(key, th); return th; };
+  const armR = lt => { let r = spring(lt);
+    for (let k = 0; k < 2; k++) { const l = tb[k] - st, w = sm((lt - (l - 0.12)) / 0.08) * (1 - sm((lt - (l + 0.04)) / 0.08)); if (w > 0) r += (want(lt) - r) * w;
+      const dt = lt - l - 1 / 24; if (dt >= 0) r -= 9 * Math.exp(-dt / 0.07) * Math.PI / 180; }
+    return r; };
+  const shove = lt => { let b = 0; for (const t of tb) { const dt = lt - (t - st) - 1 / 24; if (dt >= 0) b += 14 * Math.exp(-dt / 0.07); } return b; };
+  const armPV = lt => { const r = armR(lt), d = rot(r, [1, 0]); return [PV[0] - d[0] * shove(lt), PV[1] - d[1] * shove(lt)]; };
+  const gunAt = lt => { const r = armR(lt), p = armPV(lt), m = rot(r, off(CUT.muzzle)); return [p[0] + m[0], p[1] + m[1]]; };
   const J = 1 / 96;   // her take's turns (source 2.0 / 3.5 / 4.4) on the cuts 100.97 / 101.40 / 101.83; long legs skip mid-stride
   const JSRC = [[0, 1.73], [0.27, 2.00], [0.485 - J, 2.30], [0.485, 3.20], [0.70, 3.50], [0.915 - J, 3.80], [0.915, 4.10],
     [1.13, 4.40], [1.76, 4.98]], jsrc = lin(JSRC);
-  G2GEO.tb = tb; G2GEO.impacts = [I1, I2]; G2GEO.path = path; G2GEO.gun = gun; G2GEO.st = st; G2GEO.turns = [100.97, 101.40, 101.83];
+  Object.assign(G2GEO, { tb, st, path, chest, hgt, A3, H, gun: gunAt, armR, turns: [100.97, 101.40, 101.83] });
   const trk = lt => { const f = Math.min(G1WORLD.length - 1.001, Math.max(0, jsrc(lt) * 24)), i = Math.floor(f), u = f - i;
     return G1WORLD[i].map((v, k) => v + (G1WORLD[i + 1][k] - v) * u); };
   const jade = { id: 'jade', type: 'video', src: `${S}B_g1world/take_1_engraved.mp4`, srcTime: JSRC, fit: 'cover',
     matte: { src: `${S}B_g1world/take_1_matte/matte.mp4`, mode: 'luma' }, keepColor: true,
     anchor: lt => { const r = trk(lt); return [r[3] / DW, r[1] / DH]; },
-    scale: lt => 1.33 * (path(lt)[1] - 523) / trk(lt)[2],
+    scale: lt => hgt(path(lt)[1]) / trk(lt)[2],
     x: lt => path(lt)[0] - DW / 2, y: lt => path(lt)[1] - DH / 2 };
-  const misses = [I1, I2].map((I, k) => traceMiss({ id: `g2miss${k}`, origin: lt => gun(lt).slice(0, 2), times: [tb[k]], shotStart: st,
-    lag: lag[k], targets: [I], size: 0.62, width: 8 }));
+  const cut = (id, file, x, y, rotate) => ({ id, type: 'image', src: `${S}B_gcut/${file}`, fit: 'none',
+    anchor: [CUT.shoulder[0] / CUT.w, CUT.shoulder[1] / CUT.h], scale: K, x, y, rotate });
+  const misses = H.map((P, k) => traceMiss({ id: `g2miss${k}`, origin: lt => gunAt(lt), times: [tb[k]], shotStart: st,
+    targets: [P], size: 0.6, width: 8, scar: 0, flecks: 10 }));
   return { id: 'B2_G2', start: st, end: en, background: INK, fx: [beatPunch], layers: [
     { id: 'plate', type: 'video', src: `${S}B_g2clean/take_1_engraved.mp4`, srcTime: SRC, fit: 'cover' },
+    { id: 'noC', type: 'image', src: `${S}B_g2noC/patch.png`, fit: 'cover' },
     { id: 'board', ...pin([985, 346, 1325, 346, 1325, 500, 985, 500], 'across the\nfield of',
       { times: ['100.63', '101.28', '101.42', '101.74'], padding: 6 }) },
+    ...H.map((P, k) => ({ id: `hole${k}`, type: 'canvas', module: 'render/timeline/_B_hole.js', params: { at: tb[k] - st, x: P[0], y: P[1], r: 11 } })),
     ...misses.flatMap(m => m.under),
     jade,
+    cut('C_body', 'body.png', PV[0] - DW / 2, PV[1] - DH / 2, 0),
+    cut('C_arm', 'arm.png', lt => armPV(lt)[0] - DW / 2, lt => armPV(lt)[1] - DH / 2, lt => armR(lt) * 180 / Math.PI),
     ...misses.flatMap(m => m.over),
   ] };
 }
