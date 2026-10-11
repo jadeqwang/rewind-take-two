@@ -93,7 +93,7 @@ export default ({ T }) => ({
       layers: [
         vid('C3'),
         { type: 'canvas', module: 'title', stage: 'post',
-          params: { color: PAPER, size: 210, y: 470, arrive: { at: 0, every: 0 }, flip: { at: 0.55, dur: 0.45, stagger: 0.09 }, subtitle: 'jade wang', subtitleSize: 38 } },
+          params: { color: PAPER, size: 210, y: 470, arrive: { at: 0, every: 0 }, flip: { at: 0.55, dur: 0.45, stagger: 0.09 }, subtitle: 'jade wang', subtitleSize: 92, subtitleDy: 126, subtitleTracking: 10, subtitleHalo: 0.85 } },   // v4 (Jade 0:09): the name was 38 px and lost in the shoreline lights
       ], fx: [LETTERBOX] },
     { id: 'C4', start: 10.82, end: 12.6, background: INK,
       layers: [

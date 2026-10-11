@@ -1,8 +1,8 @@
 // variance_report.js (section F, O1 overlay 211.64-218.92): the agency's variance report slides in over the 3D Penrose
 // Loop, types out, then UN-WRITES itself line by line (characters retract right to left, last line first) and a stamp
-// slams on: TIMELINE IS NOW CANON. IBM Plex Mono, ink on paper; every '█' is a solid redaction block.
+// slams on: TIMELINE NOW CANON. IBM Plex Mono, ink on paper; every '█' is a solid redaction block.
 //   params (absolute song times or local seconds): slideIn [t0, t1], lines [...], cps 30, unwrite [t0, t1],
-//   stamp {text, at}, rect [x, y, w, h] (design px), size 30, ink, paper, stampColor
+//   stamp {text, at, scale 1.25 (x size)}, rect [x, y, w, h] (design px), size 30, ink, paper, stampColor
 import { absT } from '../../../render/engine/modules/lib/text.js';
 
 const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
@@ -52,10 +52,11 @@ export function draw(lt, env) {
       const since = t - ts, s = 1 + 0.6 * Math.exp(-since / 0.05);
       const col = p.stampColor || ink;      // agency UI is black and white only (no red)
       g.save(); g.translate(rx + rw / 2, ry + rh / 2); g.rotate(-0.12); g.scale(s, s);
-      g.font = `700 ${size * 1.25}px "IBM Plex Mono"`; g.textAlign = 'center'; g.textBaseline = 'middle';
+      const ss = size * (p.stamp.scale ?? 1.25) / 1.25;      // box and stroke grow with the type
+      g.font = `700 ${ss * 1.25}px "IBM Plex Mono"`; g.textAlign = 'center'; g.textBaseline = 'middle';
       const tw = g.measureText(p.stamp.text).width;
       g.globalAlpha = clamp(since / 0.04) * 0.92;
-      g.strokeStyle = col; g.lineWidth = 6; g.strokeRect(-tw / 2 - 26, -size * 1.05, tw + 52, size * 2.1);
+      g.strokeStyle = col; g.lineWidth = 6 * ss / size; g.strokeRect(-tw / 2 - 26 * ss / size, -ss * 1.05, tw + 52 * ss / size, ss * 2.1);
       g.fillStyle = col; g.fillText(p.stamp.text, 0, 2);
       g.restore();
     }

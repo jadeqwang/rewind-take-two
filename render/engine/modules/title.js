@@ -4,7 +4,9 @@
 //     arrive: {at 0 (local s or absolute), every .1 (s between letters; 0 = the whole mirrored word ink-bleeds in at once)}
 //     flip: {at (default: after the last arrival + .25), dur .45 (per letter), stagger .08}
 //     mirrored: true (false = letters simply ink-bleed in right-reading, e.g. the smaller second REWIND)
-//     subtitle: 'jade wang' (IM Fell italic, appears after the flip), subtitleSize 40
+//     subtitle: 'jade wang' (IM Fell italic, appears after the flip), subtitleSize 40, subtitleDy (below the baseline,
+//       default .42 x size), subtitleTracking 6 (px), subtitleItalic true, subtitleFont 'fell', subtitleHalo 0..1 (soft
+//       plate behind it, colour subtitleHaloColor ink)
 import { C, bleed, inkText, absT, fontName } from './lib/text.js';
 import { clamp, EASE } from '../src/core.js';
 
@@ -36,6 +38,15 @@ export function draw(lt, env) {
   }
   if (p.subtitle) {
     const ts = mirrored ? f0 + (n - 1) * fs + fd : lastArrive + 0.2, b = bleed(t, ts);
-    if (b) { g.font = `italic ${env.val(p.subtitleSize, 40)}px ${fontName('fell')}`; g.letterSpacing = '6px'; inkText(g, p.subtitle, x, y + size * 0.42, b, color, env.S, 99); }
+    if (b) {
+      const ss = env.val(p.subtitleSize, 40), sy = y + env.val(p.subtitleDy, size * 0.42), halo = env.val(p.subtitleHalo, 0);
+      g.font = `${p.subtitleItalic === false ? '' : 'italic '}${ss}px ${fontName(p.subtitleFont || 'fell')}`; g.letterSpacing = `${env.val(p.subtitleTracking, 6)}px`;
+      if (halo > 0) {   // soft plate behind the name so it holds against a busy engraving
+        const w = g.measureText(p.subtitle).width;
+        g.save(); g.globalAlpha *= halo * b.alpha; g.filter = `blur(${(ss * 0.32 * env.S).toFixed(1)}px)`; g.fillStyle = env.val(p.subtitleHaloColor, C.ink);
+        g.fillRect(x - w / 2 - ss * 0.5, sy - ss * 0.82, w + ss, ss * 1.12); g.restore();
+      }
+      inkText(g, p.subtitle, x, sy, b, color, env.S, 99);
+    }
   }
 }
