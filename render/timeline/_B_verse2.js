@@ -6,6 +6,10 @@
 // tools/sections/B/jmatte.py where the engrave matte also caught agents or the notice board).
 // All plate coordinates below were read off the takes with a design-px grid (1920×1080).
 import { dash, traceMiss } from './_B_fx.js';
+import { gunfireShots } from './_B_gunfire.js';
+// v4 (Jade's notes 1:39 / 1:41): the lawn from behind the agents (_B_gunfire.js) replaces B2_lawn, B2_lawn2 and B2_ear.
+// Set false to get the v3 lawn back for a before/after comparison.
+const V4_GUN = true;
 
 const S = 'media/shots/';
 const PAPER = '#ece7dc', INK = '#0b0b0c', ORANGE = '#F08A24';
@@ -100,6 +104,8 @@ export default function verse2B({ T }) {
     ] });
   }
 
+  if (V4_GUN) shots.push(...gunfireShots());
+  else {   // v3 lawn (B2_lawn, B2_lawn2, B2_ear), kept for comparison
   // ---- 98.28–100.70 the lawn, wide. She cuts on every beat (source 1.8x: turns at src 0.55/1.33/2.25/3.1/3.85 land on
   // 98.42/98.85/99.36/99.84/100.25). Each beat one agent fires: trace line, starburst, turf where she was, a scar that
   // stays. Orange residue ribbon behind her. "I ZIGZAG" painted flat on the lawn ("zag" = the second z in the vocal
@@ -151,6 +157,7 @@ export default function verse2B({ T }) {
   // ("grass", sung 102.39–103.74, lands on the board two frames before the cut: it is held here as a lower third)
   shots.push({ id: 'B2_ear', start: 102.46, end: 104.22, background: INK, fx: [beatPunch], layers: [
     { id: 'plate', type: 'video', src: plate('ear'), in: 0.2, rate: 1, fit: 'cover' }, ...hilbert(BB.lawn)] });
+  }   // end of the v3 lawn
 
   // ---- 104.22–105.98 side-scroll to the hotel (take skip_b: the agents start far back and gain on her). The plate
   // (world, agents) runs on a smooth ease-in clock, src 0.6 → 4.6 (about 1x at the cut-in, 4.5x by the cut), so the

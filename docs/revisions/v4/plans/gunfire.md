@@ -1,28 +1,42 @@
 # v4 plan: the gunfire on the lawn (notes 1:39 and 1:41)
 
-Status: **approved, being built** (v4B-gun, 2026-10-11). Blockout: `media/reviews/v4/B/plans/gunfire/contact_sheet.jpg`.
+Status: **built** (v4B-gun, 2026-10-11, 18:40); see Execution. Blockout: `media/reviews/v4/B/plans/gunfire/contact_sheet.jpg`.
 
 ## Execution (keep current; resume from here)
 
-Jade's decisions, relayed by v4-B: "gunshot - go with the earpiece closeup"; "frame height seems fine, only 2 agents
-firing is fine". So: G1 98.28-100.70 as planned (B, B, C, C); G2 is **100.70-102.46** (C alone fires 101.14 board,
-102.00 turf; A's then B's hand to the earpiece); then a **close earpiece shot G3 102.46-104.22** (reuse v3 `B_ear`
-if it fits, else new). The 98.28 cut stays. "grass" (102.395) lands 2 frames before the 102.46 cut: on the board if
-readable, else lower third as v3.
-Cap $12, tag `v4B_gun_`. Spend at start of build: $232.21 total, $0 on `v4B_gun`.
-Hand-over: `media/reviews/v4/B/0139_gunfire.mp4` (96.3-105.5), stills at 99.4/101.2/103.0,
-`docs/revisions/v4/fragments/gunfire.json`. Timeline: only `B2_lawn`, `B2_lawn2`, `B2_ear` in
-`render/timeline/_B_verse2.js` (v3 kept under a flag). No commits. Do not edit `tools/sfx/build.py`.
+**State 2026-10-11 18:40: built and handed over.** After clip `media/reviews/v4/B/0139_gunfire.mp4` (96.3-105.5,
+540p, song audio only, 6 MB), stills `media/reviews/v4/B/0139_gunfire_{99.4,101.2,103.0}.jpg`, fragment
+`docs/revisions/v4/fragments/gunfire.json`. Spend on `v4B_gun`: **$4.76** of the $12 cap (13 nano calls, 5 Seedance
+takes). No commits.
 
-| Step | State | Files |
-|---|---|---|
-| 0 look at v3 `B_ear` for G3 | in progress | |
-| 1 plates (G1 wide, G2 tele + board) | not started | `media/shots/B_g1plate`, `B_g2plate` |
-| 2 keyframes: agents G1, agents G2, Jade back | not started | `media/shots/B_g1agents`, `B_g2agents`, `B_gjade` |
-| 3 takes | not started | |
-| 4 engrave + cut-outs | not started | |
-| 5 timeline | not started | `render/timeline/_B_verse2.js`, `render/timeline/_B_gunfire.js` (new) |
-| 6 after clip, stills, fragment | not started | |
+Jade's decisions (relayed by v4-B): "gunshot - go with the earpiece closeup"; "frame height seems fine, only 2 agents
+firing is fine". So: G1 98.28-100.70 (B, B, C, C); G2 100.70-102.46; earpiece close-up G3 102.46-104.22. The cut at
+98.28 is unchanged. "grass" (102.395) stays the lower third over G3 (`C_lyr_grass`, unchanged).
+
+What is in the timeline:
+- `render/timeline/_B_verse2.js`: `const V4_GUN = true` pushes `gunfireShots()` in place of `B2_lawn`, `B2_lawn2`,
+  `B2_ear`. The v3 code is kept in the `else` branch (set `false` for before/after). Nothing else in the file changed.
+- New: `_B_gunfire.js` (shots B2_G1, B2_G2, B2_G3), `_B_glayout.js` (lawn in metres, G1 camera, agent aim/recoil),
+  `_B_gunribbon.js` (her ribbon on the grass), `_B_gtrack.js` / `_B_ggun.js` (generated data: Jade's track in the G1
+  take, C's muzzle + barrel in the G2 take). `_B_fx.js` unchanged: misses use the existing `traceMiss`.
+- How each miss is made coherent: G1, muzzle = the cut-out's muzzle after the engine turns it to point at the impact
+  (impact = her layout position 0.25 s earlier, on the grass, projected each frame). G2, muzzle and barrel direction are
+  read off the take frame by frame (`tools/v4B/gunfire/gun_track.py`); both impacts lie on that barrel line, and her
+  path was laid through those points (100.70 and 100.55), so no line crosses her. Checked frame by frame at each miss.
+
+**Tell v4-B (not edited by me):** the `b_miss_board` cue at 101.14 (`tools/sfx/build.py`) is now a miss into turf, not
+the board; the time is unchanged. The other five gunshot cues are unchanged.
+
+Files: keyframes and takes in `media/shots/B_g1world`, `B_g1clean`, `B_g2`, `B_g2clean`, `B_g3ear`, `B_gagent`
+(rejected), `B_gcut` (the cut-out); each has a `NOTES.md` (prompts, models, verdicts). Tools: `tools/v4B/gunfire/`
+(`gen.py`, `cutout.py`, `track.py`, `gun_track.py`, `blockout.py`).
+
+Rejected along the way: gagent v1-v4 (head cut off), g1world v1 (Jade too big), g2 v1 (Jade side-on), g2 take_1 (she
+turns back toward the agents), g2 take_2 (she runs beside the pistol and gets an orange muzzle flash).
+
+Open: (1) G1 agents are a still cut-out (turn + recoil only). (2) G2's C aims low, so misses land a few metres behind
+her. (3) B's arm swings wide toward her as he raises it to his ear (101.0-101.3). (4) Jade is upscaled about 1.5x in
+G2. (5) No SFX in the after clip (song only).
 
 ## What changes
 

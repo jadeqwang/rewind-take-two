@@ -44,15 +44,17 @@ P.KF.update({
         "into a sharp cut to the right. ") +
         BACK + P.JADE + P.STYLE),
     "gagent": dict(refs=[P.AGENT], prompt=P.DAY + (
-        "One single agent alone on a completely blank sheet of warm off-white paper: no ground, no horizon, no shadow, "
-        "no scenery, nothing else in the picture. He is seen from BEHIND and a little from his right side, a rear "
-        "three-quarter view: we see his back, the back of his slicked head, his right ear with the coiled earpiece "
-        "wire running down into his collar; his face is not visible. He stands in the left third of the frame in a "
-        "steady firing stance, feet apart, both arms stretched straight out in front of him, away from the camera, "
-        "holding a black semi-automatic pistol in a two-handed grip. Because we look past his right shoulder, his "
-        "forearms, hands and the whole pistol are clearly visible to the right of his body, pointing away into the "
-        "picture toward the upper right; the barrel is one clear straight line. He is framed from the knees to the top "
-        "of his head and fills the full height of the frame. ") + P.AGENTS + P.STYLE_NOGIRL + " " + P.NOTEXT),
+        "A single full-length figure study, small on a large sheet: one agent alone, standing in the middle of a "
+        "completely blank sheet of warm off-white paper, with wide empty paper margins on every side of him: empty paper "
+        "above his head (at least a sixth of the frame), below his shoes, and to the left and right. No ground, no "
+        "horizon, no shadow, no scenery, nothing else in the picture. His whole body from the top of his slicked head "
+        "down to his black shoes is inside the frame and takes up about 70% of the frame height. He is seen from "
+        "BEHIND: we see his back, the back of his slicked head and his right ear with the coiled earpiece wire running "
+        "down into his collar; we do not see his face or eyes. He stands in a steady firing stance, feet apart, both "
+        "arms stretched straight out in front of him away from us and a little to the right, holding a black "
+        "semi-automatic pistol in a two-handed grip at shoulder height. Because we look past his right shoulder, his "
+        "forearms, hands and the whole pistol show to the right of his head, the barrel one clear straight line "
+        "pointing to the right and slightly into the picture. ") + P.AGENTS + P.STYLE_NOGIRL + " " + P.NOTEXT),
     "g2": dict(refs=[P.JREF, P.AGENT, G2REF], prompt=P.DAY + SKETCH + (
         "A long-lens shot from behind three agents, looking past them down a broad flat mown lawn carved as flowing "
         "engraved strokes; level horizon just above the middle of the frame. All three agents have their BACKS to the "
@@ -96,13 +98,26 @@ P.VID.update({
         "straight back down on target, and his shoulders rock. Between shots he tracks a distant moving target, his "
         "arms swinging slightly left and right. No muzzle flash, no smoke, no shell casings. The background stays "
         "blank paper.")),
+    # take_1 (prompt kept in media/gen/B_g2/take_1.json): she turned back toward the agents at 1.1 s -> take_2
     "g2": dict(kf="g2", dur=4, prompt=(
-        "The girl sprints away across the lawn in front of the notice board in a tight, sharp zigzag, cutting right "
-        "and left every half second, getting smaller. The far agent in the middle keeps aiming at her and fires twice, "
-        "his hands kicking up with each shot. The agent on the left keeps two fingers pressed to his earpiece and nods "
-        "slightly as he speaks. The agent on the right raises his left hand and presses two fingers to his left ear. "
-        "All three keep their backs to the camera. The notice board stays blank and perfectly still. No muzzle "
-        "flashes, no smoke.")),
+        "The girl runs straight AWAY from the camera the whole time, toward the notice board and past its right side, "
+        "cutting a little right and left as she goes, getting smaller and smaller; she never turns round, never looks "
+        "back and never comes back toward the agents; by the end she is far beyond the board. The agent in the middle "
+        "holds his arm out with the pistol pointed down at the lawn behind her heels, following her; it kicks twice, "
+        "once for each shot. The agent on the left keeps two fingers pressed to his earpiece and nods slightly as he "
+        "speaks. Within the first second the agent on the right raises his free hand, the one nearer the middle of the "
+        "picture, and presses two fingers to the earpiece at his ear, and keeps it there. All three keep their backs to "
+        "the camera. The notice board stays blank and perfectly still. No muzzle flashes, no smoke.")),
+    # take_2 of g2: she ran up beside the middle agent's pistol and Seedance drew an orange muzzle flash on her -> the
+    # agents are generated alone (g2clean) and Jade is composited from the G1 take, on a path through his misses
+    "g2clean": dict(kf="g2clean", dur=4, girl=False, prompt=(
+        "The middle agent holds his arm out, his pistol pointed down at the lawn near the left post of the notice board, "
+        "and fires twice, about a second apart: each time the pistol kicks up a little and comes straight back to the "
+        "same aim; between the shots his arm drifts slowly a little to the right. The agent on the left keeps two "
+        "fingers pressed to his earpiece and nods slightly as he speaks. Within the first second the agent on the "
+        "right raises his free hand, the one nearer the middle of the picture, presses two fingers to the earpiece at "
+        "his ear and keeps it there. All three keep their backs to the camera and never turn round. Nobody else "
+        "appears. The notice board stays blank and perfectly still. No muzzle flash, no smoke, no color at all.")),
     "g3ear": dict(kf="g3ear", dur=4, prompt=(
         "The nearest agent keeps two fingers pressed to his earpiece and calmly speaks a few words, then gives one "
         "small nod. The agent behind him also speaks into his earpiece. Far away the tiny girl keeps running toward "

@@ -1,0 +1,39 @@
+[
+ {
+  "note": "1:39 - I’m glad she’s zigzagging, but their positioning doesn’t seem to make sense here because they’re so close and missing her at close range and the bullets are traveling in incoherent directions. instead we should have an over the shoulder shot, where they are facing her (away from the camera), and the camera is panning in towards her (past their shoulders)",
+  "v3_time": "1:39",
+  "shots": [
+   "B2_G1",
+   "B_g1clean",
+   "B_g1world",
+   "B_gcut"
+  ],
+  "status": "done",
+  "after": "media/reviews/v4/B/0139_gunfire.mp4",
+  "before_range": [
+   98.28,
+   100.7
+  ],
+  "what_changed": "G1 (98.28-100.70) is now shot from behind the agents. It starts behind A's and B's shoulders, then the camera drives between them and settles over C's while she zigzags away toward the Hilbert, about 20 m off. It is built as layers, so the geometry is known: a still lawn plate; Jade from her own take, on the blockout path with her turns on the beats; and the agents as one engraved cut-out, each copy turned so its barrel points at its miss. There are four misses (98.94 B, 99.38 B, 99.82 C, 100.26 C). Each has a starburst on that muzzle, then a ruled line along that barrel to the spot she left a quarter second before, and turf there. 'I ZIGZAG' is painted on the grass between the shoulders. Weak spots: the agents are a still cut-out that only turns and recoils. The lawn plate is a zooming card, so the near grass slides a little slower than the lettering. The 99.38 turf burst sits right beside C's pistol on screen for two frames, and the G of ZAG reads soft at 540p.",
+  "question": "In G1 the agents are a still cut-out that turns to aim and kicks on each shot. Is that enough life, or should they be animated (one more Seedance take, about $0.75)?"
+ },
+ {
+  "note": "1:41 - same here, they’re standing still, and the bullets don’t fire in the direction of the guns, maybe one of them is firing, and another two are talking into their ear piece, calling in support",
+  "v3_time": "1:41",
+  "shots": [
+   "B2_G2",
+   "B2_G3",
+   "B_g2clean",
+   "B_g3ear",
+   "B_g1world"
+  ],
+  "status": "done",
+  "after": "media/reviews/v4/B/0139_gunfire.mp4",
+  "before_range": [
+   100.7,
+   104.22
+  ],
+  "what_changed": "G2 (100.70-102.46) is a long lens from behind three agents. Only C fires, at 101.14 and 102.00; his recoils in the take are retimed onto those beats. A has two fingers at his earpiece, and B raises his hand to his. Each tracer starts at C's tracked muzzle and runs along his barrel to turf she has already left. She runs away past the notice board, which spells 'ACROSS THE / FIELD OF' word by word. G3 (102.46-104.22) is your earpiece close-up: two agents in profile, mouths moving as they call it in, while she runs to the hotel. 'grass' starts two frames before the cut, so it stays the lower third here, as in v3. Weak spots: C's pistol points steeply down, so his misses land on the grass a beat and then about 1.5 s behind her, not far off. B's arm swings wide toward her as he raises it. She is upscaled about 1.5x in G2 and reads a little soft. The 101.14 miss now hits turf, not the board, so the board-crack sound cue at 101.14 needs a turf hit instead.",
+  "question": "G2's misses land on the grass a few metres behind her because the generated agent aims low. Is that fine, or should C get a level aim (swap in the cut-out, free) so the misses land further off?"
+ }
+]
