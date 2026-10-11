@@ -144,3 +144,7 @@ are kept as `Rewind_cinematic_sfx_mix_v2.mp3`, `cues_v2.json`, `sfx_only_v2.wav`
   transcribes as in the original. At B's levels `b_dash`, `b_miss_1` and `b_spawn` (essential) and `b_shadow_crumble`,
   `b_miss_board`, `b_implode` measure fully masked (`sfx_energy_masked` 1.0); B decides whether to raise them.
 - Previous mixes kept beside: `*_v2.*` (v2 delivery) and `*_v3a.*` (after the `continue_vo` removal, before B's cues).
+- Second rebuild (B's final 2:03–2:14 cut): `b_dash` −20, `b_miss_1` −21, `b_spawn` −24 (+6 dB each, now 25 % / 75 % /
+  11 % masked); new `b_boost` 130.04 (whoosh leads in from 129.79, palm-slap on the beat) and `b_pileup` 130.94, both
+  optional; `b_atomize` / `b_implode` unchanged. 42 cues. Verify: bit-exact outside the cues, loudness delta 0.0, lyrics
+  transcribe as before.

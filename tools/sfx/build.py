@@ -678,6 +678,30 @@ def _():
     return fade(y * np.interp(t, [0, 0.03, 0.3, d], [0, 1, 0.6, 0]), 0.0, 0.06), 0.0
 
 
+@cue("b_boost", 130.04, "E5 the blue ghost launches her straight up out of the agents' swarm: short upward air-whoosh "
+     "(heave from about 129.15) with a soft palm-slap on 130.04", "procedural", "optional", -28)
+def _():
+    pre = 0.25
+    w = whoosh_rise(0.45, 400, 6000, 13004) * np.interp(tt(0.45), [0, 0.2, 0.3, 0.45], [0, 0.6, 1.0, 0])
+    slap = bp(noise(N(0.03), 13005), 600, 4000, 2) * expdec(N(0.03), 0.006)
+    y = np.zeros((2, N(0.5)))
+    add_at(y, w, 0.0)
+    add_at(y, 0.6 * slap / np.max(np.abs(slap)), pre)
+    return reverb(y, room(), -16), -pre        # the whoosh leads in; the slap lands on 130.04
+
+
+@cue("b_pileup", 130.94, "E5 the agents crash into each other beneath her: dull cloth-and-bodies thump, low-passed, "
+     "no impact sting", "procedural", "optional", -30)
+def _():
+    y = np.zeros(N(0.35))
+    th, th2 = thump(60, 0.3, 0.07), thump(85, 0.2, 0.05)
+    y[:len(th)] += th
+    y[:len(th2)] += 0.6 * th2
+    cl = lp(noise(N(0.25), 13094), 900, 2) * expdec(N(0.25), 0.06)
+    y[:len(cl)] += 0.5 * cl / np.max(np.abs(cl))
+    return lp(y, 1200, 2), 0.0
+
+
 @cue("b_atomize", 131.38, "E6 freeze, flash, burst into motes mid-air: crystalline shatter sparkle, high-passed above "
      "the supersaw", "procedural", "optional", -28)
 def _():
