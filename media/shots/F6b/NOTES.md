@@ -32,7 +32,7 @@ Clear one-idea image.
 ```json
 {
  "take": 2,
- "file": "media/shots/F6b/take_2_engraved.mp4",
+ "file": "media/shots/F6b/take_2_engraved_dered.mp4",
  "in_sec": 0.0,
  "out_sec": null,
  "rate": 1.0,

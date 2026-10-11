@@ -36,7 +36,7 @@ Take 2 is a clean wall-run with the ghosts in step and the pencil line on the gl
 ```json
 {
  "take": 3,
- "file": "media/shots/F2/take_3_engraved.mp4",
+ "file": "media/shots/F2/take_3_engraved_dered.mp4",
  "in_sec": 0.0,
  "out_sec": null,
  "rate": 1.0,

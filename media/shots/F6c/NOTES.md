@@ -36,7 +36,7 @@ Take 2 replaces the engine-ghost version; the ghosts are drawn by nano and anima
 ```json
 {
  "take": 3,
- "file": "media/shots/F6c/take_3_engraved.mp4",
+ "file": "media/shots/F6c/take_3_engraved_dered.mp4",
  "in_sec": 0.3,
  "out_sec": null,
  "rate": 1.0,

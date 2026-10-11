@@ -33,7 +33,7 @@ Take 2 is exactly the inverse-of-S2 beat: the mirror becomes liquid and takes he
 ```json
 {
  "take": 2,
- "file": "media/shots/F4/take_2_engraved.mp4",
+ "file": "media/shots/F4/take_2_engraved_dered.mp4",
  "in_sec": 0.0,
  "out_sec": null,
  "rate": 1.3,

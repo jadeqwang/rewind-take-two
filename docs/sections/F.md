@@ -53,10 +53,11 @@ small, in a clear patch of the world (graphite on light, pale pencil on dark), a
 | F2b | 174.72–176.48 | they reach the top and launch off it (1.12× punch-in) · *never stop* | F2 take 2 (3.24) |
 | F3 | 176.48–180.02 | **Relativity flip**: engine snaps −90° → 0 on the downbeat; she runs upside down, agents fall · *never stop* | F3 take 1 |
 | F4 | 180.02–183.56 | she dives at the Bean, touches her reflection, plunges into ripples (white flash 183.46) · *never stop* | F4 take 2 (0 / 1.3) |
-| F5a | 183.56–187.08 | **swell 183.72, HERO**: airborne, giant pencil drawn back like a sword, the melting clock | F5a take 1 |
-| F5b | 187.08–190.58 | the clock drips agents onto the Loop (deliberate wide); warm flash on swell 189.54 | F5b take 1 |
+| F5a | 183.56–187.08 | **swell 183.72, HERO**: airborne, a giant (unmistakable) pencil wound back like a sword, then the strike at the clock | F5a take 4 (1.4) |
+| F5b | 187.08–188.84 | the clock over the Loop (one-bar wide) | F5b take 2 |
+| F5c | 188.84–190.58 | tight insert: agents drip off the clock's lip like ink; warm flash on swell 189.54, beat punches | F5c take 1 (0 / 0.8) |
 | F6a | 190.58–192.34 | she draws the loop round the clock in gold | F6a take 2 (de-rainbowed) |
-| F6b | 192.34–195.42 | **the payoff**: the clock's hands *are* Ascending and Descending, agents march it; slow push-in, shake on 194.10 | F6b take 2 (2D) |
+| F6b | 192.34–195.42 | **the payoff**: the clock's hands *are* Ascending and Descending. The march steps once per beat (frame-hold stutter via `srcTime`) under a slow engine push and rotate; a big jump, flash and shake **clunk on 194.10** | F6b take 2 (2D) |
 | F6c | 195.42–197.60 | **Super Meat Boy replay**: she sprints with a stream of colour ghosts in step · *never stop* | F6c take 3 (0.3), ghosts drawn into the keyframe |
 | F7_01 | 197.60–198.48 | ghost stampede on the L tracks | F7a |
 | F7_02 | 198.48–199.38 | her grin | F7b |
@@ -86,6 +87,24 @@ Shot-list deviations, and why:
 - **O2's door sign** is a paper notice under the brass plaque. The plaque is ~110 px wide in this framing, too small
   for the text to read.
 
+## Round 2 (critic review `docs/reviews/roughcut_v1.md`, items 7 and 10)
+
+- **Red audit:** `tools/sectionF/dered.py` rotates every red (hue within ~20° of 0, saturation over 0.3) on every F plate.
+  - Bricks go to a terracotta orange with saturation capped at 0.40, under the detector's 0.45. Kandinsky rings go to
+    magenta (F6b, F7c, F7d, F7e, F5c).
+  - Jade's matte is excluded, so her canon orange is untouched. An unmasked first try turned her orange band pink.
+  - `edl.py` uses `*_dered.mp4` automatically. Measured red after the pass is under 0.7% per frame on every plate,
+    and what remains is inside Jade's matte (shading on her orange).
+- **F8 jacket:** the keyframe was edited to canon (pale-blue dot on the chest, 1420 MHz roundel, no red) with the pencil
+  in her hand, then re-rendered (take 3).
+- **The sag (183.56–195.42):**
+  - F5a: a nano edit made the pencil a real pencil (eraser, ferrule, sharpened graphite tip) and moved the headphones
+    to her neck. Take 4 winds back and strikes; the F7_11 recap uses the strike.
+  - F6a: same fix (take 3, wide, gold loop).
+  - F5b: trimmed to one bar. New insert F5c (keyframe + Seedance) shows agents dripping off the lip.
+  - F6b: the march now steps on the beats, with an engine push and rotate and the clunk on 194.10.
+  - Every cut after 183.56 is now one bar or shorter except F5a (the hero) and F6b (the payoff).
+
 ## Polish pass (coordinator notes)
 
 - **Rainbows out.** nano-banana-pro edited 9 keyframes (`tools/sectionF/derainbow.py`; before/after in
@@ -114,8 +133,8 @@ prompts, takes and verdicts are in `media/shots/<shot>/NOTES.md`. `chosen.json` 
 | F2, F5a, F5b, F6a, F6b, F7a, F7b, F8 | the polish take (de-rainbowed keyframe) | the earlier takes (rainbow arcs) |
 | F3, F7c, F7d, F7e, O2 | take 1 | — |
 
-**Section F spend: $29.24 of the $70 budget** (list-price estimate, `tools/gen/spend.py --tags`, tags `F*`/`O2`).
-The polish pass cost $7.93 (11 keyframe edits plus 9 Seedance takes). Project total at hand-off: $143.76 of $400.
+**Section F spend: $33.51 of the $70 budget** (list-price estimate, `tools/gen/spend.py --tags`, tags `F*`/`O2`).
+That includes the polish pass ($7.93) and round 2 (about $4.7: 5 keyframe edits/inserts plus 5 Seedance takes). Project total: $153.43 of $400.
 
 ## What's weak
 

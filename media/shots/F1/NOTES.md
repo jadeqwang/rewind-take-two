@@ -37,7 +37,7 @@ The wipe itself works: the engraved twin is a convincing Escher plate of the sam
 ```json
 {
  "take": 3,
- "file": "media/shots/F1/take_3_wipe.mp4",
+ "file": "media/shots/F1/take_3_wipe_dered.mp4",
  "in_sec": 0.0,
  "out_sec": null,
  "rate": 1.1,

@@ -30,7 +30,7 @@ Video cost for this shot: $0.60 (list-price estimate).
 ```json
 {
  "take": 1,
- "file": "media/shots/F7d/take_1_engraved.mp4",
+ "file": "media/shots/F7d/take_1_engraved_dered.mp4",
  "in_sec": 0.0,
  "out_sec": null,
  "rate": 1.4,

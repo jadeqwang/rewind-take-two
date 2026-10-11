@@ -4,7 +4,7 @@ Swell 183.72: airborne, a giant pencil drawn back like a sword, the colossal mel
 
 ## Keyframe
 
-Model: google/nano-banana-pro (2K, 16:9), $0.134 per image. Chosen: `kf_2`.
+Model: google/nano-banana-pro (2K, 16:9), $0.134 per image. Chosen: `kf_r2 (round 2)`.
 
 Prompt (last round):
 
@@ -20,8 +20,13 @@ refs=['media/style_tests/refs/jade_pencil_flare_t2.jpg', 'media/style_tests/worl
   - verdict: great: slow push-in, she winds the pencil back, clock drips. Used.
 - take_2: bytedance/seedance-2.0 720p 5 s, est $0.75, state done, first frame `media/shots/F5a/kf_2.jpg`. polish: rainbows removed from keyframe (prompt of take 1)
   - prompt: Slow motion: the girl rises through the air toward the giant melting clock, winding the pencil back over her shoulder like a sword about to strike, hair flowing; the clock drips slowly and tiny agents fall from its edge. The camera pushes in slowly and tilts up. Her face keeps the first frame's design, forehead smooth, brows relaxed, never a face close-up. Keep the exact hand-drawn look of the first frame: colored pencil over black engraved hatching on warm paper, the girl in clean anime cel shading. No text, no letters, no logos, no watermark.
+- take_3: bytedance/seedance-2.0 720p 5 s, est $0.75, state done, first frame `media/shots/F5a/kf_2.jpg`. r2: pencil with tip, headphones on neck
+  - prompt: Slow motion: the girl rises through the air toward the giant melting clock, winding the big yellow pencil back over her shoulder like a sword about to strike, its sharpened graphite tip catching the light, hair flowing; the clock drips slowly and tiny agents fall from its edge. The camera pushes in slowly and tilts up. Her orange headphones stay around her neck the whole time. Her face keeps the first frame's design, forehead smooth, brows relaxed, never a face close-up. Keep the exact hand-drawn look of the first frame: colored pencil over black engraved hatching on warm paper, the girl in clean anime cel shading. No text, no letters, no logos, no watermark.
+- take_4: bytedance/seedance-2.0 720p 5 s, est $0.75, state done, first frame `media/shots/F5a/kf_2.jpg`. r2: pencil with tip, headphones on neck
+  - prompt: Slow motion: the girl rises through the air toward the giant melting clock, winding the big yellow pencil back over her shoulder like a sword about to strike, its sharpened graphite tip catching the light, hair flowing; the clock drips slowly and tiny agents fall from its edge. The camera pushes in slowly and tilts up. Her orange headphones stay around her neck the whole time. Her face keeps the first frame's design, forehead smooth, brows relaxed, never a face close-up. Keep the exact hand-drawn look of the first frame: colored pencil over black engraved hatching on warm paper, the girl in clean anime cel shading. No text, no letters, no logos, no watermark.
+  - verdict: round 2: pencil with eraser and graphite tip, headphones on neck; winds back and strikes. Used 1.4-4.9 s.
 
-Video cost for this shot: $1.50 (list-price estimate).
+Video cost for this shot: $3.00 (list-price estimate).
 
 ## Judgement
 
@@ -31,13 +36,13 @@ The pencil is oversized (anime sword exaggeration); deliberate. Clock face has d
 
 ```json
 {
- "take": 2,
- "file": "media/shots/F5a/take_2_engraved.mp4",
- "in_sec": 0.0,
+ "take": 4,
+ "file": "media/shots/F5a/take_4_engraved_dered.mp4",
+ "in_sec": 1.4,
  "out_sec": null,
  "rate": 1.0,
  "reverse": false,
- "notes": "hero; Seedance slow push-in, giant pencil as sword",
- "matte": "media/shots/F5a/take_2_matte/matte.mp4"
+ "notes": "round 2 (review #10): a real pencil with eraser and sharpened graphite tip, headphones on her neck; winds back and strikes at the clock (1.4-4.9 s)",
+ "matte": "media/shots/F5a/take_4_matte/matte.mp4"
 }
 ```

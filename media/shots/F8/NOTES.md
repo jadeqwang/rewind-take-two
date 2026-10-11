@@ -20,8 +20,11 @@ refs=['media/style_tests/refs/jade_pencil_flare_t2.jpg', 'media/style_tests/refs
   - verdict: near-static breathing, hair moving. Used.
 - take_2: bytedance/seedance-2.0 720p 5 s, est $0.75, state done, first frame `media/shots/F8/kf_1.jpg`. polish: rainbows removed from keyframe (prompt of take 1)
   - prompt: The girl stands still, breathing hard, shoulders rising and falling, her hair and jacket moving gently in the wind; the translucent ghost copies behind her settle and stand still in a row. Locked-off static camera. Her face keeps the first frame's design, forehead smooth, brows relaxed, never a face close-up. Keep the exact hand-drawn look of the first frame: colored pencil over black engraved hatching on warm paper, the girl in clean anime cel shading. No text, no letters, no logos, no watermark.
+- take_3: bytedance/seedance-2.0 720p 5 s, est $0.75, state done, first frame `media/shots/F8/kf_1.jpg`. r2: canon patches, pencil in hand
+  - prompt: The girl stands still, breathing hard, shoulders rising and falling, her hair and jacket moving gently in the wind, the yellow pencil held loosely in her hand; the translucent ghost copies behind her settle and stand still in a row. Locked-off static camera. Her orange headphones stay around her neck the whole time. Her face keeps the first frame's design, forehead smooth, brows relaxed, never a face close-up. Keep the exact hand-drawn look of the first frame. No text, no letters, no logos, no watermark.
+  - verdict: round 2: canon patches (pale-blue dot, 1420), no red, pencil in hand. Used.
 
-Video cost for this shot: $1.50 (list-price estimate).
+Video cost for this shot: $2.25 (list-price estimate).
 
 ## Judgement
 
@@ -31,13 +34,13 @@ Paper margin cropped.
 
 ```json
 {
- "take": 2,
- "file": "media/shots/F8/take_2_engraved.mp4",
- "in_sec": 0.3,
+ "take": 3,
+ "file": "media/shots/F8/take_3_engraved_dered.mp4",
+ "in_sec": 0.2,
  "out_sec": null,
  "rate": 1.0,
  "reverse": false,
- "notes": "the committee",
- "matte": "media/shots/F8/take_2_matte/matte.mp4"
+ "notes": "round 2 (review #7): canon pale-blue dot + 1420 patch, no red, pencil in hand; the committee",
+ "matte": "media/shots/F8/take_3_matte/matte.mp4"
 }
 ```

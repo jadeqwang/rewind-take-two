@@ -32,7 +32,7 @@ Reads. Jade is small by design (the one deliberate wide).
 ```json
 {
  "take": 2,
- "file": "media/shots/F5b/take_2_engraved.mp4",
+ "file": "media/shots/F5b/take_2_engraved_dered.mp4",
  "in_sec": 0.0,
  "out_sec": null,
  "rate": 1.0,

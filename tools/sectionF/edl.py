@@ -18,9 +18,10 @@ CHOSEN = {
     "F2": dict(take=3, in_sec=0.0, rate=1.0, reverse=False, notes="true wall-run up the tower (take 2); bar 100 jumps to 3.24 s (reaching the top and launching off it) with a 1.12x punch-in"),
     "F3": dict(take=1, in_sec=0.0, rate=1.0, reverse=False, notes="Relativity hall; the engine snaps a 90-degree roll on the downbeat"),
     "F4": dict(take=2, in_sec=0.0, rate=1.3, reverse=False, notes="take 2: dive, touches her reflection at ~3 s, plunges into concentric ripples"),
-    "F5a": dict(take=2, in_sec=0.0, rate=1.0, reverse=False, notes="hero; Seedance slow push-in, giant pencil as sword"),
+    "F5a": dict(take=4, in_sec=1.4, rate=1.0, reverse=False, notes="round 2 (review #10): a real pencil with eraser and sharpened graphite tip, headphones on her neck; winds back and strikes at the clock (1.4-4.9 s)"),
     "F5b": dict(take=2, in_sec=0.0, rate=1.0, reverse=False, notes="wide; ink drips become agents"),
-    "F6a": dict(take=2, in_sec=0.0, rate=1.0, reverse=False, notes="the loop gesture; gold line encircles the clock"),
+    "F5c": dict(take=1, in_sec=0.0, rate=0.8, reverse=False, notes="round 2 (review #10): tight insert, agents drip off the lip like ink (bar 108)"),
+    "F6a": dict(take=3, in_sec=0.0, rate=1.0, reverse=False, notes="round 2: headphones on neck, pencil with tip; the gold loop round the clock"),
     "F6b": dict(take=2, in_sec=0.0, rate=1.0, reverse=False, notes="clock hands = Penrose stairs, agents march; reused at F7_03"),
     "F6c": dict(take=3, in_sec=0.3, rate=1.0, reverse=False, notes="take 2: side-on sprint with the ghost stream drawn in (keyframe kf_ghosts2); take 1 is reused reversed at F7_08 (the rewind that paints)"),
     "F7a": dict(take=2, in_sec=0.0, rate=1.0, reverse=False, notes="ghost stampede; reused at F7_06"),
@@ -30,7 +31,7 @@ CHOSEN = {
     "F7e": dict(take=1, in_sec=0.15, rate=1.0, reverse=False, notes="BIG 2: Banach-Tarski reunion, two Jades merge at ~0.8 s"),
     "F7_08": dict(take=3, file=S + "F6c/take_3_rewindpaint.mp4", matte=S + "F6c/take_3_cleanmatte.mp4", in_sec=3.24, rate=1.0,
                   reverse=True, notes="F6c played backward; wipe computed on the reversed clock so colour paints IN as it rewinds"),
-    "F8": dict(take=2, in_sec=0.3, rate=1.0, reverse=False, notes="the committee"),
+    "F8": dict(take=3, in_sec=0.2, rate=1.0, reverse=False, notes="round 2 (review #7): canon pale-blue dot + 1420 patch, no red, pencil in hand; the committee"),
     "O2": dict(take=1, in_sec=0.0, rate=1.3, reverse=False, notes="dawn door: hair up + pencil at ~2.4-3.6 s source, door opens ~4.6 s"),
 }
 OVR = os.path.join(ROOT, "tools/sectionF/chosen_overrides.json")
@@ -49,6 +50,10 @@ def plate(shot):
     t = c["take"]
     c.setdefault("file", f"{S}{shot}/take_{t}_engraved.mp4")
     c.setdefault("matte", f"{S}{shot}/take_{t}_matte/matte.mp4")
+    # red audit (tools/sectionF/dered.py): prefer the red-rotated plate when it exists
+    d = os.path.splitext(c["file"])[0] + "_dered.mp4"
+    if os.path.exists(os.path.join(ROOT, d)):
+        c["file"] = d
     return {"take": t, "file": c["file"], "in_sec": c["in_sec"], "out_sec": None, "rate": c["rate"], "reverse": c["reverse"],
             "notes": c.get("notes", ""), "matte": c["matte"]}
 
@@ -107,13 +112,18 @@ def build():
             text=[never_stop(182.65, 183.33, 960, 140, size=60)]),
         # ---- bars 105-108: the boss --------------------------------------------------------------------------------------------
         cut("F5a", 183.56, 187.08, "F5a", fx=[FLASH(1.0, "#ffffff", 0.16), {"type": "shake", "on": "downbeat", "amp": 10, "decay": 0.25}]),
-        cut("F5b", 187.08, 190.58, "F5b", fx=[FLASH(0.5), FLASH(0.35, "#ffe9a8", 0.1, at=round(189.54 - 187.08, 2))]),
+        cut("F5b", 187.08, 188.84, "F5b", fx=[FLASH(0.5)]),
+        # bar 108: tight insert, agents drip off the clock's lip like ink (swell 189.54 gets a warm flash)
+        cut("F5c", 188.84, 190.58, "F5c", fx=[FLASH(0.4), FLASH(0.4, "#ffe9a8", 0.1, at=round(189.54 - 188.84, 2)),
+                                              {"type": "punch", "on": "beat", "amount": 0.025}]),
         # ---- bars 109-112: the perspective move --------------------------------------------------------------------------------
         cut("F6a", 190.58, 192.34, "F6a", fx=[FLASH(0.5)]),
         # the payoff: the clock's hands are Ascending and Descending, agents march it (2D, same hand as the rest of F).
         # Section E's 3D render/three/scenes/f6_clock.js was tried here (192.34-195.86, then 194.10-195.42) and dropped:
         # at the clunk it reads as a flat gold disc in a different hand. It is still available if wanted.
-        cut("F6b", 192.34, 195.42, "F6b", fx=[FLASH(0.4), {"type": "shake", "on": [194.10], "amp": 10, "decay": 0.22}]),
+        cut("F6b", 192.34, 195.42, "F6b", step=True, fx=[FLASH(0.4), {"type": "shake", "on": [194.10], "amp": 14, "decay": 0.25},
+                                                       FLASH(0.55, "#ffe9a8", 0.1, at=round(194.10 - 192.34, 2)),
+                                                       {"type": "punch", "on": "beat", "amount": 0.02}]),
         cut("F6c", 195.42, 197.60, "F6c", fx=[FLASH(0.4)], text=[never_stop(196.68, 197.48, 1120, 1052, rot=-2, size=50)]),
         # ---- bars 113-119: escalating hero cuts every 2 beats ---------------------------------------------------------------------
         cut("F7_01", 197.60, 198.48, "F7a", fx=[FLASH(0.5)]),
@@ -128,7 +138,7 @@ def build():
                    "side": "left"}]),
         cut("F7_09", 207.28, 208.14, "F7d", clip_in=2.2, rate=1.15, fx=[FLASH(0.7, "#ffe9a8")]),
         cut("F7_10", 208.14, 208.58, "F1", clip_in=2.3, fx=[FLASH(0.6)]),
-        cut("F7_11", 208.58, 209.02, "F5a", clip_in=1.6, fx=[FLASH(0.6)]),
+        cut("F7_11", 208.58, 209.02, "F5a", clip_in=4.3, fx=[FLASH(0.6)]),
         cut("F7_12", 209.02, 209.46, "F6a", clip_in=1.2, fx=[FLASH(0.6)]),
         cut("F7_13", 209.46, 209.90, "F7c", clip_in=1.8, fx=[FLASH(0.7, "#ffe9a8")]),
         # ---- bar 120: the committee; band drop-out 210.90 ---------------------------------------------------------------------------
@@ -180,6 +190,19 @@ def main():
                     del t["corners"]
                     t.update(x=470, y=310)
     for s in edl["shots"]:
+        if s.pop("step", False):
+            # frame-skip march: the source jumps forward on every beat (holds between), under a smooth engine push +
+            # rotate; the big jump lands on the clunk (194.10)
+            beats = [192.34, 192.78, 193.22, 193.66, 194.10, 194.54, 194.98]
+            src = [0.0, 0.35, 0.7, 1.05, 2.3, 2.65, 3.0]
+            keys = [[round(b - s["in"], 3), v, "hold"] for b, v in zip(beats, src)] + [[round(s["out"] - s["in"], 3), 3.0]]
+            lay = {"id": "plate", "type": "video", "src": s.pop("file"), "srcTime": keys, "fit": s.pop("fit", "cover"),
+                   "kenBurns": {"from": {"scale": 1.12, "rotate": -2}, "to": {"scale": 1.24, "rotate": 2}, "ease": "inOutSine"}}
+            if s.get("crop"):
+                lay["crop"] = s.pop("crop")
+            for k in ("clip_in", "rate", "reverse"):
+                s.pop(k, None)
+            s["layers"] = [lay] + s.get("layers", [])
         m = s.pop("_matte", None)
         if m:
             s["matte_file"] = m            # informational: Jade's matte for this plate (engine key "matte" would mask the plate)

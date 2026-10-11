@@ -30,7 +30,7 @@ The colour crescendo image.
 ```json
 {
  "take": 1,
- "file": "media/shots/F7c/take_1_engraved.mp4",
+ "file": "media/shots/F7c/take_1_engraved_dered.mp4",
  "in_sec": 0.0,
  "out_sec": null,
  "rate": 1.0,

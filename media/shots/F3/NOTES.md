@@ -31,7 +31,7 @@ One of the strongest shots. Paper margin cropped (5.6%).
 ```json
 {
  "take": 1,
- "file": "media/shots/F3/take_1_engraved.mp4",
+ "file": "media/shots/F3/take_1_engraved_dered.mp4",
  "in_sec": 0.0,
  "out_sec": null,
  "rate": 1.0,

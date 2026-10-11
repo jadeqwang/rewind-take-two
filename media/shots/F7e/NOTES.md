@@ -30,7 +30,7 @@ Works first time.
 ```json
 {
  "take": 1,
- "file": "media/shots/F7e/take_1_engraved.mp4",
+ "file": "media/shots/F7e/take_1_engraved_dered.mp4",
  "in_sec": 0.15,
  "out_sec": null,
  "rate": 1.0,

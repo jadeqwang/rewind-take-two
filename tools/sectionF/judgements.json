@@ -41,10 +41,11 @@
  },
  "F5a": {
   "title": "HERO: the boss (183.56-187.08)",
-  "kf": "kf_2",
+  "kf": "kf_r2 (round 2)",
   "idea": "Swell 183.72: airborne, a giant pencil drawn back like a sword, the colossal melting clock over the Loop dripping agents.",
   "takes": {
-   "1": "great: slow push-in, she winds the pencil back, clock drips. Used."
+   "1": "great: slow push-in, she winds the pencil back, clock drips. Used.",
+   "4": "round 2: pencil with eraser and graphite tip, headphones on neck; winds back and strikes. Used 1.4-4.9 s."
   },
   "judgement": "The pencil is oversized (anime sword exaggeration); deliberate. Clock face has dash ticks only, no numerals."
  },
@@ -62,7 +63,8 @@
   "kf": "kf_2",
   "idea": "She sweeps the pencil in a circle; a gold line encircles the clock; the camera orbits with her arm.",
   "takes": {
-   "1": "the gold line draws several loops rather than one, the camera swings round. Used."
+   "1": "the gold line draws several loops rather than one, the camera swings round. Used.",
+   "3": "round 2: headphones on neck, pencil tip, wide gold loop. Used 0-1.76 s."
   },
   "judgement": "Good energy; 'a single loop' became several, acceptable."
  },
@@ -135,7 +137,8 @@
   "kf": "kf_1",
   "idea": "She stops center frame, breathing; ghost Jades in a line behind her. 'never stop' (210.77) in pencil in the sky. Band out 210.90.",
   "takes": {
-   "1": "near-static breathing, hair moving. Used."
+   "1": "near-static breathing, hair moving. Used.",
+   "3": "round 2: canon patches (pale-blue dot, 1420), no red, pencil in hand. Used."
   },
   "judgement": "Paper margin cropped."
  },
@@ -152,5 +155,14 @@
   "title": "(3D) the clock's hands close into Penrose stairs (192.34-195.86)",
   "idea": "section E's render/three/scenes/f6_clock.js, offered to F: camera keeps turning with her gesture, clunks into the magic angle on 194.10.",
   "judgement": "No generation cost."
+ },
+ "F5c": {
+  "title": "Insert: agents drip off the lip (188.84-190.58)",
+  "kf": "kf_1",
+  "idea": "Tight insert of the melting clock's lip; ink drips turn into falling agents.",
+  "takes": {
+   "1": "agents visible falling in the first ~1 s; played at 0.8x. Used."
+  },
+  "judgement": "Round 2 fix for the static F5b."
  }
 }

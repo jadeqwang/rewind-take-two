@@ -39,6 +39,9 @@ F = {
     "F5b": (K + "F5b/kf_2.jpg", 5, "The colossal melting clock sags further over the skyline; thick drips of black ink stretch "
             "and fall from its lower edge and turn into black-suited agents tumbling down onto the rooftops; the girl's hair "
             "and jacket blow in the wind. Slow camera push-in toward the clock."),
+    "F5c": (K + "F5c/kf_1.jpg", 4, "Tight insert: the melting lip of the giant gold clock sags and stretches; thick black ink drips lengthen "
+            "and snap off one after another, each drip turning into a tiny black-suited agent who tumbles down out of frame, arms "
+            "flailing; gold flecks drift. Slow camera push-in toward the lip. Static framing otherwise."),
     "F6a": (K + "F6a/kf_2.jpg", 5, "The girl sweeps her pencil in one huge circle above her head, the glowing gold line from its "
             "tip drawing a full loop around the giant clock in the sky; the camera orbits around her fast, in the same "
             "direction as her arm. " + FACE),
