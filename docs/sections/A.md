@@ -128,3 +128,8 @@ ghost constellation, bridge jump). The flash cadence matches the ticks by constr
 
 **Not done:** R2 `12ice` (headphones on her ears) and `13sedanb` (grille); the C1 "breath"; the larger `DEFENSE 9AM` insert;
 etch contrast in D3. The P5/P6 negative is still mid-grey rather than stark.
+
+**Leftovers pass (before 09:00):**
+- **C4:** the shot holds on her for 0.55 s, then pushes 2.6× onto the sticky note. `DEFENSE 9AM` is written in once the push lands and reads clearly.
+- **D3:** the etch is now paper-white with an ink drop shadow, nudged below the letterbox edge.
+- **R2 `12ice`:** a nano-banana edit (`kf_12iceb`, $0.13) moved the headphones to her neck; it was re-engraved and swapped in.

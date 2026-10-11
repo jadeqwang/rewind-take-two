@@ -4,7 +4,7 @@
 // small push so nothing is dead-still, a VHS scrub between hits and the iteration counter jumping backward.
 const DIR = 'media/shots/R2/engraved/';
 const STILLS = ['01train', '02marinab', '03picasso', '04bridge', '05fountain', '06watertower', '07riverwalk',
-  '08skydeck', '09lightning', '10gearsb', '11ferris', '12ice', '13sedanb'];
+  '08skydeck', '09lightning', '10gearsb', '11ferris', '12iceb', '13sedanb'];
 const ITER = [4095, 4093, 4094, 4091, 4092, 4090, 4088, 4089, 4087, 4086, 4084, 4085, 4084];   // randomized but decreasing
 
 export default ({ T }) => {

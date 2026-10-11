@@ -56,6 +56,8 @@ const inset = (keys, fx, fy) => keys.map(([t, q]) => {
   const cx = (q[0] + q[2] + q[4] + q[6]) / 4, cy = (q[1] + q[3] + q[5] + q[7]) / 4;
   return [t, q.map((v, i) => (i % 2 ? cy + (v - cy) * fy : cx + (v - cx) * fx))];
 });
+const C4_PUSH = { scale: [[0, 1], [0.55, 1, 'inOutCubic'], [1.45, 2.6]], x: [[0, 0], [0.55, 0, 'inOutCubic'], [1.45, -(1326 - 960) * 2.6]],
+  y: [[0, 0], [0.55, 0, 'inOutCubic'], [1.45, -(850 - 540) * 2.6]] };
 const LETTERBOX = { type: 'letterbox', aspect: 2.39, amount: 1 };
 const lower = (extra = {}) => ({ type: 'canvas', module: 'lowerthird', stage: 'post',
   params: { color: PAPER, size: 50, y: 1022, halo: 0, ...extra } });
@@ -81,8 +83,9 @@ export default ({ T }) => ({
       ], fx: [LETTERBOX] },
     { id: 'C4', start: 10.82, end: 12.6, background: INK,
       layers: [
-        vid('C4'),
-        { type: 'canvas', module: 'pencil', noRewind: true, params: { text: 'DEFENSE\n9AM', at: 0.15, cps: 16, size: 46, corners: tracks.C4_note, color: '#26241f', point: false, grain: 0.25 } },
+        // hold on her, then push 2.6x onto the sticky note (centre ~(1326, 850)) so DEFENSE 9AM reads: the stakes of the hook
+        vid('C4', C4_PUSH),
+        { type: 'canvas', module: 'pencil', noRewind: true, ...C4_PUSH, params: { text: 'DEFENSE\n9AM', at: 0.75, cps: 14, size: 46, corners: tracks.C4_note, color: '#1a1815', point: false, grain: 0.2 } },
       ], fx: [LETTERBOX] },
     // ---------------------------------------------------------------- verse 1: the cutscene
     { id: 'S1', start: 12.6, end: 16.14, background: INK,
@@ -116,7 +119,9 @@ export default ({ T }) => ({
     { id: 'D3', start: 24.9, end: 28.4, background: INK,
       layers: [
         vid('D3'),
-        { type: 'canvas', module: 'etch', noRewind: true, blend: 'screen', params: { text: "chasing me I couldn't place", sync: 'lyric', size: 40, corners: tracks.D3_etch } },
+        // etch: an ink shadow under paper-white glyphs so it reads over the bright road in the mirror
+        { type: 'canvas', module: 'etch', noRewind: true, x: 3, y: 27, opacity: 0.85, params: { text: "chasing me I couldn't place", sync: 'lyric', size: 40, corners: tracks.D3_etch, color: INK } },
+        { type: 'canvas', module: 'etch', noRewind: true, y: 24, params: { text: "chasing me I couldn't place", sync: 'lyric', size: 40, corners: tracks.D3_etch, color: '#fbf8f1' } },
       ], fx: [LETTERBOX] },
     { id: 'D4', start: 28.4, end: 30.16, background: INK,
       layers: [vid('D4', { grade: { hue: -32 } }), lower({ text: 'I pulled over, and', sync: 'lyric' })], fx: [LETTERBOX] },
