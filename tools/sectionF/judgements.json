@@ -1,0 +1,156 @@
+{
+ "F1": {
+  "title": "IMPACT: color flood (169.40-172.96)",
+  "kf": "kf_full1 (r3); kf_1 = style-test T1 (r1, r2)",
+  "idea": "At the impact a wave of colour bursts from her and sweeps the engraved skyline; she sprints out of it at camera. Built as a radial matte wipe (tools/sectionF/wipe.py) between the engraved twin of the clip (tools/engrave, strength 1, no bloom) and the colour clip, with a hatched pencil-stroke front and a gold leading edge. The wipe matte is kept as take_N_wipe_matte.mp4.",
+  "takes": {
+   "1": "half-bloom keyframe: she jogs rather than sprints and the 'after' is still mostly gray buildings, so the flood reads weakly. Fallback.",
+   "2": "same keyframe, faster sprint prompt.",
+   "3": "full-colour keyframe (colored girders and facades) so the before/after is unmistakable."
+  },
+  "judgement": "The wipe itself works: the engraved twin is a convincing Escher plate of the same frame and the colour arrives from her. The engrave matte leaks some wave colour around her in the engraved twin; it reads as the colour starting at her, so it stays. Take 3 (full-colour keyframe) is in the cut: wipe origin on her, outq ease, the front reaches the corners on the bar-98 downbeat."
+ },
+ "F2": {
+  "title": "Wall-run up the Willis Tower (172.96-176.48)",
+  "kf": "kf_2",
+  "idea": "She runs up the tower face with two ghosts flanking (magenta, emerald), dragging a pencil line. Bar 100 is a 1.18x punch-in on the same take. 'never stop' (175.59) written in pale pencil on the glass.",
+  "takes": {
+   "1": "Seedance turned the vertical facade into a tilted floor after ~1.5 s. Rejected for take 2.",
+   "2": "true wall-run: they sprint up the facade away from camera, reach the top and launch off it. Used (0-1.76 for bar 99, 3.24-5.0 for bar 100)."
+  },
+  "judgement": "Take 2 is a clean wall-run with the ghosts in step and the pencil line on the glass; bar 100 jumps to the top-of-tower launch."
+ },
+ "F3": {
+  "title": "Relativity flip (176.48-180.02)",
+  "kf": "kf_2",
+  "idea": "Escher's Relativity hall in colour; she runs upside down on the underside of a staircase, agents (still pure black ink) tumble off. The engine snaps a 90-degree roll + zoom on the downbeat; Seedance adds a continuous roll.",
+  "takes": {
+   "1": "good: continuous camera roll, agents falling, Jade on-model. Used."
+  },
+  "judgement": "One of the strongest shots. Paper margin cropped (5.6%)."
+ },
+ "F4": {
+  "title": "Bean dive (180.02-183.56)",
+  "kf": "kf_1",
+  "idea": "She dives head-first at Cloud Gate; her colour reflection rushes up; she hits the mirror on 183.56 (white flash into the boss).",
+  "takes": {
+   "1": "first 2 s good, then Seedance cut to a photographic street and a face close-up with a hand over the face: rejected after 2.0 s.",
+   "2": "dive, hands touch her reflection at ~3 s, she plunges into concentric ripples and vanishes by 5 s. Used at 1.3x."
+  },
+  "judgement": "Take 2 is exactly the inverse-of-S2 beat: the mirror becomes liquid and takes her into the boss fight on 183.56."
+ },
+ "F5a": {
+  "title": "HERO: the boss (183.56-187.08)",
+  "kf": "kf_2",
+  "idea": "Swell 183.72: airborne, a giant pencil drawn back like a sword, the colossal melting clock over the Loop dripping agents.",
+  "takes": {
+   "1": "great: slow push-in, she winds the pencil back, clock drips. Used."
+  },
+  "judgement": "The pencil is oversized (anime sword exaggeration); deliberate. Clock face has dash ticks only, no numerals."
+ },
+ "F5b": {
+  "title": "The clock drips agents (187.08-190.58)",
+  "kf": "kf_2",
+  "idea": "Deliberate wide at golden hour: ink drips turn into black-suited agents falling onto the rooftops; Jade small on a water-tower roof. Swell 189.54 gets a warm flash.",
+  "takes": {
+   "1": "good drips and falling agents; the camera drifts right and crops Jade after ~3 s. Used 0-3.5 s."
+  },
+  "judgement": "Reads. Jade is small by design (the one deliberate wide)."
+ },
+ "F6a": {
+  "title": "The loop gesture (190.58-194.10)",
+  "kf": "kf_2",
+  "idea": "She sweeps the pencil in a circle; a gold line encircles the clock; the camera orbits with her arm.",
+  "takes": {
+   "1": "the gold line draws several loops rather than one, the camera swings round. Used."
+  },
+  "judgement": "Good energy; 'a single loop' became several, acceptable."
+ },
+ "F6b": {
+  "title": "Clock hands = Penrose stairs (194.10-195.86)",
+  "kf": "kf_2",
+  "idea": "The clock face's hands have become Ascending and Descending; agents march it forever. Reused at F7_03.",
+  "takes": {
+   "1": "slow push-in, marching reads. Used."
+  },
+  "judgement": "Clear one-idea image."
+ },
+ "F6c": {
+  "title": "Super Meat Boy replay (195.86-197.60)",
+  "kf": "kf_ghosts2 (take 2); kf_2 (take 1)",
+  "idea": "Side-on sprint with a stream of colour ghost Jades running in step behind her (Super Meat Boy replay). 'never stop' (196.68) in pencil on the ground strip.",
+  "takes": {
+   "1": "clean side-on sprint, but the engine ghost layer over it (her matte carries background) read as smeared afterimages. Replaced; take 1 lives on reversed as F7_08 (the rewind that paints).",
+   "2": "new keyframe kf_ghosts2 with the ghost stream drawn in: crisp colour ghosts in step behind her. Used (0.3-2.04 s)."
+  },
+  "judgement": "Take 2 replaces the engine-ghost version; the ghosts are drawn by nano and animated by Seedance, crisp and on-model."
+ },
+ "F7a": {
+  "title": "Ghost stampede (197.60-198.48, reused 202.88)",
+  "kf": "kf_2",
+  "idea": "A stampede of translucent colour ghosts of her, real Jade leading.",
+  "takes": {
+   "1": "good. Used."
+  },
+  "judgement": ""
+ },
+ "F7b": {
+  "title": "Her grin (198.48-199.38)",
+  "kf": "kf_1",
+  "idea": "Waist-up, running at camera, grinning.",
+  "takes": {
+   "1": "good; the pencil leaves her hand after frame 0 (not visible in 0.9 s). Used."
+  },
+  "judgement": ""
+ },
+ "F7c": {
+  "title": "BIG 1: Klimt gold (200.24-202.02)",
+  "kf": "kf_2",
+  "idea": "Swell 200.25: she soars through a gold-leaf mosaic sky; the camera rises with her.",
+  "takes": {
+   "1": "excellent. Used."
+  },
+  "judgement": "The colour crescendo image."
+ },
+ "F7d": {
+  "title": "The clock folds into itself (202.02-202.88, tail at 207.28)",
+  "kf": "kf_2",
+  "idea": "The melting clock twists into a Moebius loop and collapses to a gold point.",
+  "takes": {
+   "1": "excellent: collapse to a star at ~3.2 s. Used."
+  },
+  "judgement": ""
+ },
+ "F7e": {
+  "title": "BIG 2: Banach-Tarski reunion (203.76-205.52)",
+  "kf": "kf_2",
+  "idea": "Swell 203.78: two Jades leap together and merge into one in a burst of motes and gold flakes.",
+  "takes": {
+   "1": "merge at ~0.8 s, one Jade lands. Used."
+  },
+  "judgement": "Works first time."
+ },
+ "F8": {
+  "title": "The committee (209.90-211.64)",
+  "kf": "kf_1",
+  "idea": "She stops center frame, breathing; ghost Jades in a line behind her. 'never stop' (210.77) in pencil in the sky. Band out 210.90.",
+  "takes": {
+   "1": "near-static breathing, hair moving. Used."
+  },
+  "judgement": "Paper margin cropped."
+ },
+ "O2": {
+  "title": "Dawn: the defense (218.92-222.78)",
+  "kf": "kf_1",
+  "idea": "Dawn hallway; she twists her hair up and pushes the pencil back in (New Game+), opens the door and walks in. A paper notice 'DISSERTATION DEFENSE / 9:00 AM' is corner-pinned on the door under the blank brass plaque (hand-keyed track in tools/sectionF/o2_plaque.json). Played at 1.3x so the door opens before the hard cut at 222.78.",
+  "takes": {
+   "1": "hair-up + pencil at 2.4-3.6 s, door opens ~4.6 s. Used."
+  },
+  "judgement": "Paper margin cropped."
+ },
+ "F6b_3d": {
+  "title": "(3D) the clock's hands close into Penrose stairs (192.34-195.86)",
+  "idea": "section E's render/three/scenes/f6_clock.js, offered to F: camera keeps turning with her gesture, clunks into the magic angle on 194.10.",
+  "judgement": "No generation cost."
+ }
+}
