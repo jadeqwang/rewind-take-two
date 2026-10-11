@@ -10,6 +10,8 @@ import { gunfireShots } from './_B_gunfire.js';
 // v4 (Jade's notes 1:39 / 1:41): the lawn from behind the agents (_B_gunfire.js) replaces B2_lawn, B2_lawn2 and B2_ear.
 // Set false to get the v3 lawn back for a before/after comparison.
 const V4_GUN = true;
+// v4b (Jade: "HILBERT HOTEL"): these plates have one rooftop panel, so the sign reads HILBERT over HOTEL on it
+const HOTEL_SIGN = true;
 
 const S = 'media/shots/';
 const PAPER = '#ece7dc', INK = '#0b0b0c', ORANGE = '#F08A24';
@@ -36,7 +38,8 @@ const WOODCUT = 'tools/sectionA/modules/woodcut.js';
 const BB = { lawn: [1621, 107, 1811, 27, 1812, 100, 1621, 167], chasm: [1626, 106, 1818, 22, 1820, 96, 1627, 161] };
 const hilbert = (corners, face = false) => [
   ...(face ? [{ id: 'bb_face', type: 'canvas', module: 'render/timeline/_B_quad.js', params: { corners, color: '#efe7da' } }] : []),
-  { id: 'hilbert', type: 'canvas', module: WOODCUT, params: { text: 'HILBERT', at: -1, color: INK, flecks: 0, hatch: 0.15, box: [420, 140], pad: 8, corners } }];
+  { id: 'hilbert', type: 'canvas', module: WOODCUT, params: { text: HOTEL_SIGN ? 'HILBERT\nHOTEL' : 'HILBERT', at: -1, color: INK, flecks: 0, hatch: 0.15,
+    box: HOTEL_SIGN ? [420, 230] : [420, 140], pad: 8, corners } }];
 
 export default function verse2B({ T }) {
   const shots = [];

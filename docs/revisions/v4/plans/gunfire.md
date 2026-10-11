@@ -4,10 +4,28 @@ Status: **built** (v4B-gun, 2026-10-11, 18:40); see Execution. Blockout: `media/
 
 ## Execution (keep current; resume from here)
 
-**State 2026-10-11 18:40: built and handed over.** After clip `media/reviews/v4/B/0139_gunfire.mp4` (96.3-105.5,
-540p, song audio only, 6 MB), stills `media/reviews/v4/B/0139_gunfire_{99.4,101.2,103.0}.jpg`, fragment
-`docs/revisions/v4/fragments/gunfire.json`. Spend on `v4B_gun`: **$4.76** of the $12 cap (13 nano calls, 5 Seedance
-takes). No commits.
+**State 2026-10-11 18:50: second pass (Jade's lead / kickback / HILBERT HOTEL notes) built and handed over.** After clip
+`media/reviews/v4/B/0139_gunfire.mp4` (96.3-105.5, 540p, SFX mix muxed in: `media/sfx/Rewind_cinematic_sfx_mix.mp3`
+from 96.29167 s), stills `media/reviews/v4/B/0139_gunfire_{99.4,101.2,103.0}.jpg`, fragment
+`docs/revisions/v4/fragments/gunfire.json` (4 entries). Spend on `v4B_gun`: **$4.76** (no new calls). No commits.
+
+Second pass (Jade, via v4-B): "I expect them to be aiming for where they think she's going to be except she changed
+direction"; "the agent animation could just be trying to adjust to aim better and some gun kickback"; "HILBERT HOTEL
+(missing HOTEL on a blank sign above)".
+- Leads: `_B_glayout.js` `impactOf(tb)` = her old leg extrapolated to the shot; her cuts 4 frames before each shot
+  beat (G1 98.77/99.21/99.65/100.09; G2 100.97/101.83). Shooters B, C, B, C (chosen by side so no line crosses her).
+  Shot times unchanged. Camera push now `u^4` (late surge) so B is in frame for his 99.82 shot; B moved to x 1.6.
+- Aim animation: `springAngle()` (underdamped spring towards her predicted point, exact on each shot) and kickback
+  (8 deg muzzle up + arm thrown back, about 5 frames). A tracks only.
+- Her take in G1/G2 is retimed so its own turns land on her cuts; long source legs skip mid-stride (sub-frame jump).
+- Check: `node tools/v4B/gunfire/geometry_check.mjs` writes `media/reviews/v4/B/plans/gunfire/geometry.json` (built
+  geometry; the blockout's is `geometry_blockout.json`). All 6: ahead on the old line, barrel 0 deg off the line,
+  line 61-122 px clear of her on the shot frame (1080p px).
+- C's level aim in G2 was NOT done: his barrel is the take's (low); with leads his rounds land just ahead of her feet.
+  Doing it means cutting his arm out of the take and replacing it (an arm-only cut-out); not started.
+- HOTEL: G1 plate's blank right-hand panel gets HOTEL (`hilbert(hb, 'HOTEL')`, pinned through the move). One-panel
+  plates (chasm 96.30 in `_B_verse2.js` via `HOTEL_SIGN = true`, G3, and D's E7_04/05/06) read HILBERT over HOTEL.
+  D's three are NOT applied (file owned by the co-op agent): `tools/v4B/gunfire/hotel_corners_D.json`.
 
 Jade's decisions (relayed by v4-B): "gunshot - go with the earpiece closeup"; "frame height seems fine, only 2 agents
 firing is fine". So: G1 98.28-100.70 (B, B, C, C); G2 100.70-102.46; earpiece close-up G3 102.46-104.22. The cut at

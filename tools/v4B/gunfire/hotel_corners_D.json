@@ -1,0 +1,10 @@
+{
+ "note": "HILBERT HOTEL for the Drop 2 shots built by tools/sections/D/build_timeline.py (hilbert(), ~line 660). These three plates are v3 rev-B takes whose rooftop billboard has ONE panel (no blank panel above or beside it; checked at 540p on the engraved plates), so HOTEL goes on the same panel as a second line, as done in render/timeline/_B_verse2.js (HOTEL_SIGN) and _B_gunfire.js (G3). Corners are unchanged (camera locked in all three takes). Change in hilbert(): text 'HILBERT\\nHOTEL' and box [420, 230] (was 'HILBERT', [420, 140]); everything else as is. Only the v4 G1 plate (media/shots/B_g1clean) has a second blank panel; there HOTEL has its own pin.",
+ "text": "HILBERT\nHOTEL",
+ "box": [420, 230],
+ "shots": [
+  {"id": "E7_04_chasm", "plate": "media/shots/B_chasm_dash/take_1_engraved.mp4", "corners": [1626, 106, 1818, 22, 1820, 96, 1627, 161], "face": true},
+  {"id": "E7_05_ear", "plate": "media/shots/B_ear/take_1_engraved.mp4", "corners": [1621, 108, 1811, 26, 1811, 97, 1622, 164], "face": false},
+  {"id": "E7_06_lawn", "plate": "media/shots/B_lawn/take_1_engraved.mp4", "corners": [1621, 107, 1811, 27, 1812, 100, 1621, 167], "face": false}
+ ]
+}

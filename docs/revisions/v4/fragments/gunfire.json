@@ -35,5 +35,40 @@
   ],
   "what_changed": "G2 (100.70-102.46) is a long lens from behind three agents. Only C fires, at 101.14 and 102.00; his recoils in the take are retimed onto those beats. A has two fingers at his earpiece, and B raises his hand to his. Each tracer starts at C's tracked muzzle and runs along his barrel to turf she has already left. She runs away past the notice board, which spells 'ACROSS THE / FIELD OF' word by word. G3 (102.46-104.22) is your earpiece close-up: two agents in profile, mouths moving as they call it in, while she runs to the hotel. 'grass' starts two frames before the cut, so it stays the lower third here, as in v3. Weak spots: C's pistol points steeply down, so his misses land on the grass a beat and then about 1.5 s behind her, not far off. B's arm swings wide toward her as he raises it. She is upscaled about 1.5x in G2 and reads a little soft. The 101.14 miss now hits turf, not the board, so the board-crack sound cue at 101.14 needs a turf hit instead.",
   "question": "G2's misses land on the grass a few metres behind her because the generated agent aims low. Is that fine, or should C get a level aim (swap in the cut-out, free) so the misses land further off?"
+ },
+ {
+  "note": "the gunfire is almost right. at \"zigzag\" it's almost right, but it doesn't seem like they're trying hard. I expect them to be aiming for where they think she's going to be except she changed direction. same with \"across the field of grass\"",
+  "v3_time": "1:39",
+  "shots": [
+   "B2_G1",
+   "B2_G2"
+  ],
+  "status": "done",
+  "after": "media/reviews/v4/B/0139_gunfire.mp4",
+  "before_range": [
+   98.28,
+   102.46
+  ],
+  "what_changed": "Every shot is now a lead. The agent aims where she will be if she keeps her line; she cuts 4 frames before the shot, and the round lands about 1.5 m ahead of her on the line she just left. Shot times are unchanged, so the sound cues still land. In G1 her cuts are at 98.77, 99.21, 99.65 and 100.09. The shooters are B, C, B, C, picked by side so no line ever crosses her. Between shots, A, B and C keep re-aiming at her predicted point on a spring, so they overshoot and settle when she cuts. Every shot has a kickback: muzzle up about 8 degrees and the arm thrown back, for about 5 frames. In G2 her path is laid so that each leg runs into C's barrel line, with cuts at 100.97 and 101.83. Checked frame by frame: in media/reviews/v4/B/plans/gunfire/geometry.json all six misses are ahead on the old line, the barrel points at the impact (0 degrees off), and on the shot frame the line stays 61-122 px clear of her at 1080p. Weak: C in G2 still aims low (his take), so his leads land on the grass at her feet line rather than past her. In G1 her strides skip mid-leg (sub-frame jumps) so her turns fit the 0.44 s legs. B's muzzle is at the frame edge for his 99.82 shot."
+ },
+ {
+  "note": "HILBERT HOTEL (missing HOTEL on a blank sign above)",
+  "v3_time": "1:39",
+  "shots": [
+   "B2_G1",
+   "B2_G3",
+   "B2_chasm",
+   "E7_04_chasm",
+   "E7_05_ear",
+   "E7_06_lawn"
+  ],
+  "status": "partial",
+  "after": "media/reviews/v4/B/0139_gunfire.mp4",
+  "before_range": [
+   96.3,
+   104.22
+  ],
+  "what_changed": "G1 (the plate with two rooftop panels) has HOTEL in the same woodcut lettering on the blank right-hand panel, pinned to it through the camera move. The other plates (chasm 96.30, the G3 earpiece close-up, and the Drop 2 chasm, earpiece and lawn shots) have one panel only, so their sign now reads HILBERT over HOTEL on that panel; it reads at 540p. The three Drop 2 shots are built by tools/sections/D/build_timeline.py, which another agent is editing; their corners and the change are in tools/v4B/gunfire/hotel_corners_D.json for v4-B to apply, so those three show plain HILBERT until then.",
+  "question": "Where the sign has one panel, HILBERT stacked over HOTEL (as now), or keep it one word there?"
  }
 ]
