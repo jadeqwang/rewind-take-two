@@ -169,6 +169,12 @@ her question: engine for the bridge, video model for the agents, three.js not ne
 **19:15, Jade, verbatim:** "gunfire: the agents should be aiming for body/torso and not for the feet. they should
 be aiming for where the torso would have been if she hadn’t zagged." Sent to `v4B-gun`.
 
+**19:20, Jade, verbatim:** "yes, do the $1.20 road motion take, and the main weakness is actually that she's
+completely still, no hair fidget, no breathing or a bit of expression like a normal person would, not an exaggerated
+expression because she's just trying to concentrate". Sent to `v4B-car`: Seedance take from the wide still with
+road motion and her breathing, hair, blinks, eye flicks to the mirror, understated; retake once if face/pencils
+break; cap rest of its $8.
+
 ## Execution round
 
 **Correction:** clock times written in this file before 17:55 ran ahead of the real clock (the "19:xx" entries
