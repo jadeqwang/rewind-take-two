@@ -150,6 +150,9 @@ shot). Sent to `v4B-gun`.
 moving)". Sent to `v4B-car` (resumed): engine motion first (ride bob, road moving, streetlight sweeps, fleet cut-outs
 swaying and closing, light bars flashing), Seedance only if that still reads as a still; cap = rest of its $8.
 
+**18:49, Jade, verbatim:** "SIRENS text should feel more woodblock textured". Sent to `v4B-car`: re-letter with
+`tools/sectionA/modules/woodcut.js`.
+
 ## Execution round
 
 **Correction:** clock times written in this file before 17:55 ran ahead of the real clock (the "19:xx" entries
