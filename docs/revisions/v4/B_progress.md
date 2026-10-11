@@ -142,6 +142,9 @@ How v4-B reads it (v4-B's interpretation, told to Jade at 19:22 so she can corre
 v4-B's reading: every miss in G1 and G2 is aimed where she WOULD be if she kept her line (a lead), and she cuts the
 other way just before it lands, so the impact is ahead of her on her old line, not behind her. The rooftop sign reads
 HILBERT HOTEL wherever it shows: HOTEL goes on the blank panel above HILBERT. Sent to `v4B-gun` at 18:42.
+Jade, 18:44, verbatim: "the agent animation could just be trying to adjust to aim better and some gun kickback". So no
+new take for the G1 agents: engine animation of the cut-outs (re-aim tracking her between shots, kickback on each
+shot). Sent to `v4B-gun`.
 
 ## Execution round
 
