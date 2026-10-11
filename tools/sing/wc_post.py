@@ -83,11 +83,16 @@ def review(shot, take, lag, out, audio=MIX, pad=0.0):
 #   E3: Seedance closes the vowel about 1 s before the sung note ends (both takes), so the open vowel (clip 0.86-3.30)
 #       is stretched over the whole note (rate 0.74) and the mouth closes on the note's end.
 #   V3S: one lag, +0.16 s (lip closures on 'b' of before and 'm' of my).
+VER = os.environ.get("WC_VER", "v3")      # v4: WC_VER=v4 reads SYNC_V4 and writes v4_sync_1080.mp4
 SYNC = {
     "S1": ("v3_take_1", [(12.60, 0.28), (14.70, 2.38), (16.10, 4.20), (19.64, 7.74)]),
     "E3": ("v3_take_1", [(119.44, 0.86), (122.75, 3.30), (122.95, 3.50)]),
     "V3S": ("v3_take_2", [(153.98, 0.46), (159.14, 5.62)]),
 }
+# v4 (glossier hair, less smile): filled in once the v4 takes are measured (look.py SHOT v4_take_N). E3 is gone in v4.
+SYNC_V4 = {}
+if VER != "v3":
+    SYNC = SYNC_V4
 
 
 def clip_time(keys, t):
@@ -141,7 +146,7 @@ def sync(shot, tail=0.4):
     """media/sing/SHOT/v3_sync_1080.mp4: file time 0 = the shot's in-point, lip-synced (clip_time = song_time - in)."""
     _, a, b = SHOTS[shot]
     frames, bl = synced_frames(shot, a, b + tail)
-    out = os.path.join(SING, shot, "v3_sync_1080.mp4")
+    out = os.path.join(SING, shot, f"{VER}_sync_1080.mp4")
     encode(frames, out, "1920:1080", 12)
     print(os.path.relpath(out, ROOT), len(frames), "frames =", round(len(frames) / 24, 3), "s (shot", round(b - a, 3), "s);",
           bl, "cross-faded frames;", os.path.getsize(out) // 1024, "KB; take", SYNC[shot][0])

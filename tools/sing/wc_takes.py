@@ -27,17 +27,18 @@ import takes as V2  # noqa: E402  (vocal slices, contact sheet)
 
 SING = os.path.join(ROOT, "media/sing")
 MODEL = "bytedance/seedance-2.5"
-PRE = "v3_take_"
+VER = os.environ.get("WC_VER", "v3")      # v4: WC_VER=v4 (new first frames: glossier hair, less smile); docs/revisions/v4/A.md
+PRE = f"{VER}_take_"
 
 P = ("A picture comes to life and stays the same picture in every frame: the woman is a soft colour painting in gentle brushed "
      "washes, and the world behind her is a hard black-and-white wood engraving, drawn to all four edges with the same lines and "
      "hatching as the first frame. The two never blend: she stays painted in full warm colour, the world stays black ink. Nothing "
-     "fades or washes out; no bare paper, no mist. The woman begins on her painted smile and sings from it: she "
-     "sings {WORDS} {ACT} Her eyes stay open, warm and alive; a quick blink is fine. Her forehead stays "
+     "fades or washes out; no bare paper, no mist. {BEGIN} "
+     "sings {WORDS} {ACT} Her eyes stay open, {EYES}; a quick blink is fine. Her forehead stays "
      "smooth: brows relaxed, never knit, no frown. Her head keeps the angle of the first frame: it does not tip back or turn; it "
      "sways only a very little. Her mouth opens naturally, as in gentle singing. She stays the same person as in "
-     "the first frame: the same large head, wide heart-shaped face, high forehead, the two slightly different eyebrows, glasses, long "
-     "loose dark hair. Do not redraw, beautify, slim, age or restyle her; no makeup. Her white jacket with its orange "
+     "the first frame: the same large head, wide heart-shaped face, high forehead, the two slightly different eyebrows, glasses, {HAIRPRE}"
+     "{HAIR}. Do not redraw, beautify, slim, age or restyle her; no makeup. Her white jacket with its orange "
      "band, blue disc and the round '1420 MHz' patch on the sleeve stays exactly as painted, the patch sharp and unchanged. No "
      "headphones. Static locked-off camera, no zoom: she stays framed chest-up exactly as in the first frame. {WHERE} No new text.")
 WHERE_SANE = ("She stands at night right in front of the mirror of Cloud Gate in Chicago. Everything behind her stays exactly as "
@@ -74,9 +75,26 @@ R2 = {
     "V3S": dict(ACT="She sings it clearly, her lips shaping every word, eyes open, looking into the camera. Her jacket stays "
                     "white, never cyan."),
 }
+# The parts of the prompt that describe her face and hair. v3 = the smiling portrait. v4 = Jade's pick (v4 note:
+# "reduce smiling magnitude in order to fit the mood of the song"; hair "more glossy and natural looking").
+LOOK = {
+    "v3": dict(BEGIN="The woman begins on her painted smile and sings from it: she", EYES="warm and alive",
+               HAIRPRE="long ", HAIR="loose dark hair"),
+    "v4": dict(BEGIN="She never smiles: from the calm, serious, closed mouth of the first frame she", EYES="steady",
+               HAIRPRE="", HAIR="long glossy dark hair"),
+}[VER]
+V4 = {   # v4 acting: tense and determined, not warm (the lyric is about being hunted the night before her defense)
+    "S1": dict(ACT="She sings it quietly and intently, looking into the camera: wide awake, a little tense, determined."),
+    "V3S": dict(ACT="She sings it clearly, lips shaping every word, eyes on the camera, resolute. Her jacket stays "
+                    "white, never cyan."),
+}
 if os.environ.get("WC_ROUND", "2") == "2":
     for _k, _d in R2.items():
         SHOTS[_k].update(_d)
+if VER != "v3":
+    for _k, _d in V4.items():
+        SHOTS[_k].update(_d)
+        SHOTS[_k]["first"] = SHOTS[_k]["first"].replace("/v3_", f"/{VER}_")
 for _k, _s in SHOTS.items():      # same slices and windows as v2
     _s.update({k: V2.SHOTS[_k][k] for k in ("ref_t0", "duration", "in_out")})
 
@@ -98,14 +116,14 @@ def submit(shot, n=1, res="720p", dry=False, note=""):
     d = os.path.join(SING, shot)
     aud = V2.audio_path(shot)
     assert os.path.exists(aud), aud
-    img = gen.ref_image(os.path.join(ROOT, s["first"]), os.path.join(d, "v3_first_2048.jpg"))
-    prompt = P.format(WORDS=s["WORDS"], ACT=s["ACT"], WHERE=s["WHERE"])
+    img = gen.ref_image(os.path.join(ROOT, s["first"]), os.path.join(d, f"{VER}_first_2048.jpg"))
+    prompt = P.format(WORDS=s["WORDS"], ACT=s["ACT"], WHERE=s["WHERE"], **LOOK)
     assert len(prompt) <= 2000, len(prompt)
     for _ in range(n):
         used = [k for k, _ in sidecars(shot)] + [int(f[len(PRE):].split(".")[0]) for f in os.listdir(d)
                                                  if f.startswith(PRE) and f.endswith(".spec.json")]
         k = max(used) + 1 if used else 1
-        spec = {"model": MODEL, "tag": f"revA_sing_{shot}", "notes": f"{shot} {PRE}{k} {res} {note}".strip(),
+        spec = {"model": MODEL, "tag": f"revA_sing_{shot}" if VER == "v3" else f"{VER}A_sing_{shot}", "notes": f"{shot} {PRE}{k} {res} {note}".strip(),
                 "input": {"prompt": prompt, "image": "file:" + os.path.relpath(img, ROOT),
                           "reference_audios": ["file:" + os.path.relpath(aud, ROOT)], "duration": s["duration"],
                           "resolution": res, "aspect_ratio": "16:9", "generate_audio": False,

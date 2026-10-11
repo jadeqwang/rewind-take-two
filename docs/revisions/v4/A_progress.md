@@ -33,6 +33,18 @@ Updated: 2026-10-11, session start. Brief: `docs/revisions/v4/A.md`.
   - seedream-5-pro `size` must be multiples of 16 and at most 4,194,304 px: `1792x2240` works.
 - Manifest started: `docs/revisions/v4/review_A.json` (status `question`).
 
+- **Combine step ready:** `tools/sing/v4_pick.py HAIR_KEY FACE_KEY` (MPY venv, no paid call) lays the F pick's face
+  into the H pick's hair on the portrait at 2x (1942x3240) → `media/sing/v4/stills/pick_<hair>+<face>.png`, `.json`,
+  `_check.jpg`. Tested on two example pairs (H1+F3, H2+F6): no visible seam, glasses line up. Examples for Jade:
+  `media/sing/v4/stills/combined_examples_v4A.jpg` (copy `media/reviews/v4/A/stills_combined_examples.jpg`).
+- **Animation scripts take a version switch** (`WC_VER=v4`; the default is still v3 and the v3 take prompts are
+  byte-identical, checked by hash): `wc_base.py` (also `WC_SRC=<pick png>`, `WC_SRC_SCALE=2`), `wc_paint.py`,
+  `wc_restore.py`, `wc_comp.py`, `wc_takes.py` (v4 prompt: she never smiles, tense and determined; S1 1968 and
+  V3S 1992 characters of the 2000 cap; tags `v4A_sing_<SHOT>`), `wc_post.py` (`SYNC_V4` is empty until the takes are
+  measured; writes `v4_sync_1080.mp4`). Not committed yet at the time of this note if `git status` shows them
+  modified. The v4 prompt wording assumes an unsmiling pick: if Jade picks F1/F2 (small smile), soften `LOOK["v4"]`
+  and `V4` in `wc_takes.py`.
+
 ## Running now
 
 Nothing. **Waiting for Jade's pick** (asked in the pane ~17:45): one H and one F from the contact sheet.

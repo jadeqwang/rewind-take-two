@@ -20,7 +20,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import mouth as MT  # noqa: E402
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-BASE = os.path.join(ROOT, "media/sing/first/v3_base16.jpg")
+BASE = os.path.join(ROOT, f"media/sing/first/{os.environ.get('WC_VER', 'v3')}_base16.jpg")
 FACE_OVAL = [10, 338, 297, 332, 284, 251, 389, 356, 454, 323, 361, 288, 397, 365, 379, 378, 400, 377, 152, 148, 176, 149, 150,
              136, 172, 58, 132, 93, 234, 127, 162, 21, 54, 103, 67, 109]
 

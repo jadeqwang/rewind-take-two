@@ -25,7 +25,7 @@ except ImportError:      # the torch venv has no OpenCV; matte() does not need i
 from PIL import Image
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-ALPHA = os.path.join(ROOT, "media/sing/first/v3_her_alpha.png")
+ALPHA = os.path.join(ROOT, f"media/sing/first/{os.environ.get('WC_VER', 'v3')}_her_alpha.png")
 CROP = json.load(open(os.path.join(ROOT, "media/sing/first/crop.json")))["box"]
 
 

@@ -18,7 +18,12 @@ sys.path.insert(0, os.path.join(ROOT, "tools/gen"))
 import cf  # noqa: E402
 
 MODEL = "google/nano-banana-pro"
-BASE = "media/sing/first/v3_base16.jpg"
+VER = os.environ.get("WC_VER", "v3")      # v4: WC_VER=v4 (new portrait: glossier hair, less smile); see docs/revisions/v4/A.md
+BASE = f"media/sing/first/{VER}_base16.jpg"
+# what the prompt says of her mouth and hair: v3 is the smiling portrait, v4 is whatever Jade picked (v4_pick.py)
+MOUTH = "the same open smile" if VER == "v3" else "exactly the same expression and the same mouth, as painted"
+HAIR = ("the long loose dark hair with all its wisps at its full length" if VER == "v3" else
+        "the long dark hair exactly as it is painted, with its sheen, its locks and its full length")
 PLATE = "media/sing/plates/plate_close_1.jpg"
 
 KEEP_HER = (
@@ -28,8 +33,8 @@ KEEP_HER = (
     "black-and-white wood engraving in the manner of M.C. Escher.\n\n"
     "Make image 1 into a frame for that film by replacing only what is around her. Keep the woman exactly as she is "
     "painted: the same watercolour brushwork and paper grain inside her, the same face, head size, shape and tilt, the same "
-    "high forehead and hairline, glasses, the two slightly different eyebrows, eyes, nose, the same open smile, the long "
-    "loose dark hair with all its wisps at its full length, the cropped white jacket with its orange band, its small blue "
+    "high forehead and hairline, glasses, the two slightly different eyebrows, eyes, nose, " + MOUTH + ", " + HAIR + ", "
+    "the cropped white jacket with its orange band, its small blue "
     "disc and the round black-and-white '1420 MHz' patch on the sleeve, the black mock-neck top, her pose, size and position "
     "in the picture: her head exactly as large as in image 1 and in the same spot, in the middle of the picture, the bottom "
     "edge cutting her at the chest. Do not redraw, move, resize, turn, beautify, slim or restyle her in any way: no makeup, "
@@ -74,12 +79,12 @@ def main(argv):
     out = []
     for _ in range(n):
         i = 1
-        while any(os.path.exists(os.path.join(ROOT, f"media/sing/first/v3_paint_{key}_{i}{e}")) for e in (".png", ".jpg", ".webp")):
+        while any(os.path.exists(os.path.join(ROOT, f"media/sing/first/{VER}_paint_{key}_{i}{e}")) for e in (".png", ".jpg", ".webp")):
             i += 1
-        p = os.path.join(ROOT, f"media/sing/first/v3_paint_{key}_{i}.png")
+        p = os.path.join(ROOT, f"media/sing/first/{VER}_paint_{key}_{i}.png")
         inp = {"prompt": PROMPTS[key], "aspect_ratio": "16:9", "image_size": "2K",
                "image_input": ["file:" + BASE, "file:" + PLATE]}
-        out += cf.generate(MODEL, inp, p, tag="revA_sing_paint", dry_run="--dry-run" in argv)
+        out += cf.generate(MODEL, inp, p, tag="revA_sing_paint" if VER == "v3" else f"{VER}A_sing_paint", dry_run="--dry-run" in argv)
     print(out)
 
 
