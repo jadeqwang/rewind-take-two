@@ -155,6 +155,14 @@ flash is shortened and softened. The whispered *shot* now sits on the paper sky.
 in V2c3, the mirror-etch contrast, the size of the LOADING tip (it is fixed in the shared hud module), and Jade's hair
 in V2k.
 
+### Rev 4 (coordinator leftovers)
+
+- **V2k hair:** fixed. V2k2 and V2k3 are regenerated from keyframes with the bun and pencil plainly visible (take_2). V2k2
+  now covers both 104.22–107.72 cuts, which also removes the V2k1 margin problem. A faint matte outline shows on
+  the frame-skip held layer.
+- **Mirror etch:** now opaque paper-white on a dark plate, 74 px. The HUD is hidden over the mirror shot (90.14–92.79).
+- **V2c3 lane arrows:** the plate is reframed (scale 1.3, shifted down), so the left-pointing arrows are out of frame.
+
 ### Chosen takes
 
 All clips use take_1 except **V2b4 take_2** (retake: the lamp actually falls), **V2d2 take_2** (the hang), and, after the rough-cut review, **V2a3, V2a4 and V2m1 take_2**. The
@@ -187,4 +195,5 @@ hero shots (V2c2, V2d2) got 2 takes each. Per-clip judgement is in each `NOTES.m
 | Keyframes (seedream-5-pro, nano-banana-pro, 1 gpt-image-2.5-flare; ~50 images incl. retries) | 5.88 |
 | Video (Seedance 2.0, 720p, 44 takes, ~200 s) | 30.15 |
 | Rev 3 fixes (4 keyframes + 4 takes) | ~3.2 |
-| **Section C total** | **39.24** of the $70 budget |
+| Rev 4 (3 keyframes + 2 takes) | ~2.0 |
+| **Section C total** | **41.15** of the $70 budget |
