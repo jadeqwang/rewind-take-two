@@ -1,9 +1,9 @@
 # Section D: Drop 2 + "Anomaly detected" (112.96–141.00)
 
-Shots E1, E2, E4–E8. E3 (119.44–122.95, singing #2) belongs to the singing director, and its slot is left empty.
+Shots E1–E8. E3 (119.44–122.95, singing #2) uses the singing director's take; it was placed here in revision 3.
 Timeline: `render/timeline/D.js`. It is **generated** by `tools/sections/D/build_timeline.py` from `media/shots/_D/takes.json`, so edit those two files rather than D.js.
 EDL mirror: `media/shots/D_edl.json`.
-Solo preview, with a slate in the E3 slot:
+Solo preview:
 `node render/engine/render.mjs --timeline render/timeline/_D_solo.js --range 112.96 141 --preview --encode`
 → `render/engine/out/D_solo/D_solo_preview_112.96-141.00.mp4`.
 
@@ -44,6 +44,24 @@ All shots are in the engine and render end to end. The merge check against E.js 
 5. **Wall-kick retake swapped in:** `trk_walljump` take 2, re-prompted "no visual effects". It has no rainbow trail and does a clean column kick into an inverted backflip. Ghost 3 freezes on the inverted flip (3.62 s, played at 1.4×).
 
 **A bug found while doing this:** the ribbon module wants absolute design px, but my paths were centre-origin, so most residue ribbons in revision 1 were half off-screen. `ribbon()` now converts. The E2 trails, E4 follow, E6b split trails and E7 pile-up all show now.
+
+## Revision 3: E3 placed in this timeline
+
+- **Take:** `media/sing/E3/take_3_lips.mp4` (720p). It is not engraved: the pencil look is approved as made. The engine upscales it to 1080p with Lanczos when it extracts frames.
+- **Lip sync:** `clip_time = song_time − 119.14 + lag`. The lag is set by **`E3_VARIANT`** at the top of `tools/sections/D/build_timeline.py`. The values come from `media/sing/review/E3_take_3_lips_ABC.json`, so they match the A/B/C composites Jade listens to:
+
+  | Variant | Lag | Clip in at 119.44 | Lips |
+  |---|---|---|---|
+  | A | 0.90 | 1.20 | 0.15 s earlier |
+  | **B** (default) | 0.75 | 1.05 | as measured |
+  | C | 0.60 | 0.90 | 0.15 s later |
+
+  To switch: change the constant, rerun the build script, re-render.
+- **Ribbons:** seven orange/pale-blue coloured-pencil ribbons spiral in from beyond the frame edges and settle onto a tilted orbit around her head and shoulders. The orbit is centred (900, 470), radii 570 × 335, −10°, so it clears her head.
+  Where an orbit crosses her body it passes behind her. An occluder layer redraws the same take through her first-frame silhouette (`media/sing/first/her_mask_first_frame.png`, eroded, with a stray plaza blob removed; it becomes `media/shots/E3/occluder_mask.mp4`). Her face is never touched.
+- **Look:** a light pencil grain (0.045, size 1.2, on twos) plus paper 0.18, so her glasses stay intact.
+- **Lyric:** "Rewind." in IM Fell, orange #F08A24, in the lower third, timed to the word.
+- **Risk:** the takes keep the first frame's head pose, but if she drifted, the static occluder would let a ribbon edge show over her hair rim. I didn't see this in 119.5–122.9.
 
 ## Ghost choreography (the 13 chops)
 

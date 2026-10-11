@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 """Build section D's engine timeline (render/timeline/D.js) and the EDL mirror (media/shots/D_edl.json).
 
-Section D = drop 2 + "Anomaly detected", 112.96-141.00, minus E3 (119.44-122.95, the singing shot owned by another
-director). All ghost choreography lives in the tables below (GHOSTS_E2, E4_GHOSTS, ...): which clip, freeze/offset,
+Section D = drop 2 + "Anomaly detected", 112.96-141.00, including E3 (119.44-122.95): the singing take made by the singing
+director, placed here with ribbons (E3_VARIANT below picks the lip-sync lag). All ghost choreography lives in the tables below (GHOSTS_E2, E4_GHOSTS, ...): which clip, freeze/offset,
 hue, opacity, position. Ghost positions are measured from the mattes (tools/sections/D/mtrack.py) so a ghost freezes
 exactly where she was.
 
@@ -16,6 +16,12 @@ import sys
 
 import cv2
 import numpy as np
+
+# E3 singing take lip-sync variant (media/sing/review/E3_take_3_lips_ABC.json): flip after Jade listens.
+#   A = lips 0.15 s earlier (lag 0.90), B = measured (lag 0.75), C = lips 0.15 s later (lag 0.60)
+E3_VARIANT = "B"
+E3_LAGS = {"A": 0.90, "B": 0.75, "C": 0.60}
+E3_TAKE, E3_REF_T0 = "media/sing/E3/take_3_lips.mp4", 119.14      # clip_time = song_time - ref_t0 + lag
 
 ROOT = "/home/jade/Documents/rewind-take-two"
 os.chdir(ROOT)
@@ -290,6 +296,53 @@ def build():
         type="canvas", module="hud", stage="post", params=dict(mode="iteration", label="GHOSTS", value=keys[1:] if keys[1][0] <= 0 else keys,
                                                                snap=True, side="right", color=INK, size=26))]))
 
+    # ---------------- E3: SINGING #2 "Rewind." (pencil Jade at the Bean; take made by the singing director) ----------------
+    t0, t1 = 119.44, 122.95
+    lag = E3_LAGS[E3_VARIANT]
+    occ = f"{SH}/E3/occluder_mask.mp4"
+    if not os.path.exists(occ):        # her first-frame silhouette (singing director's mask) as a static matte clip
+        import subprocess
+        os.makedirs(f"{SH}/E3", exist_ok=True)
+        m = cv2.resize(cv2.imread("media/sing/first/her_mask_first_frame.png", 0), (1920, 1080), interpolation=cv2.INTER_AREA)
+        m = (m > 128).astype(np.uint8) * 255
+        m[:860, :640] = 0                # stray plaza blob left of her (trace artefact); keeps head, hair, torso, arm
+        m = cv2.GaussianBlur(cv2.erode(m, cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (9, 9))), (0, 0), 2.5)
+        cv2.imwrite(occ[:-4] + ".png", m)
+        subprocess.run([os.path.expanduser("~/Documents/moongazing/.venv/bin/ffmpeg"), "-y", "-loglevel", "error", "-loop", "1",
+                        "-framerate", "24", "-i", occ[:-4] + ".png", "-t", "5.1", "-c:v", "libx264", "-pix_fmt", "yuv420p",
+                        "-crf", "10", occ], check=True)
+    e3_in = r4(t0 - E3_REF_T0 + lag)
+    # residue ribbons spiral in from the frame edges and orbit her head and shoulders; where an orbit crosses her body
+    # it is hidden by an occluder (the same take, matted by her first-frame silhouette), so they circle BEHIND her and
+    # never touch her face (the orbit clears the head: top y≈130 vs hair top ≈190, sides x≈330/1470 vs head 700-1100).
+    CX, CY, RX, RY, TILT = 900, 470, 570, 335, math.radians(-10)
+    e3_ribs = []
+    for k in range(7):
+        st = 0.18 * k                          # staggered entries
+        a0 = math.radians(25 + 52 * k)         # entry angle around the frame
+        sc = 0.92 + 0.07 * (k % 3)
+        w = 2 * math.pi / (2.6 + 0.25 * (k % 3))
+        pts = []
+        for j in range(int((t1 - t0 - st) * 12) + 1):
+            tt = j / 12
+            r = sc * (1 + 1.25 * math.exp(-tt / 0.45))                # far outside the frame -> settles on the orbit
+            a = a0 + w * tt
+            x, y = RX * r * math.cos(a), RY * r * math.sin(a)
+            xr, yr = x * math.cos(TILT) - y * math.sin(TILT), x * math.sin(TILT) + y * math.cos(TILT)
+            pts.append([r4(st + tt), r4(CX + xr), r4(CY + yr)])
+        e3_ribs.append(dict(type="canvas", module="ribbon", keepColor=True, params=dict(
+            path=pts, colors=[RES[k % 2], RES[(k + 1) % 2]], width=40 + 10 * (k % 3), trail=1.5, twist=0.7, bloom=0.9,
+            grain=0.75, pencil=False, motes=0.3, seed=120 + k)))
+    shots.append(dict(id="E3_sing", start=t0, end=t1, layers=[
+        dict(id="jade", type="video", src=E3_TAKE, fit="cover", **{"in": e3_in, "rate": 1.0}),
+        *e3_ribs,
+        dict(id="occluder", type="video", src=E3_TAKE, fit="cover", **{"in": e3_in, "rate": 1.0},
+             matte=dict(src=f"{SH}/E3/occluder_mask.mp4", mode="luma")),
+        dict(type="canvas", module="lowerthird", stage="post", params=dict(color="#F08A24", size=120, y=975, halo=0.6))],
+        fx=[dict(type="grain", amount=0.045, size=1.2, seed="twos"), dict(type="paper", amount=0.18),
+            dict(type="flash", at=[0], dur=0.06, amount=0.35, color="#ffffff")]))
+    notes["E3"] = dict(take=E3_TAKE, variant=E3_VARIANT, lag=lag, clip_in=e3_in, clip_out=r4(t1 - E3_REF_T0 + lag))
+
     # ---------------- E4: "Rewind." #2, the Super Meat Boy replay ----------------
     t0, t1 = 122.95, 126.25
     E4 = take["e4_stream"]
@@ -458,7 +511,7 @@ def to_edl(sec):
 
 if __name__ == "__main__":
     sec, notes = build()
-    js = ("// Section D: drop 2 + \"Anomaly detected\" (112.96-141.00; E3 119.44-122.95 belongs to the singing director).\n"
+    js = ("// Section D: drop 2 + \"Anomaly detected\" (112.96-141.00, incl. E3 singing take; lip-sync variant: E3_VARIANT).\n"
           "// GENERATED by tools/sections/D/build_timeline.py from media/shots/_D/takes.json: edit those, not this file.\n"
           "// Ghost choreography (clip, freeze/offset, hue, opacity, position) is tabulated in docs/sections/D.md.\n"
           "export default " + json.dumps(sec, indent=1, ensure_ascii=False) + ";\n")
