@@ -25,6 +25,15 @@ const subQuad = ([x0, y0, x1, y1, x2, y2, x3, y3], u0, u1) => {
   return [...top(u0), ...top(u1), ...bot(u1), ...bot(u0)];
 };
 
+// HILBERT on the hotel's rooftop billboard: rev-A's woodcut lettering (as on their 0:24 sign, render/timeline/A.js D2),
+// steady (a name, not a lyric: `at` before the shot, so it is cut solid from the first frame). `face`: paint the lit
+// panel first where the plate drew it hatched dark.
+const WOODCUT = 'tools/sectionA/modules/woodcut.js';
+const BB = { lawn: [1621, 107, 1811, 27, 1812, 100, 1621, 167], chasm: [1626, 106, 1818, 22, 1820, 96, 1627, 161] };
+const hilbert = (corners, face = false) => [
+  ...(face ? [{ id: 'bb_face', type: 'canvas', module: 'render/timeline/_B_quad.js', params: { corners, color: '#efe7da' } }] : []),
+  { id: 'hilbert', type: 'canvas', module: WOODCUT, params: { text: 'HILBERT', at: -1, color: INK, flecks: 0, hatch: 0.15, box: [420, 140], pad: 8, corners } }];
+
 export default function verse2B({ T }) {
   const shots = [];
 
@@ -77,6 +86,7 @@ export default function verse2B({ T }) {
     shots.push({ id: 'B2_chasm', start: st, end: 98.28, background: INK, fx: [beatPunch, ...d.fx], layers: [
       { id: 'plate', type: 'video', ...A, matte: undefined },
       { id: 'plateB', type: 'video', ...B, opacity: [[0, 0, 'hold'], [bOn, 1]] },
+      ...hilbert(BB.chasm, true),
       { id: 'shadow', type: 'ghosts', src: plate('chasm_short'), matte: matteSrc('chasm_short'), fit: 'cover', loop: false, graphite: true,
         srcTime: [[0, 1.5], [0.3, 2.15], [0.7, 3.7], [burst, 4.12], [1.5, 4.4]],
         opacity: [[0, 1, 'hold'], [burst + F - E, 0.45, 'hold'], [burst + 2 * F - E, 0]], instances: [{ opacity: 0.62 }] },
@@ -104,6 +114,7 @@ export default function verse2B({ T }) {
     const misses = shotsAt.map(([t, o, z], k) => traceMiss({ id: `miss${k}`, origin: o, times: [t], shotStart: st, size: z }));
     shots.push({ id: 'B2_lawn', start: st, end: 100.70, background: INK, fx: [beatPunch], layers: [
       { id: 'plate', type: 'video', ...v },
+      ...hilbert(BB.lawn),
       { id: 'zig', ...pin(subQuad(G, 0, split), 'I zig', { style: 'ground', times: ['98.28', '98.47'], padding: 0, grain: 0.2 }), blend: 'multiply' },
       { id: 'zag', ...pin(subQuad(G, split, 1), 'zag', { style: 'ground', times: ['98.78'], padding: 0, grain: 0.2 }), blend: 'multiply' },
       ...misses.flatMap(m => m.under),
@@ -127,6 +138,7 @@ export default function verse2B({ T }) {
     const m2 = traceMiss({ id: 'missT', origin: [414, 512], times: [102.00], shotStart: st, targets: [[1185, 960]], size: 0.85 });
     shots.push({ id: 'B2_lawn2', start: st, end: 102.46, background: INK, fx: [beatPunch], layers: [
       { id: 'plate', type: 'video', ...v },
+      ...hilbert(BB.lawn),
       { id: 'board', ...pin(board, 'across the\nfield of grass', { sync: 'lyric', padding: 14, panel: '#f6e8d8', border: '#f6e8d8' }) },
       { id: 'hole', type: 'canvas', module: 'render/timeline/_B_hole.js', params: { at: 101.14 - st, x: hole[0], y: hole[1], r: 13 } },
       ...m1.under, ...m2.under,
@@ -138,19 +150,21 @@ export default function verse2B({ T }) {
   // ---- 102.46–104.22 the firing line: the lead agent, two fingers to his earpiece, speaks; she is tiny, far right.
   // ("grass", sung 102.39–103.74, lands on the board two frames before the cut: it is held here as a lower third)
   shots.push({ id: 'B2_ear', start: 102.46, end: 104.22, background: INK, fx: [beatPunch], layers: [
-    { id: 'plate', type: 'video', src: plate('ear'), in: 0.2, rate: 1, fit: 'cover' }] });
+    { id: 'plate', type: 'video', src: plate('ear'), in: 0.2, rate: 1, fit: 'cover' }, ...hilbert(BB.lawn)] });
 
-  // ---- 104.22–105.98 side-scroll to the hotel with the v2 frame-skip: the plate (agents, world) jumps on every beat
-  // while Jade, through her matte, runs continuously.
+  // ---- 104.22–105.98 side-scroll to the hotel (take skip_b: the agents start far back and gain on her) with the v2
+  // frame-skip: the plate (agents, world) jumps on every beat, 3.3x ahead of her own clock, so on each beat the agents
+  // are a big step closer (plate src 0.5 → 1.95 → 3.40 → 4.79: far back → a few strides behind); Jade, through her
+  // matte, runs continuously at 1x.
   {
-    const st = 104.22, en = 105.98, in0 = 2.0, rate = 1, k = 1.35;
+    const st = 104.22, en = 105.98, in0 = 0.5, rate = 1, k = 3.3;
     const beats = T.beats.filter(t => t > st + 0.02 && t < en - 0.02);
     const keys = [[0, in0, 'hold'], ...beats.map(b => [b - st, in0 + (b - st) * rate * k, 'hold']), [en - st, in0 + (en - st) * rate * k]];
-    const v = { src: plate('skip'), fit: 'cover' };
+    const v = { src: plate('skip_b'), fit: 'cover' };
     shots.push({ id: 'B2_skip', start: st, end: en, background: INK, fx: [beatPunch], layers: [
       { id: 'live', type: 'video', ...v, in: in0, rate },
-      { id: 'held', type: 'video', ...v, srcTime: keys, matte: { ...matte('skip'), mode: 'lumaInv' } },
-      { id: 'jade', type: 'video', ...v, in: in0, rate, matte: matte('skip'), keepColor: true },
+      { id: 'held', type: 'video', ...v, srcTime: keys, matte: { ...matte('skip_b'), mode: 'lumaInv' } },
+      { id: 'jade', type: 'video', ...v, in: in0, rate, matte: matte('skip_b'), keepColor: true },
     ] });
   }
 
@@ -158,19 +172,24 @@ export default function verse2B({ T }) {
   shots.push({ id: 'B2_glance', start: 105.98, end: 107.28, background: INK, fx: [beatPunch], layers: [
     { id: 'plate', type: 'video', src: plate('glance'), in: 0.35, rate: 1.1, fit: 'cover' }] });
 
-  // ---- 107.28–108.67 the corner. The agent is not there (a feathered patch of the engraved clean still covers him);
-  // on the 107.72 downbeat he flickers in over three frames (on, off, on) and stays. She skids to a stop.
-  // Source 0–1.39 here and 1.39–2.64 in the punch-in: always before 3.2 s (his pistol never reaches head height).
+  // ---- 107.28–108.67 round the corner (take round_corner, high three-quarter view, camera locked): she runs along the
+  // front wall toward the corner; the agent waits around it, where we can see him and she can't. He is not there at
+  // first (a feathered patch of the engraved clean still, B_roundcornerclean, covers him); on the 107.72 downbeat he
+  // flickers in over three frames (on, off, on) and stays, while she is still approaching. She reaches the corner and
+  // nearly runs into him at ~108.35 (src 3.3) and recoils into a stop. The take holds its first frame for 2.1 s, so it
+  // starts at src 2.12. His pistol stays low at his hip throughout.
   {
-    const st = 107.28, a = snapF(107.72) - st;
-    shots.push({ id: 'B2_skid', start: st, end: 108.67, background: INK, fx: [beatPunch], layers: [
-      { id: 'plate', type: 'video', src: plate('skid'), in: 0, rate: 1, fit: 'cover' },
-      { id: 'clean', type: 'image', src: `${S}B_cornerclean/patch_agent.png`, fit: 'cover',
+    const st = 107.28, a = snapF(107.72) - st, r1 = (3.3 - 2.12) / (108.35 - st);
+    const v = { src: plate('round_corner'), fit: 'cover' };
+    shots.push({ id: 'B2_corner', start: st, end: 108.67, background: INK, fx: [beatPunch], layers: [
+      { id: 'plate', type: 'video', ...v, in: 2.12, rate: r1 },
+      { id: 'clean', type: 'image', src: `${S}B_roundcornerclean/patch_agent.png`, fit: 'cover',
         opacity: [[0, 1, 'hold'], [a - E, 0, 'hold'], [a + F - E, 1, 'hold'], [a + 2 * F - E, 0, 'hold']] },
     ] });
-    // ---- 108.67–109.92 "With no warning": punch in on the same take (1.35x toward the two of them). No trace line.
-    shots.push({ id: 'B2_skid_in', start: 108.67, end: 109.92, background: INK, fx: [{ type: 'punch', amount: 0.025, on: 'downbeat' }], layers: [
-      { id: 'plate', type: 'video', src: plate('skid'), in: 108.67 - st, rate: 1, fit: 'cover', scale: 1.35, x: 81, y: -27 }] });
+    // ---- 108.67–109.92 "With no warning": punch in on the same take (1.35x toward the two of them), the recoil
+    // settling into a stop (src 3.65 → 4.65). No trace line.
+    shots.push({ id: 'B2_corner_in', start: 108.67, end: 109.92, background: INK, fx: [{ type: 'punch', amount: 0.025, on: 'downbeat' }], layers: [
+      { id: 'plate', type: 'video', ...v, in: 2.12 + (108.67 - st) * r1, rate: 0.8, scale: 1.35, x: -54, y: -135 }] });
   }
 
   // ---- 109.92–110.78 low angle: the pistol rises, barrel at or below her waist (source 1.1–2.09).
@@ -196,11 +215,13 @@ export default function verse2B({ T }) {
 
   const ov = (id, start, end, layer) => ({ id, start, end, layers: [layer] });
   const overlays = [
-    // HUD (unchanged from v2)
-    { id: 'C_race_chip', start: 94.06, end: 98.28, layers: [{ type: 'solid', color: INK, rect: [1300, 36, 600, 112], opacity: 0.95 }] },
-    ov('C_hud_race', 94.06, 98.28, { type: 'canvas', module: 'hud', params: { mode: 'race', side: 'right', iteration: 4096,
+    // HUD (v2's), moved to the top LEFT from the chasm cut (96.30) on, where the hotel billboard (HILBERT) is top right:
+    // the race readout slides over with its chip; the platformer readout gets the same ink chip so it reads over the plates
+    { id: 'C_race_chip', start: 94.06, end: 98.28, layers: [{ type: 'solid', color: INK, rect: [1300, 36, 600, 112], opacity: 0.95, x: [[0, 0, 'hold'], [2.24, -1280]] }] },
+    ov('C_hud_race', 94.06, 98.28, { type: 'canvas', module: 'hud', x: [[0, 0, 'hold'], [2.24, -1280]], params: { mode: 'race', side: 'right', iteration: 4096,
       split: [[0, 0.42], [1.8, 0.12], [2.6, -0.04], [4.2, -0.31]], color: PAPER, splitColor: [[0, PAPER, 'hold'], [2.55, '#5fd16a']] } }),
-    ov('C_hud_field', 98.28, 110.78, { type: 'canvas', module: 'hud', params: { mode: 'platformer', side: 'right', color: INK, iteration: 4097, deaths: 4097, timer: { from: '56.54' } } }),
+    { id: 'C_field_chip', start: 98.28, end: 110.78, layers: [{ type: 'solid', color: INK, rect: [20, 36, 470, 170], opacity: 0.95 }] },
+    ov('C_hud_field', 98.28, 110.78, { type: 'canvas', module: 'hud', params: { mode: 'platformer', side: 'left', color: PAPER, iteration: 4097, deaths: 4097, timer: { from: '56.54' } } }),
     ov('C_hud_continue', 111.30, 112.66, { type: 'canvas', module: 'hud', x: -560, params: { mode: 'continue', from: 9, every: 0.8, start: '111.40', press: 'PRESS ◀◀' } }),
     // lyrics not on a surface ("A shadow chasing me" is on the station signs, "I zigzag across the field of grass" on the lawn and the board)
     ov('C_lyr_race', 96.30, 98.28, { type: 'canvas', module: 'lowerthird', params: { text: 'like it’s a race', sync: 'lyric', color: INK, halo: 0.9, size: 74 } }),

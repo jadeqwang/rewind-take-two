@@ -33,7 +33,7 @@
    98.28,
    104.22
   ],
-  "what_changed": "The ring of agents is gone: an open lawn by the Hilbert Hotel, agents in a firing line at frame left, and she zigzags away toward the hotel, turning on the beats. Four misses on 98.94/99.38/99.82/100.26: a ruled trace line to where she just was, a muzzle starburst, turf thrown up and a scar that stays. 'I ZIGZAG' is painted flat on the lawn in perspective, word-timed ('zag' on the second z in the vocal, 98.78). Closer: 'ACROSS THE FIELD OF GRASS' on a park notice board; a miss punches a hole in the board (101.14), another hits turf behind her (102.00). Then an agent with two fingers to his earpiece while she is tiny, far off. The take's own cut-back toward the agents is skipped with a jump cut on the 101.58 beat; 'grass' lands on the board two frames before the cut, so it is held as a lower third over the earpiece shot."
+  "what_changed": "The ring of agents is gone: an open lawn by the Hilbert Hotel, agents in a firing line at frame left, and she zigzags away toward the hotel, turning on the beats. Four misses on 98.94/99.38/99.82/100.26: a ruled trace line to where she just was, a muzzle starburst, turf thrown up and a scar that stays. 'I ZIGZAG' is painted flat on the lawn in perspective, word-timed ('zag' on the second z in the vocal, 98.78). Closer: 'ACROSS THE FIELD OF GRASS' on a park notice board; a miss punches a hole in the board (101.14), another hits turf behind her (102.00). Then an agent with two fingers to his earpiece while she is tiny, far off. The take's own cut-back toward the agents is skipped with a jump cut on the 101.58 beat; 'grass' lands on the board two frames before the cut, so it is held as a lower third over the earpiece shot. The hotel's rooftop billboard now reads HILBERT in every shot where it shows (chasm, lawn, notice board, earpiece), and the HUD moved to the top left."
  },
  {
   "note": "running towards agents doesn’t make sense, the point is to run away from them, and she’s fundamentally a pacifist heroine",
@@ -43,20 +43,67 @@
    "V2l",
    "V2m",
    "V2n",
-   "B_skip",
+   "B_skip_b",
    "B_glance",
-   "B_skid",
-   "B_cornerclean",
+   "B_round_corner",
+   "B_roundcornerclean",
    "B_pistol",
    "B_shot"
   ],
-  "status": "partial",
+  "status": "done",
   "after": "media/reviews/v3/B/0144_too_fast_no_warning.mp4",
   "before_range": [
    104.22,
    112.96
   ],
-  "what_changed": "She never runs at an agent. Side-scroll to the hotel with the v2 frame-skip on every beat (the agents jump pose per beat but, in this take, do not visibly close distance), a glance back at an empty lawn, then at the hotel corner the agent spawns on the 107.72 downbeat, flickering in over three frames (he is painted out with the engraved clean plate before that), and she skids to a stop. 'With no warning' punches in on the same take; there is no trace line. Low-angle pistol kept at or below her waist, the hit with the mote burst at the impact point, and CONTINUE? now freezes on the new hit frame. Partial only because the agents don't actually close in during the frame-skip."
+  "what_changed": "She never runs at an agent. Side-scroll to the hotel (new take skip_b) with the beat frame-skip: on every beat the plate jumps ahead while she runs on continuously, so the agents step from far back to a few strides behind her. A glance back at an empty lawn. Then the corner (new take round_corner, high three-quarter view): the agent waiting around the corner is painted out with an engraved clean plate, flickers into existence on the 107.72 downbeat while she is still running along the front wall, and she reaches the corner and nearly runs into him (~108.35) and recoils to a stop. 'With no warning' punches in on the same take; no trace line. Low-angle pistol kept at or below her waist, the hit with the mote burst at the impact point, CONTINUE? freezes on the new hit frame."
+ },
+ {
+  "note": "yes, HILBERT here makes sense",
+  "v2_time": "1:36",
+  "shots": [
+   "B_chasm_dash",
+   "B_lawn",
+   "B_lawn2",
+   "B_ear"
+  ],
+  "status": "done",
+  "after": "media/reviews/v3/B/0138_zigzag_field.mp4",
+  "before_range": [
+   96.3,
+   104.22
+  ],
+  "what_changed": "The rooftop billboard reads HILBERT from the first frame in the chasm, lawn, notice-board and earpiece shots, in rev-A's woodcut lettering (Anton capitals, ink on the lit panel, as on their 0:24 sign; hatching lowered to 0.15 so the L reads at 540p). The race and platformer HUDs moved to the top left on ink chips so they no longer cover it. The chasm shot is in 0134_platform_beam_chasm_dash.mp4."
+ },
+ {
+  "note": "they should look like they're closing in on her",
+  "v2_time": "1:44",
+  "shots": [
+   "B_skip_b"
+  ],
+  "status": "done",
+  "after": "media/reviews/v3/B/0144_too_fast_no_warning.mp4",
+  "before_range": [
+   104.22,
+   105.98
+  ],
+  "what_changed": "New take skip_b: the agents start far back and gain on her. The beat frame-skip runs the plate 3.3x ahead of her, so on each of the three beats the pack jumps visibly closer, ending a few strides behind her as the hotel comes in."
+ },
+ {
+  "note": "a new agent surprises her by being around the corner from her when she rounds the corner",
+  "v2_time": "1:47",
+  "shots": [
+   "B_round_corner",
+   "B_roundcornerclean"
+  ],
+  "status": "question",
+  "after": "media/reviews/v3/B/0144_too_fast_no_warning.mp4",
+  "before_range": [
+   107.28,
+   109.92
+  ],
+  "what_changed": "New take round_corner, a high three-quarter view of the hotel corner: we see the agent waiting around the corner while she can't. He is absent at first (engraved clean plate), flickers in on the 107.72 downbeat (on, off, on) while she is still running along the front wall, and she arrives at the corner and nearly runs into him (~108.35), then recoils to a stop; 'With no warning' punches in at 108.67. His pistol stays low at his hip. In the take she stops at the corner's edge rather than fully rounding it.",
+  "question": "She reaches the corner and stops beside him rather than swinging round it into him. Keep, or retake with her rounding the corner first (about $0.75)?"
  },
  {
   "note": "running towards agents doesn’t make sense, the point is to run away from them, and she’s fundamentally a pacifist heroine",
@@ -118,7 +165,7 @@
    134.0,
    141.0
   ],
-  "what_changed": "The rainbow Jades moved after the split (134.00-139.00): on the platform and the beam they double on every beat (2, 4, 8, 16) with the agents behind them, then the meter insert, sixteen copies fanning over the chasm and dashing, the agent on his earpiece, and the copies running away across the lawn into the white flash. Weakest part: the sixteen-copy chasm sheaf and the lawn fan are dense and read more as a rainbow mass than as separate Jades."
+  "what_changed": "The rainbow Jades moved after the split (134.00-139.00): on the platform and the beam they double on every beat (2, 4, 8, 16) with the agents behind them, then the meter insert, sixteen copies fanning over the chasm and dashing, the agent on his earpiece, and the copies running away across the lawn into the white flash. Weakest part: the sixteen-copy chasm sheaf and the lawn fan are dense and read more as a rainbow mass than as separate Jades. Rev 5b: the chasm is now a Super Meat Boy replay with attrition (see the 'Super Meat Boy' note), the lawn shows only the five survivors, and HILBERT is lettered on the hotel billboard."
  },
  {
   "note": "There’s some really good ideas in the chase scenes, but we can make them massively better. Take a closer look at Kaizo Trap, online footage of games like Celeste, and super Meat Boy. And then let’s do a pass on thinking deeply about improvements to chase scenes:",
@@ -175,5 +222,52 @@
    134.0
   ],
   "what_changed": "122.95-126.25: she climbs up her own ghost ladder to the cornice, then the gold ghost hauls her onto the roof (see 0203_boost_and_climb.mp4). 126.25-128.76: new take slide_point; they slide hand in hand and the gold (ethereal) Jade points at the upright book's spine, whose label reads BANACH– / TARSKI (corner-pinned, legible at 960x540). 128.76-131.38: new take swarm_boost; agents rush in from both sides, the blue ghost boosts her straight up (launch 130.04), the agents crash into each other beneath her (130.94), she hangs at the peak. 131.38: freeze, flash, mote burst; 131.82 two Jades form and land; 132.26 they sprint apart. The spine shot and the dodge roll are dropped; E7 and E8 unchanged."
+ },
+ {
+  "note": "yes, do as Super Meat Boy does, where a few of the playthroughs don't make it",
+  "v2_time": "2:16-2:19",
+  "shots": [
+   "E7_04_chasm",
+   "E7_05_ear",
+   "E7_06_lawn"
+  ],
+  "status": "done",
+  "after": "media/reviews/v3/B/0214_rainbow_jades.mp4",
+  "before_range": [
+   134.0,
+   141.0
+  ],
+  "what_changed": "The doubling on the platform and beam (2, 4, 8, 16) is unchanged. At the chasm (136.62-137.50) fifteen copies leave the beam stacked on her and fan into separate arcs: six fall short (they lose ground, sag below the far lip, freeze and drop out of frame, fading, 136.96-137.26), four clip the far wall's face and end in place in a small burst of motes in their own hue, and five (orange, blue, magenta, green, violet) make it with the real, untinted Jade. On the lawn (138.38-139.00) only those five run away with her, in two interleaved rows so each reads as a Jade. HILBERT is lettered on the hotel's rooftop billboard in the chasm, ear and lawn shots with rev-A's woodcut module (Anton capitals, ink on the lit panel, hatch 0.15, box 420x140, pad 8, no flecks (identical to the Verse 2 sign), corner-pinned, solid from the first frame). Audio of these clips: media/sfx/Rewind_cinematic_sfx_mix.mp3."
+ },
+ {
+  "note": "I'm noticing some of (2:06–2:14) the ethereal yellow and blue Jade's slightly come out of their color a little bit",
+  "v2_time": "2:06-2:14",
+  "shots": [
+   "E4b",
+   "E5",
+   "E6a",
+   "E6b"
+  ],
+  "status": "done",
+  "after": "media/reviews/v3/B/0206_books_hint_split.mp4",
+  "before_range": [
+   124.38,
+   131.82
+  ],
+  "what_changed": "Both ghosts re-split frame by frame. Slide (now the retake slide_point_b): the shared matte is split by tracking the two bodies from a hand-drawn seed, cut at the held hands; every pixel of the pointing girl is gold ghost (head, hair, headphones, jacket, pointing arm) and every pixel of the other girl is live; engrave blots on the white cover no longer show through her trousers. Swarm: the flier is tracked as her own body, so her white sneaker stays hers (untinted) while it sits in the cupped hands; the kneeling girl's head and hair edge is clean at the heave; while the agents pile into her she keeps her own pose and stays fully blue. Haul unchanged (already clean). Checked every frame 124.38-131.38 (168 frames, 960x540): no ghost pixel shows her real orange/navy; no ghost hue inside a live girl except her own pale-blue jacket badge."
+ },
+ {
+  "note": "and they should turn to look at what she's pointing at (the book title) which would feel natural",
+  "v2_time": "2:06",
+  "shots": [
+   "E5"
+  ],
+  "status": "done",
+  "after": "media/reviews/v3/B/0206_books_hint_split.mp4",
+  "before_range": [
+   126.25,
+   128.76
+  ],
+  "what_changed": "E5 now uses the retake slide_point_b (in 0.9, x1.37): both girls turn their heads to the upright book while the gold ghost points; BANACH– / TARSKI re-pinned on its spine label (locked camera, tracked, no drift). The engrave's black blots on the white cover are covered by the clean cover from a nano plate."
  }
 ]

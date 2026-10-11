@@ -452,13 +452,18 @@ def build():
     # Life and Street); the leading girl (gold ghost) points at the blank label on the spine of the upright book at
     # frame right, which reads BANACH–/TARSKI. Locked-off camera: the label stays at 1507-1690 x 211-362 (tracked, no
     # drift). in 0.8 at x1.4: they leave the book's bottom edge on the cut.
+    # rev 5b (Jade: "they should turn to look at what she's pointing at"): the retake slide_point_b, where both girls turn
+    # their heads to the label while the gold ghost points. The camera is locked (label tracked: 1513-1697 x 208-358,
+    # no drift). The engrave left black blots on the white cover: the cover's flat interior is laid from the nano clean
+    # plate (inset from its edges, which nano redrew) under both girls. Split: splitpair.py on the colour-gated matte.
     lab = dict(id="label", type="canvas", module="pin", blend="multiply", params=dict(
         style="plain", font="fell", text="BANACH–\nTARSKI", size=96, color=INK, padding=4,
-        corners=[1517, 226, 1680, 226, 1680, 348, 1517, 348]))
-    shots.append(twin_shot("E5_slide_point", "slide_point", "slidept", 126.25, 128.76, 0.8, 1.4, 0.8, under=[lab],
+        corners=[1523, 222, 1687, 222, 1687, 345, 1523, 345]))
+    cover = dict(id="cover", type="image", src=f"{V3}/patch_slideptb_cover.png", fit="cover")
+    shots.append(twin_shot("E5_slide_point", "slide_point_b", "slideptb", 126.25, 128.76, 0.9, 1.37, 0.85, under=[cover, lab],
                            fx=[dict(type="flash", at=[0], dur=0.06, amount=0.35, color="#ffffff")]))
-    notes["E5"] = dict(clip=bclip("slide_point")["eng"], ghost="leading (pointing) girl, gold", in_=0.8, rate=1.4,
-                       label="BANACH–/TARSKI pinned on the upright book's spine label")
+    notes["E5"] = dict(clip=bclip("slide_point_b")["eng"], ghost="leading (pointing) girl, gold", in_=0.9, rate=1.37,
+                       label="BANACH–/TARSKI pinned on the upright book's spine label; both girls turn to look at it")
 
     # ---------------- E6 (rev 5b): swarm boost, atomize, two Jades ----------------
     # swarm_boost at x1.14 from 0.315: the kneeling girl (blue ghost; baked opaque by ghostfill.py, because the agents
@@ -522,35 +527,104 @@ def build():
     c = C["e7_meter"]
     e7("E7_03_meter", 135.76, 136.62, [dict(id="meter", type="video", src=c["eng"], **{"in": m["in"], "rate": m["rate"]})],
        fx=[dict(type="shake", at=[0], amp=12, decay=0.3)])
-    # chasm: sixteen time-offset copies; each arc fans out from the stack in flight and they all dash (a sheaf of arcs)
+    # HILBERT on the hotel's rooftop billboard (rev 5b): rev-A's woodcut lettering, as their 0:24 sign (render/timeline/A.js
+    # D2: Anton 'slab' capitals, ink on the lit panel, hatch .3, no flecks), corner-pinned, solid from the first frame
+    # (`at` before the shot). Corners as the Verse 2 agent's (render/timeline/_B_verse2.js BB); the chasm plate draws
+    # the panel hatched dark, so its lit face is painted first.
+    WOODCUT = "tools/sectionA/modules/woodcut.js"
+    BB = dict(chasm=[1626, 106, 1818, 22, 1820, 96, 1627, 161], lawn=[1621, 107, 1811, 27, 1812, 100, 1621, 167],
+              ear=[1621, 108, 1811, 26, 1811, 97, 1622, 164])
+
+    def hilbert(corners, face=False):
+        return ([dict(id="bb_face", type="canvas", module="render/timeline/_B_quad.js", params=dict(corners=corners, color="#efe7da"))]
+                if face else []) + [dict(id="hilbert", type="canvas", module=WOODCUT, params=dict(
+                    text="HILBERT", at=-1, color=INK, flecks=0, hatch=0.15, box=[420, 140], pad=8, corners=corners))]
+
+    # chasm (rev 5b): the Super Meat Boy replay. Fifteen copies leave the beam stacked on her and fan into separate arcs;
+    # most don't make it: six fall short (they lose ground, sag below the far lip, freeze and drop out of frame, fading),
+    # four clip the face of the far wall and end in place in a small burst of motes in their own hue. Five survive and
+    # land behind the real (untinted) Jade on the wall top. (docs/revisions/B_research_games.md, Super Meat Boy 4-5)
     c = bclip("chasm_dash")
     a, b, in0, rate = 136.62, 137.50, 1.1, 2.0
-    sheaf = []
+    d = b - a
+    lts = [q / 24 for q in range(int(round(d * 24)) + 1)]
+    ss = lambda x: x * x * (3 - 2 * x)
+
+    def her(s_):
+        st = mstats(c["stem"], s_)
+        return (st["cx"], st["cy"]) if st else None
+    lip = lambda x: -21 + (x - 48) * 0.14          # the far wall's top edge (design px, centre origin), x >= 48
+    SURV = [1, 2, 4, 5, 9]                          # orange, blue, magenta, green, violet
+    FALL = dict(zip([3, 7, 8, 11, 13, 15], [0.34, 0.40, 0.46, 0.52, 0.58, 0.64]))
+    CLIP = [6, 10, 12, 14]
+    back, front, bursts, fates = [], [], [], {}
     for k in range(1, 16):
-        off = -0.03 * k                        # a stream of attempts on the same route, each a little later ...
-        A = (k - 8) * 30                       # ... fanned into a sheaf of arcs in flight, converging on the far lip
-        ys = [[r4(lt), r4(A * math.sin(math.pi * min(1.0, lt / 0.86)))] for lt in [q / 12 for q in range(12)]]
-        xs = [[r4(lt), r4(-38 * k * math.sin(math.pi * min(1.0, lt / 0.86)))] for lt in [q / 12 for q in range(12)]]
-        sheaf.append(dict(id=f"sheaf{k:02d}", type="ghosts", src=c["eng"], matte=dict(src=c["matte"], mode="luma"), keepColor=True,
-                          loop=False, fit="cover", x=xs, y=ys, **{"in": in0, "rate": rate},
-                          instances=[dict(offset=r4(off), color=HUE[(k - 1) % 13], tint=0.82, opacity=0.85)],
-                          opacity=[[0, 0.0], [0.12, 1.0]]))
-    e7("E7_04_chasm", a, b, [dict(id="bg", type="video", src=c["eng"], **{"in": in0, "rate": rate}), *sheaf[::-1],
+        col = HUE[(k - 1) % 13]
+        base = dict(type="ghosts", src=c["eng"], matte=dict(src=c["matte"], mode="luma"), keepColor=True, loop=False, fit="cover",
+                    **{"in": in0, "rate": rate})
+        if k in SURV:
+            j = SURV.index(k)
+            off = -0.025 * (j + 1)
+            A = [-300, -170, -60, -380, 90][j]       # survivors fan up and converge on the far lip
+            xo = lambda lt, j=j: -70 * (j + 1) * ss(min(1.0, lt / 0.86))
+            yo = lambda lt, j=j, A=A: A * math.sin(math.pi * min(1.0, lt / 0.86)) - 14 * (j + 1) * ss(min(1.0, lt / 0.86))
+            front.append(dict(id=f"surv{k:02d}", **base, x=[[r4(t), r4(xo(t))] for t in lts], y=[[r4(t), r4(yo(t))] for t in lts],
+                              instances=[dict(offset=r4(off), color=col, tint=0.82, opacity=0.88)], opacity=[[0, 0.7], [0.08, 1.0]]))
+            fates[k] = "lands"
+            continue
+        off = -0.02 * k
+        rk = [3, 6, 7, 8, 10, 11, 12, 13, 14, 15].index(k)
+        A = 230 + 48 * rk                          # each a lower, shorter arc than hers from take-off: sags below her ...
+        D = 140 + 50 * rk                          # ... and loses ground
+        xo = lambda lt, D=D: -D * min(lt, 0.86) / 0.86
+        yo = lambda lt, A=A: A * min(lt, 0.86) / 0.86
+        if k in CLIP:                              # first frame where this copy's body is below the far lip, past the wall's edge
+            tf = None
+            for t in lts[4:]:
+                h = her(in0 + rate * t + off)
+                if h and h[0] + xo(t) > 70 and h[1] + yo(t) > lip(h[0] + xo(t)) + 25:
+                    tf = t; break
+            tf = tf or 0.7
+            h = her(in0 + rate * tf + off)
+            px, py = h[0] + xo(tf), h[1] + yo(tf)
+            back.append(dict(id=f"clip{k:02d}", **base, end=r4(tf), x=[[r4(t), r4(xo(t))] for t in lts if t <= tf + 0.05],
+                             y=[[r4(t), r4(yo(t))] for t in lts if t <= tf + 0.05],
+                             instances=[dict(offset=r4(off), color=col, tint=0.82, opacity=0.85)]))
+            bursts.append(dict(id=f"pop{k:02d}", type="canvas", module="motes", keepColor=True, start=r4(tf), params=dict(
+                at=0, x=r4(px + 960), y=r4(py + 540), count=44, colors=[col, col, col, "#ffffff"], shape="circle", speed=1000, drag=3.0,
+                gravity=300, size=13, life=0.6, ring=False, glow=0.9, seed=200 + k)))
+            fates[k] = f"clips the wall at {a + tf:.2f}"
+        else:
+            tf = FALL[k]
+            back.append(dict(id=f"short{k:02d}", **base, end=r4(tf), x=[[r4(t), r4(xo(t))] for t in lts if t <= tf + 0.05],
+                             y=[[r4(t), r4(yo(t))] for t in lts if t <= tf + 0.05],
+                             instances=[dict(offset=r4(off), color=col, tint=0.82, opacity=0.85)]))
+            sf = r4(in0 + rate * tf + off)          # her pose when she gives out: frozen, she drops away and fades
+            x0, y0 = xo(tf), yo(tf)
+            fl = [t for t in lts if t >= tf] + [d]
+            back.append(dict(id=f"drop{k:02d}", type="ghosts", src=c["eng"], matte=dict(src=c["matte"], mode="luma"), keepColor=True,
+                             fit="cover", start=r4(tf), x=[[r4(t - tf), r4(x0 + 160 * (t - tf))] for t in fl],
+                             y=[[r4(t - tf), r4(y0 + 1100 * (t - tf) + 2600 * (t - tf) ** 2)] for t in fl],
+                             instances=[dict(freeze=sf, color=col, tint=0.82, opacity=0.85)],
+                             opacity=[[0, 1.0], [0.18, 0.85], [0.42, 0.0]]))
+            fates[k] = f"falls short at {a + tf:.2f}"
+    notes["E7_chasm"] = {HUE[(k - 1) % 13]: fates[k] for k in sorted(fates)}
+    e7("E7_04_chasm", a, b, [dict(id="bg", type="video", src=c["eng"], **{"in": in0, "rate": rate}), *hilbert(BB["chasm"], face=True),
+                             *back, *bursts, *front[::-1],
                              dict(id="jade", type="video", src=c["eng"], matte=dict(src=c["matte"], mode="luma"), keepColor=True,
                                   **{"in": in0, "rate": rate})])
     c = bclip("ear")
-    e7("E7_05_ear", 137.50, 138.38, [dict(id="ear", type="video", src=c["eng"], **{"in": 0.6, "rate": 1.0})])
-    # the lawn: the copies fanned across it, all running away from the firing line toward the hotel
+    e7("E7_05_ear", 137.50, 138.38, [dict(id="ear", type="video", src=c["eng"], **{"in": 0.6, "rate": 1.0}), *hilbert(BB["ear"])])
+    # the lawn: only the five survivors run away with her, spaced in two rows so each reads as a Jade
     c = bclip("lawn")
-    fan = []
-    for k in range(12):                        # later selves only (further on, smaller), never back toward the agents
-        u = k / 11
-        fan.append(dict(offset=r4(round((0.12 + 0.85 * ((k * 0.618) % 1)) * FPS) / FPS), x=r4(-170 + 340 * ((k * 0.382) % 1)),
-                        y=r4(-30 + 60 * u), color=HUE[k % 13], tint=0.8, opacity=0.85))
+    # she starts at x ~620 and drifts left, so they fan out to her left in two interleaved rows (front / back)
+    SP5 = [(-290, 40, 0.12), (430, -70, 0.30), (-145, -165, 0.21), (-435, -160, 0.40), (215, -150, 0.05)]
+    fan = [dict(offset=r4(round(o * FPS) / FPS), x=dx, y=dy, color=HUE[k - 1], tint=0.8, opacity=0.88)
+           for k, (dx, dy, o) in zip(SURV, SP5)]
     e7("E7_06_lawn", 138.38, 139.00, [
-        dict(id="bg", type="video", src=c["eng"], **{"in": 1.3, "rate": 1.0}),
+        dict(id="bg", type="video", src=c["eng"], **{"in": 1.3, "rate": 1.0}), *hilbert(BB["lawn"]),
         dict(id="fan", type="ghosts", src=c["eng"], matte=dict(src=c["jmatte"], mode="luma"), keepColor=True, loop=False,
-             fit="cover", **{"in": 1.3, "rate": 1.0}, instances=fan, show=[[0, 5], [0.3, 12, "outCubic"]]),
+             fit="cover", **{"in": 1.3, "rate": 1.0}, instances=fan),
         dict(id="jade", type="video", src=c["eng"], matte=dict(src=c["matte"], mode="luma"), keepColor=True, **{"in": 1.3, "rate": 1.0})],
        fx=[dict(type="flash", at=[0.56], dur=0.06, amount=1.0, color="#ffffff")])
     # residue ribbons pile up over every surface across E7 (one more per beat, capped at 10) + a rising colour wash

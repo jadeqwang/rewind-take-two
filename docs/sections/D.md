@@ -110,7 +110,7 @@ history. Review clips: `media/reviews/v3/B/` (+ `manifest_drop2.json`).
 | E3 | 119.44–122.95 | rev-A's watercolor singer (`media/sing/E3/v3_sync_1080.mp4`, in 0, rate 1), push 1.0→1.08 on her head (960, 380). Orbit re-fitted: centre (960, 600), 780×400, −8°; occluder = the take matted by her per-frame matte, so ribbons always pass behind her. "Rewind." lower third as v2. | rev-A |
 | E4a | 122.95–124.38 | **Up her own ghost ladder (rev 5b).** Same ×1.4 wall framing as E2 9–13; the five climb ghosts sit at their frozen poses as rungs and each brightens as she passes through it; she reaches the cornice in ghost 13's pose on the cut. "Rewind." painted large on the brickwork (IM Fell, residue orange, multiply) from 123.0. | `climb` (in 3.45, ×1.75) |
 | E4b | 124.38–126.25 | A gold ghost lying on the roof hauls her up by the wrist; she is over the ledge before the cut. | `haul_b` (in 0.05, ×1.3) |
-| E5 | 126.25–128.76 | **The hint while sliding (rev 5b).** Hand in hand down the giant book (Escher, *Still Life and Street*); the leading gold ghost points at the upright book at frame right, whose spine label reads `BANACH–` / `TARSKI` (pinned on 1517–1680 × 226–348; the camera is locked, the label was tracked and does not drift). They leave the book's bottom edge on the cut. | `slide_point` (in 0.8, ×1.4) |
+| E5 | 126.25–128.76 | **The hint while sliding (rev 5b).** Hand in hand down the giant book (Escher, *Still Life and Street*); the leading gold ghost points at the upright book at frame right and **both girls turn to look at it** (Jade's note); its spine label reads `BANACH–` / `TARSKI` (pinned on 1523–1687 × 222–345; locked camera, tracked, no drift). The engrave's black blots on the white cover are covered by the cover cut from the nano clean plate (`patch_slideptb_cover.png`). | `slide_point_b` (in 0.9, ×1.37) |
 | E6a | 128.76–131.38 | **Swarm boost (rev 5b).** Agents rush in from both sides; the kneeling blue ghost heaves her straight up (foot leaves the hands on the 130.04 beat); the agents crash into each other beneath her on 130.94 (punch + shake); she hangs at the peak. The ghost is baked opaque (`ghostfill.py`: line art over a pale fill inside her matte) because the agents pile through her and a static clean plate would erase them. | `swarm_boost` (in 0.315, ×1.14) |
 | E6b | 131.38–131.82 | Freeze + flash; she bursts into 150 motes in mid-air over the frozen heap (nano plate without the girls + the ghost still). | `swarm_boost` frame 79 |
 | E6c | 131.82–134.00 | Two mote clouds implode into two crouched Jades over the heap; on the bar line 132.26 they sprint apart with an orange and a blue ribbon. The take's rainbow streaks: reds remapped, the rest hidden under the clean heap plate. | `two` |
@@ -204,12 +204,23 @@ history. Review clips: `media/reviews/v3/B/` (+ `manifest_drop2.json`).
 | E6a | 130.50–131.38 | Dodge roll; the agents collide on 130.94 (punch); jump cut on that beat to her spring from bare ground, airborne at 131.38. | `roll_b` (retake) |
 | E6b | 131.38–131.82 | Freeze + flash; she bursts into 150 motes over a clean frozen plate. | `roll_b` frame 92 |
 | E6c | 131.82–134.00 | Two mote clouds implode into two crouched Jades over the heap; on the bar line 132.26 they sprint apart with an orange and a blue ribbon. The take's rainbow streaks: reds remapped, the rest hidden under the clean heap plate. | `two` |
-| E7 | 134.00–139.00 | `plat` and `leap` with the doubling (2, 4, 8, 16 on 134.00/134.44/134.88/135.32, continuing across the cut), the v2 meter insert, `chasm_dash` with sixteen copies fanned into a sheaf, `ear`, `lawn` with the copies running away; v2 wash, capped ribbons, white flash on 139.00. | |
+| E7 | 134.00–139.00 | `plat` and `leap` with the doubling (2, 4, 8, 16 on 134.00/134.44/134.88/135.32, continuing across the cut), the v2 meter insert; **chasm (rev 5b): the Super Meat Boy replay**: fifteen copies leave the beam stacked on her and fan into separate arcs; six fall short (lose ground, sag below the lip, freeze and drop out of frame, fading), four clip the far wall and end in a small mote burst in their own hue, five survive (orange, blue, magenta, green, violet) with the untinted Jade; `ear`; `lawn` with only the five survivors running away, in two interleaved rows. **HILBERT** on the hotel billboard in the chasm, `ear` and `lawn` (rev-A's `tools/sectionA/modules/woodcut.js`: Anton capitals, ink, `hatch` .15, `flecks` 0, box 420×140, pad 8 (identical to the Verse 2 sign), corner-pinned with the Verse 2 corners, `at: -1` so it is solid from the first frame; the chasm's hatched panel is painted lit first with `_B_quad.js`). v2 wash, capped ribbons, white flash on 139.00. | `plat`, `leap`, v2 meter, `chasm_dash`, `ear`, `lawn` |
 | E8 | 139.00–141.00 | Unchanged. | v2 |
 
 Rev 5b (Jade's notes on the v3 cut, `media/reviews/v3/B/manifest_drop2.json`): keep v2's opening and cut to the v3
-retries; compress the hint (point while sliding, boost, swarm, double and split). Dropped: `boost`, `slide`, `spine`,
+retries; compress the hint (point while sliding, boost, swarm, double and split); thin the rainbow Jades the Super Meat
+Boy way (most copies don't make it the chasm) and letter HILBERT on the hotel billboard. Dropped: `boost`, `slide`, `spine`,
 `roll`, `roll_b`, and the retries on the beam and the flat dive.
+
+**Ghost colour fix (rev 5b, Jade: the ghosts "slightly come out of their color").** Slide: `splitpair.py` splits the
+colour-gated matte by tracking both bodies from a hand-drawn seed polygon (cut at the held hands; every matte pixel goes
+to exactly one girl), `pairfinish.py` closes and hole-fills the live girl (engrave blots were notches the clean cover
+showed through). Swarm: `swarmsplit.py` tracks the flier as her own component from the frame where she separates
+(1.92) backward and forward; a hand-drawn foot polygon keeps her sneaker hers while it sits in the cupped hands; once
+the agents reach the kneeling girl she keeps her own still pose (legs from 1.67, arms from 1.92) plus her raised hands.
+Sweep (every frame 124.38–131.38 at 960×540, 168 frames, `--force` render): 0 px of her real orange/navy inside any
+ghost; no ghost hue inside a live girl except the flier's own pale-blue badge. Note: render.mjs reuses rendered frames
+unless the timeline/engine changed, so after re-baking mattes always render with `--force`.
 
 **Ghost twins** (E4b, E5, E6a), as v2's E5b gold twin but per frame:
 `split2.py` splits the shared engrave matte into the two girls (seed boxes + a marker watershed on the frame, tracked
@@ -227,11 +238,12 @@ girl crawls over the lying one and the two cannot be separated.
 **Cost:** 2 Seedance retakes (`roll_b`, `haul_b`) ≈ $1.50, 5 nano clean plates ≈ $0.67; rev 5b: 2 nano clean plates
 (`plate_slidept`, `plate_swarm`) ≈ $0.27 (the `slide_point` and `swarm_boost` takes were ordered by the coordinator).
 
-**Weak:** the E7 chasm sheaf and the lawn fan read as a dense rainbow mass more than as sixteen separate Jades; the
+**Weak:** the first 0.3 s of the E7 chasm (before the copies peel off) is still a dense stream of colour, and the survivors are
+still in the air above the far lip on the cut; the
 level ghosts in E2 1–8 sit over a different place for 0.4 s (the next attempt), so they read as afterimages, not
 positions; the haul plate's roof is slightly lighter inside the patch; in E6a the agents pile onto the blue ghost
-(she stands among them, opaque and pale) rather than meeting in empty space, and her foot stays ghost-tinted for a
-few frames while it sits in the cupped hands.
+(she stands among them, opaque and pale) rather than meeting in empty space, and the agents' arms that cross her are
+drawn blue with her; a faint gold strip follows the slide's white trail along the book edge beside the gold ghost.
 
 ## Ghost choreography (the 13 chops)
 

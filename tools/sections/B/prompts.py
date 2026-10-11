@@ -212,6 +212,15 @@ KF = {
         "tangled in a heap where they have crashed into each other. The two copies of the girl have just landed back "
         "to back in front of the heap, each in a low sprinter's crouch: the left copy at about 38% across facing left, "
         "the right copy at about 62% across facing right. Each about 34% of the frame height. ") + JADE + AGENTS + STYLE),
+    "roundcorner": dict(refs=[JREF, AGENT, HOTEL], prompt=DAY + (
+        "High three-quarter view looking down at about 45 degrees at the sharp stone corner of the base of the hotel "
+        "of the attached reference, so we can see around the corner and she cannot. The hotel's long front wall, a "
+        "rusticated limestone base with tall arched windows, runs from the lower left of the frame up to the corner at "
+        "the centre; the hotel's side wall turns away from the corner toward the upper right. A pavement runs along "
+        "both walls, lawn beyond. The girl sprints along the pavement beside the front wall from the lower left toward "
+        "the corner, about a third of the way there, her full body about 30% of the frame height. Just around the "
+        "corner, on the pavement beside the side wall and hidden from her by the corner, one agent stands waiting, "
+        "facing the corner, his pistol held low beside his hip. Nobody else. ") + JADE + AGENTS + STYLE),
 }
 
 VID = {
@@ -333,4 +342,19 @@ VID = {
         "hangs at the peak of the jump with her arms and legs spread wide. Below her the agents from the left and the "
         "agents from the right crash head-on into each other in the centre and fall in a tangled heap on the table "
         "top. The girl in the air never touches an agent.")),
+    "skip_b": dict(kf="skipfar", dur=6, fixed=False, prompt=TRACK + (
+        "She sprints extremely fast to the right. The agents behind her run much faster than she does: they close "
+        "the gap quickly and steadily, growing larger as they gain, until the nearest is only a few strides behind her "
+        "at the end. The hotel's stone base slides further into the frame from the right.")),
+    "round_corner": dict(kf="roundcorner", dur=5, prompt=(
+        "The girl sprints along the pavement to the corner and rounds it at full speed without slowing, and comes "
+        "face to face with the waiting agent just around the corner, almost running into him. She skids to a stop an "
+        "arm's length from him, startled, leaning back. The agent stays where he is; his pistol stays low beside his "
+        "hip, pointing at the ground.")),
+    "slide_point_b": dict(kf="slidept:2", dur=5, prompt=(
+        "The two girls slide fast down the tilted book cover from the upper left to the lower right, hand in hand. "
+        "The leading girl keeps her other arm stretched out, pointing at the blank label on the spine of the huge "
+        "upright book at the right, and BOTH girls keep looking at that label the whole time, their heads turning to "
+        "follow it as they slide past it. They shoot off the bottom edge of the book onto the table top past the "
+        "upright book. The label stays blank and perfectly still.")),
 }
