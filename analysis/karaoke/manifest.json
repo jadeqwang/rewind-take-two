@@ -1,0 +1,226 @@
+{
+  "source": "inputs/Rewind_take_two.mp3",
+  "duration_s": 216.76,
+  "sample_rate": 48000,
+  "source_sha256": "e38243b5116684252acb7d5dd3b8254d667d052bd93c2413d9788e4210c84b75",
+  "first_model": "Kim_Vocal_2",
+  "first_model_role": "all-vocal reference",
+  "lead_backing_model": "UVR_MDXNET_KARA_2",
+  "model_sha256": "bf32e15105a09c0f7dddd2b67346146334d6f3ecb399ed7638eba2ab07cbf5f4",
+  "final_verse_model": "6_HP-Karaoke-UVR",
+  "final_verse_model_sha256": "4ce7eaaa9e56f09366b788aebf6d3a72aec8145692c56f1e090e4e7e2d7ce65f",
+  "final_verse_model_range_s": [
+    155,
+    175
+  ],
+  "model_compensation": 1.065,
+  "overlap": 0.25,
+  "denoise": true,
+  "subtraction": "original source minus gated estimated lead",
+  "lead_cue_ranges": [
+    {
+      "index": 0,
+      "text": "The night before my dissertation defense,",
+      "start_s": 13.38,
+      "end_s": 18.74
+    },
+    {
+      "index": 1,
+      "text": "I'm speeding down Lake Shore, I dreamt",
+      "start_s": 20.52,
+      "end_s": 24.1
+    },
+    {
+      "index": 2,
+      "text": "a shadow chasing me I couldn't place",
+      "start_s": 24.12,
+      "end_s": 28.26
+    },
+    {
+      "index": 3,
+      "text": "I pulled over, and men in shades and suits,",
+      "start_s": 28.6,
+      "end_s": 33.6
+    },
+    {
+      "index": 4,
+      "text": "I reach for my ID to show them \u2026 and I do,",
+      "start_s": 34.64,
+      "end_s": 38.6
+    },
+    {
+      "index": 5,
+      "text": "With no warning I get shot \u2026 and time stops",
+      "start_s": 38.98,
+      "end_s": 43.8
+    },
+    {
+      "index": 6,
+      "text": "Rewind.",
+      "start_s": 50.58,
+      "end_s": 51.64
+    },
+    {
+      "index": 7,
+      "text": "Rewind.",
+      "start_s": 54.0,
+      "end_s": 55.52
+    },
+    {
+      "index": 8,
+      "text": "And now I'm back on the road",
+      "start_s": 86.08,
+      "end_s": 91.06
+    },
+    {
+      "index": 9,
+      "text": "sirens in my mirror \u2026Reload.",
+      "start_s": 92.85,
+      "end_s": 97.34
+    },
+    {
+      "index": 10,
+      "text": "A shadow chasing me like it's a race",
+      "start_s": 97.42,
+      "end_s": 101.08
+    },
+    {
+      "index": 11,
+      "text": "I zigzag across the field of grass",
+      "start_s": 101.32,
+      "end_s": 105.76
+    },
+    {
+      "index": 12,
+      "text": "they chase me and they're just too fast",
+      "start_s": 106.28,
+      "end_s": 111.16
+    },
+    {
+      "index": 13,
+      "text": "With no warning I get shot \u2026 and time stops",
+      "start_s": 111.76,
+      "end_s": 116.32
+    },
+    {
+      "index": 14,
+      "text": "Rewind.",
+      "start_s": 122.7,
+      "end_s": 124.06
+    },
+    {
+      "index": 15,
+      "text": "Rewind.",
+      "start_s": 126.62,
+      "end_s": 127.86
+    },
+    {
+      "index": 16,
+      "text": "The night before my dissertation defense,",
+      "start_s": 158.35,
+      "end_s": 163.64
+    },
+    {
+      "index": 17,
+      "text": "I'm speeding down Lake Shore, I dreamt",
+      "start_s": 165.44,
+      "end_s": 169.0
+    },
+    {
+      "index": 18,
+      "text": "a shadow chasing me I couldn't place",
+      "start_s": 168.98,
+      "end_s": 173.3
+    },
+    {
+      "index": 19,
+      "text": "Never stop.",
+      "start_s": 180.33,
+      "end_s": 181.36
+    }
+  ],
+  "preserved_original_intervals": [
+    {
+      "start_s": 0.0,
+      "end_s": 13.380020833333333
+    },
+    {
+      "start_s": 18.739979166666668,
+      "end_s": 20.520020833333334
+    },
+    {
+      "start_s": 28.259979166666668,
+      "end_s": 28.600020833333332
+    },
+    {
+      "start_s": 33.599979166666664,
+      "end_s": 34.64002083333333
+    },
+    {
+      "start_s": 38.599979166666664,
+      "end_s": 38.980020833333334
+    },
+    {
+      "start_s": 43.79997916666667,
+      "end_s": 50.580020833333336
+    },
+    {
+      "start_s": 51.63997916666667,
+      "end_s": 54.00002083333333
+    },
+    {
+      "start_s": 55.519979166666666,
+      "end_s": 86.08002083333334
+    },
+    {
+      "start_s": 91.05997916666666,
+      "end_s": 92.85002083333333
+    },
+    {
+      "start_s": 101.07997916666666,
+      "end_s": 101.32002083333333
+    },
+    {
+      "start_s": 105.75997916666667,
+      "end_s": 106.28002083333334
+    },
+    {
+      "start_s": 111.15997916666667,
+      "end_s": 111.76002083333333
+    },
+    {
+      "start_s": 116.31997916666667,
+      "end_s": 122.70002083333334
+    },
+    {
+      "start_s": 124.05997916666666,
+      "end_s": 126.62002083333333
+    },
+    {
+      "start_s": 127.85997916666666,
+      "end_s": 158.35002083333333
+    },
+    {
+      "start_s": 163.63997916666668,
+      "end_s": 165.44002083333334
+    },
+    {
+      "start_s": 173.29997916666667,
+      "end_s": 180.33002083333332
+    },
+    {
+      "start_s": 181.35997916666668,
+      "end_s": 216.76
+    }
+  ],
+  "retained_outro_repeat": {
+    "start_s": 187.78,
+    "end_s": 188.56
+  },
+  "preserved_original_max_error": 0.0,
+  "vocal_reconstruction_max_error": 2.764863893389702e-08,
+  "fixed_output_gain_db": 0.0,
+  "raw_sample_peak_db": -4.13425649958786,
+  "retained_backing_to_all_vocals_db": -5.78292963226194,
+  "note": "Backing vocals overlapping lead are model estimates; vocal chops and all material outside lead cues use original source samples."
+}

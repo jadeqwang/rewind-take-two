@@ -1,0 +1,66 @@
+[Script Info]
+Title: Rewind — acoustic lyrics
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Lyrics,DejaVu Sans,62,&H00FFD0CF,&H00FFFFFF,&H00151015,&H90000000,-1,0,0,0,100,100,0,0,1,2.5,1,5,100,100,0,1
+Style: Next,DejaVu Sans,32,&H005FC5F4,&H005FC5F4,&H00151015,&H90000000,0,0,0,0,100,100,0,0,1,1.5,0,5,100,100,0,1
+Style: Label,DejaVu Sans,25,&H00D4D4D4,&H00D4D4D4,&H00151015,&H90000000,0,0,0,0,100,100,2,0,1,1,0,5,100,100,0,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.00,0:00:12.05,Lyrics,,0,0,0,,{\pos(960,932)\1c&HFFFFFF&\fad(400,200)}REWIND
+Dialogue: 0,0:00:00.00,0:00:12.05,Label,,0,0,0,,{\pos(960,1000)\fad(400,200)}JADE WANG
+Dialogue: 0,0:00:12.10,0:00:19.24,Lyrics,,0,0,0,,{\pos(960,934)\fs62}{\k140}​{\kf8}The{\k0} {\kf36}night{\k0} {\kf62}before{\k212} {\kf12}my{\k0} {\kf52}dissertation{\k0} {\kf142}defense,
+Dialogue: 0,0:00:12.10,0:00:19.24,Next,,0,0,0,,{\pos(960,1009)}I'm speeding down Lake Shore, I dreamt
+Dialogue: 0,0:00:19.24,0:00:24.10,Lyrics,,0,0,0,,{\pos(960,934)\fs62}{\k140}​{\kf16}I'm{\k0} {\kf46}speeding{\k0} {\kf46}down{\k0} {\kf48}Lake{\k0} {\kf58}Shore,{\k0} {\kf54}I{\k0} {\kf78}dreamt
+Dialogue: 0,0:00:19.24,0:00:24.10,Next,,0,0,0,,{\pos(960,1009)}a shadow chasing me I couldn't place
+Dialogue: 0,0:00:24.10,0:00:28.26,Lyrics,,0,0,0,,{\pos(960,934)\fs62}{\k14}​{\kf76}a{\k0} {\kf48}shadow{\k0} {\kf36}chasing{\k0} {\kf62}me{\k0} {\kf54}I{\k0} {\kf106}couldn't{\k0} {\kf20}place
+Dialogue: 0,0:00:24.10,0:00:28.26,Next,,0,0,0,,{\pos(960,1009)}I pulled over, and men in shades and suits,
+Dialogue: 0,0:00:28.26,0:00:33.60,Lyrics,,0,0,0,,{\pos(960,934)\fs62}{\k46}​{\kf4}I{\k0} {\kf24}pulled{\k0} {\kf106}over,{\k0} {\kf134}and{\k0} {\kf42}men{\k0} {\kf6}in{\k0} {\kf40}shades{\k0} {\kf38}and{\k0} {\kf94}suits,
+Dialogue: 0,0:00:28.26,0:00:33.60,Next,,0,0,0,,{\pos(960,1009)}I reach for my ID to show them … and I do,
+Dialogue: 0,0:00:33.60,0:00:38.60,Lyrics,,0,0,0,,{\pos(960,934)\fs62}{\k116}​{\kf24}I{\k0} {\kf28}reach{\k0} {\kf22}for{\k0} {\kf28}my{\k0} {\kf38}ID{\k0} {\kf26}to{\k0} {\kf28}show{\k0} {\kf52}them{\k0} {\kf18}…{\k0} {\kf32}and{\k0} {\kf18}I{\k0} {\kf70}do,
+Dialogue: 0,0:00:33.60,0:00:38.60,Next,,0,0,0,,{\pos(960,1009)}With no warning I get shot … and time stops
+Dialogue: 0,0:00:38.60,0:00:44.60,Lyrics,,0,0,0,,{\pos(960,934)\fs62}{\k50}​{\kf48}With{\k0} {\kf30}no{\k0} {\kf72}warning{\k0} {\kf46}I{\k0} {\kf40}get{\k0} {\kf44}shot{\k0} {\kf26}…{\k0} {\kf44}and{\k0} {\kf50}time{\k0} {\kf70}stops
+Dialogue: 0,0:00:38.60,0:00:44.60,Next,,0,0,0,,{\pos(960,1009)}Rewind.
+Dialogue: 0,0:00:44.65,0:00:49.25,Label,,0,0,0,,{\pos(960,1000)}INSTRUMENTAL
+Dialogue: 0,0:00:49.30,0:00:52.44,Lyrics,,0,0,0,,{\pos(960,934)\fs62}{\k140}​{\kf94}Rewind.
+Dialogue: 0,0:00:49.30,0:00:52.44,Next,,0,0,0,,{\pos(960,1009)}Rewind.
+Dialogue: 0,0:00:52.72,0:00:56.32,Lyrics,,0,0,0,,{\pos(960,934)\fs62}{\k140}​{\kf140}Rewind.
+Dialogue: 0,0:00:52.72,0:00:56.32,Next,,0,0,0,,{\pos(960,1009)}And now I'm back on the road
+Dialogue: 0,0:00:56.37,0:01:24.75,Label,,0,0,0,,{\pos(960,1000)}INSTRUMENTAL
+Dialogue: 0,0:01:24.80,0:01:31.57,Lyrics,,0,0,0,,{\pos(960,934)\fs62}{\k140}​{\kf16}And{\k0} {\kf44}now{\k0} {\kf56}I'm{\k0} {\kf34}back{\k0} {\kf172}on{\k75} {\kf51}the{\k0} {\kf38}road
+Dialogue: 0,0:01:24.80,0:01:31.57,Next,,0,0,0,,{\pos(960,1009)}sirens in my mirror …Reload.
+Dialogue: 0,0:01:31.57,0:01:37.34,Lyrics,,0,0,0,,{\pos(960,934)\fs62}{\k140}​{\kf69}sirens{\k0} {\kf26}in{\k0} {\kf44}my{\k0} {\kf68}mirror{\k0} {\kf230}…Reload.
+Dialogue: 0,0:01:31.57,0:01:37.34,Next,,0,0,0,,{\pos(960,1009)}A shadow chasing me like it's a race
+Dialogue: 0,0:01:37.34,0:01:41.08,Lyrics,,0,0,0,,{\pos(960,934)\fs62}{\k20}​{\kf16}A{\k0} {\kf38}shadow{\k0} {\kf52}chasing{\k0} {\kf52}me{\k0} {\kf52}like{\k0} {\kf72}it's{\k0} {\kf16}a{\k0} {\kf56}race
+Dialogue: 0,0:01:37.34,0:01:41.08,Next,,0,0,0,,{\pos(960,1009)}I zigzag across the field of grass
+Dialogue: 0,0:01:41.08,0:01:45.76,Lyrics,,0,0,0,,{\pos(960,934)\fs62}{\k36}​{\kf4}I{\k0} {\kf60}zigzag{\k0} {\kf204}across{\k0} {\kf38}the{\k0} {\kf42}field{\k0} {\kf44}of{\k0} {\kf40}grass
+Dialogue: 0,0:01:41.08,0:01:45.76,Next,,0,0,0,,{\pos(960,1009)}they chase me and they're just too fast
+Dialogue: 0,0:01:45.76,0:01:51.16,Lyrics,,0,0,0,,{\pos(960,934)\fs62}{\k64}​{\kf122}they{\k0} {\kf24}chase{\k0} {\kf30}me{\k0} {\kf34}and{\k0} {\kf50}they're{\k0} {\kf46}just{\k0} {\kf68}too{\k0} {\kf102}fast
+Dialogue: 0,0:01:45.76,0:01:51.16,Next,,0,0,0,,{\pos(960,1009)}With no warning I get shot … and time stops
+Dialogue: 0,0:01:51.16,0:01:57.12,Lyrics,,0,0,0,,{\pos(960,934)\fs62}{\k72}​{\kf30}With{\k0} {\kf26}no{\k0} {\kf78}warning{\k0} {\kf42}I{\k0} {\kf38}get{\k0} {\kf44}shot{\k0} {\kf30}…{\k0} {\kf38}and{\k0} {\kf54}time{\k0} {\kf64}stops
+Dialogue: 0,0:01:51.16,0:01:57.12,Next,,0,0,0,,{\pos(960,1009)}Rewind.
+Dialogue: 0,0:01:57.17,0:02:01.37,Label,,0,0,0,,{\pos(960,1000)}INSTRUMENTAL
+Dialogue: 0,0:02:01.42,0:02:04.86,Lyrics,,0,0,0,,{\pos(960,934)\fs62}{\k140}​{\kf124}Rewind.
+Dialogue: 0,0:02:01.42,0:02:04.86,Next,,0,0,0,,{\pos(960,1009)}Rewind.
+Dialogue: 0,0:02:05.34,0:02:08.66,Lyrics,,0,0,0,,{\pos(960,934)\fs62}{\k140}​{\kf112}Rewind.
+Dialogue: 0,0:02:05.34,0:02:08.66,Next,,0,0,0,,{\pos(960,1009)}The night before my dissertation defense,
+Dialogue: 0,0:02:08.71,0:02:37.02,Label,,0,0,0,,{\pos(960,1000)}INSTRUMENTAL
+Dialogue: 0,0:02:37.07,0:02:44.16,Lyrics,,0,0,0,,{\pos(960,934)\fs62}{\k140}​{\kf7}The{\k0} {\kf40}night{\k0} {\kf56}before{\k214} {\kf8}my{\k0} {\kf52}dissertation{\k0} {\kf140}defense,
+Dialogue: 0,0:02:37.07,0:02:44.16,Next,,0,0,0,,{\pos(960,1009)}I'm speeding down Lake Shore, I dreamt
+Dialogue: 0,0:02:44.16,0:02:49.00,Lyrics,,0,0,0,,{\pos(960,934)\fs62}{\k140}​{\kf14}I'm{\k0} {\kf44}speeding{\k0} {\kf46}down{\k0} {\kf46}Lake{\k0} {\kf58}Shore,{\k0} {\kf56}I{\k0} {\kf80}dreamt
+Dialogue: 0,0:02:44.16,0:02:49.00,Next,,0,0,0,,{\pos(960,1009)}a shadow chasing me I couldn't place
+Dialogue: 0,0:02:49.00,0:02:54.10,Lyrics,,0,0,0,,{\pos(960,934)\fs62}{\k10}​{\kf76}a{\k0} {\kf46}shadow{\k0} {\kf34}chasing{\k0} {\kf64}me{\k0} {\kf60}I{\k0} {\kf104}couldn't{\k0} {\kf36}place
+Dialogue: 0,0:02:49.00,0:02:54.10,Next,,0,0,0,,{\pos(960,1009)}Never stop.
+Dialogue: 0,0:02:54.15,0:02:59.00,Label,,0,0,0,,{\pos(960,1000)}INSTRUMENTAL
+Dialogue: 0,0:02:59.05,0:03:02.16,Lyrics,,0,0,0,,{\pos(960,934)\fs62}{\k140}​{\kf13}Never{\k0} {\kf78}stop.
+Dialogue: 0,0:02:59.05,0:03:02.16,Next,,0,0,0,,{\pos(960,1009)}Never stop.
+Dialogue: 0,0:03:02.21,0:03:06.33,Label,,0,0,0,,{\pos(960,1000)}INSTRUMENTAL
+Dialogue: 0,0:03:06.38,0:03:09.36,Lyrics,,0,0,0,,{\pos(960,934)\fs62}{\k140}​{\kf8}Never{\k0} {\kf70}stop.
+Dialogue: 0,0:03:09.41,0:03:36.71,Label,,0,0,0,,{\pos(960,1000)}INSTRUMENTAL

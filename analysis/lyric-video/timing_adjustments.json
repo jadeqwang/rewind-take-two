@@ -1,0 +1,78 @@
+[
+  {
+    "line": 1,
+    "word": "I'm",
+    "old_start": 18.96,
+    "start": 20.64
+  },
+  {
+    "line": 4,
+    "word": "I",
+    "old_start": 33.8,
+    "start": 34.76
+  },
+  {
+    "line": 8,
+    "word": "the",
+    "old_start": 89.42,
+    "start": 90.17
+  },
+  {
+    "line": 9,
+    "word": "sirens",
+    "old_start": 91.58,
+    "start": 92.97
+  },
+  {
+    "line": 16,
+    "word": "The",
+    "old_start": 157.38,
+    "start": 158.47
+  },
+  {
+    "line": 17,
+    "word": "I'm",
+    "old_start": 163.88,
+    "start": 165.56
+  },
+  {
+    "line": 19,
+    "word": "Never",
+    "old_start": 178.5,
+    "start": 180.45
+  },
+  {
+    "line": 20,
+    "word": "Never",
+    "old_start": 186.0,
+    "start": 187.78
+  },
+  {
+    "line": 0,
+    "word": "The",
+    "old_start": 11.78,
+    "start": 13.5,
+    "method": "vocal waveform review"
+  },
+  {
+    "line": 0,
+    "word": "my",
+    "old_start": 14.56,
+    "start": 16.68,
+    "method": "vocal waveform review"
+  },
+  {
+    "line": 8,
+    "word": "And",
+    "old_start": 84.58,
+    "start": 86.2,
+    "method": "vocal waveform review"
+  },
+  {
+    "line": 16,
+    "word": "my",
+    "old_start": 159.5,
+    "start": 161.64,
+    "method": "vocal waveform review"
+  }
+]

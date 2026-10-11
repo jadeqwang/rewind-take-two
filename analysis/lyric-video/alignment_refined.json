@@ -1,0 +1,3072 @@
+[
+  {
+    "offset_s": 10.5,
+    "result": {
+      "text": " The night before my dissertation defense, I'm speeding down Lake Shore, I dreamt a shadow chasing me I couldn't place",
+      "segments": [
+        {
+          "start": 1.28,
+          "end": 8.24,
+          "text": " The night before my dissertation defense,",
+          "seek": null,
+          "tokens": [
+            440,
+            1818,
+            949,
+            452,
+            39555,
+            7654,
+            11
+          ],
+          "temperature": null,
+          "avg_logprob": null,
+          "compression_ratio": null,
+          "no_speech_prob": null,
+          "words": [
+            {
+              "word": " The",
+              "start": 1.28,
+              "end": 3.08,
+              "probability": 0.09269377589225769,
+              "tokens": [
+                440
+              ]
+            },
+            {
+              "word": " night",
+              "start": 3.08,
+              "end": 3.44,
+              "probability": 0.9872718453407288,
+              "tokens": [
+                1818
+              ]
+            },
+            {
+              "word": " before",
+              "start": 3.44,
+              "end": 4.06,
+              "probability": 0.9983826875686646,
+              "tokens": [
+                949
+              ]
+            },
+            {
+              "word": " my",
+              "start": 4.06,
+              "end": 6.3,
+              "probability": 0.19967642426490784,
+              "tokens": [
+                452
+              ]
+            },
+            {
+              "word": " dissertation",
+              "start": 6.3,
+              "end": 6.82,
+              "probability": 0.9971640706062317,
+              "tokens": [
+                39555
+              ]
+            },
+            {
+              "word": " defense,",
+              "start": 6.82,
+              "end": 8.24,
+              "probability": 0.4960064012557268,
+              "tokens": [
+                7654,
+                11
+              ]
+            }
+          ]
+        },
+        {
+          "start": 8.46,
+          "end": 13.6,
+          "text": " I'm speeding down Lake Shore, I dreamt",
+          "seek": null,
+          "tokens": [
+            286,
+            478,
+            35593,
+            760,
+            10582,
+            47977,
+            11,
+            286,
+            3055,
+            83
+          ],
+          "temperature": null,
+          "avg_logprob": null,
+          "compression_ratio": null,
+          "no_speech_prob": null,
+          "words": [
+            {
+              "word": " I'm",
+              "start": 8.46,
+              "end": 10.3,
+              "probability": 0.732095792889595,
+              "tokens": [
+                286,
+                478
+              ]
+            },
+            {
+              "word": " speeding",
+              "start": 10.3,
+              "end": 10.76,
+              "probability": 0.9973670840263367,
+              "tokens": [
+                35593
+              ]
+            },
+            {
+              "word": " down",
+              "start": 10.76,
+              "end": 11.22,
+              "probability": 0.9957269430160522,
+              "tokens": [
+                760
+              ]
+            },
+            {
+              "word": " Lake",
+              "start": 11.22,
+              "end": 11.7,
+              "probability": 0.3239794969558716,
+              "tokens": [
+                10582
+              ]
+            },
+            {
+              "word": " Shore,",
+              "start": 11.7,
+              "end": 12.28,
+              "probability": 0.5341766439378262,
+              "tokens": [
+                47977,
+                11
+              ]
+            },
+            {
+              "word": " I",
+              "start": 12.28,
+              "end": 12.82,
+              "probability": 0.46507328748703003,
+              "tokens": [
+                286
+              ]
+            },
+            {
+              "word": " dreamt",
+              "start": 12.82,
+              "end": 13.6,
+              "probability": 0.9333528876304626,
+              "tokens": [
+                3055,
+                83
+              ]
+            }
+          ]
+        },
+        {
+          "start": 13.74,
+          "end": 17.76,
+          "text": " a shadow chasing me I couldn't place",
+          "seek": null,
+          "tokens": [
+            257,
+            8576,
+            17876,
+            385,
+            286,
+            2809,
+            380,
+            1081
+          ],
+          "temperature": null,
+          "avg_logprob": null,
+          "compression_ratio": null,
+          "no_speech_prob": null,
+          "words": [
+            {
+              "word": " a",
+              "start": 13.74,
+              "end": 14.5,
+              "probability": 0.2854381501674652,
+              "tokens": [
+                257
+              ]
+            },
+            {
+              "word": " shadow",
+              "start": 14.5,
+              "end": 14.98,
+              "probability": 0.9954578876495361,
+              "tokens": [
+                8576
+              ]
+            },
+            {
+              "word": " chasing",
+              "start": 14.98,
+              "end": 15.34,
+              "probability": 0.9491673111915588,
+              "tokens": [
+                17876
+              ]
+            },
+            {
+              "word": " me",
+              "start": 15.34,
+              "end": 15.96,
+              "probability": 0.998175859451294,
+              "tokens": [
+                385
+              ]
+            },
+            {
+              "word": " I",
+              "start": 15.96,
+              "end": 16.5,
+              "probability": 0.25335365533828735,
+              "tokens": [
+                286
+              ]
+            },
+            {
+              "word": " couldn't",
+              "start": 16.5,
+              "end": 17.56,
+              "probability": 0.9920880198478699,
+              "tokens": [
+                2809,
+                380
+              ]
+            },
+            {
+              "word": " place",
+              "start": 17.56,
+              "end": 17.76,
+              "probability": 0.024292564019560814,
+              "tokens": [
+                1081
+              ]
+            }
+          ]
+        }
+      ],
+      "language": "en",
+      "ori_dict": {
+        "segments": [
+          {
+            "start": 1.28,
+            "end": 8.24,
+            "text": " The night before my dissertation defense,",
+            "words": [
+              {
+                "word": " The",
+                "start": 1.28,
+                "end": 3.08,
+                "tokens": [
+                  440
+                ],
+                "probability": 0.09269377589225769
+              },
+              {
+                "word": " night",
+                "start": 3.08,
+                "end": 3.44,
+                "tokens": [
+                  1818
+                ],
+                "probability": 0.9872718453407288
+              },
+              {
+                "word": " before",
+                "start": 3.44,
+                "end": 4.06,
+                "tokens": [
+                  949
+                ],
+                "probability": 0.9983826875686646
+              },
+              {
+                "word": " my",
+                "start": 4.06,
+                "end": 6.3,
+                "tokens": [
+                  452
+                ],
+                "probability": 0.19967642426490784
+              },
+              {
+                "word": " dissertation",
+                "start": 6.3,
+                "end": 6.82,
+                "tokens": [
+                  39555
+                ],
+                "probability": 0.9971640706062317
+              },
+              {
+                "word": " defense,",
+                "start": 6.82,
+                "end": 8.24,
+                "tokens": [
+                  7654,
+                  11
+                ],
+                "probability": 0.4960064012557268
+              }
+            ]
+          },
+          {
+            "start": 8.46,
+            "end": 13.6,
+            "text": " I'm speeding down Lake Shore, I dreamt",
+            "words": [
+              {
+                "word": " I'm",
+                "start": 8.46,
+                "end": 10.3,
+                "tokens": [
+                  286,
+                  478
+                ],
+                "probability": 0.732095792889595
+              },
+              {
+                "word": " speeding",
+                "start": 10.3,
+                "end": 10.76,
+                "tokens": [
+                  35593
+                ],
+                "probability": 0.9973670840263367
+              },
+              {
+                "word": " down",
+                "start": 10.76,
+                "end": 11.22,
+                "tokens": [
+                  760
+                ],
+                "probability": 0.9957269430160522
+              },
+              {
+                "word": " Lake",
+                "start": 11.22,
+                "end": 11.7,
+                "tokens": [
+                  10582
+                ],
+                "probability": 0.3239794969558716
+              },
+              {
+                "word": " Shore,",
+                "start": 11.7,
+                "end": 12.28,
+                "tokens": [
+                  47977,
+                  11
+                ],
+                "probability": 0.5341766439378262
+              },
+              {
+                "word": " I",
+                "start": 12.28,
+                "end": 12.82,
+                "tokens": [
+                  286
+                ],
+                "probability": 0.46507328748703003
+              },
+              {
+                "word": " dreamt",
+                "start": 12.82,
+                "end": 13.6,
+                "tokens": [
+                  3055,
+                  83
+                ],
+                "probability": 0.9333528876304626
+              }
+            ]
+          },
+          {
+            "start": 13.74,
+            "end": 17.76,
+            "text": " a shadow chasing me I couldn't place",
+            "words": [
+              {
+                "word": " a",
+                "start": 13.74,
+                "end": 14.5,
+                "tokens": [
+                  257
+                ],
+                "probability": 0.2854381501674652
+              },
+              {
+                "word": " shadow",
+                "start": 14.5,
+                "end": 14.98,
+                "tokens": [
+                  8576
+                ],
+                "probability": 0.9954578876495361
+              },
+              {
+                "word": " chasing",
+                "start": 14.98,
+                "end": 15.34,
+                "tokens": [
+                  17876
+                ],
+                "probability": 0.9491673111915588
+              },
+              {
+                "word": " me",
+                "start": 15.34,
+                "end": 15.96,
+                "tokens": [
+                  385
+                ],
+                "probability": 0.998175859451294
+              },
+              {
+                "word": " I",
+                "start": 15.96,
+                "end": 16.5,
+                "tokens": [
+                  286
+                ],
+                "probability": 0.25335365533828735
+              },
+              {
+                "word": " couldn't",
+                "start": 16.5,
+                "end": 17.56,
+                "tokens": [
+                  2809,
+                  380
+                ],
+                "probability": 0.9920880198478699
+              },
+              {
+                "word": " place",
+                "start": 17.56,
+                "end": 17.76,
+                "tokens": [
+                  1081
+                ],
+                "probability": 0.024292564019560814
+              }
+            ]
+          }
+        ]
+      },
+      "regroup_history": "",
+      "nonspeech_sections": []
+    }
+  },
+  {
+    "offset_s": 28.5,
+    "result": {
+      "text": " I pulled over, and men in shades and suits, I reach for my ID to show them … and I do, With no warning I get shot … and time stops",
+      "segments": [
+        {
+          "start": 0.22,
+          "end": 5.1,
+          "text": " I pulled over, and men in shades and suits,",
+          "seek": null,
+          "tokens": [
+            286,
+            7373,
+            670,
+            11,
+            293,
+            1706,
+            294,
+            20639,
+            293,
+            15278,
+            11
+          ],
+          "temperature": null,
+          "avg_logprob": null,
+          "compression_ratio": null,
+          "no_speech_prob": null,
+          "words": [
+            {
+              "word": " I",
+              "start": 0.22,
+              "end": 0.26,
+              "probability": 0.05096161738038063,
+              "tokens": [
+                286
+              ]
+            },
+            {
+              "word": " pulled",
+              "start": 0.26,
+              "end": 0.5,
+              "probability": 0.7225532531738281,
+              "tokens": [
+                7373
+              ]
+            },
+            {
+              "word": " over,",
+              "start": 0.5,
+              "end": 1.56,
+              "probability": 0.5649111643433571,
+              "tokens": [
+                670,
+                11
+              ]
+            },
+            {
+              "word": " and",
+              "start": 1.56,
+              "end": 2.9,
+              "probability": 0.6432037949562073,
+              "tokens": [
+                293
+              ]
+            },
+            {
+              "word": " men",
+              "start": 2.9,
+              "end": 3.32,
+              "probability": 0.005828198976814747,
+              "tokens": [
+                1706
+              ]
+            },
+            {
+              "word": " in",
+              "start": 3.32,
+              "end": 3.38,
+              "probability": 0.9875624179840088,
+              "tokens": [
+                294
+              ]
+            },
+            {
+              "word": " shades",
+              "start": 3.38,
+              "end": 3.78,
+              "probability": 0.994670569896698,
+              "tokens": [
+                20639
+              ]
+            },
+            {
+              "word": " and",
+              "start": 3.78,
+              "end": 4.16,
+              "probability": 0.9821699261665344,
+              "tokens": [
+                293
+              ]
+            },
+            {
+              "word": " suits,",
+              "start": 4.16,
+              "end": 5.1,
+              "probability": 0.526705339550972,
+              "tokens": [
+                15278,
+                11
+              ]
+            }
+          ]
+        },
+        {
+          "start": 5.3,
+          "end": 10.1,
+          "text": " I reach for my ID to show them … and I do,",
+          "seek": null,
+          "tokens": [
+            286,
+            2524,
+            337,
+            452,
+            7348,
+            281,
+            855,
+            552,
+            5799,
+            293,
+            286,
+            360,
+            11
+          ],
+          "temperature": null,
+          "avg_logprob": null,
+          "compression_ratio": null,
+          "no_speech_prob": null,
+          "words": [
+            {
+              "word": " I",
+              "start": 5.3,
+              "end": 6.5,
+              "probability": 0.35341498255729675,
+              "tokens": [
+                286
+              ]
+            },
+            {
+              "word": " reach",
+              "start": 6.5,
+              "end": 6.78,
+              "probability": 0.7761061191558838,
+              "tokens": [
+                2524
+              ]
+            },
+            {
+              "word": " for",
+              "start": 6.78,
+              "end": 7.0,
+              "probability": 0.9869715571403503,
+              "tokens": [
+                337
+              ]
+            },
+            {
+              "word": " my",
+              "start": 7.0,
+              "end": 7.28,
+              "probability": 0.9931396842002869,
+              "tokens": [
+                452
+              ]
+            },
+            {
+              "word": " ID",
+              "start": 7.28,
+              "end": 7.66,
+              "probability": 0.8158263564109802,
+              "tokens": [
+                7348
+              ]
+            },
+            {
+              "word": " to",
+              "start": 7.66,
+              "end": 7.92,
+              "probability": 0.9785913228988647,
+              "tokens": [
+                281
+              ]
+            },
+            {
+              "word": " show",
+              "start": 7.92,
+              "end": 8.2,
+              "probability": 0.9950489401817322,
+              "tokens": [
+                855
+              ]
+            },
+            {
+              "word": " them",
+              "start": 8.2,
+              "end": 8.72,
+              "probability": 0.9705438017845154,
+              "tokens": [
+                552
+              ]
+            },
+            {
+              "word": " …",
+              "start": 8.72,
+              "end": 8.9,
+              "probability": 0.00011886567517649382,
+              "tokens": [
+                5799
+              ]
+            },
+            {
+              "word": " and",
+              "start": 8.9,
+              "end": 9.22,
+              "probability": 0.6638283729553223,
+              "tokens": [
+                293
+              ]
+            },
+            {
+              "word": " I",
+              "start": 9.22,
+              "end": 9.4,
+              "probability": 0.9850650429725647,
+              "tokens": [
+                286
+              ]
+            },
+            {
+              "word": " do,",
+              "start": 9.4,
+              "end": 10.1,
+              "probability": 0.6872122883796692,
+              "tokens": [
+                360,
+                11
+              ]
+            }
+          ]
+        },
+        {
+          "start": 10.6,
+          "end": 15.3,
+          "text": " With no warning I get shot … and time stops",
+          "seek": null,
+          "tokens": [
+            2022,
+            572,
+            9164,
+            286,
+            483,
+            3347,
+            5799,
+            293,
+            565,
+            10094
+          ],
+          "temperature": null,
+          "avg_logprob": null,
+          "compression_ratio": null,
+          "no_speech_prob": null,
+          "words": [
+            {
+              "word": " With",
+              "start": 10.6,
+              "end": 11.08,
+              "probability": 0.2804386019706726,
+              "tokens": [
+                2022
+              ]
+            },
+            {
+              "word": " no",
+              "start": 11.08,
+              "end": 11.38,
+              "probability": 0.9913917779922485,
+              "tokens": [
+                572
+              ]
+            },
+            {
+              "word": " warning",
+              "start": 11.38,
+              "end": 12.1,
+              "probability": 0.9961718916893005,
+              "tokens": [
+                9164
+              ]
+            },
+            {
+              "word": " I",
+              "start": 12.1,
+              "end": 12.56,
+              "probability": 0.6552708745002747,
+              "tokens": [
+                286
+              ]
+            },
+            {
+              "word": " get",
+              "start": 12.56,
+              "end": 12.96,
+              "probability": 0.9316425323486328,
+              "tokens": [
+                483
+              ]
+            },
+            {
+              "word": " shot",
+              "start": 12.96,
+              "end": 13.4,
+              "probability": 0.9142383933067322,
+              "tokens": [
+                3347
+              ]
+            },
+            {
+              "word": " …",
+              "start": 13.4,
+              "end": 13.66,
+              "probability": 0.1306702196598053,
+              "tokens": [
+                5799
+              ]
+            },
+            {
+              "word": " and",
+              "start": 13.66,
+              "end": 14.1,
+              "probability": 0.3244018256664276,
+              "tokens": [
+                293
+              ]
+            },
+            {
+              "word": " time",
+              "start": 14.1,
+              "end": 14.6,
+              "probability": 0.7100540399551392,
+              "tokens": [
+                565
+              ]
+            },
+            {
+              "word": " stops",
+              "start": 14.6,
+              "end": 15.3,
+              "probability": 0.8231433629989624,
+              "tokens": [
+                10094
+              ]
+            }
+          ]
+        }
+      ],
+      "language": "en",
+      "ori_dict": {
+        "segments": [
+          {
+            "start": 0.22,
+            "end": 5.1,
+            "text": " I pulled over, and men in shades and suits,",
+            "words": [
+              {
+                "word": " I",
+                "start": 0.22,
+                "end": 0.26,
+                "tokens": [
+                  286
+                ],
+                "probability": 0.05096161738038063
+              },
+              {
+                "word": " pulled",
+                "start": 0.26,
+                "end": 0.5,
+                "tokens": [
+                  7373
+                ],
+                "probability": 0.7225532531738281
+              },
+              {
+                "word": " over,",
+                "start": 0.5,
+                "end": 1.56,
+                "tokens": [
+                  670,
+                  11
+                ],
+                "probability": 0.5649111643433571
+              },
+              {
+                "word": " and",
+                "start": 1.56,
+                "end": 2.9,
+                "tokens": [
+                  293
+                ],
+                "probability": 0.6432037949562073
+              },
+              {
+                "word": " men",
+                "start": 2.9,
+                "end": 3.32,
+                "tokens": [
+                  1706
+                ],
+                "probability": 0.005828198976814747
+              },
+              {
+                "word": " in",
+                "start": 3.32,
+                "end": 3.38,
+                "tokens": [
+                  294
+                ],
+                "probability": 0.9875624179840088
+              },
+              {
+                "word": " shades",
+                "start": 3.38,
+                "end": 3.78,
+                "tokens": [
+                  20639
+                ],
+                "probability": 0.994670569896698
+              },
+              {
+                "word": " and",
+                "start": 3.78,
+                "end": 4.16,
+                "tokens": [
+                  293
+                ],
+                "probability": 0.9821699261665344
+              },
+              {
+                "word": " suits,",
+                "start": 4.16,
+                "end": 5.1,
+                "tokens": [
+                  15278,
+                  11
+                ],
+                "probability": 0.526705339550972
+              }
+            ]
+          },
+          {
+            "start": 5.3,
+            "end": 10.1,
+            "text": " I reach for my ID to show them … and I do,",
+            "words": [
+              {
+                "word": " I",
+                "start": 5.3,
+                "end": 6.5,
+                "tokens": [
+                  286
+                ],
+                "probability": 0.35341498255729675
+              },
+              {
+                "word": " reach",
+                "start": 6.5,
+                "end": 6.78,
+                "tokens": [
+                  2524
+                ],
+                "probability": 0.7761061191558838
+              },
+              {
+                "word": " for",
+                "start": 6.78,
+                "end": 7.0,
+                "tokens": [
+                  337
+                ],
+                "probability": 0.9869715571403503
+              },
+              {
+                "word": " my",
+                "start": 7.0,
+                "end": 7.28,
+                "tokens": [
+                  452
+                ],
+                "probability": 0.9931396842002869
+              },
+              {
+                "word": " ID",
+                "start": 7.28,
+                "end": 7.66,
+                "tokens": [
+                  7348
+                ],
+                "probability": 0.8158263564109802
+              },
+              {
+                "word": " to",
+                "start": 7.66,
+                "end": 7.92,
+                "tokens": [
+                  281
+                ],
+                "probability": 0.9785913228988647
+              },
+              {
+                "word": " show",
+                "start": 7.92,
+                "end": 8.2,
+                "tokens": [
+                  855
+                ],
+                "probability": 0.9950489401817322
+              },
+              {
+                "word": " them",
+                "start": 8.2,
+                "end": 8.72,
+                "tokens": [
+                  552
+                ],
+                "probability": 0.9705438017845154
+              },
+              {
+                "word": " …",
+                "start": 8.72,
+                "end": 8.9,
+                "tokens": [
+                  5799
+                ],
+                "probability": 0.00011886567517649382
+              },
+              {
+                "word": " and",
+                "start": 8.9,
+                "end": 9.22,
+                "tokens": [
+                  293
+                ],
+                "probability": 0.6638283729553223
+              },
+              {
+                "word": " I",
+                "start": 9.22,
+                "end": 9.4,
+                "tokens": [
+                  286
+                ],
+                "probability": 0.9850650429725647
+              },
+              {
+                "word": " do,",
+                "start": 9.4,
+                "end": 10.1,
+                "tokens": [
+                  360,
+                  11
+                ],
+                "probability": 0.6872122883796692
+              }
+            ]
+          },
+          {
+            "start": 10.6,
+            "end": 15.3,
+            "text": " With no warning I get shot … and time stops",
+            "words": [
+              {
+                "word": " With",
+                "start": 10.6,
+                "end": 11.08,
+                "tokens": [
+                  2022
+                ],
+                "probability": 0.2804386019706726
+              },
+              {
+                "word": " no",
+                "start": 11.08,
+                "end": 11.38,
+                "tokens": [
+                  572
+                ],
+                "probability": 0.9913917779922485
+              },
+              {
+                "word": " warning",
+                "start": 11.38,
+                "end": 12.1,
+                "tokens": [
+                  9164
+                ],
+                "probability": 0.9961718916893005
+              },
+              {
+                "word": " I",
+                "start": 12.1,
+                "end": 12.56,
+                "tokens": [
+                  286
+                ],
+                "probability": 0.6552708745002747
+              },
+              {
+                "word": " get",
+                "start": 12.56,
+                "end": 12.96,
+                "tokens": [
+                  483
+                ],
+                "probability": 0.9316425323486328
+              },
+              {
+                "word": " shot",
+                "start": 12.96,
+                "end": 13.4,
+                "tokens": [
+                  3347
+                ],
+                "probability": 0.9142383933067322
+              },
+              {
+                "word": " …",
+                "start": 13.4,
+                "end": 13.66,
+                "tokens": [
+                  5799
+                ],
+                "probability": 0.1306702196598053
+              },
+              {
+                "word": " and",
+                "start": 13.66,
+                "end": 14.1,
+                "tokens": [
+                  293
+                ],
+                "probability": 0.3244018256664276
+              },
+              {
+                "word": " time",
+                "start": 14.1,
+                "end": 14.6,
+                "tokens": [
+                  565
+                ],
+                "probability": 0.7100540399551392
+              },
+              {
+                "word": " stops",
+                "start": 14.6,
+                "end": 15.3,
+                "tokens": [
+                  10094
+                ],
+                "probability": 0.8231433629989624
+              }
+            ]
+          }
+        ]
+      },
+      "regroup_history": "",
+      "nonspeech_sections": []
+    }
+  },
+  {
+    "offset_s": 49.8,
+    "result": {
+      "text": " Rewind.",
+      "segments": [
+        {
+          "start": 0.0,
+          "end": 1.84,
+          "text": " Rewind.",
+          "seek": null,
+          "tokens": [
+            497,
+            1023,
+            471,
+            13
+          ],
+          "temperature": null,
+          "avg_logprob": null,
+          "compression_ratio": null,
+          "no_speech_prob": null,
+          "words": [
+            {
+              "word": " Rewind.",
+              "start": 0.0,
+              "end": 1.84,
+              "probability": 0.10257968695562643,
+              "tokens": [
+                497,
+                1023,
+                471,
+                13
+              ]
+            }
+          ]
+        }
+      ],
+      "language": "en",
+      "ori_dict": {
+        "segments": [
+          {
+            "start": 0.0,
+            "end": 1.84,
+            "text": " Rewind.",
+            "words": [
+              {
+                "word": " Rewind.",
+                "start": 0.0,
+                "end": 1.84,
+                "tokens": [
+                  497,
+                  1023,
+                  471,
+                  13
+                ],
+                "probability": 0.10257968695562643
+              }
+            ]
+          }
+        ]
+      },
+      "regroup_history": "",
+      "nonspeech_sections": []
+    }
+  },
+  {
+    "offset_s": 53.7,
+    "result": {
+      "text": " Rewind.",
+      "segments": [
+        {
+          "start": 0.0,
+          "end": 2.48,
+          "text": " Rewind.",
+          "seek": null,
+          "tokens": [
+            497,
+            1023,
+            471,
+            13
+          ],
+          "temperature": null,
+          "avg_logprob": null,
+          "compression_ratio": null,
+          "no_speech_prob": null,
+          "words": [
+            {
+              "word": " Rewind.",
+              "start": 0.0,
+              "end": 2.48,
+              "probability": 0.1774275626708004,
+              "tokens": [
+                497,
+                1023,
+                471,
+                13
+              ]
+            }
+          ]
+        }
+      ],
+      "language": "en",
+      "ori_dict": {
+        "segments": [
+          {
+            "start": 0.0,
+            "end": 2.48,
+            "text": " Rewind.",
+            "words": [
+              {
+                "word": " Rewind.",
+                "start": 0.0,
+                "end": 2.48,
+                "tokens": [
+                  497,
+                  1023,
+                  471,
+                  13
+                ],
+                "probability": 0.1774275626708004
+              }
+            ]
+          }
+        ]
+      },
+      "regroup_history": "",
+      "nonspeech_sections": []
+    }
+  },
+  {
+    "offset_s": 84.5,
+    "result": {
+      "text": " And now I'm back on the road sirens in my mirror …Reload. A shadow chasing me like it's a race",
+      "segments": [
+        {
+          "start": 0.08,
+          "end": 6.56,
+          "text": " And now I'm back on the road",
+          "seek": null,
+          "tokens": [
+            400,
+            586,
+            286,
+            478,
+            646,
+            322,
+            264,
+            3060
+          ],
+          "temperature": null,
+          "avg_logprob": null,
+          "compression_ratio": null,
+          "no_speech_prob": null,
+          "words": [
+            {
+              "word": " And",
+              "start": 0.08,
+              "end": 1.86,
+              "probability": 0.04003851115703583,
+              "tokens": [
+                400
+              ]
+            },
+            {
+              "word": " now",
+              "start": 1.86,
+              "end": 2.3,
+              "probability": 0.9772435426712036,
+              "tokens": [
+                586
+              ]
+            },
+            {
+              "word": " I'm",
+              "start": 2.3,
+              "end": 2.86,
+              "probability": 0.9713209569454193,
+              "tokens": [
+                286,
+                478
+              ]
+            },
+            {
+              "word": " back",
+              "start": 2.86,
+              "end": 3.2,
+              "probability": 0.9442817568778992,
+              "tokens": [
+                646
+              ]
+            },
+            {
+              "word": " on",
+              "start": 3.2,
+              "end": 4.92,
+              "probability": 0.11283071339130402,
+              "tokens": [
+                322
+              ]
+            },
+            {
+              "word": " the",
+              "start": 4.92,
+              "end": 6.18,
+              "probability": 0.9924271106719971,
+              "tokens": [
+                264
+              ]
+            },
+            {
+              "word": " road",
+              "start": 6.18,
+              "end": 6.56,
+              "probability": 0.9949263334274292,
+              "tokens": [
+                3060
+              ]
+            }
+          ]
+        },
+        {
+          "start": 7.08,
+          "end": 12.84,
+          "text": " sirens in my mirror …Reload.",
+          "seek": null,
+          "tokens": [
+            262,
+            44511,
+            294,
+            452,
+            8013,
+            5799,
+            49,
+            10590,
+            345,
+            13
+          ],
+          "temperature": null,
+          "avg_logprob": null,
+          "compression_ratio": null,
+          "no_speech_prob": null,
+          "words": [
+            {
+              "word": " sirens",
+              "start": 7.08,
+              "end": 9.16,
+              "probability": 0.5045297034084797,
+              "tokens": [
+                262,
+                44511
+              ]
+            },
+            {
+              "word": " in",
+              "start": 9.16,
+              "end": 9.42,
+              "probability": 0.989534318447113,
+              "tokens": [
+                294
+              ]
+            },
+            {
+              "word": " my",
+              "start": 9.42,
+              "end": 9.86,
+              "probability": 0.9977364540100098,
+              "tokens": [
+                452
+              ]
+            },
+            {
+              "word": " mirror",
+              "start": 9.86,
+              "end": 10.54,
+              "probability": 0.9589162468910217,
+              "tokens": [
+                8013
+              ]
+            },
+            {
+              "word": " …Reload.",
+              "start": 10.54,
+              "end": 12.84,
+              "probability": 0.25665096205921145,
+              "tokens": [
+                5799,
+                49,
+                10590,
+                345,
+                13
+              ]
+            }
+          ]
+        },
+        {
+          "start": 13.04,
+          "end": 16.58,
+          "text": " A shadow chasing me like it's a race",
+          "seek": null,
+          "tokens": [
+            316,
+            8576,
+            17876,
+            385,
+            411,
+            309,
+            311,
+            257,
+            4569
+          ],
+          "temperature": null,
+          "avg_logprob": null,
+          "compression_ratio": null,
+          "no_speech_prob": null,
+          "words": [
+            {
+              "word": " A",
+              "start": 13.04,
+              "end": 13.2,
+              "probability": 0.19192714989185333,
+              "tokens": [
+                316
+              ]
+            },
+            {
+              "word": " shadow",
+              "start": 13.2,
+              "end": 13.58,
+              "probability": 0.9932637214660645,
+              "tokens": [
+                8576
+              ]
+            },
+            {
+              "word": " chasing",
+              "start": 13.58,
+              "end": 14.1,
+              "probability": 0.884299635887146,
+              "tokens": [
+                17876
+              ]
+            },
+            {
+              "word": " me",
+              "start": 14.1,
+              "end": 14.62,
+              "probability": 0.9979973435401917,
+              "tokens": [
+                385
+              ]
+            },
+            {
+              "word": " like",
+              "start": 14.62,
+              "end": 15.14,
+              "probability": 0.9530524015426636,
+              "tokens": [
+                411
+              ]
+            },
+            {
+              "word": " it's",
+              "start": 15.14,
+              "end": 15.86,
+              "probability": 0.9721015691757202,
+              "tokens": [
+                309,
+                311
+              ]
+            },
+            {
+              "word": " a",
+              "start": 15.86,
+              "end": 16.02,
+              "probability": 0.9679027795791626,
+              "tokens": [
+                257
+              ]
+            },
+            {
+              "word": " race",
+              "start": 16.02,
+              "end": 16.58,
+              "probability": 0.5085799694061279,
+              "tokens": [
+                4569
+              ]
+            }
+          ]
+        }
+      ],
+      "language": "en",
+      "ori_dict": {
+        "segments": [
+          {
+            "start": 0.08,
+            "end": 6.56,
+            "text": " And now I'm back on the road",
+            "words": [
+              {
+                "word": " And",
+                "start": 0.08,
+                "end": 1.86,
+                "tokens": [
+                  400
+                ],
+                "probability": 0.04003851115703583
+              },
+              {
+                "word": " now",
+                "start": 1.86,
+                "end": 2.3,
+                "tokens": [
+                  586
+                ],
+                "probability": 0.9772435426712036
+              },
+              {
+                "word": " I'm",
+                "start": 2.3,
+                "end": 2.86,
+                "tokens": [
+                  286,
+                  478
+                ],
+                "probability": 0.9713209569454193
+              },
+              {
+                "word": " back",
+                "start": 2.86,
+                "end": 3.2,
+                "tokens": [
+                  646
+                ],
+                "probability": 0.9442817568778992
+              },
+              {
+                "word": " on",
+                "start": 3.2,
+                "end": 4.92,
+                "tokens": [
+                  322
+                ],
+                "probability": 0.11283071339130402
+              },
+              {
+                "word": " the",
+                "start": 4.92,
+                "end": 6.18,
+                "tokens": [
+                  264
+                ],
+                "probability": 0.9924271106719971
+              },
+              {
+                "word": " road",
+                "start": 6.18,
+                "end": 6.56,
+                "tokens": [
+                  3060
+                ],
+                "probability": 0.9949263334274292
+              }
+            ]
+          },
+          {
+            "start": 7.08,
+            "end": 12.84,
+            "text": " sirens in my mirror …Reload.",
+            "words": [
+              {
+                "word": " sirens",
+                "start": 7.08,
+                "end": 9.16,
+                "tokens": [
+                  262,
+                  44511
+                ],
+                "probability": 0.5045297034084797
+              },
+              {
+                "word": " in",
+                "start": 9.16,
+                "end": 9.42,
+                "tokens": [
+                  294
+                ],
+                "probability": 0.989534318447113
+              },
+              {
+                "word": " my",
+                "start": 9.42,
+                "end": 9.86,
+                "tokens": [
+                  452
+                ],
+                "probability": 0.9977364540100098
+              },
+              {
+                "word": " mirror",
+                "start": 9.86,
+                "end": 10.54,
+                "tokens": [
+                  8013
+                ],
+                "probability": 0.9589162468910217
+              },
+              {
+                "word": " …Reload.",
+                "start": 10.54,
+                "end": 12.84,
+                "tokens": [
+                  5799,
+                  49,
+                  10590,
+                  345,
+                  13
+                ],
+                "probability": 0.25665096205921145
+              }
+            ]
+          },
+          {
+            "start": 13.04,
+            "end": 16.58,
+            "text": " A shadow chasing me like it's a race",
+            "words": [
+              {
+                "word": " A",
+                "start": 13.04,
+                "end": 13.2,
+                "tokens": [
+                  316
+                ],
+                "probability": 0.19192714989185333
+              },
+              {
+                "word": " shadow",
+                "start": 13.2,
+                "end": 13.58,
+                "tokens": [
+                  8576
+                ],
+                "probability": 0.9932637214660645
+              },
+              {
+                "word": " chasing",
+                "start": 13.58,
+                "end": 14.1,
+                "tokens": [
+                  17876
+                ],
+                "probability": 0.884299635887146
+              },
+              {
+                "word": " me",
+                "start": 14.1,
+                "end": 14.62,
+                "tokens": [
+                  385
+                ],
+                "probability": 0.9979973435401917
+              },
+              {
+                "word": " like",
+                "start": 14.62,
+                "end": 15.14,
+                "tokens": [
+                  411
+                ],
+                "probability": 0.9530524015426636
+              },
+              {
+                "word": " it's",
+                "start": 15.14,
+                "end": 15.86,
+                "tokens": [
+                  309,
+                  311
+                ],
+                "probability": 0.9721015691757202
+              },
+              {
+                "word": " a",
+                "start": 15.86,
+                "end": 16.02,
+                "tokens": [
+                  257
+                ],
+                "probability": 0.9679027795791626
+              },
+              {
+                "word": " race",
+                "start": 16.02,
+                "end": 16.58,
+                "tokens": [
+                  4569
+                ],
+                "probability": 0.5085799694061279
+              }
+            ]
+          }
+        ]
+      },
+      "regroup_history": "",
+      "nonspeech_sections": []
+    }
+  },
+  {
+    "offset_s": 101.2,
+    "result": {
+      "text": " I zigzag across the field of grass they chase me and they're just too fast With no warning I get shot … and time stops",
+      "segments": [
+        {
+          "start": 0.24,
+          "end": 4.56,
+          "text": " I zigzag across the field of grass",
+          "seek": null,
+          "tokens": [
+            286,
+            38290,
+            43886,
+            2108,
+            264,
+            2519,
+            295,
+            8054
+          ],
+          "temperature": null,
+          "avg_logprob": null,
+          "compression_ratio": null,
+          "no_speech_prob": null,
+          "words": [
+            {
+              "word": " I",
+              "start": 0.24,
+              "end": 0.28,
+              "probability": 0.0021081366576254368,
+              "tokens": [
+                286
+              ]
+            },
+            {
+              "word": " zigzag",
+              "start": 0.28,
+              "end": 0.88,
+              "probability": 0.2081139162182808,
+              "tokens": [
+                38290,
+                43886
+              ]
+            },
+            {
+              "word": " across",
+              "start": 0.88,
+              "end": 2.92,
+              "probability": 0.5395220518112183,
+              "tokens": [
+                2108
+              ]
+            },
+            {
+              "word": " the",
+              "start": 2.92,
+              "end": 3.3,
+              "probability": 0.9778242111206055,
+              "tokens": [
+                264
+              ]
+            },
+            {
+              "word": " field",
+              "start": 3.3,
+              "end": 3.72,
+              "probability": 0.9420238137245178,
+              "tokens": [
+                2519
+              ]
+            },
+            {
+              "word": " of",
+              "start": 3.72,
+              "end": 4.16,
+              "probability": 0.9861072301864624,
+              "tokens": [
+                295
+              ]
+            },
+            {
+              "word": " grass",
+              "start": 4.16,
+              "end": 4.56,
+              "probability": 0.9907987117767334,
+              "tokens": [
+                8054
+              ]
+            }
+          ]
+        },
+        {
+          "start": 5.2,
+          "end": 9.96,
+          "text": " they chase me and they're just too fast",
+          "seek": null,
+          "tokens": [
+            436,
+            15359,
+            385,
+            293,
+            436,
+            434,
+            445,
+            886,
+            2370
+          ],
+          "temperature": null,
+          "avg_logprob": null,
+          "compression_ratio": null,
+          "no_speech_prob": null,
+          "words": [
+            {
+              "word": " they",
+              "start": 5.2,
+              "end": 6.42,
+              "probability": 0.2208241969347,
+              "tokens": [
+                436
+              ]
+            },
+            {
+              "word": " chase",
+              "start": 6.42,
+              "end": 6.66,
+              "probability": 0.9845156669616699,
+              "tokens": [
+                15359
+              ]
+            },
+            {
+              "word": " me",
+              "start": 6.66,
+              "end": 6.96,
+              "probability": 0.9972521662712097,
+              "tokens": [
+                385
+              ]
+            },
+            {
+              "word": " and",
+              "start": 6.96,
+              "end": 7.3,
+              "probability": 0.8918682932853699,
+              "tokens": [
+                293
+              ]
+            },
+            {
+              "word": " they're",
+              "start": 7.3,
+              "end": 7.8,
+              "probability": 0.9587433338165283,
+              "tokens": [
+                436,
+                434
+              ]
+            },
+            {
+              "word": " just",
+              "start": 7.8,
+              "end": 8.26,
+              "probability": 0.995361864566803,
+              "tokens": [
+                445
+              ]
+            },
+            {
+              "word": " too",
+              "start": 8.26,
+              "end": 8.94,
+              "probability": 0.9568120837211609,
+              "tokens": [
+                886
+              ]
+            },
+            {
+              "word": " fast",
+              "start": 8.94,
+              "end": 9.96,
+              "probability": 0.9909879565238953,
+              "tokens": [
+                2370
+              ]
+            }
+          ]
+        },
+        {
+          "start": 10.68,
+          "end": 15.12,
+          "text": " With no warning I get shot … and time stops",
+          "seek": null,
+          "tokens": [
+            2022,
+            572,
+            9164,
+            286,
+            483,
+            3347,
+            5799,
+            293,
+            565,
+            10094
+          ],
+          "temperature": null,
+          "avg_logprob": null,
+          "compression_ratio": null,
+          "no_speech_prob": null,
+          "words": [
+            {
+              "word": " With",
+              "start": 10.68,
+              "end": 10.98,
+              "probability": 0.10127568244934082,
+              "tokens": [
+                2022
+              ]
+            },
+            {
+              "word": " no",
+              "start": 10.98,
+              "end": 11.24,
+              "probability": 0.9940962791442871,
+              "tokens": [
+                572
+              ]
+            },
+            {
+              "word": " warning",
+              "start": 11.24,
+              "end": 12.02,
+              "probability": 0.997714638710022,
+              "tokens": [
+                9164
+              ]
+            },
+            {
+              "word": " I",
+              "start": 12.02,
+              "end": 12.44,
+              "probability": 0.7790635228157043,
+              "tokens": [
+                286
+              ]
+            },
+            {
+              "word": " get",
+              "start": 12.44,
+              "end": 12.82,
+              "probability": 0.940568745136261,
+              "tokens": [
+                483
+              ]
+            },
+            {
+              "word": " shot",
+              "start": 12.82,
+              "end": 13.26,
+              "probability": 0.9676492214202881,
+              "tokens": [
+                3347
+              ]
+            },
+            {
+              "word": " …",
+              "start": 13.26,
+              "end": 13.56,
+              "probability": 0.0005524767911992967,
+              "tokens": [
+                5799
+              ]
+            },
+            {
+              "word": " and",
+              "start": 13.56,
+              "end": 13.94,
+              "probability": 0.6554803848266602,
+              "tokens": [
+                293
+              ]
+            },
+            {
+              "word": " time",
+              "start": 13.94,
+              "end": 14.48,
+              "probability": 0.9531601667404175,
+              "tokens": [
+                565
+              ]
+            },
+            {
+              "word": " stops",
+              "start": 14.48,
+              "end": 15.12,
+              "probability": 0.2675548791885376,
+              "tokens": [
+                10094
+              ]
+            }
+          ]
+        }
+      ],
+      "language": "en",
+      "ori_dict": {
+        "segments": [
+          {
+            "start": 0.24,
+            "end": 4.56,
+            "text": " I zigzag across the field of grass",
+            "words": [
+              {
+                "word": " I",
+                "start": 0.24,
+                "end": 0.28,
+                "tokens": [
+                  286
+                ],
+                "probability": 0.0021081366576254368
+              },
+              {
+                "word": " zigzag",
+                "start": 0.28,
+                "end": 0.88,
+                "tokens": [
+                  38290,
+                  43886
+                ],
+                "probability": 0.2081139162182808
+              },
+              {
+                "word": " across",
+                "start": 0.88,
+                "end": 2.92,
+                "tokens": [
+                  2108
+                ],
+                "probability": 0.5395220518112183
+              },
+              {
+                "word": " the",
+                "start": 2.92,
+                "end": 3.3,
+                "tokens": [
+                  264
+                ],
+                "probability": 0.9778242111206055
+              },
+              {
+                "word": " field",
+                "start": 3.3,
+                "end": 3.72,
+                "tokens": [
+                  2519
+                ],
+                "probability": 0.9420238137245178
+              },
+              {
+                "word": " of",
+                "start": 3.72,
+                "end": 4.16,
+                "tokens": [
+                  295
+                ],
+                "probability": 0.9861072301864624
+              },
+              {
+                "word": " grass",
+                "start": 4.16,
+                "end": 4.56,
+                "tokens": [
+                  8054
+                ],
+                "probability": 0.9907987117767334
+              }
+            ]
+          },
+          {
+            "start": 5.2,
+            "end": 9.96,
+            "text": " they chase me and they're just too fast",
+            "words": [
+              {
+                "word": " they",
+                "start": 5.2,
+                "end": 6.42,
+                "tokens": [
+                  436
+                ],
+                "probability": 0.2208241969347
+              },
+              {
+                "word": " chase",
+                "start": 6.42,
+                "end": 6.66,
+                "tokens": [
+                  15359
+                ],
+                "probability": 0.9845156669616699
+              },
+              {
+                "word": " me",
+                "start": 6.66,
+                "end": 6.96,
+                "tokens": [
+                  385
+                ],
+                "probability": 0.9972521662712097
+              },
+              {
+                "word": " and",
+                "start": 6.96,
+                "end": 7.3,
+                "tokens": [
+                  293
+                ],
+                "probability": 0.8918682932853699
+              },
+              {
+                "word": " they're",
+                "start": 7.3,
+                "end": 7.8,
+                "tokens": [
+                  436,
+                  434
+                ],
+                "probability": 0.9587433338165283
+              },
+              {
+                "word": " just",
+                "start": 7.8,
+                "end": 8.26,
+                "tokens": [
+                  445
+                ],
+                "probability": 0.995361864566803
+              },
+              {
+                "word": " too",
+                "start": 8.26,
+                "end": 8.94,
+                "tokens": [
+                  886
+                ],
+                "probability": 0.9568120837211609
+              },
+              {
+                "word": " fast",
+                "start": 8.94,
+                "end": 9.96,
+                "tokens": [
+                  2370
+                ],
+                "probability": 0.9909879565238953
+              }
+            ]
+          },
+          {
+            "start": 10.68,
+            "end": 15.12,
+            "text": " With no warning I get shot … and time stops",
+            "words": [
+              {
+                "word": " With",
+                "start": 10.68,
+                "end": 10.98,
+                "tokens": [
+                  2022
+                ],
+                "probability": 0.10127568244934082
+              },
+              {
+                "word": " no",
+                "start": 10.98,
+                "end": 11.24,
+                "tokens": [
+                  572
+                ],
+                "probability": 0.9940962791442871
+              },
+              {
+                "word": " warning",
+                "start": 11.24,
+                "end": 12.02,
+                "tokens": [
+                  9164
+                ],
+                "probability": 0.997714638710022
+              },
+              {
+                "word": " I",
+                "start": 12.02,
+                "end": 12.44,
+                "tokens": [
+                  286
+                ],
+                "probability": 0.7790635228157043
+              },
+              {
+                "word": " get",
+                "start": 12.44,
+                "end": 12.82,
+                "tokens": [
+                  483
+                ],
+                "probability": 0.940568745136261
+              },
+              {
+                "word": " shot",
+                "start": 12.82,
+                "end": 13.26,
+                "tokens": [
+                  3347
+                ],
+                "probability": 0.9676492214202881
+              },
+              {
+                "word": " …",
+                "start": 13.26,
+                "end": 13.56,
+                "tokens": [
+                  5799
+                ],
+                "probability": 0.0005524767911992967
+              },
+              {
+                "word": " and",
+                "start": 13.56,
+                "end": 13.94,
+                "tokens": [
+                  293
+                ],
+                "probability": 0.6554803848266602
+              },
+              {
+                "word": " time",
+                "start": 13.94,
+                "end": 14.48,
+                "tokens": [
+                  565
+                ],
+                "probability": 0.9531601667404175
+              },
+              {
+                "word": " stops",
+                "start": 14.48,
+                "end": 15.12,
+                "tokens": [
+                  10094
+                ],
+                "probability": 0.2675548791885376
+              }
+            ]
+          }
+        ]
+      },
+      "regroup_history": "",
+      "nonspeech_sections": []
+    }
+  },
+  {
+    "offset_s": 122.0,
+    "result": {
+      "text": " Rewind.",
+      "segments": [
+        {
+          "start": 0.0,
+          "end": 2.06,
+          "text": " Rewind.",
+          "seek": null,
+          "tokens": [
+            497,
+            1023,
+            471,
+            13
+          ],
+          "temperature": null,
+          "avg_logprob": null,
+          "compression_ratio": null,
+          "no_speech_prob": null,
+          "words": [
+            {
+              "word": " Rewind.",
+              "start": 0.0,
+              "end": 2.06,
+              "probability": 0.2558960706992366,
+              "tokens": [
+                497,
+                1023,
+                471,
+                13
+              ]
+            }
+          ]
+        }
+      ],
+      "language": "en",
+      "ori_dict": {
+        "segments": [
+          {
+            "start": 0.0,
+            "end": 2.06,
+            "text": " Rewind.",
+            "words": [
+              {
+                "word": " Rewind.",
+                "start": 0.0,
+                "end": 2.06,
+                "tokens": [
+                  497,
+                  1023,
+                  471,
+                  13
+                ],
+                "probability": 0.2558960706992366
+              }
+            ]
+          }
+        ]
+      },
+      "regroup_history": "",
+      "nonspeech_sections": []
+    }
+  },
+  {
+    "offset_s": 126.2,
+    "result": {
+      "text": " Rewind.",
+      "segments": [
+        {
+          "start": 0.14,
+          "end": 1.36,
+          "text": " Rewind.",
+          "seek": null,
+          "tokens": [
+            497,
+            1023,
+            471,
+            13
+          ],
+          "temperature": null,
+          "avg_logprob": null,
+          "compression_ratio": null,
+          "no_speech_prob": null,
+          "words": [
+            {
+              "word": " Rewind.",
+              "start": 0.14,
+              "end": 1.36,
+              "probability": 0.07082721764648645,
+              "tokens": [
+                497,
+                1023,
+                471,
+                13
+              ]
+            }
+          ]
+        }
+      ],
+      "language": "en",
+      "ori_dict": {
+        "segments": [
+          {
+            "start": 0.14,
+            "end": 1.36,
+            "text": " Rewind.",
+            "words": [
+              {
+                "word": " Rewind.",
+                "start": 0.14,
+                "end": 1.36,
+                "tokens": [
+                  497,
+                  1023,
+                  471,
+                  13
+                ],
+                "probability": 0.07082721764648645
+              }
+            ]
+          }
+        ]
+      },
+      "regroup_history": "",
+      "nonspeech_sections": []
+    }
+  },
+  {
+    "offset_s": 155.0,
+    "result": {
+      "text": " The night before my dissertation defense, I'm speeding down Lake Shore, I dreamt a shadow chasing me I couldn't place",
+      "segments": [
+        {
+          "start": 2.38,
+          "end": 8.64,
+          "text": " The night before my dissertation defense,",
+          "seek": null,
+          "tokens": [
+            440,
+            1818,
+            949,
+            452,
+            39555,
+            7654,
+            11
+          ],
+          "temperature": null,
+          "avg_logprob": null,
+          "compression_ratio": null,
+          "no_speech_prob": null,
+          "words": [
+            {
+              "word": " The",
+              "start": 2.38,
+              "end": 3.54,
+              "probability": 0.14167451858520508,
+              "tokens": [
+                440
+              ]
+            },
+            {
+              "word": " night",
+              "start": 3.54,
+              "end": 3.94,
+              "probability": 0.98834627866745,
+              "tokens": [
+                1818
+              ]
+            },
+            {
+              "word": " before",
+              "start": 3.94,
+              "end": 4.5,
+              "probability": 0.9982969164848328,
+              "tokens": [
+                949
+              ]
+            },
+            {
+              "word": " my",
+              "start": 4.5,
+              "end": 6.72,
+              "probability": 0.2057517170906067,
+              "tokens": [
+                452
+              ]
+            },
+            {
+              "word": " dissertation",
+              "start": 6.72,
+              "end": 7.24,
+              "probability": 0.9968410730361938,
+              "tokens": [
+                39555
+              ]
+            },
+            {
+              "word": " defense,",
+              "start": 7.24,
+              "end": 8.64,
+              "probability": 0.49339691549539566,
+              "tokens": [
+                7654,
+                11
+              ]
+            }
+          ]
+        },
+        {
+          "start": 8.88,
+          "end": 14.0,
+          "text": " I'm speeding down Lake Shore, I dreamt",
+          "seek": null,
+          "tokens": [
+            286,
+            478,
+            35593,
+            760,
+            10582,
+            47977,
+            11,
+            286,
+            3055,
+            83
+          ],
+          "temperature": null,
+          "avg_logprob": null,
+          "compression_ratio": null,
+          "no_speech_prob": null,
+          "words": [
+            {
+              "word": " I'm",
+              "start": 8.88,
+              "end": 10.7,
+              "probability": 0.7136091887950897,
+              "tokens": [
+                286,
+                478
+              ]
+            },
+            {
+              "word": " speeding",
+              "start": 10.7,
+              "end": 11.14,
+              "probability": 0.9968233108520508,
+              "tokens": [
+                35593
+              ]
+            },
+            {
+              "word": " down",
+              "start": 11.14,
+              "end": 11.6,
+              "probability": 0.9956991672515869,
+              "tokens": [
+                760
+              ]
+            },
+            {
+              "word": " Lake",
+              "start": 11.6,
+              "end": 12.06,
+              "probability": 0.31764620542526245,
+              "tokens": [
+                10582
+              ]
+            },
+            {
+              "word": " Shore,",
+              "start": 12.06,
+              "end": 12.64,
+              "probability": 0.7420943081378937,
+              "tokens": [
+                47977,
+                11
+              ]
+            },
+            {
+              "word": " I",
+              "start": 12.64,
+              "end": 13.2,
+              "probability": 0.800249457359314,
+              "tokens": [
+                286
+              ]
+            },
+            {
+              "word": " dreamt",
+              "start": 13.2,
+              "end": 14.0,
+              "probability": 0.9214682877063751,
+              "tokens": [
+                3055,
+                83
+              ]
+            }
+          ]
+        },
+        {
+          "start": 14.1,
+          "end": 18.3,
+          "text": " a shadow chasing me I couldn't place",
+          "seek": null,
+          "tokens": [
+            257,
+            8576,
+            17876,
+            385,
+            286,
+            2809,
+            380,
+            1081
+          ],
+          "temperature": null,
+          "avg_logprob": null,
+          "compression_ratio": null,
+          "no_speech_prob": null,
+          "words": [
+            {
+              "word": " a",
+              "start": 14.1,
+              "end": 14.86,
+              "probability": 0.338130384683609,
+              "tokens": [
+                257
+              ]
+            },
+            {
+              "word": " shadow",
+              "start": 14.86,
+              "end": 15.32,
+              "probability": 0.993887722492218,
+              "tokens": [
+                8576
+              ]
+            },
+            {
+              "word": " chasing",
+              "start": 15.32,
+              "end": 15.66,
+              "probability": 0.9438528418540955,
+              "tokens": [
+                17876
+              ]
+            },
+            {
+              "word": " me",
+              "start": 15.66,
+              "end": 16.3,
+              "probability": 0.9983323216438293,
+              "tokens": [
+                385
+              ]
+            },
+            {
+              "word": " I",
+              "start": 16.3,
+              "end": 16.9,
+              "probability": 0.34019699692726135,
+              "tokens": [
+                286
+              ]
+            },
+            {
+              "word": " couldn't",
+              "start": 16.9,
+              "end": 17.94,
+              "probability": 0.9922609627246857,
+              "tokens": [
+                2809,
+                380
+              ]
+            },
+            {
+              "word": " place",
+              "start": 17.94,
+              "end": 18.3,
+              "probability": 0.22311249375343323,
+              "tokens": [
+                1081
+              ]
+            }
+          ]
+        }
+      ],
+      "language": "en",
+      "ori_dict": {
+        "segments": [
+          {
+            "start": 2.38,
+            "end": 8.64,
+            "text": " The night before my dissertation defense,",
+            "words": [
+              {
+                "word": " The",
+                "start": 2.38,
+                "end": 3.54,
+                "tokens": [
+                  440
+                ],
+                "probability": 0.14167451858520508
+              },
+              {
+                "word": " night",
+                "start": 3.54,
+                "end": 3.94,
+                "tokens": [
+                  1818
+                ],
+                "probability": 0.98834627866745
+              },
+              {
+                "word": " before",
+                "start": 3.94,
+                "end": 4.5,
+                "tokens": [
+                  949
+                ],
+                "probability": 0.9982969164848328
+              },
+              {
+                "word": " my",
+                "start": 4.5,
+                "end": 6.72,
+                "tokens": [
+                  452
+                ],
+                "probability": 0.2057517170906067
+              },
+              {
+                "word": " dissertation",
+                "start": 6.72,
+                "end": 7.24,
+                "tokens": [
+                  39555
+                ],
+                "probability": 0.9968410730361938
+              },
+              {
+                "word": " defense,",
+                "start": 7.24,
+                "end": 8.64,
+                "tokens": [
+                  7654,
+                  11
+                ],
+                "probability": 0.49339691549539566
+              }
+            ]
+          },
+          {
+            "start": 8.88,
+            "end": 14.0,
+            "text": " I'm speeding down Lake Shore, I dreamt",
+            "words": [
+              {
+                "word": " I'm",
+                "start": 8.88,
+                "end": 10.7,
+                "tokens": [
+                  286,
+                  478
+                ],
+                "probability": 0.7136091887950897
+              },
+              {
+                "word": " speeding",
+                "start": 10.7,
+                "end": 11.14,
+                "tokens": [
+                  35593
+                ],
+                "probability": 0.9968233108520508
+              },
+              {
+                "word": " down",
+                "start": 11.14,
+                "end": 11.6,
+                "tokens": [
+                  760
+                ],
+                "probability": 0.9956991672515869
+              },
+              {
+                "word": " Lake",
+                "start": 11.6,
+                "end": 12.06,
+                "tokens": [
+                  10582
+                ],
+                "probability": 0.31764620542526245
+              },
+              {
+                "word": " Shore,",
+                "start": 12.06,
+                "end": 12.64,
+                "tokens": [
+                  47977,
+                  11
+                ],
+                "probability": 0.7420943081378937
+              },
+              {
+                "word": " I",
+                "start": 12.64,
+                "end": 13.2,
+                "tokens": [
+                  286
+                ],
+                "probability": 0.800249457359314
+              },
+              {
+                "word": " dreamt",
+                "start": 13.2,
+                "end": 14.0,
+                "tokens": [
+                  3055,
+                  83
+                ],
+                "probability": 0.9214682877063751
+              }
+            ]
+          },
+          {
+            "start": 14.1,
+            "end": 18.3,
+            "text": " a shadow chasing me I couldn't place",
+            "words": [
+              {
+                "word": " a",
+                "start": 14.1,
+                "end": 14.86,
+                "tokens": [
+                  257
+                ],
+                "probability": 0.338130384683609
+              },
+              {
+                "word": " shadow",
+                "start": 14.86,
+                "end": 15.32,
+                "tokens": [
+                  8576
+                ],
+                "probability": 0.993887722492218
+              },
+              {
+                "word": " chasing",
+                "start": 15.32,
+                "end": 15.66,
+                "tokens": [
+                  17876
+                ],
+                "probability": 0.9438528418540955
+              },
+              {
+                "word": " me",
+                "start": 15.66,
+                "end": 16.3,
+                "tokens": [
+                  385
+                ],
+                "probability": 0.9983323216438293
+              },
+              {
+                "word": " I",
+                "start": 16.3,
+                "end": 16.9,
+                "tokens": [
+                  286
+                ],
+                "probability": 0.34019699692726135
+              },
+              {
+                "word": " couldn't",
+                "start": 16.9,
+                "end": 17.94,
+                "tokens": [
+                  2809,
+                  380
+                ],
+                "probability": 0.9922609627246857
+              },
+              {
+                "word": " place",
+                "start": 17.94,
+                "end": 18.3,
+                "tokens": [
+                  1081
+                ],
+                "probability": 0.22311249375343323
+              }
+            ]
+          }
+        ]
+      },
+      "regroup_history": "",
+      "nonspeech_sections": []
+    }
+  },
+  {
+    "offset_s": 178.5,
+    "result": {
+      "text": " Never stop.",
+      "segments": [
+        {
+          "start": 0.0,
+          "end": 2.86,
+          "text": " Never stop.",
+          "seek": null,
+          "tokens": [
+            7344,
+            1590,
+            13
+          ],
+          "temperature": null,
+          "avg_logprob": null,
+          "compression_ratio": null,
+          "no_speech_prob": null,
+          "words": [
+            {
+              "word": " Never",
+              "start": 0.0,
+              "end": 2.08,
+              "probability": 0.09001605957746506,
+              "tokens": [
+                7344
+              ]
+            },
+            {
+              "word": " stop.",
+              "start": 2.08,
+              "end": 2.86,
+              "probability": 0.5396048277616501,
+              "tokens": [
+                1590,
+                13
+              ]
+            }
+          ]
+        }
+      ],
+      "language": "en",
+      "ori_dict": {
+        "segments": [
+          {
+            "start": 0.0,
+            "end": 2.86,
+            "text": " Never stop.",
+            "words": [
+              {
+                "word": " Never",
+                "start": 0.0,
+                "end": 2.08,
+                "tokens": [
+                  7344
+                ],
+                "probability": 0.09001605957746506
+              },
+              {
+                "word": " stop.",
+                "start": 2.08,
+                "end": 2.86,
+                "tokens": [
+                  1590,
+                  13
+                ],
+                "probability": 0.5396048277616501
+              }
+            ]
+          }
+        ]
+      },
+      "regroup_history": "",
+      "nonspeech_sections": []
+    }
+  },
+  {
+    "offset_s": 186.0,
+    "result": {
+      "text": " Never stop.",
+      "segments": [
+        {
+          "start": 0.0,
+          "end": 2.56,
+          "text": " Never stop.",
+          "seek": null,
+          "tokens": [
+            7344,
+            1590,
+            13
+          ],
+          "temperature": null,
+          "avg_logprob": null,
+          "compression_ratio": null,
+          "no_speech_prob": null,
+          "words": [
+            {
+              "word": " Never",
+              "start": 0.0,
+              "end": 1.86,
+              "probability": 0.07210113853216171,
+              "tokens": [
+                7344
+              ]
+            },
+            {
+              "word": " stop.",
+              "start": 1.86,
+              "end": 2.56,
+              "probability": 0.5181428715586662,
+              "tokens": [
+                1590,
+                13
+              ]
+            }
+          ]
+        }
+      ],
+      "language": "en",
+      "ori_dict": {
+        "segments": [
+          {
+            "start": 0.0,
+            "end": 2.56,
+            "text": " Never stop.",
+            "words": [
+              {
+                "word": " Never",
+                "start": 0.0,
+                "end": 1.86,
+                "tokens": [
+                  7344
+                ],
+                "probability": 0.07210113853216171
+              },
+              {
+                "word": " stop.",
+                "start": 1.86,
+                "end": 2.56,
+                "tokens": [
+                  1590,
+                  13
+                ],
+                "probability": 0.5181428715586662
+              }
+            ]
+          }
+        ]
+      },
+      "regroup_history": "",
+      "nonspeech_sections": []
+    }
+  }
+]

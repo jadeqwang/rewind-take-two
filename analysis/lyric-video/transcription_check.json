@@ -1,0 +1,909 @@
+[
+  {
+    "start": 12.459999999999996,
+    "end": 24.02,
+    "text": " The night before my dissertation defense. I'm speeding down Lake Shore. Rewind.",
+    "words": [
+      {
+        "w": " The",
+        "start": 12.459999999999996,
+        "end": 13.58,
+        "probability": 0.32525596022605896
+      },
+      {
+        "w": " night",
+        "start": 13.58,
+        "end": 13.94,
+        "probability": 0.9014158844947815
+      },
+      {
+        "w": " before",
+        "start": 13.94,
+        "end": 14.56,
+        "probability": 0.9986398816108704
+      },
+      {
+        "w": " my",
+        "start": 14.56,
+        "end": 16.86,
+        "probability": 0.20283758640289307
+      },
+      {
+        "w": " dissertation",
+        "start": 16.86,
+        "end": 17.42,
+        "probability": 0.9989116191864014
+      },
+      {
+        "w": " defense.",
+        "start": 17.42,
+        "end": 18.12,
+        "probability": 0.9631129503250122
+      },
+      {
+        "w": " I'm",
+        "start": 19.68,
+        "end": 20.8,
+        "probability": 0.9925001263618469
+      },
+      {
+        "w": " speeding",
+        "start": 20.8,
+        "end": 21.24,
+        "probability": 0.9987347722053528
+      },
+      {
+        "w": " down",
+        "start": 21.24,
+        "end": 21.72,
+        "probability": 0.9967305660247803
+      },
+      {
+        "w": " Lake",
+        "start": 21.72,
+        "end": 22.2,
+        "probability": 0.39738890528678894
+      },
+      {
+        "w": " Shore.",
+        "start": 22.2,
+        "end": 22.62,
+        "probability": 0.8529674410820007
+      },
+      {
+        "w": " Rewind.",
+        "start": 22.9,
+        "end": 24.02,
+        "probability": 0.09049917459803207
+      }
+    ]
+  },
+  {
+    "start": 24.02,
+    "end": 28.4,
+    "text": " A shadow chasing me, I couldn't place",
+    "words": [
+      {
+        "w": " A",
+        "start": 24.02,
+        "end": 25.02,
+        "probability": 0.2908340394496918
+      },
+      {
+        "w": " shadow",
+        "start": 25.02,
+        "end": 25.46,
+        "probability": 0.9964307546615601
+      },
+      {
+        "w": " chasing",
+        "start": 25.46,
+        "end": 25.84,
+        "probability": 0.9477939605712891
+      },
+      {
+        "w": " me,",
+        "start": 25.84,
+        "end": 26.48,
+        "probability": 0.9984028935432434
+      },
+      {
+        "w": " I",
+        "start": 26.64,
+        "end": 27.02,
+        "probability": 0.9919676184654236
+      },
+      {
+        "w": " couldn't",
+        "start": 27.02,
+        "end": 28.0,
+        "probability": 0.9934751391410828
+      },
+      {
+        "w": " place",
+        "start": 28.0,
+        "end": 28.4,
+        "probability": 0.9949393272399902
+      }
+    ]
+  },
+  {
+    "start": 28.4,
+    "end": 33.12,
+    "text": " I pulled over, and then shades ensued",
+    "words": [
+      {
+        "w": " I",
+        "start": 28.4,
+        "end": 28.72,
+        "probability": 0.8218891024589539
+      },
+      {
+        "w": " pulled",
+        "start": 28.72,
+        "end": 29.04,
+        "probability": 0.9807603359222412
+      },
+      {
+        "w": " over,",
+        "start": 29.04,
+        "end": 29.86,
+        "probability": 0.9989855885505676
+      },
+      {
+        "w": " and",
+        "start": 30.2,
+        "end": 31.44,
+        "probability": 0.7750506401062012
+      },
+      {
+        "w": " then",
+        "start": 31.44,
+        "end": 31.78,
+        "probability": 0.8925641775131226
+      },
+      {
+        "w": " shades",
+        "start": 31.78,
+        "end": 32.1,
+        "probability": 0.7562891244888306
+      },
+      {
+        "w": " ensued",
+        "start": 32.1,
+        "end": 33.12,
+        "probability": 0.8059357404708862
+      }
+    ]
+  },
+  {
+    "start": 34.0,
+    "end": 38.32,
+    "text": " I reach for my ID to show them, and I do",
+    "words": [
+      {
+        "w": " I",
+        "start": 34.0,
+        "end": 34.8,
+        "probability": 0.9840672016143799
+      },
+      {
+        "w": " reach",
+        "start": 34.8,
+        "end": 35.3,
+        "probability": 0.858943521976471
+      },
+      {
+        "w": " for",
+        "start": 35.3,
+        "end": 35.5,
+        "probability": 0.9976183772087097
+      },
+      {
+        "w": " my",
+        "start": 35.5,
+        "end": 35.76,
+        "probability": 0.9992687106132507
+      },
+      {
+        "w": " ID",
+        "start": 35.76,
+        "end": 36.16,
+        "probability": 0.9437792301177979
+      },
+      {
+        "w": " to",
+        "start": 36.16,
+        "end": 36.42,
+        "probability": 0.9929887652397156
+      },
+      {
+        "w": " show",
+        "start": 36.42,
+        "end": 36.72,
+        "probability": 0.9994602799415588
+      },
+      {
+        "w": " them,",
+        "start": 36.72,
+        "end": 37.24,
+        "probability": 0.9919185042381287
+      },
+      {
+        "w": " and",
+        "start": 37.38,
+        "end": 37.72,
+        "probability": 0.9952622652053833
+      },
+      {
+        "w": " I",
+        "start": 37.72,
+        "end": 37.84,
+        "probability": 0.9995428323745728
+      },
+      {
+        "w": " do",
+        "start": 37.84,
+        "end": 38.32,
+        "probability": 0.9997661709785461
+      }
+    ]
+  },
+  {
+    "start": 38.32,
+    "end": 41.88,
+    "text": " With no warning, I get shot",
+    "words": [
+      {
+        "w": " With",
+        "start": 38.32,
+        "end": 39.58,
+        "probability": 0.9912350177764893
+      },
+      {
+        "w": " no",
+        "start": 39.58,
+        "end": 39.88,
+        "probability": 0.9988577365875244
+      },
+      {
+        "w": " warning,",
+        "start": 39.88,
+        "end": 40.64,
+        "probability": 0.9994366765022278
+      },
+      {
+        "w": " I",
+        "start": 40.72,
+        "end": 41.1,
+        "probability": 0.9993994235992432
+      },
+      {
+        "w": " get",
+        "start": 41.1,
+        "end": 41.48,
+        "probability": 0.9359194040298462
+      },
+      {
+        "w": " shot",
+        "start": 41.48,
+        "end": 41.88,
+        "probability": 0.97041916847229
+      }
+    ]
+  },
+  {
+    "start": 41.88,
+    "end": 43.78,
+    "text": " And time stops",
+    "words": [
+      {
+        "w": " And",
+        "start": 41.88,
+        "end": 42.62,
+        "probability": 0.12702468037605286
+      },
+      {
+        "w": " time",
+        "start": 42.62,
+        "end": 43.12,
+        "probability": 0.875789999961853
+      },
+      {
+        "w": " stops",
+        "start": 43.12,
+        "end": 43.78,
+        "probability": 0.6406883001327515
+      }
+    ]
+  },
+  {
+    "start": 50.7,
+    "end": 51.5,
+    "text": " Rewind",
+    "words": [
+      {
+        "w": " Rewind",
+        "start": 50.7,
+        "end": 51.5,
+        "probability": 0.9550970395406088
+      }
+    ]
+  },
+  {
+    "start": 54.120000000000005,
+    "end": 55.52,
+    "text": " Rewind",
+    "words": [
+      {
+        "w": " Rewind",
+        "start": 54.120000000000005,
+        "end": 55.52,
+        "probability": 0.8161050081253052
+      }
+    ]
+  },
+  {
+    "start": 85.36,
+    "end": 91.14,
+    "text": " And now I'm back on the road",
+    "words": [
+      {
+        "w": " And",
+        "start": 85.36,
+        "end": 86.36,
+        "probability": 0.2125559151172638
+      },
+      {
+        "w": " now",
+        "start": 86.36,
+        "end": 86.8,
+        "probability": 0.9897572994232178
+      },
+      {
+        "w": " I'm",
+        "start": 86.8,
+        "end": 87.34,
+        "probability": 0.9820085763931274
+      },
+      {
+        "w": " back",
+        "start": 87.34,
+        "end": 87.66,
+        "probability": 0.992345929145813
+      },
+      {
+        "w": " on",
+        "start": 87.66,
+        "end": 89.3,
+        "probability": 0.5009850859642029
+      },
+      {
+        "w": " the",
+        "start": 89.3,
+        "end": 90.7,
+        "probability": 0.9987682700157166
+      },
+      {
+        "w": " road",
+        "start": 90.7,
+        "end": 91.14,
+        "probability": 0.9991279244422913
+      }
+    ]
+  },
+  {
+    "start": 92.66,
+    "end": 96.66,
+    "text": " Sirens in my mirror reload",
+    "words": [
+      {
+        "w": " Sirens",
+        "start": 92.66,
+        "end": 93.66,
+        "probability": 0.9347899854183197
+      },
+      {
+        "w": " in",
+        "start": 93.66,
+        "end": 93.96,
+        "probability": 0.9976212382316589
+      },
+      {
+        "w": " my",
+        "start": 93.96,
+        "end": 94.38,
+        "probability": 0.9990901947021484
+      },
+      {
+        "w": " mirror",
+        "start": 94.38,
+        "end": 95.16,
+        "probability": 0.9962658286094666
+      },
+      {
+        "w": " reload",
+        "start": 95.16,
+        "end": 96.66,
+        "probability": 0.87612384557724
+      }
+    ]
+  },
+  {
+    "start": 96.66,
+    "end": 101.14,
+    "text": " A shadow chasing me like it's a race",
+    "words": [
+      {
+        "w": " A",
+        "start": 96.66,
+        "end": 97.64,
+        "probability": 0.7216240763664246
+      },
+      {
+        "w": " shadow",
+        "start": 97.64,
+        "end": 98.1,
+        "probability": 0.9993847608566284
+      },
+      {
+        "w": " chasing",
+        "start": 98.1,
+        "end": 98.62,
+        "probability": 0.982855498790741
+      },
+      {
+        "w": " me",
+        "start": 98.62,
+        "end": 99.1,
+        "probability": 0.9994097948074341
+      },
+      {
+        "w": " like",
+        "start": 99.1,
+        "end": 99.64,
+        "probability": 0.995118260383606
+      },
+      {
+        "w": " it's",
+        "start": 99.64,
+        "end": 100.48,
+        "probability": 0.9977384209632874
+      },
+      {
+        "w": " a",
+        "start": 100.48,
+        "end": 100.52,
+        "probability": 0.999386191368103
+      },
+      {
+        "w": " race",
+        "start": 100.52,
+        "end": 101.14,
+        "probability": 0.9921100735664368
+      }
+    ]
+  },
+  {
+    "start": 101.14,
+    "end": 105.82,
+    "text": " I zigzag across the field of grass",
+    "words": [
+      {
+        "w": " I",
+        "start": 101.14,
+        "end": 101.36,
+        "probability": 0.7314615249633789
+      },
+      {
+        "w": " zigzag",
+        "start": 101.36,
+        "end": 102.16,
+        "probability": 0.8197718858718872
+      },
+      {
+        "w": " across",
+        "start": 102.16,
+        "end": 104.14,
+        "probability": 0.9921964406967163
+      },
+      {
+        "w": " the",
+        "start": 104.14,
+        "end": 104.5,
+        "probability": 0.9711678624153137
+      },
+      {
+        "w": " field",
+        "start": 104.5,
+        "end": 104.92,
+        "probability": 0.9946647882461548
+      },
+      {
+        "w": " of",
+        "start": 104.92,
+        "end": 105.36,
+        "probability": 0.9995012283325195
+      },
+      {
+        "w": " grass",
+        "start": 105.36,
+        "end": 105.82,
+        "probability": 0.9987233281135559
+      }
+    ]
+  },
+  {
+    "start": 106.42,
+    "end": 111.14,
+    "text": " They chase me and they're just too fast",
+    "words": [
+      {
+        "w": " They",
+        "start": 106.42,
+        "end": 107.58,
+        "probability": 0.9951453804969788
+      },
+      {
+        "w": " chase",
+        "start": 107.58,
+        "end": 107.9,
+        "probability": 0.9987215399742126
+      },
+      {
+        "w": " me",
+        "start": 107.9,
+        "end": 108.18,
+        "probability": 0.9995494484901428
+      },
+      {
+        "w": " and",
+        "start": 108.18,
+        "end": 108.48,
+        "probability": 0.917728841304779
+      },
+      {
+        "w": " they're",
+        "start": 108.48,
+        "end": 108.98,
+        "probability": 0.9992187321186066
+      },
+      {
+        "w": " just",
+        "start": 108.98,
+        "end": 109.46,
+        "probability": 0.9998416900634766
+      },
+      {
+        "w": " too",
+        "start": 109.46,
+        "end": 110.14,
+        "probability": 0.9990021586418152
+      },
+      {
+        "w": " fast",
+        "start": 110.14,
+        "end": 111.14,
+        "probability": 0.9998500347137451
+      }
+    ]
+  },
+  {
+    "start": 111.14,
+    "end": 114.5,
+    "text": " With no warning, I get shot",
+    "words": [
+      {
+        "w": " With",
+        "start": 111.14,
+        "end": 112.2,
+        "probability": 0.3823586404323578
+      },
+      {
+        "w": " no",
+        "start": 112.2,
+        "end": 112.46,
+        "probability": 0.987648606300354
+      },
+      {
+        "w": " warning,",
+        "start": 112.46,
+        "end": 113.24,
+        "probability": 0.9921093583106995
+      },
+      {
+        "w": " I",
+        "start": 113.34,
+        "end": 113.68,
+        "probability": 0.9869891405105591
+      },
+      {
+        "w": " get",
+        "start": 113.68,
+        "end": 114.04,
+        "probability": 0.9677507877349854
+      },
+      {
+        "w": " shot",
+        "start": 114.04,
+        "end": 114.5,
+        "probability": 0.9092985987663269
+      }
+    ]
+  },
+  {
+    "start": 114.5,
+    "end": 116.32,
+    "text": " And time stops",
+    "words": [
+      {
+        "w": " And",
+        "start": 114.5,
+        "end": 115.2,
+        "probability": 0.4462769031524658
+      },
+      {
+        "w": " time",
+        "start": 115.2,
+        "end": 115.74,
+        "probability": 0.9605950117111206
+      },
+      {
+        "w": " stops",
+        "start": 115.74,
+        "end": 116.32,
+        "probability": 0.8061535954475403
+      }
+    ]
+  },
+  {
+    "start": 122.82,
+    "end": 123.94,
+    "text": " Rewind",
+    "words": [
+      {
+        "w": " Rewind",
+        "start": 122.82,
+        "end": 123.94,
+        "probability": 0.9239361882209778
+      }
+    ]
+  },
+  {
+    "start": 126.74,
+    "end": 127.86,
+    "text": " Rewind",
+    "words": [
+      {
+        "w": " Rewind",
+        "start": 126.74,
+        "end": 127.86,
+        "probability": 0.9875447750091553
+      }
+    ]
+  },
+  {
+    "start": 156.22000000000003,
+    "end": 159.5,
+    "text": " The night before",
+    "words": [
+      {
+        "w": " The",
+        "start": 156.22000000000003,
+        "end": 157.54000000000002,
+        "probability": 0.6673161387443542
+      },
+      {
+        "w": " night",
+        "start": 157.54000000000002,
+        "end": 158.86,
+        "probability": 0.9831515550613403
+      },
+      {
+        "w": " before",
+        "start": 158.86,
+        "end": 159.5,
+        "probability": 0.9982478618621826
+      }
+    ]
+  },
+  {
+    "start": 159.5,
+    "end": 163.06,
+    "text": " My dissertation defense",
+    "words": [
+      {
+        "w": " My",
+        "start": 159.5,
+        "end": 161.78,
+        "probability": 0.6014590263366699
+      },
+      {
+        "w": " dissertation",
+        "start": 161.78,
+        "end": 162.4,
+        "probability": 0.9989790916442871
+      },
+      {
+        "w": " defense",
+        "start": 162.4,
+        "end": 163.06,
+        "probability": 0.940370500087738
+      }
+    ]
+  },
+  {
+    "start": 163.64000000000001,
+    "end": 167.44,
+    "text": " I'm speeding down Lake Shore",
+    "words": [
+      {
+        "w": " I'm",
+        "start": 163.64000000000001,
+        "end": 165.68,
+        "probability": 0.9906335473060608
+      },
+      {
+        "w": " speeding",
+        "start": 165.68,
+        "end": 166.14,
+        "probability": 0.9989802241325378
+      },
+      {
+        "w": " down",
+        "start": 166.14,
+        "end": 166.6,
+        "probability": 0.9970126152038574
+      },
+      {
+        "w": " Lake",
+        "start": 166.6,
+        "end": 167.04,
+        "probability": 0.26470762491226196
+      },
+      {
+        "w": " Shore",
+        "start": 167.04,
+        "end": 167.44,
+        "probability": 0.9735009670257568
+      }
+    ]
+  },
+  {
+    "start": 167.44,
+    "end": 169.0,
+    "text": " I dreamt",
+    "words": [
+      {
+        "w": " I",
+        "start": 167.44,
+        "end": 168.22,
+        "probability": 0.18097858130931854
+      },
+      {
+        "w": " dreamt",
+        "start": 168.22,
+        "end": 169.0,
+        "probability": 0.8832419812679291
+      }
+    ]
+  },
+  {
+    "start": 169.0,
+    "end": 173.28,
+    "text": " A shadow chasing me, I couldn't play",
+    "words": [
+      {
+        "w": " A",
+        "start": 169.0,
+        "end": 169.94,
+        "probability": 0.5853719711303711
+      },
+      {
+        "w": " shadow",
+        "start": 169.94,
+        "end": 170.32,
+        "probability": 0.9924311637878418
+      },
+      {
+        "w": " chasing",
+        "start": 170.32,
+        "end": 170.68,
+        "probability": 0.9608338475227356
+      },
+      {
+        "w": " me,",
+        "start": 170.68,
+        "end": 171.32,
+        "probability": 0.9987601041793823
+      },
+      {
+        "w": " I",
+        "start": 171.48,
+        "end": 171.86,
+        "probability": 0.9934812784194946
+      },
+      {
+        "w": " couldn't",
+        "start": 171.86,
+        "end": 172.9,
+        "probability": 0.9973722994327545
+      },
+      {
+        "w": " play",
+        "start": 172.9,
+        "end": 173.28,
+        "probability": 0.6041916012763977
+      }
+    ]
+  },
+  {
+    "start": 180.0,
+    "end": 181.1,
+    "text": " Never stop",
+    "words": [
+      {
+        "w": " Never",
+        "start": 179.91,
+        "end": 180.52,
+        "probability": 0.8534907698631287
+      },
+      {
+        "w": " stop",
+        "start": 180.52,
+        "end": 181.1,
+        "probability": 0.8836145401000977
+      }
+    ]
+  },
+  {
+    "start": 187.0,
+    "end": 188.34,
+    "text": " Never stop",
+    "words": [
+      {
+        "w": " Never",
+        "start": 186.51,
+        "end": 187.12,
+        "probability": 0.9147500991821289
+      },
+      {
+        "w": " stop",
+        "start": 187.12,
+        "end": 188.34,
+        "probability": 0.9977974891662598
+      }
+    ]
+  },
+  {
+    "start": 202.22,
+    "end": 216.74,
+    "text": " Thank you for watching!",
+    "words": [
+      {
+        "w": " Thank",
+        "start": 202.22,
+        "end": 203.62,
+        "probability": 0.07343866676092148
+      },
+      {
+        "w": " you",
+        "start": 203.62,
+        "end": 203.72,
+        "probability": 0.9972862005233765
+      },
+      {
+        "w": " for",
+        "start": 203.72,
+        "end": 216.74,
+        "probability": 0.2198992669582367
+      },
+      {
+        "w": " watching!",
+        "start": 216.74,
+        "end": 216.74,
+        "probability": 0.9024688601493835
+      }
+    ]
+  }
+]

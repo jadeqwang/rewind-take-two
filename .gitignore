@@ -1,0 +1,15 @@
+.venv*/
+__pycache__/
+*.pyc
+.agents/
+.aws/
+.codex/
+analysis/lyric-video/numba-cache/
+analysis/lyric-video/*.log
+analysis/lyric-video/*.wav
+analysis/karaoke/*.wav
+analysis/karaoke/models/
+analysis/karaoke/vr/*.wav
+analysis/karaoke/bin/
+analysis/karaoke/numba-cache/
+*.ses

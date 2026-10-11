@@ -1,0 +1,23 @@
+{
+  "source": "inputs/Rewind_take_two.mp3",
+  "source_sha256": "e38243b5116684252acb7d5dd3b8254d667d052bd93c2413d9788e4210c84b75",
+  "background_sha256": "434a59fa3c862e013bcfc3aae2a78da64a6749fbabacd3ca1f422233fba7a0cf",
+  "video_sha256": "6ebe83feb1fdadbd5b8b0606afcc2d4f8b4539b46fa3b34fdf188ded4fd6d11b",
+  "duration_s": 216.76,
+  "resolution": [
+    1920,
+    1080
+  ],
+  "fps": 30,
+  "video_codec": "H.264",
+  "audio_codec": "AAC",
+  "audio_bitrate": 320000,
+  "sample_rate": 48000,
+  "audio_gain_db": 0,
+  "audio_correlation": 0.9997741201867497,
+  "measured_gain_db": -0.020744419806681104,
+  "decoded_video_audio_s": 216.768,
+  "full_decode_check": "passed",
+  "lyric_lines": 21,
+  "graphics_source": "rewind-music-video/analysis/karaoke/background.png"
+}

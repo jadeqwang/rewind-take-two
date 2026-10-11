@@ -22,9 +22,11 @@ With no warning I get shot … and time stops
 Rewind.  
 Rewind.
 
+(Spoken) Anomaly detected.
+
 The night before my dissertation defense,  
 I'm speeding down Lake Shore, I dreamt  
-a shadow chasing me I couldn't place
+a shadow chasing me — it couldn’t trace
 
-Never stop.
+(Whispered) Never stop.
 

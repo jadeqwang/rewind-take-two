@@ -1,0 +1,917 @@
+{
+  "duration_s": 216.76,
+  "lines": [
+    {
+      "index": 0,
+      "text": "The night before my dissertation defense,",
+      "start": 13.5,
+      "end": 18.74,
+      "words": [
+        {
+          "w": "The",
+          "start": 13.5,
+          "end": 13.58,
+          "line_idx": 0
+        },
+        {
+          "w": "night",
+          "start": 13.58,
+          "end": 13.94,
+          "line_idx": 0
+        },
+        {
+          "w": "before",
+          "start": 13.94,
+          "end": 14.56,
+          "line_idx": 0
+        },
+        {
+          "w": "my",
+          "start": 16.68,
+          "end": 16.8,
+          "line_idx": 0
+        },
+        {
+          "w": "dissertation",
+          "start": 16.8,
+          "end": 17.32,
+          "line_idx": 0
+        },
+        {
+          "w": "defense,",
+          "start": 17.32,
+          "end": 18.74,
+          "line_idx": 0
+        }
+      ]
+    },
+    {
+      "index": 1,
+      "text": "I'm speeding down Lake Shore, I dreamt",
+      "start": 20.64,
+      "end": 24.1,
+      "words": [
+        {
+          "w": "I'm",
+          "start": 20.64,
+          "end": 20.8,
+          "line_idx": 1
+        },
+        {
+          "w": "speeding",
+          "start": 20.8,
+          "end": 21.26,
+          "line_idx": 1
+        },
+        {
+          "w": "down",
+          "start": 21.26,
+          "end": 21.72,
+          "line_idx": 1
+        },
+        {
+          "w": "Lake",
+          "start": 21.72,
+          "end": 22.2,
+          "line_idx": 1
+        },
+        {
+          "w": "Shore,",
+          "start": 22.2,
+          "end": 22.78,
+          "line_idx": 1
+        },
+        {
+          "w": "I",
+          "start": 22.78,
+          "end": 23.32,
+          "line_idx": 1
+        },
+        {
+          "w": "dreamt",
+          "start": 23.32,
+          "end": 24.1,
+          "line_idx": 1
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "text": "a shadow chasing me I couldn't place",
+      "start": 24.24,
+      "end": 28.26,
+      "words": [
+        {
+          "w": "a",
+          "start": 24.24,
+          "end": 25.0,
+          "line_idx": 2
+        },
+        {
+          "w": "shadow",
+          "start": 25.0,
+          "end": 25.48,
+          "line_idx": 2
+        },
+        {
+          "w": "chasing",
+          "start": 25.48,
+          "end": 25.84,
+          "line_idx": 2
+        },
+        {
+          "w": "me",
+          "start": 25.84,
+          "end": 26.46,
+          "line_idx": 2
+        },
+        {
+          "w": "I",
+          "start": 26.46,
+          "end": 27.0,
+          "line_idx": 2
+        },
+        {
+          "w": "couldn't",
+          "start": 27.0,
+          "end": 28.06,
+          "line_idx": 2
+        },
+        {
+          "w": "place",
+          "start": 28.06,
+          "end": 28.26,
+          "line_idx": 2
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "text": "I pulled over, and men in shades and suits,",
+      "start": 28.72,
+      "end": 33.6,
+      "words": [
+        {
+          "w": "I",
+          "start": 28.72,
+          "end": 28.76,
+          "line_idx": 3
+        },
+        {
+          "w": "pulled",
+          "start": 28.76,
+          "end": 29.0,
+          "line_idx": 3
+        },
+        {
+          "w": "over,",
+          "start": 29.0,
+          "end": 30.06,
+          "line_idx": 3
+        },
+        {
+          "w": "and",
+          "start": 30.06,
+          "end": 31.4,
+          "line_idx": 3
+        },
+        {
+          "w": "men",
+          "start": 31.4,
+          "end": 31.82,
+          "line_idx": 3
+        },
+        {
+          "w": "in",
+          "start": 31.82,
+          "end": 31.88,
+          "line_idx": 3
+        },
+        {
+          "w": "shades",
+          "start": 31.88,
+          "end": 32.28,
+          "line_idx": 3
+        },
+        {
+          "w": "and",
+          "start": 32.28,
+          "end": 32.66,
+          "line_idx": 3
+        },
+        {
+          "w": "suits,",
+          "start": 32.66,
+          "end": 33.6,
+          "line_idx": 3
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "text": "I reach for my ID to show them … and I do,",
+      "start": 34.76,
+      "end": 38.6,
+      "words": [
+        {
+          "w": "I",
+          "start": 34.76,
+          "end": 35.0,
+          "line_idx": 4
+        },
+        {
+          "w": "reach",
+          "start": 35.0,
+          "end": 35.28,
+          "line_idx": 4
+        },
+        {
+          "w": "for",
+          "start": 35.28,
+          "end": 35.5,
+          "line_idx": 4
+        },
+        {
+          "w": "my",
+          "start": 35.5,
+          "end": 35.78,
+          "line_idx": 4
+        },
+        {
+          "w": "ID",
+          "start": 35.78,
+          "end": 36.16,
+          "line_idx": 4
+        },
+        {
+          "w": "to",
+          "start": 36.16,
+          "end": 36.42,
+          "line_idx": 4
+        },
+        {
+          "w": "show",
+          "start": 36.42,
+          "end": 36.7,
+          "line_idx": 4
+        },
+        {
+          "w": "them",
+          "start": 36.7,
+          "end": 37.22,
+          "line_idx": 4
+        },
+        {
+          "w": "…",
+          "start": 37.22,
+          "end": 37.4,
+          "line_idx": 4
+        },
+        {
+          "w": "and",
+          "start": 37.4,
+          "end": 37.72,
+          "line_idx": 4
+        },
+        {
+          "w": "I",
+          "start": 37.72,
+          "end": 37.9,
+          "line_idx": 4
+        },
+        {
+          "w": "do,",
+          "start": 37.9,
+          "end": 38.6,
+          "line_idx": 4
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "text": "With no warning I get shot … and time stops",
+      "start": 39.1,
+      "end": 43.8,
+      "words": [
+        {
+          "w": "With",
+          "start": 39.1,
+          "end": 39.58,
+          "line_idx": 5
+        },
+        {
+          "w": "no",
+          "start": 39.58,
+          "end": 39.88,
+          "line_idx": 5
+        },
+        {
+          "w": "warning",
+          "start": 39.88,
+          "end": 40.6,
+          "line_idx": 5
+        },
+        {
+          "w": "I",
+          "start": 40.6,
+          "end": 41.06,
+          "line_idx": 5
+        },
+        {
+          "w": "get",
+          "start": 41.06,
+          "end": 41.46,
+          "line_idx": 5
+        },
+        {
+          "w": "shot",
+          "start": 41.46,
+          "end": 41.9,
+          "line_idx": 5
+        },
+        {
+          "w": "…",
+          "start": 41.9,
+          "end": 42.16,
+          "line_idx": 5
+        },
+        {
+          "w": "and",
+          "start": 42.16,
+          "end": 42.6,
+          "line_idx": 5
+        },
+        {
+          "w": "time",
+          "start": 42.6,
+          "end": 43.1,
+          "line_idx": 5
+        },
+        {
+          "w": "stops",
+          "start": 43.1,
+          "end": 43.8,
+          "line_idx": 5
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "text": "Rewind.",
+      "start": 50.7,
+      "end": 51.64,
+      "words": [
+        {
+          "w": "Rewind.",
+          "start": 50.7,
+          "end": 51.64,
+          "line_idx": 6
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "text": "Rewind.",
+      "start": 54.12,
+      "end": 55.52,
+      "words": [
+        {
+          "w": "Rewind.",
+          "start": 54.12,
+          "end": 55.52,
+          "line_idx": 7
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "text": "And now I'm back on the road",
+      "start": 86.2,
+      "end": 91.06,
+      "words": [
+        {
+          "w": "And",
+          "start": 86.2,
+          "end": 86.36,
+          "line_idx": 8
+        },
+        {
+          "w": "now",
+          "start": 86.36,
+          "end": 86.8,
+          "line_idx": 8
+        },
+        {
+          "w": "I'm",
+          "start": 86.8,
+          "end": 87.36,
+          "line_idx": 8
+        },
+        {
+          "w": "back",
+          "start": 87.36,
+          "end": 87.7,
+          "line_idx": 8
+        },
+        {
+          "w": "on",
+          "start": 87.7,
+          "end": 89.42,
+          "line_idx": 8
+        },
+        {
+          "w": "the",
+          "start": 90.17,
+          "end": 90.68,
+          "line_idx": 8
+        },
+        {
+          "w": "road",
+          "start": 90.68,
+          "end": 91.06,
+          "line_idx": 8
+        }
+      ]
+    },
+    {
+      "index": 9,
+      "text": "sirens in my mirror …Reload.",
+      "start": 92.97,
+      "end": 97.34,
+      "words": [
+        {
+          "w": "sirens",
+          "start": 92.97,
+          "end": 93.66,
+          "line_idx": 9
+        },
+        {
+          "w": "in",
+          "start": 93.66,
+          "end": 93.92,
+          "line_idx": 9
+        },
+        {
+          "w": "my",
+          "start": 93.92,
+          "end": 94.36,
+          "line_idx": 9
+        },
+        {
+          "w": "mirror",
+          "start": 94.36,
+          "end": 95.04,
+          "line_idx": 9
+        },
+        {
+          "w": "…Reload.",
+          "start": 95.04,
+          "end": 97.34,
+          "line_idx": 9
+        }
+      ]
+    },
+    {
+      "index": 10,
+      "text": "A shadow chasing me like it's a race",
+      "start": 97.54,
+      "end": 101.08,
+      "words": [
+        {
+          "w": "A",
+          "start": 97.54,
+          "end": 97.7,
+          "line_idx": 10
+        },
+        {
+          "w": "shadow",
+          "start": 97.7,
+          "end": 98.08,
+          "line_idx": 10
+        },
+        {
+          "w": "chasing",
+          "start": 98.08,
+          "end": 98.6,
+          "line_idx": 10
+        },
+        {
+          "w": "me",
+          "start": 98.6,
+          "end": 99.12,
+          "line_idx": 10
+        },
+        {
+          "w": "like",
+          "start": 99.12,
+          "end": 99.64,
+          "line_idx": 10
+        },
+        {
+          "w": "it's",
+          "start": 99.64,
+          "end": 100.36,
+          "line_idx": 10
+        },
+        {
+          "w": "a",
+          "start": 100.36,
+          "end": 100.52,
+          "line_idx": 10
+        },
+        {
+          "w": "race",
+          "start": 100.52,
+          "end": 101.08,
+          "line_idx": 10
+        }
+      ]
+    },
+    {
+      "index": 11,
+      "text": "I zigzag across the field of grass",
+      "start": 101.44,
+      "end": 105.76,
+      "words": [
+        {
+          "w": "I",
+          "start": 101.44,
+          "end": 101.48,
+          "line_idx": 11
+        },
+        {
+          "w": "zigzag",
+          "start": 101.48,
+          "end": 102.08,
+          "line_idx": 11
+        },
+        {
+          "w": "across",
+          "start": 102.08,
+          "end": 104.12,
+          "line_idx": 11
+        },
+        {
+          "w": "the",
+          "start": 104.12,
+          "end": 104.5,
+          "line_idx": 11
+        },
+        {
+          "w": "field",
+          "start": 104.5,
+          "end": 104.92,
+          "line_idx": 11
+        },
+        {
+          "w": "of",
+          "start": 104.92,
+          "end": 105.36,
+          "line_idx": 11
+        },
+        {
+          "w": "grass",
+          "start": 105.36,
+          "end": 105.76,
+          "line_idx": 11
+        }
+      ]
+    },
+    {
+      "index": 12,
+      "text": "they chase me and they're just too fast",
+      "start": 106.4,
+      "end": 111.16,
+      "words": [
+        {
+          "w": "they",
+          "start": 106.4,
+          "end": 107.62,
+          "line_idx": 12
+        },
+        {
+          "w": "chase",
+          "start": 107.62,
+          "end": 107.86,
+          "line_idx": 12
+        },
+        {
+          "w": "me",
+          "start": 107.86,
+          "end": 108.16,
+          "line_idx": 12
+        },
+        {
+          "w": "and",
+          "start": 108.16,
+          "end": 108.5,
+          "line_idx": 12
+        },
+        {
+          "w": "they're",
+          "start": 108.5,
+          "end": 109.0,
+          "line_idx": 12
+        },
+        {
+          "w": "just",
+          "start": 109.0,
+          "end": 109.46,
+          "line_idx": 12
+        },
+        {
+          "w": "too",
+          "start": 109.46,
+          "end": 110.14,
+          "line_idx": 12
+        },
+        {
+          "w": "fast",
+          "start": 110.14,
+          "end": 111.16,
+          "line_idx": 12
+        }
+      ]
+    },
+    {
+      "index": 13,
+      "text": "With no warning I get shot … and time stops",
+      "start": 111.88,
+      "end": 116.32,
+      "words": [
+        {
+          "w": "With",
+          "start": 111.88,
+          "end": 112.18,
+          "line_idx": 13
+        },
+        {
+          "w": "no",
+          "start": 112.18,
+          "end": 112.44,
+          "line_idx": 13
+        },
+        {
+          "w": "warning",
+          "start": 112.44,
+          "end": 113.22,
+          "line_idx": 13
+        },
+        {
+          "w": "I",
+          "start": 113.22,
+          "end": 113.64,
+          "line_idx": 13
+        },
+        {
+          "w": "get",
+          "start": 113.64,
+          "end": 114.02,
+          "line_idx": 13
+        },
+        {
+          "w": "shot",
+          "start": 114.02,
+          "end": 114.46,
+          "line_idx": 13
+        },
+        {
+          "w": "…",
+          "start": 114.46,
+          "end": 114.76,
+          "line_idx": 13
+        },
+        {
+          "w": "and",
+          "start": 114.76,
+          "end": 115.14,
+          "line_idx": 13
+        },
+        {
+          "w": "time",
+          "start": 115.14,
+          "end": 115.68,
+          "line_idx": 13
+        },
+        {
+          "w": "stops",
+          "start": 115.68,
+          "end": 116.32,
+          "line_idx": 13
+        }
+      ]
+    },
+    {
+      "index": 14,
+      "text": "Rewind.",
+      "start": 122.82,
+      "end": 124.06,
+      "words": [
+        {
+          "w": "Rewind.",
+          "start": 122.82,
+          "end": 124.06,
+          "line_idx": 14
+        }
+      ]
+    },
+    {
+      "index": 15,
+      "text": "Rewind.",
+      "start": 126.74,
+      "end": 127.86,
+      "words": [
+        {
+          "w": "Rewind.",
+          "start": 126.74,
+          "end": 127.86,
+          "line_idx": 15
+        }
+      ]
+    },
+    {
+      "index": 16,
+      "text": "The night before my dissertation defense,",
+      "start": 158.47,
+      "end": 163.64,
+      "words": [
+        {
+          "w": "The",
+          "start": 158.47,
+          "end": 158.54,
+          "line_idx": 16
+        },
+        {
+          "w": "night",
+          "start": 158.54,
+          "end": 158.94,
+          "line_idx": 16
+        },
+        {
+          "w": "before",
+          "start": 158.94,
+          "end": 159.5,
+          "line_idx": 16
+        },
+        {
+          "w": "my",
+          "start": 161.64,
+          "end": 161.72,
+          "line_idx": 16
+        },
+        {
+          "w": "dissertation",
+          "start": 161.72,
+          "end": 162.24,
+          "line_idx": 16
+        },
+        {
+          "w": "defense,",
+          "start": 162.24,
+          "end": 163.64,
+          "line_idx": 16
+        }
+      ]
+    },
+    {
+      "index": 17,
+      "text": "I'm speeding down Lake Shore, I dreamt",
+      "start": 165.56,
+      "end": 169.0,
+      "words": [
+        {
+          "w": "I'm",
+          "start": 165.56,
+          "end": 165.7,
+          "line_idx": 17
+        },
+        {
+          "w": "speeding",
+          "start": 165.7,
+          "end": 166.14,
+          "line_idx": 17
+        },
+        {
+          "w": "down",
+          "start": 166.14,
+          "end": 166.6,
+          "line_idx": 17
+        },
+        {
+          "w": "Lake",
+          "start": 166.6,
+          "end": 167.06,
+          "line_idx": 17
+        },
+        {
+          "w": "Shore,",
+          "start": 167.06,
+          "end": 167.64,
+          "line_idx": 17
+        },
+        {
+          "w": "I",
+          "start": 167.64,
+          "end": 168.2,
+          "line_idx": 17
+        },
+        {
+          "w": "dreamt",
+          "start": 168.2,
+          "end": 169.0,
+          "line_idx": 17
+        }
+      ]
+    },
+    {
+      "index": 18,
+      "text": "a shadow chasing me I couldn't place",
+      "start": 169.1,
+      "end": 173.3,
+      "words": [
+        {
+          "w": "a",
+          "start": 169.1,
+          "end": 169.86,
+          "line_idx": 18
+        },
+        {
+          "w": "shadow",
+          "start": 169.86,
+          "end": 170.32,
+          "line_idx": 18
+        },
+        {
+          "w": "chasing",
+          "start": 170.32,
+          "end": 170.66,
+          "line_idx": 18
+        },
+        {
+          "w": "me",
+          "start": 170.66,
+          "end": 171.3,
+          "line_idx": 18
+        },
+        {
+          "w": "I",
+          "start": 171.3,
+          "end": 171.9,
+          "line_idx": 18
+        },
+        {
+          "w": "couldn't",
+          "start": 171.9,
+          "end": 172.94,
+          "line_idx": 18
+        },
+        {
+          "w": "place",
+          "start": 172.94,
+          "end": 173.3,
+          "line_idx": 18
+        }
+      ]
+    },
+    {
+      "index": 19,
+      "text": "Never stop.",
+      "start": 180.45,
+      "end": 181.36,
+      "words": [
+        {
+          "w": "Never",
+          "start": 180.45,
+          "end": 180.58,
+          "line_idx": 19
+        },
+        {
+          "w": "stop.",
+          "start": 180.58,
+          "end": 181.36,
+          "line_idx": 19
+        }
+      ]
+    },
+    {
+      "index": 20,
+      "text": "Never stop.",
+      "start": 187.78,
+      "end": 188.56,
+      "words": [
+        {
+          "w": "Never",
+          "start": 187.78,
+          "end": 187.86,
+          "line_idx": 20
+        },
+        {
+          "w": "stop.",
+          "start": 187.86,
+          "end": 188.56,
+          "line_idx": 20
+        }
+      ]
+    }
+  ]
+}

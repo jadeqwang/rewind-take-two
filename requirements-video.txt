@@ -1,0 +1,6 @@
+numpy==2.5.3
+pillow==12.3.0
+imageio-ffmpeg==0.6.0
+stable-ts==2.19.1
+faster-whisper==1.2.1
+torch>=2.6
