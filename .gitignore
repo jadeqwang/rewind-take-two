@@ -19,3 +19,4 @@ media/**
 !media/**/
 !media/**/*.md
 work/
+docs/recon/
