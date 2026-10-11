@@ -56,7 +56,7 @@ def hatch(seed=0):
 _HATCH = None
 
 
-def sprite(eng, matte_dir, t, hexcol, out, outline=4, glow=18, alpha=0.9, box=None, seed=0):
+def sprite(eng, matte_dir, t, hexcol, out, outline=4, glow=18, alpha=1.0, box=None, seed=0):
     global _HATCH
     if _HATCH is None:
         _HATCH = hatch(seed)
@@ -71,25 +71,30 @@ def sprite(eng, matte_dir, t, hexcol, out, outline=4, glow=18, alpha=0.9, box=No
     m = np.clip((m - 0.35) / 0.3, 0, 1)                       # firm edge
     m = cv2.GaussianBlur(m, (0, 0), 0.8)
     hue = hexrgb(hexcol)
-    light = np.clip((hue + (1 - hue) * 0.32) * 1.08, 0, 1)                             # lifted, pastel
-    L = rgb.mean(2)
-    ink = np.clip((cv2.GaussianBlur(L, (0, 0), 3) - L - 0.03) / 0.10, 0, 1)   # her line work only (local darks)
-    Ln = (L - L[m > 0.5].min()) / max(1e-3, np.ptp(L[m > 0.5])) if (m > 0.5).any() else L
-    body = light[None, None] * (0.86 + 0.14 * np.clip(Ln, 0, 1)[..., None])
-    body = body * (1 - 0.8 * ink[..., None]) + (hue * 0.5)[None, None] * (0.8 * ink[..., None])
-    body *= _HATCH[..., None]
+    # translucent line-art Jade (rev 3, after F6c/F8): a duotone of her own drawing. Light areas -> pale hue at ~0.55
+    # alpha (the world shows through), her line work, eyes, mouth and hair -> deep hue ink at full alpha.
+    L = cv2.cvtColor((rgb * 255).astype(np.uint8), cv2.COLOR_RGB2GRAY).astype(np.float32) / 255.0
+    sharp = np.clip(L + 0.9 * (L - cv2.GaussianBlur(L, (0, 0), 1.6)), 0, 1)          # unsharp: crisp lines
+    lines = np.clip((cv2.GaussianBlur(sharp, (0, 0), 2.2) - sharp - 0.02) / 0.09, 0, 1)
+    dark = np.clip((0.42 - sharp) / 0.3, 0, 1)                                         # hair, pants, pupils
+    inkamt = np.clip(np.maximum(lines, 0.5 * dark), 0, 1)
+    pale = np.clip(hue + (1 - hue) * 0.55, 0, 1)
+    deep = hue * 0.38
+    body = pale[None, None] * (1 - inkamt[..., None]) + deep[None, None] * inkamt[..., None]
+    body *= (0.94 + 0.06 * _HATCH[..., None])
+    a_fill = alpha * (0.55 + 0.45 * inkamt)
     # outline: a thin band just outside the silhouette, bright hue
     mb = (m > 0.5).astype(np.uint8)
     k = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (2 * outline + 1, 2 * outline + 1))
     ring = np.clip(cv2.dilate(mb, k).astype(np.float32) - mb, 0, 1)
     ring = cv2.GaussianBlur(ring, (0, 0), 0.7)
-    rim = np.clip(hue * 1.2 + 0.12, 0, 1)
+    rim = np.clip(hue * 0.6 + 0.45, 0, 1)                    # bright, near-white hue
     # glow: soft halo outside
     g = cv2.GaussianBlur(cv2.dilate(mb, k).astype(np.float32), (0, 0), glow)
     g = np.clip(g * 1.6, 0, 1) * (1 - m)
     # composite (premultiplied, over): glow < body < outline
-    a_g = 0.7 * g
-    a_b = alpha * m
+    a_g = 0.8 * g
+    a_b = a_fill * m
     a_r = 0.95 * ring
     C = hue[None, None] * a_g[..., None]
     A = a_g.copy()

@@ -63,11 +63,43 @@ All shots are in the engine and render end to end. The merge check against E.js 
 - **Lyric:** "Rewind." in IM Fell, orange #F08A24, in the lower third, timed to the word.
 - **Risk:** the takes keep the first frame's head pose, but if she drifted, the static occluder would let a ribbon edge show over her hair rim. I didn't see this in 119.5–122.9.
 
+## Revision 4: rough-cut v1 review fixes (`docs/reviews/roughcut_v1.md`, top-10 items 3, 4, 8 and 9)
+
+1. **Ghosts read as Jades (113.89–119.44, 127.88–129.62).**
+   - **New ghost look:** `ghostsprite.py` now bakes a translucent line-art Jade in the F6c/F8 manner. Her own drawing is turned into a duotone: crisp hue-ink line work, eyes, mouth and hair at full alpha, a pale hue fill at about 0.55, a bright near-white rim in the hue and a soft hue glow.
+   - **E2c sizing:** every constellation ghost is now **290 px tall (27% of frame height)**. Horizontal poses are limited by their width.
+   - **E2c layout:** each ghost has its own slot around the agents.
+     - Ghosts 1–8 already stand there; 8 pops on its chop.
+     - Ghosts 9–12 freeze exactly where she is on their chop, then grow and glide to their slot in 0.35 s.
+     - Ghost 13 stays where it froze.
+   - **E2c push-in:** now 1.00 → 1.08, so every slot stays in frame.
+   - **E5b gold twin:** the opaque twin is now a ghost.
+     - A nano clean plate removes her from the left half (`media/shots/E5/plate_e5b_left.png`, feathered before the warp's black wedge, which caused the earlier seam).
+     - She is redrawn per frame as a gold line-art ghost at 0.85 × ~0.6 fill with a glow outline (`tools/sections/D/ghostseq.py` → `media/shots/E5/ghost_twin_gold_{rgb,alpha}.mp4`).
+     - Live Jade on the right is matted by `take_e5_hand_1_right/`.
+2. **Anagram stall (126.25–130.50).** The total timing is unchanged (126.25 → 130.50).
+   - **E5a** keeps 126.25–127.88. Its blank right half is filled with a nano-painted Loop street canyon with an L trestle (`plate_e5a_fill.png`, masked to the blank region). The duplicate girl that nano drew there was removed with a second edit.
+   - **E5b** hand-off now runs **127.88–129.62 (1.74 s)**; the slip is visible in the twin's hand.
+   - **E5c** is **0.88 s (two beats, 129.62–130.50)**, and the question is already written when it appears.
+3. **E3 lyric.** "Rewind." is now ink on a paper halo, size 112, y 1000, below the jacket band, with the period. The ribbon orbit was retuned for the singing director's 1.3× push-in (centre (949, 571), radii 740 × 435). The occluder mask builder now applies the same crop remap as `tools/sing/polish.py remap-mask`. Their remapped cached mask is used as is.
+4. **NYC landmarks.**
+   - **E5b:** the Empire State Building behind her is replaced by a flat-crowned Chicago tower (nano edit, patched).
+   - **E6a/E6b:** the ESB and Chrysler in the rooftop skylines are replaced by Chicago towers, including a Willis-like one. The fix is a nano edit of an engraved frame, patched where it differs.
+5. **E7 ribbons** are capped at 10, one more per beat, thinner and with more pencil grain, so the meter close-ups stay readable.
+
+**Still open after revision 4:**
+- E6b's camera drifts slightly, so a small spire near the centre skyline is still visible late in the shot (about 133+).
+- The Grant Park field plate (E2b and the E7 reuse) also has a spire resembling the ESB in its distant skyline.
+- E4's stream still uses engine-tinted ghosts, not line-art.
+- E8 redaction is left as it is, per the coordinator.
+
+Cost of revision 4: 9 nano-banana-pro edits, about $1.21.
+
 ## Ghost choreography (the 13 chops)
 
 The chop times come from `timing.json → lyrics.vocal_chops`. Ghost k is revealed on chop k (ghosts layer `on: [t]`, with a 0.12 s pop).
 Each chop also gets a pale-blue flash (0.08 s, 0.35), a VHS-rewind blip (0.12 s) and a 3.5 % zoom punch.
-Ghosts are the matted frame at `freeze` (source seconds) of the clip, baked as luminous sprites (see revision 2).
+Ghosts are the matted frame at `freeze` (source seconds) of the clip, baked as line-art sprites (see revision 4). The E2c slots below are superseded by `SLOTS_OLD`/`SLOTS_NEW` in `build_timeline.py` (revision 4).
 For hits 1–8, the clip's in-point is solved backwards from the freeze, so the live pose on the chop frame *is* the ghost.
 Hues follow the Kandinsky order (orange, blue, gold, magenta, green), then the in-betweens.
 

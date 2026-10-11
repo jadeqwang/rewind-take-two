@@ -263,29 +263,44 @@ def build():
         rc = C["ring_circle"]
         layers = [dict(id="ring", type="video", src=rc["eng"], matte=dict(src=rc["jmatte"], mode="luma"), keepColor=True,
                        srcTime=R["srcTime"])]
-        # earlier iterations pasted into the wide: 1-3 small on the elevated tracks, 4-8 on the lawn around the agents
+        # rev 4: every ghost >= 25% of frame height (GH px tall), each in its own slot round the agents (centre-origin design
+        # px; the 1.0->1.08 push keeps them all in frame). 1-8 are already standing there (8 pops on the cut, its chop);
+        # 9-12 freeze exactly where she is on their chop, then grow and glide to their slot in .35 s; 13 stays put.
+        GH = 290
+        SLOTS_OLD = [(-610, -290), (-220, -310), (215, -310), (770, -40), (-770, 200), (-200, 310), (200, 315), (540, 300)]
+        SLOTS_NEW = [(770, 215), (610, -290), (-770, -50), (-560, 300)]
         placed = []
-        for gi, (key, fz, matte, tx, ty, th, flip) in enumerate(R["placed"]):
+        for gi, (key, fz, matte, _tx, _ty, _th, flip) in enumerate(R["placed"]):
             c = C[key]
-            _, s = sprite_of(c, fz, HUE[gi], matte, th if th < 3 else 0.3)
-            sc = th if th < 3 else th / max(1.0, s["y1"] - s["y0"])   # th < 3: a scale, else a target bbox height (px)
-            cx = -s["cx"] if flip else s["cx"]          # sprite centroid lands on (tx, ty)
+            _, s = sprite_of(c, fz, HUE[gi], matte, 0.45)
+            sc = GH / max(1.0, s["y1"] - s["y0"], 0.8 * (s["x1"] - s["x0"]))   # horizontal poses: limit by width
+            cx = -s["cx"] if flip else s["cx"]          # sprite centroid lands on the slot
+            tx, ty = SLOTS_OLD[gi]
             g, _ = ghost(f"g{gi + 1}", c, fz, HUE[gi], 0.0, matte=matte, x=tx - sc * cx, y=ty - sc * s["cy"], scale=sc,
-                         flip=flip, born=(gi == 7))       # 1-7 are already standing there; 8 pops on the cut (its chop)
+                         flip=flip, born=(gi == 7))
             placed.append(g)
-            notes.setdefault(f"g{gi + 1}", {})["ring_pos"] = dict(x=tx, y=ty, height_px=th, scale=round(sc, 3), flip=flip)
+            notes.setdefault(f"g{gi + 1}", {})["ring_pos"] = dict(x=tx, y=ty, height_px=GH, scale=round(sc, 3), flip=flip)
         new = []
         for j, k in enumerate(range(8, 13)):
             fz = R["freezes"][j]
-            new.append(ghost(f"g{k + 1}", rc, fz, HUE[k], CHOPS[k] - t0, matte="jmatte")[0])
-            notes[f"g{k + 1}"] = dict(clip=rc["eng"], freeze=fz, hue=HUE[k], where="ring wide (where she was)", hit=CHOPS[k])
+            hit = CHOPS[k] - t0
+            g, s = ghost(f"g{k + 1}", rc, fz, HUE[k], hit, matte="jmatte")
+            if j < 4:
+                sc = GH / max(1.0, s["y1"] - s["y0"], 0.8 * (s["x1"] - s["x0"]))
+                tx, ty = SLOTS_NEW[j]
+                g["scale"] = [[r4(hit), 1.0, "outCubic"], [r4(hit + 0.35), r4(sc)]]
+                g["x"] = [[r4(hit), 0, "outCubic"], [r4(hit + 0.35), r4(tx - sc * s["cx"])]]
+                g["y"] = [[r4(hit), 0, "outCubic"], [r4(hit + 0.35), r4(ty - sc * s["cy"])]]
+            new.append(g)
+            notes[f"g{k + 1}"] = dict(clip=rc["eng"], freeze=fz, hue=HUE[k], where="ring wide (where she was, then its slot)",
+                                      hit=CHOPS[k], slot=SLOTS_NEW[j] if j < 4 else "stays")
         lts = [k / 12 for k in range(int((t1 - t0) * 12) + 1)]
         rp = path_of(rc["stem"], [float(np.interp(x, [k[0] for k in R["srcTime"]], [k[1] for k in R["srcTime"]])) for x in lts],
                      lts, "_jmatte")
         layers += [ribbon("res_ring", rp, colors=[HUE[8], HUE[12]], width=16)] + placed + new
         shots.append(dict(id="E2c_ring", start=t0, end=t1, layers=layers,
                           fx=[dict(type="flash", at=[0], dur=0.06, amount=0.5, color="#ffffff")] +
-                          chop_fx([c - t0 for c in CHOPS[8:]], extra=[dict(type="zoom", amount=[[0, 1.1, "inOutSine"], [2.49, 1.22]])])))
+                          chop_fx([c - t0 for c in CHOPS[8:]], extra=[dict(type="zoom", amount=[[0, 1.0, "inOutSine"], [2.49, 1.08]])])))
 
     # ghost counter over E2 (Press Start 2P, top right, ink on paper): one more per chop, odometer roll
     keys = [[0, 0, "hold"]]
@@ -304,6 +319,10 @@ def build():
         import subprocess
         os.makedirs(f"{SH}/E3", exist_ok=True)
         m = cv2.resize(cv2.imread("media/sing/first/her_mask_first_frame.png", 0), (1920, 1080), interpolation=cv2.INTER_AREA)
+        # the take was pushed in 1.3x by the singing director: map the old-framing matte (tools/sing/polish.py remap-mask)
+        X0, Y0, CW, CH = 113, 20, 985, 554
+        sc = m.shape[1] / 1280
+        m = cv2.resize(m[int(Y0 * sc):int((Y0 + CH) * sc), int(X0 * sc):int((X0 + CW) * sc)], (1920, 1080))
         m = (m > 128).astype(np.uint8) * 255
         m[:860, :640] = 0                # stray plaza blob left of her (trace artefact); keeps head, hair, torso, arm
         m = cv2.GaussianBlur(cv2.erode(m, cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (9, 9))), (0, 0), 2.5)
@@ -315,7 +334,7 @@ def build():
     # residue ribbons spiral in from the frame edges and orbit her head and shoulders; where an orbit crosses her body
     # it is hidden by an occluder (the same take, matted by her first-frame silhouette), so they circle BEHIND her and
     # never touch her face (the orbit clears the head: top y≈130 vs hair top ≈190, sides x≈330/1470 vs head 700-1100).
-    CX, CY, RX, RY, TILT = 900, 470, 570, 335, math.radians(-10)
+    CX, CY, RX, RY, TILT = 949, 571, 740, 435, math.radians(-10)   # rev 4: the take is now pushed in 1.3x (polish.py)
     e3_ribs = []
     for k in range(7):
         st = 0.18 * k                          # staggered entries
@@ -338,7 +357,8 @@ def build():
         *e3_ribs,
         dict(id="occluder", type="video", src=E3_TAKE, fit="cover", **{"in": e3_in, "rate": 1.0},
              matte=dict(src=f"{SH}/E3/occluder_mask.mp4", mode="luma")),
-        dict(type="canvas", module="lowerthird", stage="post", params=dict(color="#F08A24", size=120, y=975, halo=0.6))],
+        # rev 4: ink on a paper halo (orange sat on her orange jacket band); the line's own text keeps the period
+        dict(type="canvas", module="lowerthird", stage="post", params=dict(color=INK, size=112, y=1000, halo=1.0))],
         fx=[dict(type="grain", amount=0.045, size=1.2, seed="twos"), dict(type="paper", amount=0.18),
             dict(type="flash", at=[0], dur=0.06, amount=0.35, color="#ffffff")]))
     notes["E3"] = dict(take=E3_TAKE, variant=E3_VARIANT, lag=lag, clip_in=e3_in, clip_out=r4(t1 - E3_REF_T0 + lag))
@@ -368,7 +388,11 @@ def build():
     B = take["e5_boost"]; c = C["e5_boost"]
     t0, t1 = 126.25, 127.88
     jp = seg_path(c["stem"], B["in"], B["rate"], 0, t1 - t0, exclude=[0, 0.33, 0.345, 1.0])
-    layers = [dict(id="jade", type="video", src=c["eng"], matte=dict(src=c["matte"], mode="luma"), keepColor=True,
+    layers = [dict(id="bg", type="video", src=c["eng"], **{"in": B["in"], "rate": B["rate"]}),
+              # rev 4: the keyframe left the right half blank paper; a nano fill (Loop street canyon, L trestle) masked to
+              # exactly that blank region (media/shots/E5/plate_e5a_fill.png), under her live matte
+              dict(id="fill", type="image", src=f"{SH}/E5/plate_e5a_fill.png", fit="cover"),
+              dict(id="jade", type="video", src=c["eng"], matte=dict(src=c["matte"], mode="luma"), keepColor=True,
                    **{"in": B["in"], "rate": B["rate"]}),
               dict(id="twin", type="ghosts", src=c["eng"], matte=dict(src=c["twin"], mode="luma"), keepColor=True, loop=False,
                    **{"in": B["in"], "rate": B["rate"]}, instances=[dict(offset=0, color=HUE[1], tint=0.85, opacity=0.9)]),
@@ -377,15 +401,21 @@ def build():
     shots.append(dict(id="E5a_boost", start=t0, end=t1, layers=layers, fx=[dict(type="punch", on="beat", amount=0.02)]))
 
     Hd = take["e5_hand"]; c = C["e5_hand"]
-    t0, t1 = 127.88, 128.76
+    t0, t1 = 127.88, 129.62        # rev 4: the hand-off gets the time the slip insert gave back (now 1.74 s)
     shots.append(dict(id="E5b_handoff", start=t0, end=t1, layers=[
-        dict(id="jade", type="video", src=c["eng"], matte=dict(src=c["matte"], mode="luma"), keepColor=True, **{"in": Hd["in"], "rate": Hd["rate"]}),
-        dict(id="twin", type="ghosts", src=c["eng"], matte=dict(src=c["twin"], mode="luma"), keepColor=True, loop=False,
-             **{"in": Hd["in"], "rate": Hd["rate"]}, instances=[dict(offset=0, color=HUE[2], tint=0.85, opacity=0.9)])]))
+        dict(id="bg", type="video", src=c["eng"], **{"in": Hd["in"], "rate": Hd["rate"]}),
+        # the opaque twin is replaced by a clean plate (nano, left half) and redrawn as a gold line-art ghost
+        dict(id="clean", type="image", src=f"{SH}/E5/plate_e5b_left.png", fit="cover"),
+        # rev 4: the Empire State Building behind her is replaced by a flat-crowned Chicago tower (nano edit, patched)
+        dict(id="no_esb", type="image", src=f"{SH}/E5/plate_e5b_esb_patch.png", fit="cover"),
+        dict(id="jade", type="video", src=c["eng"], matte=dict(src=c["stem"] + "_right/matte.mp4", mode="luma"), keepColor=True,
+             **{"in": Hd["in"], "rate": Hd["rate"]}),
+        dict(id="twin", type="video", src=f"{SH}/E5/ghost_twin_gold_rgb.mp4", keepColor=True, opacity=0.85,
+             matte=dict(src=f"{SH}/E5/ghost_twin_gold_alpha.mp4", mode="luma"), **{"in": Hd["in"], "rate": Hd["rate"]})]))
     notes["E5b"] = dict(clip=c["eng"], twin_matte=c["twin"], hue=HUE[2])
 
     Sl = take["e5_slip"]; c = C["e5_slip"]
-    t0, t1 = 128.76, 130.50
+    t0, t1 = 129.62, 130.50        # rev 4: two beats, the question already written
     shots.append(dict(id="E5c_slip", start=t0, end=t1, layers=[
         dict(id="jade", type="video", src=c["eng"], matte=dict(src=c["matte"], mode="luma"), keepColor=True, **{"in": Sl["in"], "rate": Sl["rate"]}),
         dict(type="canvas", module="pencil", keepColor=True, params=dict(
@@ -401,6 +431,7 @@ def build():
         dict(id="jade", type="video", src=c["eng"], matte=dict(src=c["matte"], mode="luma"), keepColor=True,
              **{"in": S1["in"], "rate": 1.0}, freeze=r4(burst)),
         dict(id="clean", type="image", src=f"{SH}/E6/plate_e6_clean_eng.png", start=r4(burst), opacity=[[0, 0], [0.16, 1, "inCubic"]]),
+        dict(id="chicago2", type="image", src=f"{SH}/E6/patch_e6a_skyline.png", fit="cover", start=r4(burst)),
         dict(id="motes", type="canvas", module="motes", keepColor=True, params=dict(
             at=r4(burst), x=r4(s["cx"] + 960), y=r4(s["cy"] + 540), count=150, colors=RES + ["#ffffff", "#1f2a44", "#F08A24"],
             speed=700, drag=1.6, gravity=-20, size=12, life=2.0, ring=False, glow=0.9, seed=31))],
@@ -450,8 +481,8 @@ def build():
         shots.append(dict(id=f"E7_{k + 1:02d}_{cut['clip']}", start=a, end=b, layers=L, fx=fx))
     # residue ribbons pile up over every surface across E7 (one more per beat, each a different iteration hue)
     rl = []
-    for k in range(24):                        # one more residue ribbon every half beat; they pile up, never leave
-        st = 0.21 * k
+    for k in range(10):                        # rev 4: one more residue ribbon every beat (cap 10: review said 24 read as a screensaver)
+        st = 0.44 * k
         y0 = -440 + 880 * ((k * 0.618) % 1)
         pts = []
         for j in range(25):
@@ -460,7 +491,7 @@ def build():
             y = y0 + (120 + 8 * (k % 5)) * math.sin(6.28 * u * (1.1 + 0.12 * (k % 6)) + k)
             pts.append([r4(st + 0.9 * u), r4(x + 960), r4(y + 540)])
         rl.append(dict(type="canvas", module="ribbon", keepColor=True, params=dict(
-            path=pts, colors=[HUE[k % 13], HUE[(k + 5) % 13]], width=22 + 9 * (k % 5), twist=0.6, bloom=0.9, grain=0.5,
+            path=pts, colors=[HUE[k % 13], HUE[(k + 5) % 13]], width=20 + 6 * (k % 4), twist=0.6, bloom=0.7, grain=0.9,
             motes=0.35, seed=50 + k)))
     # the frame saturates: a Kandinsky colour wash rising under the ribbons (screen), strongest on the last bar
     rl.insert(0, dict(type="solid", keepColor=True, blend="multiply", color=[[0, HUE[0]], [1.7, HUE[3]], [3.4, HUE[1]], [5.0, HUE[2]]],
@@ -495,6 +526,11 @@ def build():
             if "freeze" in L0:
                 bg["freeze"] = L0["freeze"]
             sh["layers"].insert(0, dict(id="bg", **bg))
+    # rev 4: Empire State / Chrysler in the E6 rooftop skylines -> Chicago towers (nano edits, patched over the plate)
+    for sh in shots:
+        pat = {"E6a_atomize": "patch_e6a_skyline.png", "E6b_split": "patch_e6b_skyline.png"}.get(sh["id"])
+        if pat:
+            sh["layers"].insert(1, dict(id="chicago", type="image", src=f"{SH}/E6/{pat}", fit="cover"))
     return dict(section="D", shots=shots, overlays=overlays), notes
 
 
