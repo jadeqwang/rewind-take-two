@@ -1,0 +1,27 @@
+// R2 (Drop 1, 42.65–48.42): thirteen "stop" chops = thirteen frozen past deaths (Section A world-building).
+// Kept in its own file so the Drop 1 director can take it over (or delete it) without touching A.js.
+// One engraved still per chop (media/shots/R2/engraved/), cut exactly on the chop onsets from timing.json, each with a
+// small push so nothing is dead-still, a VHS scrub between hits and the iteration counter jumping backward.
+const DIR = 'media/shots/R2/engraved/';
+const STILLS = ['01train', '02marinab', '03picasso', '04bridge', '05fountain', '06watertower', '07riverwalk',
+  '08skydeck', '09lightning', '10gearsb', '11ferris', '12ice', '13sedanb'];
+const ITER = [4095, 4093, 4094, 4091, 4092, 4090, 4088, 4089, 4087, 4086, 4084, 4085, 4084];   // randomized but decreasing
+
+export default ({ T }) => {
+  const chops = T.lists.vocal_chops.map(c => (typeof c === 'number' ? c : c.start)).filter(t => t >= 42.6 && t < 48.5);
+  const ends = [...chops.slice(1), 48.42];
+  const shots = STILLS.map((s, k) => {
+    const dir = k % 2 ? 1 : -1;
+    return {
+      id: `R2_${String(k + 1).padStart(2, '0')}`, start: chops[k], end: ends[k], background: '#0b0b0c',
+      layers: [
+        { type: 'image', src: `${DIR}kf_${s}_engraved.png`, fit: 'cover', keepColor: true,
+          kenBurns: { from: { scale: 1.04, x: -8 * dir }, to: { scale: 1.08, x: 8 * dir }, ease: 'linear' } },
+        { type: 'canvas', module: 'hud', stage: 'post', params: { mode: 'iteration', value: ITER[k], side: 'left', color: '#0b0b0c', size: 24 } },
+      ],
+      fx: [{ type: 'vhs', amount: [[0, 0.9], [0.09, 0, 'out']] }, { type: 'tracking', amount: [[0, 1], [0.12, 0, 'out']] },
+        { type: 'punch', amount: 0.03, on: [chops[k]], decay: 0.15 }],
+    };
+  });
+  return { section: 'A_R2', shots };
+};
