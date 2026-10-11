@@ -2,7 +2,9 @@
 
 ## Execution, phase 2: build the level (ordered by v4-B after Jade's approval; cap $12, tag `v4B_coop_`; no commits)
 
-**Status: in progress.** Jade (verbatim, relayed by v4-B, also in `docs/revisions/v4/B_progress.md`): "storyboard looks
+**Status: done (18:45), $3.46 spent.** Clip `media/reviews/v4/B/0200_coop.mp4`; stills `media/reviews/v4/B/0200_coop_{split,hold,swap,bridge_up}.png`;
+arm strip `media/reviews/v4/B/0200_e5_arm_before_after.jpg`; fragment `docs/revisions/v4/fragments/coop.json`; `docs/sections/D.md` Revision 6.
+Rebuild order: `assets.py` → `level.py` → `build_timeline.py` → `tools/sfx/build.py` → render (`--force`). Jade (verbatim, relayed by v4-B, also in `docs/revisions/v4/B_progress.md`): "storyboard looks
 good"; "instead of tagging them 1 and 2, let's go with blue and orange ... we should tag them at the moment of split,
 so BLUE has white jacket with blue stripes, blue straps hanging from pants, and blue dots, and ORANGE has white jacket
 with orange stripes, orange straps, and orange dots"; "the bridge: let's keep the environment still monochrome, so a
@@ -22,13 +24,13 @@ snaps back, agents stop at the lip · 134.44 both run on · 134.88 cut to E7.
 | Step | What | Status |
 |---|---|---|
 | P1 | Timeline: E6c cut at 129.18; E7 without the stopwatch, starting 134.88; R1 flash softened; C1/C2 slots 129.18–132.26–134.88 | **done** in `build_timeline.py` (24 shots; E7 plat 134.88–135.76, leap 135.76–136.62, doubling on 134.88/135.32/135.76/136.19, first copy now blue; ribbons overlay starts 134.88 with v3 song times; chasm, ear, lawn, E8 untouched). No SFX cue sat on the moved part of E7 (next cues: `b_fall_short` 136.96, `b_wall_burst` 137.32, unchanged) |
-| P2 | E6c recolour: BLUE and ORANGE from the split (`media/shots/C_coop/two_bo/`) | **done**: `tools/v4B/coop/recolor.py` (right of column 960 orange→blue, left of it pale blue→orange) → `media/shots/C_coop/two_bo/take_1_engraved_bo.mp4`, wired into E6c; frames still to be checked in the final render |
-| P3 | E5: the gold ghost's pointing arm vanishes for a moment; find and fix; before/after strip | not started |
-| P4 | C1/C2 keyframes (judge at full size), then takes, engrave, recolour, engine mechanism | **in progress**. Tools: `tools/v4B/coop/gen.py` (prompts, kf/edit/submit/wait/engrave), `layout.py` (flat composition sketches). `kf_c1_v1`, `v2` rejected (perspective view, pencil off the girls' path, costume drift). `kf_c1_v3` running: layout sketch + identical canon twins, BLUE recoloured afterwards |
-| P5 | Sound: button and bridge cues if procedural (free); rebuild mix | not started |
-| P6 | Clip `media/reviews/v4/B/0200_coop.mp4` (116.5–141.5), stills, `docs/revisions/v4/fragments/coop.json`, `docs/sections/D.md` Revision 6 | not started |
+| P2 | E6c recolour: BLUE and ORANGE from the split (`media/shots/C_coop/two_bo/`) | **done and checked** (128.4–129.1 frames: right twin has the blue band and straps, left stays orange; agents and paper untouched). Tool `tools/v4B/coop/recolor.py` |
+| P3 | E5: the gold ghost's pointing arm vanishes for a moment; find and fix; before/after strip | **done**: the engrave matte lost her forearm and hand on take frames ~25–86 (123.1–124.8 in the cut), so the clean patch showed. `tools/v4B/coop/armfix.py` re-segments a crop with BiRefNet (+3-frame union) → `media/shots/C_coop/e5_arm/ghost_matte/`; `ghostseq.py` rebake → `media/shots/C_coop/e5_arm/ghost_slideptb_v4_{rgb,alpha}.mp4` (frame 0 identical to v3); wired via `twin_shot(ghost_stem=…)`. Strip: `media/reviews/v4/B/0200_e5_arm_before_after.jpg` |
+| P4 | C1/C2 | **done**: takes `c1/take_2` (from composite kf `kf_c1_v8.png`), `c2/take_1`; C2 split at the 133.56 beat (jump cut over the landing, where the take swaps the girls); composited from the plate with sprite bridge/buttons. Shots `C1_hold`, `C2a_swap`, `C2b_letgo` |
+| P5 | Sound | **done**: four procedural cues (`coop_*`), mix rebuilt (free); v3 mix kept as `media/sfx/Rewind_cinematic_sfx_mix_v3.mp3` |
+| P6 | Hand-over | **done** (see status line) |
 
-Spend log for this phase: start $232.21 project total, `v4B_coop_` $0.00.
+Spend log for this phase: `v4B_coop_` total $3.46 (3 kf, 6 edits, 3 Seedance takes); project $241.83.
 
 ## Execution, phase 1 (free part, ordered by v4-B at about 17:20; no paid calls, no commits)
 

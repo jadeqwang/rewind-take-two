@@ -332,3 +332,26 @@ Project total at hand-off: $123.02 of $400.
 | `trim.py` | Model paper-margin trim |
 | `sheet.py` | Dense contact sheets |
 | `build_timeline.py` | Generates D.js, the EDL mirror and the ghost table |
+
+## Revision 6 (v4 pass): E3 out, the co-op level, the arm
+
+Jade's v3 notes at 2:00 (plan: `docs/revisions/v4/plans/coop.md`; review: `docs/revisions/v4/fragments/coop.json`;
+clip `media/reviews/v4/B/0200_coop.mp4`). Everything before 119.44, E7 from 136.62, and E8 are unchanged.
+
+| Shot | Time | Content | Source |
+|---|---|---|---|
+| R1_unclimb | 119.44–119.98 | "Rewind." #1: the failed climb runs backwards (5.85 → 3.45 of `climb`), ghosts 11/12 slide home, VHS look, `◀◀ ×4` on a paper chip; the word is painted on the brickwork from here | `B_climb` |
+| E4a / E4b | 119.98–121.30 / –123.00 | ghost ladder (×1.89) / haul (×1.43) | v3 |
+| E5 | 123.00–125.26 | slide + hint (×1.52) under "Rewind." #2 (not lettered); gold ghost rebaked with her pointing arm restored | `B_slide_point_b`, `media/shots/C_coop/e5_arm/` |
+| E6a–E6c | 125.26–129.18 | swarm boost, atomize, split, two bars earlier; E6c ends on the 129.18 beat; the right twin recoloured BLUE | `B_swarm_boost`, `C_coop/two_bo/` |
+| C1_hold | 129.18–132.26 | ORANGE holds the near button (130.50, it sinks), the pencil drawbridge swings down (130.80), BLUE crosses (130.94) and holds the far one; agents run in (131.38) | `C_coop/c1/take_2` |
+| C2a_swap | 132.26–133.56 | ORANGE springs off and crosses; the agents grab air and stop at the lip | `C_coop/c2/take_1` 0.15–1.9 |
+| C2b_letgo | 133.56–134.88 | jump cut; BLUE lets go (134.00), the bridge swings up away from the agents; both run out right | `C_coop/c2/take_1` 3.56–4.88 |
+| E7 | 134.88–139.00 | stopwatch insert removed; platform and leap two beats later (doubling 134.88/135.32/135.76/136.19, first copy blue); chasm/ear/lawn as v3 | v3 |
+
+The level is composited from the clean plate up: each girl from her own matte (`tools/v4B/coop/level.py`, per-frame seam,
+BLUE recoloured by `recolor.py`), the agents from their own matte, the pencil and buttons as sprites (`assets.py`), so
+the engine raises the bridge (hinge 1185,632; 72°) and sinks a held button 18 px. Sound: `b_boost`…`b_implode` 3.50 s
+earlier; new procedural `coop_btn1` 130.50, `coop_bridge_down` 130.80, `coop_btn2` 132.10, `coop_bridge_up` 134.00.
+Cost: $3.46 (`v4B_coop_`). Weak: BLUE's bun pencils tinted blue; jump cut over ORANGE's landing; agents at the lip are a
+held frame; faint engrave smudges travel with the agents' matte by the left book.

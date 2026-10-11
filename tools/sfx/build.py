@@ -762,6 +762,59 @@ def _():
     y[:len(th)] += 0.4 * th
     return reverb(y, room(), -20), 0.0
 
+# ---- v4: the co-op level (docs/revisions/v4/plans/coop.md), all procedural. The times follow the picture beats in
+# tools/sections/D/build_timeline.py (COOP_* there): a floor button pressed, the giant pencil drawbridge lowering and
+# landing, the second button, and the bridge swinging back up.
+COOP_BTN1, COOP_DOWN, COOP_BTN2, COOP_UP = 130.50, 130.80, 132.10, 134.00
+
+
+def _button(seed):
+    """a big desk-bell-sized button pushed flush: a soft plastic clunk with a low body and a short latch click"""
+    y = np.zeros((2, N(0.25)))
+    th = thump(95, 0.18, 0.04, f_start=150, seed=seed)
+    add_at(y, th, 0.0)
+    ck = click(seed + 1, dur=0.02, lo=1200, hi=6000, tau=0.004, modes=((1900, 18, 0.6),))
+    add_at(y, 0.7 * ck / np.max(np.abs(ck)), 0.012)
+    return reverb(lp(y, 5000, 2), room(), -20)
+
+
+@cue("coop_btn1", COOP_BTN1, "C1 ORANGE stamps the near floor button: soft clunk + latch click", "procedural", "optional", -27)
+def _():
+    return _button(13050), 0.0
+
+
+@cue("coop_bridge_down", COOP_DOWN, "C1 the giant pencil swings down across the gap: a short wooden creak leading in, and a "
+     "hollow wooden clack as it lands on the far table", "procedural", "optional", -24)
+def _():
+    pre = 0.28
+    y = np.zeros((2, N(pre + 0.35)))
+    cr = reson(noise(N(pre), 13080) * np.interp(tt(pre), [0, pre * 0.6, pre], [0.0, 0.5, 0.2]), 420, 12)
+    add_at(y, 0.4 * cr / np.max(np.abs(cr)), 0.0)
+    clack = click(13081, dur=0.06, lo=300, hi=3500, tau=0.012, modes=((260, 10, 1.0), (610, 14, 0.6)))
+    add_at(y, clack / np.max(np.abs(clack)), pre)
+    th = thump(70, 0.2, 0.05, seed=13082)
+    add_at(y, 0.5 * th, pre)
+    return reverb(y, room(), -16), -pre
+
+
+@cue("coop_btn2", COOP_BTN2, "C2 BLUE presses the far button: the same clunk, a touch higher", "procedural", "optional", -28)
+def _():
+    return _button(13226), 0.0
+
+
+@cue("coop_bridge_up", COOP_UP, "C2 BLUE lets go: the button pops back up and the pencil swings up out of the agents' reach "
+     "with a rising whoosh and a wooden knock", "procedural", "optional", -27)
+def _():
+    y = np.zeros((2, N(0.5)))
+    pop = click(13400, dur=0.02, lo=1500, hi=7000, tau=0.003)
+    add_at(y, 0.6 * pop / np.max(np.abs(pop)), 0.0)
+    w = whoosh_rise(0.3, 300, 3000, 13401) * np.interp(tt(0.3), [0, 0.15, 0.3], [0, 1.0, 0.2])
+    add_at(y, 0.7 * w / np.max(np.abs(w)), 0.02)
+    kn = click(13402, dur=0.05, lo=300, hi=3000, tau=0.01, modes=((300, 10, 1.0),))
+    add_at(y, 0.6 * kn / np.max(np.abs(kn)), 0.3)
+    return reverb(y, room(), -16), 0.0
+
+
 # ============================================================================= framework
 def vocal_env_db():
     v = VOC.mean(0)

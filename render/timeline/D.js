@@ -3191,11 +3191,11 @@ export default {
     {
      "id": "ghost",
      "type": "video",
-     "src": "media/shots/_D/v3/ghost_slideptb_rgb.mp4",
+     "src": "media/shots/C_coop/e5_arm/ghost_slideptb_v4_rgb.mp4",
      "keepColor": true,
      "opacity": 0.9,
      "matte": {
-      "src": "media/shots/_D/v3/ghost_slideptb_alpha.mp4",
+      "src": "media/shots/C_coop/e5_arm/ghost_slideptb_v4_alpha.mp4",
       "mode": "luma"
      },
      "in": 0.05,
@@ -3385,7 +3385,7 @@ export default {
     {
      "id": "still",
      "type": "video",
-     "src": "media/shots/B_two/take_1_engraved.mp4",
+     "src": "media/shots/C_coop/two_bo/take_1_engraved_bo.mp4",
      "end": 0.44,
      "in": 0.4,
      "rate": 1.0,
@@ -3415,7 +3415,7 @@ export default {
     {
      "id": "play",
      "type": "video",
-     "src": "media/shots/B_two/take_1_engraved.mp4",
+     "src": "media/shots/C_coop/two_bo/take_1_engraved_bo.mp4",
      "start": 0.44,
      "in": 0.55,
      "rate": 1.0,
@@ -3741,115 +3741,570 @@ export default {
    "id": "C1_hold",
    "start": 129.18,
    "end": 132.26,
-   "background": "#ece7dc",
    "layers": [
     {
-     "id": "p2",
+     "id": "plate",
      "type": "image",
-     "src": "media/shots/C_coop/animatic/p2.png",
-     "keepColor": true,
-     "fit": "cover",
-     "start": 0.0,
-     "end": 1.32
+     "src": "media/shots/C_coop/plate.png",
+     "fit": "cover"
     },
     {
-     "id": "p3",
+     "id": "pencil",
      "type": "image",
-     "src": "media/shots/C_coop/animatic/p3.png",
-     "keepColor": true,
+     "src": "media/shots/C_coop/pencil.png",
      "fit": "cover",
-     "start": 1.32,
-     "end": 1.76
+     "anchor": [
+      0.6172,
+      0.5852
+     ],
+     "x": 225,
+     "y": 92,
+     "rotate": [
+      [
+       0,
+       72,
+       "hold"
+      ],
+      [
+       1.32,
+       72,
+       "inCubic"
+      ],
+      [
+       1.62,
+       0
+      ]
+     ]
     },
     {
-     "id": "p4",
+     "id": "btn_l",
      "type": "image",
-     "src": "media/shots/C_coop/animatic/p4.png",
-     "keepColor": true,
+     "src": "media/shots/C_coop/btn_l.png",
      "fit": "cover",
-     "start": 1.76,
-     "end": 2.64
+     "y": [
+      [
+       0,
+       0,
+       "hold"
+      ],
+      [
+       1.34,
+       18
+      ]
+     ]
     },
     {
-     "id": "p5",
+     "id": "strip_l",
      "type": "image",
-     "src": "media/shots/C_coop/animatic/p5.png",
-     "keepColor": true,
+     "src": "media/shots/C_coop/patch_strip_l.png",
+     "fit": "cover"
+    },
+    {
+     "id": "btn_r",
+     "type": "image",
+     "src": "media/shots/C_coop/btn_r.png",
      "fit": "cover",
-     "start": 2.64,
-     "end": 3.08
+     "y": [
+      [
+       0,
+       0,
+       "hold"
+      ],
+      [
+       2.92,
+       18
+      ]
+     ]
+    },
+    {
+     "id": "strip_r",
+     "type": "image",
+     "src": "media/shots/C_coop/patch_strip_r.png",
+     "fit": "cover"
+    },
+    {
+     "id": "hinge",
+     "type": "image",
+     "src": "media/shots/C_coop/patch_hinge.png",
+     "fit": "cover"
+    },
+    {
+     "id": "agents",
+     "type": "video",
+     "src": "media/shots/C_coop/c2t1_bo.mp4",
+     "srcTime": [
+      [
+       0,
+       0.45
+      ],
+      [
+       0.22,
+       0.15
+      ],
+      [
+       0.44,
+       0.45
+      ],
+      [
+       0.66,
+       0.15
+      ],
+      [
+       0.88,
+       0.15
+      ]
+     ],
+     "matte": {
+      "src": "media/shots/C_coop/c2t1_ag.mp4",
+      "mode": "luma"
+     },
+     "start": 2.2,
+     "x": [
+      [
+       0,
+       -520,
+       "outCubic"
+      ],
+      [
+       0.88,
+       0
+      ]
+     ]
+    },
+    {
+     "id": "blue",
+     "type": "video",
+     "src": "media/shots/C_coop/c1t2_bo.mp4",
+     "keepColor": true,
+     "srcTime": [
+      [
+       0,
+       0.4
+      ],
+      [
+       1.32,
+       1.65
+      ],
+      [
+       1.76,
+       3.05
+      ],
+      [
+       2.64,
+       4.0
+      ],
+      [
+       3.08,
+       4.5
+      ]
+     ],
+     "y": [
+      [
+       0,
+       0,
+       "hold"
+      ],
+      [
+       2.92,
+       18
+      ]
+     ],
+     "matte": {
+      "src": "media/shots/C_coop/c1t2_R.mp4",
+      "mode": "luma"
+     }
+    },
+    {
+     "id": "orange",
+     "type": "video",
+     "src": "media/shots/C_coop/c1t2_bo.mp4",
+     "keepColor": true,
+     "srcTime": [
+      [
+       0,
+       0.4
+      ],
+      [
+       1.32,
+       1.65
+      ],
+      [
+       1.76,
+       3.05
+      ],
+      [
+       2.64,
+       4.0
+      ],
+      [
+       3.08,
+       4.5
+      ]
+     ],
+     "y": [
+      [
+       0,
+       0,
+       "hold"
+      ],
+      [
+       1.34,
+       18
+      ]
+     ],
+     "matte": {
+      "src": "media/shots/C_coop/c1t2_L.mp4",
+      "mode": "luma"
+     }
     }
    ],
    "fx": [
     {
      "type": "flash",
      "at": [
-      0.0,
-      1.32,
-      1.76,
-      2.64
+      0
      ],
-     "dur": 0.05,
-     "amount": 0.25,
+     "dur": 0.06,
+     "amount": 0.35,
      "color": "#ffffff"
+    },
+    {
+     "type": "punch",
+     "at": [
+      1.34,
+      2.92
+     ],
+     "amount": 0.025
+    },
+    {
+     "type": "shake",
+     "at": [
+      1.62
+     ],
+     "amp": 6,
+     "decay": 0.15
     }
    ]
   },
   {
-   "id": "C2_swap",
+   "id": "C2a_swap",
    "start": 132.26,
-   "end": 134.88,
-   "background": "#ece7dc",
+   "end": 133.56,
    "layers": [
     {
-     "id": "p6",
+     "id": "plate",
      "type": "image",
-     "src": "media/shots/C_coop/animatic/p6.png",
-     "keepColor": true,
-     "fit": "cover",
-     "start": 0.0,
-     "end": 0.42
+     "src": "media/shots/C_coop/plate.png",
+     "fit": "cover"
     },
     {
-     "id": "p7",
+     "id": "pencil",
      "type": "image",
-     "src": "media/shots/C_coop/animatic/p7.png",
-     "keepColor": true,
+     "src": "media/shots/C_coop/pencil.png",
      "fit": "cover",
-     "start": 0.42,
-     "end": 1.74
+     "anchor": [
+      0.6172,
+      0.5852
+     ],
+     "x": 225,
+     "y": 92,
+     "rotate": 0
     },
     {
-     "id": "p8",
+     "id": "btn_l",
      "type": "image",
-     "src": "media/shots/C_coop/animatic/p8.png",
-     "keepColor": true,
+     "src": "media/shots/C_coop/btn_l.png",
      "fit": "cover",
-     "start": 1.74,
-     "end": 2.18
+     "y": [
+      [
+       0,
+       18,
+       "hold"
+      ],
+      [
+       0.2,
+       0
+      ]
+     ]
     },
     {
-     "id": "p9",
+     "id": "strip_l",
      "type": "image",
-     "src": "media/shots/C_coop/animatic/p9.png",
-     "keepColor": true,
+     "src": "media/shots/C_coop/patch_strip_l.png",
+     "fit": "cover"
+    },
+    {
+     "id": "btn_r",
+     "type": "image",
+     "src": "media/shots/C_coop/btn_r.png",
      "fit": "cover",
-     "start": 2.18,
-     "end": 2.62
+     "y": [
+      [
+       0,
+       18,
+       "hold"
+      ]
+     ]
+    },
+    {
+     "id": "strip_r",
+     "type": "image",
+     "src": "media/shots/C_coop/patch_strip_r.png",
+     "fit": "cover"
+    },
+    {
+     "id": "hinge",
+     "type": "image",
+     "src": "media/shots/C_coop/patch_hinge.png",
+     "fit": "cover"
+    },
+    {
+     "id": "agents",
+     "type": "video",
+     "src": "media/shots/C_coop/c2t1_bo.mp4",
+     "srcTime": [
+      [
+       0,
+       0.15
+      ],
+      [
+       0.75,
+       1.1
+      ]
+     ],
+     "matte": {
+      "src": "media/shots/C_coop/c2t1_ag.mp4",
+      "mode": "luma"
+     }
+    },
+    {
+     "id": "blue",
+     "type": "video",
+     "src": "media/shots/C_coop/c2t1_bo.mp4",
+     "keepColor": true,
+     "srcTime": [
+      [
+       0,
+       0.15
+      ],
+      [
+       1.3,
+       1.9
+      ]
+     ],
+     "y": [
+      [
+       0,
+       18,
+       "hold"
+      ]
+     ],
+     "matte": {
+      "src": "media/shots/C_coop/c2t1_R.mp4",
+      "mode": "luma"
+     }
+    },
+    {
+     "id": "orange",
+     "type": "video",
+     "src": "media/shots/C_coop/c2t1_bo.mp4",
+     "keepColor": true,
+     "srcTime": [
+      [
+       0,
+       0.15
+      ],
+      [
+       1.3,
+       1.9
+      ]
+     ],
+     "y": [
+      [
+       0,
+       18,
+       "hold"
+      ],
+      [
+       0.2,
+       0
+      ]
+     ],
+     "matte": {
+      "src": "media/shots/C_coop/c2t1_L.mp4",
+      "mode": "luma"
+     }
+    }
+   ],
+   "fx": [
+    {
+     "type": "punch",
+     "at": [
+      0.2
+     ],
+     "amount": 0.02
+    }
+   ]
+  },
+  {
+   "id": "C2b_letgo",
+   "start": 133.56,
+   "end": 134.88,
+   "layers": [
+    {
+     "id": "plate",
+     "type": "image",
+     "src": "media/shots/C_coop/plate.png",
+     "fit": "cover"
+    },
+    {
+     "id": "pencil",
+     "type": "image",
+     "src": "media/shots/C_coop/pencil.png",
+     "fit": "cover",
+     "anchor": [
+      0.6172,
+      0.5852
+     ],
+     "x": 225,
+     "y": 92,
+     "rotate": [
+      [
+       0,
+       0,
+       "hold"
+      ],
+      [
+       0.44,
+       0,
+       "outCubic"
+      ],
+      [
+       0.74,
+       72
+      ]
+     ]
+    },
+    {
+     "id": "btn_l",
+     "type": "image",
+     "src": "media/shots/C_coop/btn_l.png",
+     "fit": "cover",
+     "y": 0
+    },
+    {
+     "id": "strip_l",
+     "type": "image",
+     "src": "media/shots/C_coop/patch_strip_l.png",
+     "fit": "cover"
+    },
+    {
+     "id": "btn_r",
+     "type": "image",
+     "src": "media/shots/C_coop/btn_r.png",
+     "fit": "cover",
+     "y": [
+      [
+       0,
+       18,
+       "hold"
+      ],
+      [
+       0.46,
+       0
+      ]
+     ]
+    },
+    {
+     "id": "strip_r",
+     "type": "image",
+     "src": "media/shots/C_coop/patch_strip_r.png",
+     "fit": "cover"
+    },
+    {
+     "id": "hinge",
+     "type": "image",
+     "src": "media/shots/C_coop/patch_hinge.png",
+     "fit": "cover"
+    },
+    {
+     "id": "agents",
+     "type": "video",
+     "src": "media/shots/C_coop/c2t1_bo.mp4",
+     "srcTime": [
+      [
+       0,
+       1.1
+      ],
+      [
+       1.32,
+       1.1
+      ]
+     ],
+     "matte": {
+      "src": "media/shots/C_coop/c2t1_ag.mp4",
+      "mode": "luma"
+     }
+    },
+    {
+     "id": "blue",
+     "type": "video",
+     "src": "media/shots/C_coop/c2t1_bo.mp4",
+     "keepColor": true,
+     "srcTime": [
+      [
+       0,
+       3.56
+      ],
+      [
+       1.32,
+       4.88
+      ]
+     ],
+     "y": 0,
+     "matte": {
+      "src": "media/shots/C_coop/c2t1_R.mp4",
+      "mode": "luma"
+     }
+    },
+    {
+     "id": "orange",
+     "type": "video",
+     "src": "media/shots/C_coop/c2t1_bo.mp4",
+     "keepColor": true,
+     "srcTime": [
+      [
+       0,
+       3.56
+      ],
+      [
+       1.32,
+       4.88
+      ]
+     ],
+     "y": 0,
+     "matte": {
+      "src": "media/shots/C_coop/c2t1_L.mp4",
+      "mode": "luma"
+     }
     }
    ],
    "fx": [
     {
      "type": "flash",
      "at": [
-      0.0,
-      0.42,
-      1.74,
-      2.18
+      0
      ],
      "dur": 0.05,
-     "amount": 0.25,
+     "amount": 0.3,
      "color": "#ffffff"
+    },
+    {
+     "type": "punch",
+     "at": [
+      0.44
+     ],
+     "amount": 0.03
     }
    ]
   },

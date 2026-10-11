@@ -7,7 +7,12 @@ orange (#F08A24). The world is a black-and-white engraving, so colour alone find
     tools/engrave/.venv/bin/python tools/v4B/coop/recolor.py SRC.mp4 DST.mp4 [--split=960 | --split=auto] [--check=out.jpg]
     --split=N     a fixed column (the E6c take, where they run apart from the middle)
     --split=auto  per frame: the widest empty column gap between the two girls' coloured pixels, smoothed over time
+    --plan=A-B:S:M,...  per frame range A..B (frame numbers): split S (number or auto) and mode M, "ob" (left stays
+                  ORANGE, right becomes BLUE; the default) or "bo" (left becomes BLUE, right stays ORANGE: after the
+                  girls swap sides, as in the C2 take from about 3.7 s)
+    --splits=out.json  write the per-frame split columns and modes (the matte splitter reads them)
 """
+import json
 import os
 import subprocess
 import sys
@@ -21,11 +26,11 @@ BLUE_H, ORANGE_H = 221 / 2.0, 28 / 2.0          # OpenCV hue = degrees / 2
 
 def masks(hsv):
     h, s, v = hsv[..., 0] * 2.0, hsv[..., 1] / 255.0, hsv[..., 2] / 255.0
-    orange = ((h >= 4) & (h <= 44) & (s >= 0.45) & (v >= 0.35)).astype(np.uint8)
+    orange = ((h >= 4) & (h <= 36) & (s >= 0.45) & (v >= 0.35)).astype(np.uint8)   # <=36: the yellow bun pencils stay yellow
     blue = ((h >= 185) & (h <= 240) & (s >= 0.25) & (v >= 0.58)).astype(np.uint8)
     # soft fringe: anti-aliased edge pixels of the same hue within 2 px of a core pixel
     k = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (5, 5))
-    o_f = (cv2.dilate(orange, k) > 0) & (h >= 0) & (h <= 50) & (s >= 0.2) & (v >= 0.3)
+    o_f = (cv2.dilate(orange, k) > 0) & (h >= 0) & (h <= 38) & (s >= 0.2) & (v >= 0.3)
     b_f = (cv2.dilate(blue, k) > 0) & (h >= 180) & (h <= 245) & (s >= 0.14) & (v >= 0.5)
     return o_f, b_f, s, v
 
@@ -43,12 +48,13 @@ def auto_split(o, b, w, prev):
     return 0.5 * (xs[i] + xs[i + 1])
 
 
-def recolor(frame, split, stats=None):
+def recolor(frame, split, stats=None, mode="ob"):
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV).astype(np.float32)
     o, b, s, v = masks(hsv)
     X = np.arange(frame.shape[1])[None, :]
-    to_blue = o & (X >= split)
-    to_orange = b & (X < split)
+    blue_side = (X >= split) if mode == "ob" else (X < split)
+    to_blue = o & blue_side
+    to_orange = b & ~blue_side
     hsv[..., 0][to_blue] = BLUE_H
     hsv[..., 1][to_blue] = np.clip(s[to_blue] * 0.86, 0, 1) * 255
     hsv[..., 2][to_blue] = np.clip(v[to_blue] * 0.93, 0, 1) * 255
@@ -60,7 +66,7 @@ def recolor(frame, split, stats=None):
     return cv2.cvtColor(np.clip(hsv, 0, 255).astype(np.uint8), cv2.COLOR_HSV2BGR)
 
 
-def main(src, dst, split="960", check=None):
+def main(src, dst, split="960", check=None, plan="", splits_out=None):
     cap = cv2.VideoCapture(src)
     w, h = int(cap.get(3)), int(cap.get(4))
     fps = cap.get(cv2.CAP_PROP_FPS) or 24
@@ -79,13 +85,30 @@ def main(src, dst, split="960", check=None):
         sp = np.convolve(np.pad(sp, 2, mode="edge"), np.ones(5) / 5, mode="valid")
     else:
         sp = [float(split)] * len(frames)
+    modes = ["ob"] * len(frames)
+    if plan:
+        sp = list(sp)
+        for item in plan.split(","):
+            rng, s_, m_ = item.split(":")
+            a, b = (int(x) for x in rng.split("-"))
+            prev = w / 2
+            for i in range(a, min(b, len(frames) - 1) + 1):
+                if s_ == "auto":
+                    o, bb, _, _ = masks(cv2.cvtColor(frames[i], cv2.COLOR_BGR2HSV).astype(np.float32))
+                    prev = auto_split(o, bb, w, prev)
+                    sp[i] = prev
+                else:
+                    sp[i] = float(s_)
+                modes[i] = m_
+    if splits_out:
+        json.dump(dict(split=[float(x) for x in sp], mode=modes), open(splits_out, "w"))
     os.makedirs(os.path.dirname(dst), exist_ok=True)
     enc = subprocess.Popen([FFMPEG, "-v", "error", "-y", "-f", "rawvideo", "-pix_fmt", "bgr24", "-s", f"{w}x{h}", "-r", f"{fps}",
                             "-i", "-", "-c:v", "libx264", "-preset", "slow", "-crf", "12", "-pix_fmt", "yuv420p", dst],
                            stdin=subprocess.PIPE)
     stats, outs = [], []
-    for f, x in zip(frames, sp):
-        g = recolor(f, x, stats)
+    for f, x, m_ in zip(frames, sp, modes):
+        g = recolor(f, x, stats, m_)
         enc.stdin.write(g.tobytes())
         if check:
             outs.append(g)
@@ -104,4 +127,4 @@ def main(src, dst, split="960", check=None):
 if __name__ == "__main__":
     a = [x for x in sys.argv[1:] if not x.startswith("--")]
     o = {x[2:].partition("=")[0]: x[2:].partition("=")[2] for x in sys.argv[1:] if x.startswith("--")}
-    main(a[0], a[1], o.get("split", "960"), o.get("check"))
+    main(a[0], a[1], o.get("split", "960"), o.get("check"), o.get("plan", ""), o.get("splits"))

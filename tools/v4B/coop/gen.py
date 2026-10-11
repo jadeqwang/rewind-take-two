@@ -85,32 +85,34 @@ KF = {
 }
 
 KEEP = ("Keep the first frame's look: the world stays a crisp black-and-white Escher-style wood engraving (tables, "
-        "pencil, buttons, books, buildings all black and white), only the two anime girls in full color. The girl with "
-        "the ORANGE jacket band, orange straps and orange headphones stays orange; the girl with the BLUE jacket band, "
-        "blue straps and blue headphones stays blue; they never swap or mix colors. Both keep their hair in a bun with "
-        "two crossed pencils. Faces keep their shape, never a face close-up. The giant pencil bridge, the two tables, "
-        "the two round buttons and the gap stay perfectly still and unchanged. No text, no letters, no logos.")
+        "pencil, buttons, books, buildings all black and white), only the two identical anime girls in full color, "
+        "both in the same outfit (white cropped bomber with an orange band, navy cargo pants with orange straps, orange "
+        "headphones around the neck, black hair in a bun with two crossed pencils). Faces keep their shape, never a face "
+        "close-up. The giant pencil, the two tables, the two round buttons and the gap stay perfectly still and "
+        "unchanged. No text, no letters, no logos.")
 MEN = ("men in identical plain black suits, white shirts, thin black ties and black sunglasses, drawn in the same "
        "black-and-white engraving as the world")
 
+# The twins are generated identical; the one further right (BLUE in the cut) is recoloured after the engrave.
 VID = {
-    "c1": dict(kf="c1", dur=5, prompt=(
-        "Both girls sprint to the right along the left table. The ORANGE girl, behind, reaches the big round button on "
-        "the left table, jumps onto it with both feet and drops into a low crouch on top of it, pressing it down with "
-        "her feet and one hand, and she stays crouched there on the button, holding it down, for the rest of the shot. "
-        "The BLUE girl, ahead, skids to a stop at the edge of the gap, glances back at her, then sprints across the "
-        "pencil bridge, running along the top of the pencil, to the right table and keeps running to the right. The "
-        "two girls never touch and never cross: the blue one is always to the right of the orange one. Near the end, "
-        "three " + MEN + ", run in from the left edge of the frame toward the crouching ORANGE girl, who looks back at "
-        "them over her shoulder but does not leave the button.")),
-    "c2": dict(kf="c2", dur=5, prompt=(
-        "The BLUE girl stays crouched on the right button, holding it down, watching. The ORANGE girl springs up off "
-        "the left button and sprints to the right as fast as she can, along the top of the pencil bridge to the right "
-        "table, just as the agents lunge for her: their hands close on empty air where she was. The agents run after "
-        "her only as far as the edge of the left table and stop dead at the edge, arms windmilling, teetering over the "
-        "drop; they never step onto the pencil. The ORANGE girl reaches the right table and stops just left of the "
-        "BLUE girl, never passing her. Then the BLUE girl hops up off the button and both girls sprint away to the "
-        "right and out of the right edge of the frame, the blue one ahead. The two girls never touch and never "
+    # take 1 (kf c1:6) had the girl ahead already standing over the gap in frame 1, so the bridge could not start up;
+    # take 2 starts from kf_c1_v8.png, a composite (assets.py) with both girls moved back onto the left table.
+    "c1": dict(kf="c1:8", dur=5, prompt=(
+        "The girl behind (on the left) runs to the big round button on the left table, jumps onto it with both feet "
+        "and drops into a low crouch on top of it, pressing it down with her feet and one hand, and she stays crouched "
+        "there on the button, holding it down, for the rest of the shot. The girl ahead (on the right) runs to the very "
+        "edge of the left table and stops there with her toes at the edge, balancing, and looks back over her shoulder "
+        "at the crouching girl for a moment; then she sprints along the top of the giant pencil across the gap to the "
+        "right table and runs on to the right button, where she crouches down on it too. The two girls never touch and "
+        "never cross: the girl ahead is always to the right of the other one. No one else appears.")),
+    "c2": dict(kf="c2:1", dur=5, prompt=(
+        "The girl on the right stays crouched with her hand pressing the right button down, watching. The girl on the "
+        "left springs off the left button and sprints to the right as fast as she can, along the top of the giant pencil across the "
+        "gap to the right table, just as the agents lunge for her: their hands close on empty air where she was. The "
+        "agents run after her only as far as the edge of the left table and stop dead at the edge, arms windmilling, "
+        "teetering over the drop; they never step onto the pencil. The running girl reaches the right table and stops "
+        "just left of the other girl, never passing her. Then the girl on the right hops up off the button and both "
+        "girls sprint away to the right and out of the right edge of the frame. The two girls never touch and never "
         "cross.")),
 }
 

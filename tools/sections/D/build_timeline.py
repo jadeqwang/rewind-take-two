@@ -378,7 +378,7 @@ def build():
     # "Rewind." lower third (ink, size 112, y 1000). The code is in git (commit 2fb9b82). media/sing/E3/ is untouched.
     # v4 plan: docs/revisions/v4/plans/coop.md. Everything from the ghost ladder to the split moves two bars earlier.
 
-    def twin_shot(id_, tk, gname, t0, t1, src_in, rate, g_t0, extra=(), under=(), fx=(), patch=True, g_op=0.9):
+    def twin_shot(id_, tk, gname, t0, t1, src_in, rate, g_t0, extra=(), under=(), fx=(), patch=True, g_op=0.9, ghost_stem=None):
         """a two-Jade take: the plate, a clean-plate patch where the ghost girl ever is, the ghost girl redrawn as a
         translucent line-art ghost (baked by ghostseq.py from the split matte), the live girl on top, in colour."""
         c = bclip(tk)
@@ -387,8 +387,8 @@ def build():
             dict(id="bg", type="video", src=c["eng"], **tm),
             *([dict(id="clean", type="image", src=f"{V3}/patch_{gname}.png", fit="cover")] if patch else []),
             *under,
-            dict(id="ghost", type="video", src=f"{V3}/ghost_{gname}_rgb.mp4", keepColor=True, opacity=g_op,
-                 matte=dict(src=f"{V3}/ghost_{gname}_alpha.mp4", mode="luma"), **{"in": r4(src_in - g_t0), "rate": rate}),
+            dict(id="ghost", type="video", src=f"{ghost_stem or V3 + '/ghost_' + gname}_rgb.mp4", keepColor=True, opacity=g_op,
+                 matte=dict(src=f"{ghost_stem or V3 + '/ghost_' + gname}_alpha.mp4", mode="luma"), **{"in": r4(src_in - g_t0), "rate": rate}),
             dict(id="jade", type="video", src=c["eng"], matte=dict(src=c["live"], mode="luma"), keepColor=True, **tm),
             *extra], fx=list(fx))
 
@@ -473,7 +473,12 @@ def build():
     # v4: 123.00-125.26 at x1.52 (the same 0.9 -> 4.34 of the take), under "Rewind." #2, which is not lettered here.
     # v3: 126.25, 128.76, 0.9, 1.37
     E5_T0, E5_T1, E5_RATE = 123.00, 125.26, 1.52
+    # v4 (Jade: "gold ethereal jade's arm pointing to Banach Tarski goes invisible for a moment"): the engrave matte lost
+    # her pointing forearm and hand on take frames ~25-86, so the clean patch showed through. Re-segmented with BiRefNet
+    # on a crop (tools/v4B/coop/armfix.py) and rebaked with ghostseq.py (same colour, times and parameters as v3).
+    # v3: ghost from media/shots/_D/v3/ghost_slideptb_{rgb,alpha}.mp4
     shots.append(twin_shot("E5_slide_point", "slide_point_b", "slideptb", E5_T0, E5_T1, 0.9, E5_RATE, 0.85, under=[cover, lab],
+                           ghost_stem=f"{SH}/C_coop/e5_arm/ghost_slideptb_v4",
                            fx=[dict(type="flash", at=[0], dur=0.06, amount=0.35, color="#ffffff")]))
     notes["E5"] = dict(clip=bclip("slide_point_b")["eng"], ghost="leading (pointing) girl, gold", in_=0.9, rate=E5_RATE,
                        label="BANACH–/TARSKI pinned on the upright book's spine label; both girls turn to look at it")
@@ -539,19 +544,82 @@ def build():
         ribbon("resR", rib_r, colors=[RES[1], "#3E6FD8"], width=150, trail=0.9, twist=0.9) | dict(start=0.44)],
         fx=[dict(type="flash", at=[0.44], dur=0.08, amount=0.6, color="#ffffff"), dict(type="punch", on="beat", amount=0.025)]))
 
-    # ---------------- C1, C2 (v4): the co-op level, 129.62-134.00. ANIMATIC for now: the storyboard panels 2-9 as
-    # full-frame stills (tools/v4B/coop/storyboard.py --animatic -> media/shots/C_coop/animatic/p<n>.png), each cut in
-    # on its own beat. When the real takes exist, replace each shot's layers; ids and times stay.
-    AN = f"{SH}/C_coop/animatic"
-    # v4 second pass (13 beats): C1 129.18-132.26, C2 132.26-134.88 (first pass: 129.62-131.82-134.00)
-    for (id_, a, b, panels) in (("C1_hold", 129.18, 132.26, ((2, 129.18), (3, 130.50), (4, 130.94), (5, 131.82))),
-                                ("C2_swap", 132.26, 134.88, ((6, 132.26), (7, 132.68), (8, 134.00), (9, 134.44)))):
-        ends = [t for _, t in panels[1:]] + [b]
-        shots.append(dict(id=id_, start=a, end=b, background=PAPER, layers=[
-            dict(id=f"p{n}", type="image", src=f"{AN}/p{n}.png", keepColor=True, fit="cover", start=r4(t - a), end=r4(e - a))
-            for (n, t), e in zip(panels, ends)],
-            fx=[dict(type="flash", at=[r4(t - a) for _, t in panels], dur=0.05, amount=0.25, color="#ffffff")]))
-        notes[id_] = dict(animatic=[[n, t] for n, t in panels], plan="docs/revisions/v4/plans/coop.md")
+    # ---------------- C1, C2 (v4): the co-op level, 129.18-134.88 (Jade approved the storyboard with changes: the
+    # twins are BLUE and ORANGE by costume, no tags; the world, the bridge and the buttons stay black and white).
+    # A gap between two tables; a giant pencil is the drawbridge, hinged at the right lip; it is down only while a
+    # floor button is held. ORANGE holds, BLUE crosses; BLUE holds, ORANGE crosses with the agents behind her; BLUE
+    # lets go, the bridge swings up away from the agents, who are left at the lip.
+    # Built from two Seedance takes (media/shots/C_coop/NOTES.md) over the clean plate: each girl from her own matte
+    # (tools/v4B/coop/level.py: seam per frame, BLUE recoloured), the agents from their own matte, the pencil and the
+    # buttons as sprites cut from the take (assets.py), so the engine can raise the bridge and sink the buttons.
+    # v4 first pass: an animatic of storyboard panels 2-9 here (media/shots/C_coop/animatic/).
+    CO = f"{SH}/C_coop"
+    UP = 72                                                # bridge raised (deg, about the hinge at the right lip)
+    HX, HY = 1185, 632                                     # hinge, design px
+    SINK = 18                                              # a held button (and the girl on it) drops this far
+
+    def pencil(rot):
+        return dict(id="pencil", type="image", src=f"{CO}/pencil.png", fit="cover", anchor=[r4(HX / 1920), r4(HY / 1080)],
+                    x=HX - 960, y=HY - 540, rotate=rot)
+
+    def btn(side, yk):
+        return [dict(id=f"btn_{side}", type="image", src=f"{CO}/btn_{side}.png", fit="cover", y=yk),
+                dict(id=f"strip_{side}", type="image", src=f"{CO}/patch_strip_{side}.png", fit="cover")]
+
+    def girl(id_, take, side, sT, yk, start=None):
+        L = dict(id=id_, type="video", src=f"{CO}/{take}_bo.mp4", keepColor=True, srcTime=sT, y=yk,
+                 matte=dict(src=f"{CO}/{take}_{side}.mp4", mode="luma"))
+        if start is not None:
+            L["start"] = start
+        return L
+
+    def agents(take, sT, start=None):
+        L = dict(id="agents", type="video", src=f"{CO}/{take}_bo.mp4", srcTime=sT, matte=dict(src=f"{CO}/{take}_ag.mp4", mode="luma"))
+        if start is not None:
+            L["start"] = start
+        return L
+
+    def level(id_, a, b, layers, fx):
+        shots.append(dict(id=id_, start=a, end=b, layers=[
+            dict(id="plate", type="image", src=f"{CO}/plate.png", fit="cover"), *layers[0],
+            dict(id="hinge", type="image", src=f"{CO}/patch_hinge.png", fit="cover"), *layers[1]], fx=fx))
+
+    held = lambda t_on, t_off=None: ([[0, 0, "hold"], [r4(t_on), SINK]] if t_on is not None else [[0, SINK, "hold"]]) + \
+        ([[r4(t_off), 0]] if t_off is not None else [])
+    # C1 129.18-132.26: take c1/take_2. 129.18 both run in, the bridge is up; 130.50 (bar) ORANGE lands on the near
+    # button, it sinks, the bridge swings down (lands 130.80); BLUE waits at the lip; 130.94 she crosses; 131.38 the
+    # agents walk in behind ORANGE (their own matte from c1/take_1); ~132.1 BLUE crouches on the far button.
+    C1T = [[0, 0.4], [1.32, 1.65], [1.76, 3.05], [2.64, 4.0], [3.08, 4.5]]
+    level("C1_hold", 129.18, 132.26, (
+        [pencil([[0, UP, "hold"], [1.32, UP, "inCubic"], [1.62, 0]]), *btn("l", held(1.34)), *btn("r", held(2.92))],
+        # the agents of C2's first frames run in from the left edge (their legs cycle on a ping-pong of take 0.15-0.45
+        # while they slide in), arriving exactly where C2a picks them up
+        [dict(agents("c2t1", [[0, 0.45], [0.22, 0.15], [0.44, 0.45], [0.66, 0.15], [0.88, 0.15]], start=2.20),
+              x=[[0, -520, "outCubic"], [0.88, 0]]),
+         girl("blue", "c1t2", "R", C1T, held(2.92)), girl("orange", "c1t2", "L", C1T, held(1.34))]),
+        fx=[dict(type="flash", at=[0], dur=0.06, amount=0.35, color="#ffffff"), dict(type="punch", at=[1.34, 2.92], amount=0.025),
+            dict(type="shake", at=[1.62], amp=6, decay=0.15)])
+    # C2a 132.26-133.56: take c2/take_1 0-1.9 (x1.46). BLUE holds the far button; ORANGE springs off the near one (it
+    # pops up, the bridge stays down: BLUE still holds), the agents' hands close on air (~132.77) and they stop at the
+    # lip (their matte frozen at take 1.1; in the take they dive into the gap, which is never shown).
+    C2T = [[0, 0.15], [1.30, 1.9]]
+    level("C2a_swap", 132.26, 133.56, (
+        [pencil(0), *btn("l", held(None, 0.20)), *btn("r", held(None))],
+        [agents("c2t1", [[0, 0.15], [0.75, 1.1]]),
+         girl("blue", "c2t1", "R", C2T, held(None)), girl("orange", "c2t1", "L", C2T, held(None, 0.20))]),
+        fx=[dict(type="punch", at=[0.20], amount=0.02)])
+    # C2b 133.56-134.88: take c2/take_1 3.56-4.88 (jump cut over the landing; ORANGE stays the girl on the left).
+    # 134.00 (bar) BLUE hops off, the far button pops up and the bridge swings up out of the agents' reach; 134.44
+    # both run on, out of frame right; cut to E7 on 134.88.
+    C2BT = [[0, 3.56], [1.32, 4.88]]
+    level("C2b_letgo", 133.56, 134.88, (
+        [pencil([[0, 0, "hold"], [0.44, 0, "outCubic"], [0.74, UP]]), *btn("l", 0), *btn("r", held(None, 0.46))],
+        [agents("c2t1", [[0, 1.1], [1.32, 1.1]]),
+         girl("blue", "c2t1", "R", C2BT, 0), girl("orange", "c2t1", "L", C2BT, 0)]),
+        fx=[dict(type="flash", at=[0], dur=0.05, amount=0.3, color="#ffffff"), dict(type="punch", at=[0.44], amount=0.03)])
+    notes["C_coop"] = dict(takes=["media/shots/C_coop/c1/take_2.mp4", "media/shots/C_coop/c2/take_1.mp4"], hinge=[HX, HY], up=UP,
+                           beats=dict(press1=130.50, bridge_down=130.80, cross=130.94, agents=131.38, cut=132.26, orange_off=132.46,
+                                      jump_cut=133.56, let_go=134.00, run=134.44))
 
     # ---------------- E7: the rainbow Jades, after the split. Doubling on every beat 134.88-136.19 ----------------
     # v4 (Jade: "cutting a little bit of stopwatch is fine to make space for co-op"): the stopwatch insert E7_03_meter
