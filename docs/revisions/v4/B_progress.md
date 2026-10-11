@@ -1,7 +1,7 @@
 # v4-B progress (everything except the singer)
 
 Brief: `docs/revisions/v4/B.md`. Rules: `docs/revisions/README.md`, `docs/revisions/v4/README.md`.
-A fresh session can carry on from this file alone. Last updated: 2026-10-11 18:27.
+A fresh session can carry on from this file alone. Last updated: 2026-10-11 18:47.
 
 ## Setup facts (saves re-discovering them)
 
@@ -18,7 +18,7 @@ A fresh session can carry on from this file alone. Last updated: 2026-10-11 18:2
 | 1 | 0:09 | name not legible | **done** 17:40: 92 px + ink plate; after `media/reviews/v4/B/0009_name.mp4` | `render/timeline/A.js` C3, `render/engine/modules/title.js` |
 | 2 | 0:13 | Bean: start wide, move in | **plan + free previz ready** 18:10 (`docs/revisions/v4/plans/bean.md`, `media/reviews/v4/B/plans/bean/previz.mp4`); shown to Jade 18:12, waiting for her go ($1.44: one 4K wide plate outpainted from `plate_close_1_crop`). Build numbers are in the plan's "For the build" section. v4-A told the four singer details at 18:12. | `render/timeline/A.js` S1 |
 | 3 | 0:26 | plate `TVA 1729` | **done** 17:50 (sub-agent `v4B-plate`, $0): reads at 540p, small; alt with push in `0026_plate_alt_push.mp4`; write-up `docs/revisions/v4/plans/plate_d3.md`; reusable `tools/v4B/plate/plate.js` | `render/timeline/A.js` D3 |
-| 4 | 1:30 | car: over-the-shoulder, real mirror, TVA plates (Three.js) | not started (plan to Jade first) | `render/timeline/C.js` V2f1/V2f2 |
+| 4 | 1:30 | car: over-the-shoulder, real mirror, TVA plates (Three.js) | **plan + Three.js blockout ready** 18:45 (`docs/revisions/v4/plans/car.md`, sheet `media/reviews/v4/B/plans/car/contact_sheet.jpg`, `animatic_A|B|C.mp4`, code `tools/v4B/car/`); shown to Jade 18:47, waiting for her pick (A/B/C) and go (about $1.80-3). v4-B recommends A with the over-shoulder shot starting at 89.26 so it gets 1.76 s instead of 0.88 s. | `render/timeline/C.js` V2f1/V2f2 |
 | 5 | 1:39 | gunfire: behind the agents, push in past shoulders | not started (plan to Jade first) | `render/timeline/_B_verse2.js` |
 | 6 | 1:41 | one fires, two on earpieces | not started (plan to Jade first) | same |
 | 7 | 2:00 | replace E3 with co-op level; Banach–Tarski earlier | **plan ready** 17:58 (`docs/revisions/v4/plans/coop.md`, storyboard `media/reviews/v4/B/plans/coop/storyboard.jpg`), shown to Jade 18:00, waiting for her go on the two generated shots (C1, C2). **Free retime done 18:25 and in the cut**: E3 out, `R1_unclimb`, E4a-E6c 3.50 s earlier, `C1_hold`/`C2_swap` as animatic stills (`media/shots/C_coop/animatic/`), four SFX cues moved and the mix rebuilt (v3 mix kept as `media/sfx/Rewind_cinematic_sfx_mix_v3.mp3`). Check clip `media/reviews/v4/B/0200_coop_retime_animatic.mp4`. Rough: R1's pose jumps (4.4x reverse); E6c's last 0.3 s is the agent heap alone; `docs/sections/D.md` not yet updated. | `tools/sections/D/build_timeline.py` |
@@ -93,6 +93,11 @@ level at 4.4 s or take two more beats from E7's stopwatch insert (135.76-136.62)
 Note 2 questions put to Jade at 18:12: (1) centred with her head in the arch, or off to one side; (2) land on
 "before" at 13.92 or a bar later at 14.36; (3) tiny pedestrians for scale or an empty plaza; (4) the optional
 $1.50 Seedance comparison (default: skip).
+
+Note 4 questions put to Jade at 18:47: (1) option A (true mirror: her eyes over the shoulder, then cut to her
+eye line and push into the mirror), B (mirror turned to the lens, cut in) or C (B as one take); (2) start the
+over-shoulder shot at 89.26 (trimming V2f1 to two beats) or keep 90.14; (3) lyric split SIRENS on a road sign /
+IN MY MIRROR on the mirror's edge; (4) plates right-reading and 1.5x as at 0:26 (default yes).
 
 ## Jade's decisions (verbatim, with time)
 
