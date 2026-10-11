@@ -44,6 +44,8 @@ def main():
     sheet = np.ones((H, W, 3), np.float32) * paper
     sheet += np.random.default_rng(7).normal(0, 1.2, (H, W, 1))
     x0 = round((x0c + x1c) / 2 - fx * s)
+    if os.environ.get("WC_X0"):                     # v4: pin her to the v3 column (v3_base.json x0), whatever the new face measures
+        x0 = int(os.environ["WC_X0"])
     y0 = round(y0c - ROW0 * SRC_K * s)                      # sheet y of portrait row 0
     ramp = np.clip(np.arange(w) / 70, 0, 1)
     ramp = np.minimum(ramp, ramp[::-1]) ** 1.5

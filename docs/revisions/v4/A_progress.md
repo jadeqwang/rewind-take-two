@@ -52,9 +52,24 @@ Updated: 2026-10-11, session start. Brief: `docs/revisions/v4/A.md`.
   `face_e2_trace__sdr_1`, F6 `face_e3_neutral__nbp_1`, F7 `face_e3_neutral__gpt_1`, F10 `face_e4_tense__gpt_1`.
   F7 still measures a slight smile (0.18); F5, F6, F10 measure none.
 
+- **v4 first frames done** (18:45). `media/sing/first/v4_S1_first.jpg` (over `plate_close_1`), `v4_V3S_first.jpg`
+  (over `plate_truth_1`), `v4_her_mask_first_frame.png`, `v4_fig.jpg` + `v4_her_alpha.png` (sheet geometry). Copies
+  for review: `media/reviews/v4/A/still_S1_first_frame.jpg`, `still_V3S_first_frame.jpg`.
+  - **Method changed from v3: no repaint.** `wc_paint.py` with the new portrait shrank her to 0.77x on both tries
+    (`media/sing/first/v4_paint_wc_{1,2}.*`, rejected, $0.27). Instead `tools/sing/v4_first.py`: the pick on a paper
+    sheet in v3 geometry (`v4pick_sheet.jpg`), BiRefNet matte straight off the portrait
+    (`WC_VER=v4pick $EPY tools/sing/wc_comp.py matte …` → `v4pick_her_alpha.png`, clean, no blossom), composited over
+    the plates; the sleeve ends past the portrait's edges come from the v3 figure. Every pixel of her is the pick's.
+  - Against v3: same x0/y0/scale; bottom-row figure span v3 673-1928, v4 674-1938 (crop px of 2576); matte area
+    x1.011. `v4_base16.jpg` / `v4_base.json` exist too (from `wc_base.py`, x0 pinned to 724) but are not used.
+
 ## Running now
 
-Nothing. **Waiting for Jade's pick** from the combo sheet (shown ~18:10): one of the 12 `pick_<H>+<F>.png`.
+Seedance 2.5 takes (submitted ~18:50): `WC_VER=v4 $PY tools/sing/wc_takes.py submit S1 --n=2` and `submit V3S --n=2`
+(720p, about $1.85 and $1.62 each, tags `v4A_sing_S1`, `v4A_sing_V3S`). Sidecars with job ids:
+`media/sing/S1/v4_take_N.json`, `media/sing/V3S/v4_take_N.json`. Collect with
+`WC_VER=v4 $PY tools/sing/wc_takes.py wait S1 V3S` (about 5-6 min) → `media/sing/<SHOT>/v4_take_N.mp4` + `_sheet.jpg`.
+If a sidecar says `queued` and nothing arrives, `WC_VER=v4 $PY tools/sing/wc_takes.py status`.
 
 ## Next steps, in order
 
@@ -66,11 +81,11 @@ Nothing. **Waiting for Jade's pick** from the combo sheet (shown ~18:10): one of
    - smile: a few steps from a little less to none (closed-mouth faint, neutral/determined).
    At least two image models (nano-banana-pro, gpt-image-2.5, seedream-5-pro, maybe flux kontext). `--dry-run`
    to price first.
-4. (asked, waiting) Jade picks one H and one F. **Do not animate before she picks.**
+4. (done) Jade picked H2+F6.
 4b. Combine the picks into one portrait (free, local: both are aligned to the portrait, so paste the face oval of
    the F pick into the H pick with a feathered mask; or one nano-banana-pro call with both as references if the
    seam shows). Save as `media/sing/v4/stills/pick_portrait.png` (971x1620 geometry or 2x), show Jade once.
-5. Animate the pick (v3 method: `wc_base` → `wc_paint` → `wc_restore` → `wc_comp` → `wc_takes` → `look.py` →
+5. (running) Animate the pick (v3 method, except the first frames, see above: `wc_base` → `wc_paint` → `wc_restore` → `wc_comp` → `wc_takes` → `look.py` →
    `wc_post.py`), S1 and V3S only. The v3 scripts hard-code `inputs/jade_watercolor_jacket_v6.png`, `v3_` file
    names and the prompt line "begins on her painted smile and sings from it": give them a v4 source/prefix and
    rewrite that line for the picked expression. Outputs: `media/sing/first/v4_*`, `media/sing/<SHOT>/v4_take_N.*`,
@@ -80,7 +95,9 @@ Nothing. **Waiting for Jade's pick** from the combo sheet (shown ~18:10): one of
 
 ## Jade's decisions (verbatim, with time)
 
-- 18:05, Jade: "can you show me H1, H2, H3, combined with F5, F6, F7, f10 on a sheet?" (done; no pick yet).
+- 18:05, Jade: "can you show me H1, H2, H3, combined with F5, F6, F7, f10 on a sheet?" (done).
+- 18:20, Jade: "let's go with H2+F6". **The pick is `media/sing/v4/stills/pick_H2+F6.png`** (hair `hair_gloss__gpt_1`,
+  face `face_e3_neutral__nbp_1`). Unsmiling, so the v4 take prompt in `wc_takes.py` stands as written.
 
 ## What B needs (v4-B, 2026-10-11 ~17:25)
 
