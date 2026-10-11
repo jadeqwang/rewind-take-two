@@ -1,6 +1,36 @@
 # 2:00, the co-op level: plan for Jade
 
-## Execution (free part, ordered by v4-B at about 17:20; no paid calls, no commits)
+## Execution, phase 2: build the level (ordered by v4-B after Jade's approval; cap $12, tag `v4B_coop_`; no commits)
+
+**Status: in progress.** Jade (verbatim, relayed by v4-B, also in `docs/revisions/v4/B_progress.md`): "storyboard looks
+good"; "instead of tagging them 1 and 2, let's go with blue and orange ... we should tag them at the moment of split,
+so BLUE has white jacket with blue stripes, blue straps hanging from pants, and blue dots, and ORANGE has white jacket
+with orange stripes, orange straps, and orange dots"; "the bridge: let's keep the environment still monochrome, so a
+B/W pencil"; "yes, cutting a little bit of stopwatch is fine to make space for co-op"; "just noticed that at 2:00, gold
+ethereal jade's arm pointing to Banach Tarski goes invisible for a moment when we need to see it".
+
+Decisions that follow: no `1P` tags; twins told apart by costume from E6c on; ORANGE is always screen-left of BLUE
+(E6c, C1, C2), so one x-split recolour pass can enforce the costumes; environment, pencil bridge and buttons stay
+black and white; "held" is shown by the button sinking and the pencil sliding; E7's stopwatch insert goes and the
+replay starts at 134.88; "Rewind." #2 stays unlettered.
+
+New level beats (13 beats, 129.18–134.88): C1 129.18 run in · 130.06 skid at the lip · 130.50 ORANGE stamps the near
+button, pencil slides out · 130.94 BLUE crosses · 131.82 agents come in behind ORANGE | cut 132.26 (bar line) C2: BLUE
+stamps the far button · 132.68 ORANGE springs off and runs · 133.56 she is over · 134.00 (bar line) BLUE steps off, pencil
+snaps back, agents stop at the lip · 134.44 both run on · 134.88 cut to E7.
+
+| Step | What | Status |
+|---|---|---|
+| P1 | Timeline: E6c cut at 129.18; E7 without the stopwatch, starting 134.88; R1 flash softened; C1/C2 slots 129.18–132.26–134.88 | **done** in `build_timeline.py` (24 shots; E7 plat 134.88–135.76, leap 135.76–136.62, doubling on 134.88/135.32/135.76/136.19, first copy now blue; ribbons overlay starts 134.88 with v3 song times; chasm, ear, lawn, E8 untouched). No SFX cue sat on the moved part of E7 (next cues: `b_fall_short` 136.96, `b_wall_burst` 137.32, unchanged) |
+| P2 | E6c recolour: BLUE and ORANGE from the split (`media/shots/C_coop/two_bo/`) | **done**: `tools/v4B/coop/recolor.py` (right of column 960 orange→blue, left of it pale blue→orange) → `media/shots/C_coop/two_bo/take_1_engraved_bo.mp4`, wired into E6c; frames still to be checked in the final render |
+| P3 | E5: the gold ghost's pointing arm vanishes for a moment; find and fix; before/after strip | not started |
+| P4 | C1/C2 keyframes (judge at full size), then takes, engrave, recolour, engine mechanism | **in progress**. Tools: `tools/v4B/coop/gen.py` (prompts, kf/edit/submit/wait/engrave), `layout.py` (flat composition sketches). `kf_c1_v1`, `v2` rejected (perspective view, pencil off the girls' path, costume drift). `kf_c1_v3` running: layout sketch + identical canon twins, BLUE recoloured afterwards |
+| P5 | Sound: button and bridge cues if procedural (free); rebuild mix | not started |
+| P6 | Clip `media/reviews/v4/B/0200_coop.mp4` (116.5–141.5), stills, `docs/revisions/v4/fragments/coop.json`, `docs/sections/D.md` Revision 6 | not started |
+
+Spend log for this phase: start $232.21 project total, `v4B_coop_` $0.00.
+
+## Execution, phase 1 (free part, ordered by v4-B at about 17:20; no paid calls, no commits)
 
 **Status: all four steps done (17:25).** Jade has not yet decided on C1/C2; the cut now holds the retime and an animatic of the level so she can see it. Nothing is committed.
 

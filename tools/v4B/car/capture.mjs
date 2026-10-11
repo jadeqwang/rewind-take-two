@@ -32,7 +32,8 @@ const server = http.createServer((req, res) => {
 await new Promise((r) => server.listen(0, '127.0.0.1', r));
 const browser = await chromium.launch({ executablePath: process.env.CHROME || '/opt/google/chrome/chrome',
   args: ['--headless=new', '--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'] });
-const page = await browser.newPage({ viewport: { width: 960, height: 540 } });
+const [VW, VH] = (process.env.VIEW || '960x540').split('x').map(Number);   // VIEW=1920x1080 with the kf=wide|close layout references
+const page = await browser.newPage({ viewport: { width: VW, height: VH } });
 page.on('pageerror', (e) => console.error('[page]', e.message));
 page.on('console', (m) => { if (m.type() === 'error') console.error('[page]', m.text()); });
 fs.mkdirSync(OUT, { recursive: true });

@@ -1,5 +1,24 @@
 # 0:13, the Bean: start wide, then move in (plan for Jade)
 
+## Execution (v4B-bean; keep current; resume from here)
+
+Jade approved at 19:20 ("bean update looks good, all those choices are fine in previz"; verbatim in
+`docs/revisions/v4/B_progress.md`): centred, head in the arch; land 13.92; pedestrians; no Seedance comparison.
+Cap $5, tag `v4B_bean_*`. Singer is now v4: `media/sing/S1/v4_sync_1080.mp4` + `v4_sync_1080_matte/`.
+
+| Step | Status |
+|---|---|
+| 1. Wide plate (nano-banana-pro 4K, outpaint of `plate_close_1.jpg` pasted unscaled at (1350, 106) in a 5504x3072 canvas). Script `tools/v4B/bean/plate.py` (`guides` free, `gen A|B` paid). Guides written: `media/sing/plates/plate_wide_v4_guide_{A,B}.jpg`. Candidates go to `media/sing/plates/plate_wide_v4_<A|B><i>.png` + `.json`. | generating B1, A1 (17:50 file clock) |
+| 2. Three-plane push in `render/timeline/A.js` (S1 + `A_S1_lyric` only) | not started |
+| 3. 540p check via `render/timeline/_A_test.js`, stills 12.62 / 13.04 / 13.33 / 13.5 / 13.92 / 15.5; R4 and C2 | not started |
+| 4. Hand-over: `media/reviews/v4/B/0013_bean_wide.mp4`, `0013_bean_wide.jpg`, `docs/revisions/v4/fragments/bean.json` | not started |
+
+Spend so far: $0.
+
+---
+
+The plan as approved follows.
+
 Status: **plan and free previz done, waiting for Jade's go-ahead.** Nothing was spent and no existing file was
 edited. Written by `v4B-bean` (sub-agent of `v4-B`), 2026-10-11.
 

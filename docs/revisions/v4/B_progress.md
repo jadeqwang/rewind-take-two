@@ -134,7 +134,14 @@ How v4-B reads it (v4-B's interpretation, told to Jade at 19:22 so she can corre
   agents firing in G1 are fine.
 - Not answered, defaults stay in the cut: stamp `TIMELINE NOW CANON`; end-credit wording (draft); plate size at 0:26.
 
-## Execution round (started 19:25)
+## Execution round
+
+**Correction:** clock times written in this file before 17:55 ran ahead of the real clock (the "19:xx" entries
+were all before 17:45 CDT). Jade's decisions above came at about 17:40.
+
+**17:44: all four sub-agents died mid-step on an API login error** ("Not logged in · Please run /login"). Jade
+resumed the session at 17:55; v4-B restarted each from its plan's "Execution" section at 17:57. Spend at the
+restart: $234.68 total; B's v4 calls so far about $2.6 (bean $0.72, car $0.40, coop $0.40, gun $1.08).
 
 Four Opus sub-agents, the same ones that wrote the plans, continued with Jade's decisions. They die with this
 session; on resume, read each plan file's "Execution" section and respawn from there with the plan as the brief.

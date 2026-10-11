@@ -3,6 +3,32 @@
 **Status: plan and blockout ready for Jade.** Nothing spent, no shared file edited, nothing committed.
 (v4-B sub-agent `v4B-car`, 2026-10-11.)
 
+## Execution (kept current; a fresh session can resume from here)
+
+**Status: building option C.** Jade chose C on 2026-10-11 ("animatic_C.mp4 is the best of the 3, split lyric is
+good, start over the shoulder is good, front readable is good"). Spend cap $8, tag `v4B_car_`.
+
+Decisions (v4-B, from Jade): one take, hold wide over her right shoulder then push between the seats to the
+mirror, mirror turned to the lens; SIRENS on the road sign (as large as the windshield allows) and IN MY MIRROR on
+the mirror's lower edge, each on its sung onset; plates right-reading at 1.5x via `tools/v4B/plate/plate.js`,
+hero `TVA 1729`, `TVA 4104` if a second can read; shot runs 89.26-92.79 (V2f1 trimmed to 88.38-89.26; going back to
+90.14 must be a one-number change); her bun, both pencils and some cheek visible in the wide.
+
+| Step | State | Files |
+|---|---|---|
+| 1. Layout references for the keyframes (`car_scene.html?kf=wide|close`) | done | `media/shots/V2f3/blockout_wide.png`, `media/shots/V2f4/blockout_close.png` |
+| 2. Keyframes: `tools/v4B/car/kf.py` (close first, then the wide painted outward from it) | running: `run close_a close_b` ($0.27) | `media/shots/V2f3/` (wide), `media/shots/V2f4/` (mirror close), `kf_log.jsonl` in each |
+| 3. Takes / move | not started | |
+| 4. Engrave | not started | |
+| 5. Timeline (`render/timeline/C.js`, V2f rows + `C_lyr_sirens` only) | not started | |
+| 6. Hand-over clip, stills, `docs/revisions/v4/fragments/car.json` | not started | |
+
+Spend so far: $0.
+
+---
+
+## The plan as shown to Jade
+
 > 1:30 - are we in an impossible view here? because she's doesn't have a steering wheel. maybe we can use threejs
 > and do an over the shoulder shot and look at her mirror in perspective? and maybe there can be some TVA markings
 > on the license plates?

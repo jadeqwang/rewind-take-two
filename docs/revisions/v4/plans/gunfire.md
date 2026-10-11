@@ -1,7 +1,28 @@
 # v4 plan: the gunfire on the lawn (notes 1:39 and 1:41)
 
-Status: **plan and blockout ready for Jade** (v4B-gun, 2026-10-11). Nothing spent, no timeline file edited.
-Blockout: `media/reviews/v4/B/plans/gunfire/contact_sheet.jpg` (stills beside it, 960×540).
+Status: **approved, being built** (v4B-gun, 2026-10-11). Blockout: `media/reviews/v4/B/plans/gunfire/contact_sheet.jpg`.
+
+## Execution (keep current; resume from here)
+
+Jade's decisions, relayed by v4-B: "gunshot - go with the earpiece closeup"; "frame height seems fine, only 2 agents
+firing is fine". So: G1 98.28-100.70 as planned (B, B, C, C); G2 is **100.70-102.46** (C alone fires 101.14 board,
+102.00 turf; A's then B's hand to the earpiece); then a **close earpiece shot G3 102.46-104.22** (reuse v3 `B_ear`
+if it fits, else new). The 98.28 cut stays. "grass" (102.395) lands 2 frames before the 102.46 cut: on the board if
+readable, else lower third as v3.
+Cap $12, tag `v4B_gun_`. Spend at start of build: $232.21 total, $0 on `v4B_gun`.
+Hand-over: `media/reviews/v4/B/0139_gunfire.mp4` (96.3-105.5), stills at 99.4/101.2/103.0,
+`docs/revisions/v4/fragments/gunfire.json`. Timeline: only `B2_lawn`, `B2_lawn2`, `B2_ear` in
+`render/timeline/_B_verse2.js` (v3 kept under a flag). No commits. Do not edit `tools/sfx/build.py`.
+
+| Step | State | Files |
+|---|---|---|
+| 0 look at v3 `B_ear` for G3 | in progress | |
+| 1 plates (G1 wide, G2 tele + board) | not started | `media/shots/B_g1plate`, `B_g2plate` |
+| 2 keyframes: agents G1, agents G2, Jade back | not started | `media/shots/B_g1agents`, `B_g2agents`, `B_gjade` |
+| 3 takes | not started | |
+| 4 engrave + cut-outs | not started | |
+| 5 timeline | not started | `render/timeline/_B_verse2.js`, `render/timeline/_B_gunfire.js` (new) |
+| 6 after clip, stills, fragment | not started | |
 
 ## What changes
 

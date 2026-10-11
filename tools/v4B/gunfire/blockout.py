@@ -75,14 +75,14 @@ SHOTS = {
                cam=[(98.28, (0.05, 1.78, -3.05), 0.0, 0.5, 47), (100.70, (-0.22, 1.68, 2.85), 0.6, 0.5, 27)],
                ground_text=dict(text="I ZIGZAG", quad=(-1.15, 2.75, 7.0, 16.5), words=[("I", 98.28), ("ZIG", 98.47), ("ZAG", 98.78)]),
                stills=[98.30, 98.94, 99.38, 99.82, 100.66]),
-    "G2": dict(t0=100.70, t1=104.22, title="G2  100.70-104.22  \"across the field of grass\"  one fires, two call it in",
-               fires=[(101.14, "C"), (102.00, "C")], callers={"A": (+1, 100.95), "B": (-1, 101.58)}, lower={"C": 102.90},
+    "G2": dict(t0=100.70, t1=102.46, title="G2  100.70-102.46  \"across the field of\"  one fires, two call it in",
+               fires=[(101.14, "C"), (102.00, "C")], callers={"A": (+1, 100.60), "B": (-1, 101.58)},
                lag=0.44,                    # she is further off: he is a whole beat behind, each miss lands on her last corner
-               # long lens from well behind A and B; a 4-frame snap-in on the 102.46 downbeat, then a slow creep
-               cam=[(100.70, (0.15, 1.50, -8.5), 0.4, -0.6, 18.5), (102.42, (0.15, 1.51, -8.3), 0.4, -0.6, 17.8),
-                    (102.58, (0.15, 1.51, -8.15), 0.4, -0.6, 16.4), (104.22, (0.15, 1.52, -7.9), 0.4, -0.6, 15.8)],
-               board_text=[("ACROSS", 100.63), ("THE", 101.28), ("FIELD", 101.42), ("OF", 101.74), ("GRASS", 102.395)],
-               stills=[100.74, 101.14, 102.00, 102.42, 102.62, 104.18]),
+               # long lens from well behind A and B, a slow creep in (Jade kept the 102.46 cut; G3, the earpiece
+               # close-up 102.46-104.22, is a generated shot and is not blocked here)
+               cam=[(100.70, (0.15, 1.50, -8.5), 0.4, -0.6, 18.5), (102.46, (0.15, 1.51, -8.2), 0.4, -0.6, 17.0)],
+               board_text=[("ACROSS", 100.63), ("THE", 101.28), ("FIELD", 101.42), ("OF", 101.74)],
+               stills=[100.74, 101.14, 101.58, 102.00, 102.42]),
 }
 
 
@@ -389,7 +389,9 @@ def draw_agents(sc, key, t, fires):
     return muzzles
 
 
-def render(t, annotate=True):
+def render(t, annotate=True, ref=None):
+    """ref: None, or a set of things to leave out for a clean layout reference ('agents', 'jade', 'marks')."""
+    ref = ref or set()
     key = shot_of(t)
     shot, cam = SHOTS[key], cam_at(SHOTS[shot_of(t)], t)
     img = Image.new("RGBA", (cam.w, cam.h), PAPER)
@@ -404,14 +406,15 @@ def render(t, annotate=True):
     for zz in range(5, 80, 5):
         a, b = cam.project((-60, 0, zz)), cam.project((60, 0, zz))
         if a and b:
-            d.line([a[0], a[1], b[0], b[1]], fill="#bab5a8", width=1 if zz % 10 else 2)
+            if "marks" not in ref:
+                d.line([a[0], a[1], b[0], b[1]], fill="#bab5a8", width=1 if zz % 10 else 2)
             if annotate and zz % 10 == 0 and hz + 4 < a[1] < cam.h - 30:
                 yl = a[1] + (b[1] - a[1]) * (cam.w - 80 - a[0]) / (b[0] - a[0])
                 d.text((cam.w - 86, yl - 26), f"{zz} m", font=tiny, fill="#77736a")
 
     # lyric on the grass
     gt = shot.get("ground_text")
-    if gt:
+    if gt and "marks" not in ref:
         shown = [w for w, tw in gt["words"] if tw <= t + 1e-6]
         if shown:
             x0, x1, z0, z1 = gt["quad"]
@@ -440,12 +443,12 @@ def render(t, annotate=True):
     ts = np.arange(max(97.7, t - 2.4), t, 0.02)
     pts = [cam.project(jade_at(x)[0] + [0, 0.02, 0]) for x in ts]
     for (a, b) in zip(pts, pts[1:]):
-        if a and b:
+        if a and b and "marks" not in ref:
             d.line([a[0], a[1], b[0], b[1]], fill=ORANGE, width=max(2, int(cam.f * 0.22 / a[2])))
     fires = fire_geometry(key)
     for fz in fires:
         p = cam.project(fz["impact"])
-        if p and fz["t"] <= t + 1e-6 and fz["impact"][1] < 0.1:
+        if p and fz["t"] <= t + 1e-6 and fz["impact"][1] < 0.1 and "marks" not in ref:
             r = cam.f * 0.28 / p[2]
             d.ellipse([p[0] - r * 1.6, p[1] - r * 0.45, p[0] + r * 1.6, p[1] + r * 0.45], fill="#3a3832")
 
@@ -465,18 +468,19 @@ def render(t, annotate=True):
         sc.poly(board_q, "#f6e8d8", INK, 3, bias=-0.05)
 
     jp, jh = jade_at(t)
-    muzzles = draw_agents(sc, key, t, fires)
-    jade(sc, jp, jh, t)
+    muzzles = draw_agents(sc, key, t, fires) if "agents" not in ref else {}
+    if "jade" not in ref:
+        jade(sc, jp, jh, t)
     sc.draw(d)
 
     # lettering on the hotel billboard and the notice board
     q = [cam.project(p) for p in bbquad]
     if all(q):
         paste_warp(img, text_image(["HILBERT"], INK, track=10), [(p[0], p[1]) for p in q])
-    if board_q:
+    if board_q and "marks" not in ref:
         words = [w for w, tw in shot["board_text"] if tw <= t + 1e-6]
         lines = [" ".join(words[:2]), " ".join(words[2:])]
-        full = text_image(["ACROSS THE", "FIELD OF GRASS"], (0, 0, 0, 0), pad=0.06)
+        full = text_image(["ACROSS THE", "FIELD OF"], (0, 0, 0, 0), pad=0.06)
         tex = text_image([ln for ln in lines if ln] or [""], INK, pad=0.06)
         canvas = Image.new("RGBA", full.size, (0, 0, 0, 0))
         canvas.alpha_composite(tex, (0, 0))
@@ -486,12 +490,12 @@ def render(t, annotate=True):
             paste_warp(img, canvas, [(p[0], p[1]) for p in q])
     d = ImageDraw.Draw(img)
     # Jade is in front of the board: redraw her over the lettering
-    if board_q and jp[2] < BOARD["z"]:
+    if board_q and jp[2] < BOARD["z"] and "jade" not in ref:
         s2 = Scene(cam)
         jade(s2, jp, jh, t)
         s2.draw(d)
     # ...and the agents are in front of everything on the lawn
-    if board_q or gt:
+    if (board_q or gt) and "agents" not in ref:
         s3 = Scene(cam)
         draw_agents(s3, key, t, fires)
         if jp[2] < 12:
@@ -519,7 +523,7 @@ def render(t, annotate=True):
         return cam.px(ca), cam.px(cb)
 
     rec = []
-    for fz in fires:
+    for fz in ([] if "marks" in ref else fires):
         s = seg3(fz["muzzle"], fz["impact"])
         live = -LEAD <= t - fz["t"] <= 0.10
         m, i = cam.project(fz["muzzle"]), cam.project(fz["impact"])
@@ -660,14 +664,14 @@ def plan(keys, title, zmax=50.0, xr=(-4.0, 6.0)):
 
 
 LEGEND = [
-    "REWIND v4: gunfire on the lawn. Grey-box blockout, nothing generated.",
+    "REWIND v4: gunfire on the lawn. Grey-box blockout (approved build).",
     "  Row 1: v3 at 1:39 and 1:41; top views of the two new shots.",
     "  G1 98.28-100.70 (five stills): behind A and B, push between",
     "    their shoulders, settle over C's. Misses 98.94 B, 99.38 B,",
     "    99.82 C, 100.26 C, from 18 to 21 m.",
-    "  G2 100.70-104.22 (six stills), long lens: C alone fires",
-    "    (101.14 board, 102.00 turf); A then B go to their earpieces;",
-    "    snap-in on the 102.46 downbeat; C lowers his pistol.",
+    "  G2 100.70-102.46 (five stills), long lens: C alone fires",
+    "    (101.14 board, 102.00 turf); A, then B, on the earpiece.",
+    "  G3 102.46-104.22: earpiece close-up (generated, not blocked).",
     "  Black dashes + star: the shot fired in that frame.",
     "  Blue dashes: the shot's other misses. Every line is the 3D",
     "  line from that muzzle to a spot she has already left.",
@@ -677,6 +681,11 @@ LEGEND = [
 
 def main():
     os.makedirs(OUT, exist_ok=True)
+    if "--ref" in sys.argv:                  # clean layout reference for a keyframe: --ref T OUT.jpg [agents,jade]
+        k = sys.argv.index("--ref")
+        skip = {"marks"} | set(sys.argv[k + 3].split(",") if len(sys.argv) > k + 3 else [])
+        render(float(sys.argv[k + 1]), annotate=False, ref=skip)[0].save(sys.argv[k + 2], quality=92)
+        return
     if "--t" in sys.argv:
         t = float(sys.argv[sys.argv.index("--t") + 1])
         render(t)[0].save(os.path.join(OUT, f"extra_{t:.2f}.jpg"), quality=92)
@@ -699,7 +708,7 @@ def main():
             geo[key]["stills"][os.path.basename(p)] = dict(t=t, misses_px_960x540=rec)
             tiles.append(img)
     p1 = plan(["G1"], "G1 98.28-100.70: four misses, one per beat, each down its own barrel line (B, B, C, C)", zmax=34, xr=(-3.4, 3.6))
-    p2 = plan(["G2"], "G2 100.70-104.22: C alone fires (hole in the board, then turf); A and B call it in", zmax=58)
+    p2 = plan(["G2"], "G2 100.70-102.46: C alone fires (hole in the board, then turf); A and B call it in", zmax=58)
     p1.save(os.path.join(OUT, "plan_G1_top.jpg"), quality=92)
     p2.save(os.path.join(OUT, "plan_G2_top.jpg"), quality=92)
     json.dump(geo, open(os.path.join(OUT, "geometry.json"), "w"), indent=1)

@@ -429,7 +429,8 @@ def build():
         dict(type="solid", stage="post", color=PAPER, opacity=0.88, rect=[40, 56, 236, 84]),
         dict(type="canvas", module="hud", stage="post", params=dict(mode="rewind", x=40, y=120, color=INK, accent="#F08A24",
                                                                    multiplier=4, steady=True))],
-        fx=[dict(type="flash", at=[0], dur=0.12, amount=0.5, color="#ffffff"),
+        # the word's flash, softened so the first frame is not washed out (v4 first pass: amount 0.5, as v3's E4a)
+        fx=[dict(type="flash", at=[0], dur=0.1, amount=0.22, color="#ffffff"),
             dict(type="rewind", amount=[[0, 0.85], [r4(r1d - 0.1), 0.85], [r1d, 0]])]))
     notes["R1"] = dict(clip=c["eng"], srcTime=r1T, what="the failed climb runs backwards on 'Rewind.' #1; ghosts 11/12 slide home")
     rungs = []
@@ -507,6 +508,12 @@ def build():
     # 131.82: two mote clouds implode (time-reversed burst) into two crouched Jades over the heap; on the bar line 132.26
     # they sprint apart, out of both edges, with an orange and a blue ribbon; the agents get up into the empty street
     c = bclip("two")
+    # v4 (Jade: "tag them at the moment of split"): from here on the left twin is ORANGE (orange band, straps, dots) and
+    # the right twin is BLUE (blue band, straps, headphones, dots). Same take, recoloured by screen half:
+    #   tools/engrave/.venv/bin/python tools/v4B/coop/recolor.py media/shots/B_two/take_1_engraved.mp4 \
+    #       media/shots/C_coop/two_bo/take_1_engraved_bo.mp4 --split=960
+    # v3: the take as engraved (c["eng"] = media/shots/B_two/take_1_engraved.mp4), both twins orange
+    c = dict(c, eng=f"{SH}/C_coop/two_bo/take_1_engraved_bo.mp4")
     LX, RX_, GY = -269, 307, 108
     imp = lambda x, seed: dict(type="canvas", module="motes", keepColor=True, end=0.44, time=[[0, 0.44], [0.44, 0.0]], params=dict(
         at=0, x=x + 960, y=GY + 540, count=110, colors=RES + ["#ffffff"], speed=1300, drag=2.2, size=16, life=2.0, ring=False,
@@ -515,9 +522,10 @@ def build():
     # her own path (read off the frames): off the mark at 0.6, out of the frame edge by about 1.05
     rib_l = [[r4(run(s)), r4(LX - 1000 * max(0.0, s - 0.6) / 0.45), r4(GY + 10 + 30 * math.sin(9 * s))] for s in [0.58 + 0.04 * q for q in range(16)]]
     rib_r = [[r4(run(s)), r4(RX_ + 1000 * max(0.0, s - 0.6) / 0.45), r4(GY + 10 + 30 * math.cos(9 * s))] for s in [0.58 + 0.04 * q for q in range(16)]]
-    # v4: 128.32-129.62: implode 0.44 s, the sprint on the 128.76 bar line, cut as they leave frame (the v3 tail of
-    # dazed agents is trimmed; the co-op level takes 129.62-134.00).  v3: start=131.82, end=134.00, sprint on 132.26
-    E6C_T0, E6C_T1 = 128.32, 129.62
+    # v4: 128.32-129.18: implode 0.44 s, the sprint on the 128.76 bar line, cut one beat later as they leave frame (the
+    # v3 tail of dazed agents is trimmed; the co-op level takes 129.18-134.88).  v3: start=131.82, end=134.00, sprint
+    # on 132.26.  (v4 first pass ended at 129.62 and left 0.3 s of the heap alone.)
+    E6C_T0, E6C_T1 = 128.32, 129.18
     shots.append(dict(id="E6c_two", start=E6C_T0, end=E6C_T1, layers=[
         dict(id="still", type="video", src=c["eng"], end=0.44, **{"in": 0.4, "rate": 1.0}, freeze=0),
         dict(id="clean", type="image", src=f"{V3}/patch_two.png", fit="cover", end=0.44, opacity=[[0, 1.0], [0.28, 1.0], [0.42, 0.0]]),
@@ -535,8 +543,9 @@ def build():
     # full-frame stills (tools/v4B/coop/storyboard.py --animatic -> media/shots/C_coop/animatic/p<n>.png), each cut in
     # on its own beat. When the real takes exist, replace each shot's layers; ids and times stay.
     AN = f"{SH}/C_coop/animatic"
-    for (id_, a, b, panels) in (("C1_hold", 129.62, 131.82, ((2, 129.62), (3, 130.50), (4, 130.94), (5, 131.38))),
-                                ("C2_swap", 131.82, 134.00, ((6, 131.82), (7, 132.26), (8, 133.12), (9, 133.56)))):
+    # v4 second pass (13 beats): C1 129.18-132.26, C2 132.26-134.88 (first pass: 129.62-131.82-134.00)
+    for (id_, a, b, panels) in (("C1_hold", 129.18, 132.26, ((2, 129.18), (3, 130.50), (4, 130.94), (5, 131.82))),
+                                ("C2_swap", 132.26, 134.88, ((6, 132.26), (7, 132.68), (8, 134.00), (9, 134.44)))):
         ends = [t for _, t in panels[1:]] + [b]
         shots.append(dict(id=id_, start=a, end=b, background=PAPER, layers=[
             dict(id=f"p{n}", type="image", src=f"{AN}/p{n}.png", keepColor=True, fit="cover", start=r4(t - a), end=r4(e - a))
@@ -544,23 +553,34 @@ def build():
             fx=[dict(type="flash", at=[r4(t - a) for _, t in panels], dur=0.05, amount=0.25, color="#ffffff")]))
         notes[id_] = dict(animatic=[[n, t] for n, t in panels], plan="docs/revisions/v4/plans/coop.md")
 
-    # ---------------- E7: the rainbow Jades, after the split. Doubling on every beat 134.00-135.32 ----------------
-    DB = [134.00, 134.44, 134.88, 135.32]
+    # ---------------- E7: the rainbow Jades, after the split. Doubling on every beat 134.88-136.19 ----------------
+    # v4 (Jade: "cutting a little bit of stopwatch is fine to make space for co-op"): the stopwatch insert E7_03_meter
+    # (135.76-136.62) is out, the platform and the leap sit two beats later and the co-op level runs to 134.88. The
+    # chasm, the earpiece and the lawn (136.62-139.00) are where v3 had them.
+    # v3: DB = [134.00, 134.44, 134.88, 135.32]; E7_01_plat 134.00-134.88, E7_02_leap 134.88-135.76, E7_03_meter 135.76-136.62
+    E7_T0 = 134.88
+    DB = [134.88, 135.32, 135.76, 136.19]
 
     def e7(id_, a, b, layers, fx=()):
         shots.append(dict(id=id_, start=a, end=b, layers=layers, fx=[dict(type="flash", at=[0], dur=0.05, amount=0.25, color="#ffffff"),
                                                                     dict(type="punch", at=[0], amount=0.04)] + list(fx)))
-    for (id_, tk, a, b, in0, sp) in (("E7_01_plat", "plat", 134.00, 134.88, 0.55, 30), ("E7_02_leap", "leap", 134.88, 135.76, 0.85, 75)):
+    for (id_, tk, a, b, in0, sp) in (("E7_01_plat", "plat", 134.88, 135.76, 0.55, 30), ("E7_02_leap", "leap", 135.76, 136.62, 0.85, 75)):
         c = bclip(tk)
         cps = doubling("dbl", c, DB, a, b - a, in0, spacing=sp, stagger=22)
+        # v4: the pair that leaves the co-op level is ORANGE (the untinted Jade here) and BLUE, so the first copy is
+        # the blue one and the second the orange one (v3: copy 1 orange, copy 2 blue)
+        for L_ in cps:
+            n_ = int(L_["id"].rsplit("_", 1)[1])
+            if n_ in (1, 2):
+                L_["instances"][0]["color"] = HUE[2 - n_]
         e7(id_, a, b, [dict(id="bg", type="video", src=c["eng"], **{"in": in0, "rate": 1.0}), *cps,
                        dict(id="jade", type="video", src=c["eng"], matte=dict(src=c["matte"], mode="luma"), keepColor=True,
                             **{"in": in0, "rate": 1.0})],
            fx=[dict(type="flash", at=[r4(t - a) for t in DB if a <= t < b], dur=0.05, amount=0.12)])
-    m = take["e7_cuts"][1]
-    c = C["e7_meter"]
-    e7("E7_03_meter", 135.76, 136.62, [dict(id="meter", type="video", src=c["eng"], **{"in": m["in"], "rate": m["rate"]})],
-       fx=[dict(type="shake", at=[0], amp=12, decay=0.3)])
+    # v3: the stopwatch insert, removed in v4:
+    #   m = take["e7_cuts"][1]; c = C["e7_meter"]
+    #   e7("E7_03_meter", 135.76, 136.62, [dict(id="meter", type="video", src=c["eng"], **{"in": m["in"], "rate": m["rate"]})],
+    #      fx=[dict(type="shake", at=[0], amp=12, decay=0.3)])
     # HILBERT on the hotel's rooftop billboard (rev 5b): rev-A's woodcut lettering, as their 0:24 sign (render/timeline/A.js
     # D2: Anton 'slab' capitals, ink on the lit panel, hatch .3, no flecks), corner-pinned, solid from the first frame
     # (`at` before the shot). Corners as the Verse 2 agent's (render/timeline/_B_verse2.js BB); the chasm plate draws
@@ -663,8 +683,9 @@ def build():
        fx=[dict(type="flash", at=[0.56], dur=0.06, amount=1.0, color="#ffffff")])
     # residue ribbons pile up over every surface across E7 (one more per beat, capped at 10) + a rising colour wash
     rl = []
-    for k in range(10):
-        st = 0.44 * k
+    E7_LATE = r4(E7_T0 - 134.0)                          # v4: the overlay starts 0.88 s later; its ribbons and wash keep
+    for k in range(10):                                  # their v3 song times (the first two start together at 134.88)
+        st = max(0.05 * k, 0.44 * k - E7_LATE)           # v3: st = 0.44 * k
         y0 = -440 + 880 * ((k * 0.618) % 1)
         pts = []
         for j in range(25):
@@ -675,9 +696,12 @@ def build():
         rl.append(dict(type="canvas", module="ribbon", keepColor=True, params=dict(
             path=pts, colors=[HUE[k % 13], HUE[(k + 5) % 13]], width=20 + 6 * (k % 4), twist=0.6, bloom=0.7, grain=0.9,
             motes=0.35, seed=50 + k)))
-    rl.insert(0, dict(type="solid", keepColor=True, blend="multiply", color=[[0, HUE[0]], [1.7, HUE[3]], [3.4, HUE[1]], [5.0, HUE[2]]],
-                      opacity=[[0, 0.06], [3.5, 0.22, "inCubic"], [5.0, 0.4]]))
-    overlays.append(dict(id="D_E7_ribbons", start=134.0, end=139.0, layers=rl))
+    # v3: color=[[0, HUE[0]], [1.7, HUE[3]], [3.4, HUE[1]], [5.0, HUE[2]]], opacity=[[0, 0.06], [3.5, 0.22, "inCubic"], [5.0, 0.4]],
+    #     overlay start=134.0
+    rl.insert(0, dict(type="solid", keepColor=True, blend="multiply",
+                      color=[[0, HUE[0]], [r4(1.7 - E7_LATE), HUE[3]], [r4(3.4 - E7_LATE), HUE[1]], [r4(5.0 - E7_LATE), HUE[2]]],
+                      opacity=[[0, 0.06], [r4(3.5 - E7_LATE), 0.22, "inCubic"], [r4(5.0 - E7_LATE), 0.4]]))
+    overlays.append(dict(id="D_E7_ribbons", start=E7_T0, end=139.0, layers=rl))
     # ---------------- E8: "Anomaly detected." ----------------
     E8 = take["e8"]
     c = C["e8_ring"]
@@ -714,7 +738,7 @@ def to_edl(sec):
 
 if __name__ == "__main__":
     sec, notes = build()
-    js = ("// Section D: drop 2 + \"Anomaly detected\" (112.96-141.00). Revision 6 (v4 pass: E3 out, R1, co-op C1/C2).\n"
+    js = ("// Section D: drop 2 + \"Anomaly detected\" (112.96-141.00). Revision 6 (v4 pass: E3 out, R1, co-op C1/C2, no stopwatch).\n"
           "// GENERATED by tools/sections/D/build_timeline.py from media/shots/_D/takes.json: edit those, not this file.\n"
           "// Ghost choreography (clip, freeze/offset, hue, opacity, position) is tabulated in docs/sections/D.md.\n"
           "export default " + json.dumps(sec, indent=1, ensure_ascii=False) + ";\n")
