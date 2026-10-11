@@ -90,7 +90,14 @@ SYNC = {
     "V3S": ("v3_take_2", [(153.98, 0.46), (159.14, 5.62)]),
 }
 # v4 (glossier hair, less smile): filled in once the v4 takes are measured (look.py SHOT v4_take_N). E3 is gone in v4.
-SYNC_V4 = {}
+#   S1 v4_take_1: lip closures 'b' +0.47, 'm' +0.41, opening +0.49: one lag, +0.45 s, untouched frames. (v4_take_2 drifts
+#       0.39 -> 0.66 and blinks at 12.9.)
+#   V3S v4_take_2: closures +0.04 / +0.06, correlation +0.13 (r .68): one lag, +0.09 s, untouched frames. (v4_take_1 has no
+#       blink but its mouth runs at about 0.9x for the first three seconds, lag 0 -> -0.3, so it would need a retime.)
+SYNC_V4 = {
+    "S1": ("v4_take_1", [(12.60, 0.15), (19.64, 7.19)]),
+    "V3S": ("v4_take_2", [(153.98, 0.39), (159.14, 5.55)]),
+}
 if VER != "v3":
     SYNC = SYNC_V4
 

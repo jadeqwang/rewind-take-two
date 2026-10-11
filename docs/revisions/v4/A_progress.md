@@ -63,13 +63,24 @@ Updated: 2026-10-11, session start. Brief: `docs/revisions/v4/A.md`.
   - Against v3: same x0/y0/scale; bottom-row figure span v3 673-1928, v4 674-1938 (crop px of 2576); matte area
     x1.011. `v4_base16.jpg` / `v4_base.json` exist too (from `wc_base.py`, x0 pinned to 724) but are not used.
 
+- **Takes done** (19:00; 4 x Seedance 2.5 720p, $6.94; spend total about $232.21). All 16:9, none reframed, none
+  smile. Lags from `look.py` (`media/sing/<SHOT>/v4_take_N.look.json`, `_look.jpg`, `_win.jpg`):
+  - S1 `v4_take_1` **pick**: closures +0.47 / +0.41, opening +0.49 → one lag +0.45. Blink at about 16.2 (off her, on
+    the cutaway). `v4_take_2`: lag drifts 0.39 → 0.66, eyes closed at 12.9; spare.
+  - V3S `v4_take_2` **pick**: closures +0.04 / +0.06, corr +0.13 (r .68) → one lag +0.09. Blinks at about 154.05 and
+    157.1. `v4_take_1`: no blinks, but mouth runs at 0.9x (lag 0 → -0.3), would need a retime; spare.
+- **Synced files done** (`SYNC_V4` in `tools/sing/wc_post.py`; untouched frames, 0 cross-fades):
+  `media/sing/S1/v4_sync_1080.mp4` (7.46 s), `media/sing/V3S/v4_sync_1080.mp4` (5.54 s); file time 0 = shot in.
+  Mattes: `media/sing/S1/v4_sync_1080_matte/` (179 PNG), `media/sing/V3S/v4_sync_1080_matte/` (133 PNG), BiRefNet on
+  the synced file, no grow. Plain review clips (take + song, not rendered in the film):
+  `media/reviews/v4/A/0012_singing_S1_take.mp4`, `0233_singing_V3S_take.mp4`.
+
 ## Running now
 
-Seedance 2.5 takes (submitted ~18:50): `WC_VER=v4 $PY tools/sing/wc_takes.py submit S1 --n=2` and `submit V3S --n=2`
-(720p, about $1.85 and $1.62 each, tags `v4A_sing_S1`, `v4A_sing_V3S`). Sidecars with job ids:
-`media/sing/S1/v4_take_N.json`, `media/sing/V3S/v4_take_N.json`. Collect with
-`WC_VER=v4 $PY tools/sing/wc_takes.py wait S1 V3S` (about 5-6 min) → `media/sing/<SHOT>/v4_take_N.mp4` + `_sheet.jpg`.
-If a sidecar says `queued` and nothing arrives, `WC_VER=v4 $PY tools/sing/wc_takes.py status`.
+Nothing long. Checking the mattes and bottom edge against v3, then: tell `v4-B` the files are there, set `S1_SRC` in
+`render/timeline/A.js` and the V3S source in `render/timeline/E.js` (tell B first), preview-render the two ranges
+(`node render/engine/render.mjs --range … --preview --encode`), cut the film review clips, update
+`docs/revisions/v4/review_A.json`, add a v4 section to `media/sing/NOTES.md`, commit.
 
 ## Next steps, in order
 
