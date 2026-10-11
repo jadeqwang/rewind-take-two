@@ -154,3 +154,8 @@ are kept as `Rewind_cinematic_sfx_mix_v2.mp3`, `cues_v2.json`, `sfx_only_v2.wav`
   (shorter `b_atomize` sparkle, −32), both optional and under the drop (measure 100 % / 54 % masked; drop them if they
   fight it). 44 cues. Verify: bit-exact outside the cues, loudness delta 0.0, lyrics transcribe as before. The
   previous mix is kept as `*_v3b.*`.
+- Fourth rebuild (B's corner retake, she rounds it and collides): `b_skid` replaced by `b_bump` 108.16 (soft
+  cloth-and-body thump on the beat, −30, same stem slot); new `b_stagger` 109.40–109.70 (the scuff, now the shared
+  `scuff()` helper, −32) and `b_wallslap` 109.85 (palm on stone, −32), both optional. At B's levels `b_bump` and
+  `b_wallslap` measure fully masked and `b_stagger` 42 %. 46 cues. Verify: bit-exact outside the cues, loudness delta
+  0.001, lyrics transcribe as before. The previous mix is kept as `*_v3c.*`.

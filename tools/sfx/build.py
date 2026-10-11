@@ -666,16 +666,25 @@ def _():
     return pan(hp(y, 1500, 2), -0.4), 0.0
 
 
-@cue("b_skid", 108.35, "V2k she reaches the corner, nearly runs into him and recoils to a stop: short sneaker scuff "
-     "(108.35-108.58), gone before 'With' (108.67)", "procedural", "optional", -32)
-def _():
-    d = 0.23
+def scuff(d, seed):
+    """Sneaker scuff on pavement: a squeak gliding down + scraped noise, d seconds."""
     t = tt(d)
     f = 2300 - 500 * t / d + 60 * np.sin(2 * np.pi * 23 * t)
     sq = np.sin(2 * np.pi * np.cumsum(f) / SR)
-    scr = bp(noise(len(t), 10818), 800, 5000, 2)
+    scr = bp(noise(len(t), seed), 800, 5000, 2)
     y = 0.35 * sq + scr / np.max(np.abs(scr))
-    return fade(y * np.interp(t, [0, 0.02, 0.14, d], [0, 1, 0.6, 0]), 0.0, 0.05), 0.0
+    return fade(y * np.interp(t, [0, 0.02, 0.6 * d, d], [0, 1, 0.6, 0]), 0.0, 0.05)
+
+
+@cue("b_bump", 108.16, "V2k she rounds the corner and runs smack into the agent's chest, on the beat: soft body-thump, "
+     "cloth, no impact sting (replaces b_skid)", "procedural", "optional", -30)
+def _():
+    y = np.zeros(N(0.25))
+    th = thump(80, 0.18, 0.04, seed=10816)
+    y[:len(th)] += th
+    cl = lp(bp(noise(N(0.12), 10817), 300, 2500, 2), 2000, 2) * expdec(N(0.12), 0.03)
+    y[:len(cl)] += 0.4 * cl / np.max(np.abs(cl))
+    return lp(y, 1800, 2), 0.0
 
 
 @cue("b_boost", 130.04, "E5 the blue ghost launches her straight up out of the agents' swarm: short upward air-whoosh "
@@ -733,6 +742,22 @@ def _():
 def _():
     y = hp(pings(0.15, 28, 3500, 9500, 13732, tau=0.035), 3000, 2)
     return np.stack([y, np.roll(y, N(0.004))]), 0.0
+
+
+@cue("b_stagger", 109.40, "V2k she staggers back off the agent, feet scuffing (109.40-109.70)", "procedural",
+     "optional", -32)
+def _():
+    return scuff(0.30, 10940), 0.0
+
+
+@cue("b_wallslap", 109.85, "V2k her palm slaps the stone wall as she catches herself", "procedural", "optional", -32)
+def _():
+    y = np.zeros(N(0.15))
+    sl = bp(noise(N(0.04), 10985), 700, 5000, 2) * expdec(N(0.04), 0.007)
+    y[:len(sl)] += sl / np.max(np.abs(sl))
+    th = thump(140, 0.08, 0.015, seed=10986)
+    y[:len(th)] += 0.4 * th
+    return reverb(y, room(), -20), 0.0
 
 # ============================================================================= framework
 def vocal_env_db():
