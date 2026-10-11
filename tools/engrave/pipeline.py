@@ -79,7 +79,8 @@ class Pipeline:
 
     @torch.no_grad()
     def __call__(self, rgb_u8: np.ndarray, strength: float | str = 1.0, bloom: np.ndarray | None = None,
-                 bloom_rgb: np.ndarray | None = None, ext_matte: np.ndarray | None = None):
+                 bloom_rgb: np.ndarray | None = None, ext_matte: np.ndarray | None = None,
+                 gold: np.ndarray | str | None = None):
         """rgb_u8 source frame (H,W,3). Returns (out_u8 at output size, matte_u8 at output size)."""
         T = self.timing
         t0 = time.time()
@@ -99,25 +100,35 @@ class Pipeline:
             mo = torch.from_numpy(ext_matte).to(self.dev).float()[None, None] / 255.0
             mo = F.interpolate(mo, size=(self.oh, self.ow), mode="bilinear", align_corners=False)
         elif self.matter is not None:
+            self.matter.world_color = bloom is not None
             mo = self.matter(jade, flow_full)
         else:
             mo = torch.zeros_like(rgb[:, :1])
         torch.cuda.synchronize()
         t3 = time.time()
         flow = background_flow(flow_full, mo, dil_px=max(3, self.oh // 60)) if flow_full is not None else None
-        bl = brgb = None
-        if bloom is not None:
+        bl = brgb = gm = None
+        if isinstance(bloom, (int, float)):
+            bl = torch.full_like(rgb[:, :1], float(bloom))
+        elif bloom is not None:
             bl = torch.from_numpy(bloom).to(self.dev).float()[None, None] / 255.0
             bl = F.interpolate(bl, size=(self.oh, self.ow), mode="bilinear", align_corners=False)
         if bloom_rgb is not None:
             brgb = F.interpolate(to_t(bloom_rgb, self.dev), size=(self.oh, self.ow), mode="bilinear",
                                  align_corners=False)
+        if isinstance(gold, str) and gold == "auto":
+            from pencil import auto_gold_mask
+            gm = auto_gold_mask(brgb if brgb is not None else rgb)
+        elif gold is not None:
+            gm = torch.from_numpy(gold).to(self.dev).float()[None, None] / 255.0
+            gm = F.interpolate(gm, size=(self.oh, self.ow), mode="bilinear", align_corners=False)
         if strength == "auto":
             st = auto_strength(crispness(rgb_u8))
             self._auto = st if getattr(self, "_auto", None) is None else 0.8 * self._auto + 0.2 * st
             strength = self._auto
         self.last_strength = float(strength)
-        out = self.eng.step(rgb, mo, flow, strength=strength, bloom=bl, bloom_rgb=brgb, jade_rgb=jade)
+        out = self.eng.step(rgb, mo, flow, strength=strength, bloom=bl, bloom_rgb=brgb, jade_rgb=jade,
+                            gold=gm)
         torch.cuda.synchronize()
         t4 = time.time()
         T["flow"] += t1 - t0

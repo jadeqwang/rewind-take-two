@@ -20,6 +20,7 @@ MODELS = {
     "anime6b": ("RealESRGAN_x4plus_anime_6B.pth",
                 "https://github.com/xinntao/Real-ESRGAN/releases/download/v0.2.2.4/RealESRGAN_x4plus_anime_6B.pth"),
 }
+_NETS = {}
 MODEL_DIR = os.path.expanduser(os.environ.get("ENGRAVE_MODELS", "~/.cache/engrave"))
 
 
@@ -36,8 +37,11 @@ class Upscaler:
                 os.makedirs(MODEL_DIR, exist_ok=True)
                 print(f"[upscale] downloading {url}")
                 urllib.request.urlretrieve(url, path)
-            from spandrel import ModelLoader
-            self.net = ModelLoader().load_from_file(path).to(device).eval().half()
+            key = (mode, device)
+            if key not in _NETS:
+                from spandrel import ModelLoader
+                _NETS[key] = ModelLoader().load_from_file(path).to(device).eval().half()
+            self.net = _NETS[key]
         elif mode != "lanczos":
             raise ValueError(f"unknown upscaler {mode}")
 

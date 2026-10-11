@@ -14,6 +14,10 @@ Test outputs (gitignored) are in `media/engrave_tests/`:
 | `ST_run_bloom_demo_2x.mp4` | A growing `--bloom` mask showing colored-pencil residue in the world |
 | `ST_run_matte_1080p/` | Matte PNG sequence plus `matte.mp4` |
 | `engrave_stills_sheet.jpg` | Stills: source vs engraved for f0, f72 and f120, plate strengths 1 / 0.4 / auto, bloom, matte |
+| `F_pencil_compare_sheet.jpg` | Phase 2: colour source / ink only / pencil + gold, old flat wash vs new strokes, gold sheen over time, 1:1 pencil crops, F1 flood frames, residue-palette bloom |
+| `F_compare_src_ink_pencil.mp4` | Colour source, ink only and `--color pencil --gold auto` side by side (synthetic pan over the T3 keyframe) |
+| `F1_flood_T1pan_1080p.mp4` (+`_sbs`) | A colour flood sweeping a clip via a `--bloom` PNG-sequence mask |
+| `ST_run_residue_bloom_1080p.mp4` | The B&W Seedance clip with a growing `--bloom` mask and `--palette residue` |
 
 ## Setup
 
@@ -41,13 +45,63 @@ $PY tools/engrave/engrave_still.py IN.png -o OUT.png [--strength 0.4] [--side-by
 $PY tools/engrave/engrave_still.py a.png b.jpg -o OUTDIR/ --matte-out OUTDIR/
 ```
 
+### Batch mode and the GPU lock
+
+```bash
+# clips.txt: one "IN OUT [per-clip flags]" per line, # comments allowed
+#   media/gen/F2/take_1.mp4  media/F/F2_pencil.mp4  --color pencil --gold auto
+#   media/gen/F1/take_2.mp4  media/F/F1_flood.mp4   --bloom work/F1_wipe/   # PNG dir
+$PY tools/engrave/engrave.py --batch clips.txt --out-height 1080      # shared flags apply to every line
+```
+
+Batch mode loads BiRefNet and Real-ESRGAN once, then engraves the clips one after another. A clip that fails is reported and the rest still run.
+
+Every `engrave.py` and `engrave_still.py` run takes a GPU slot first:
+- The slots are flock locks in `~/.cache/engrave/locks/`. There are 2 by default; set `ENGRAVE_GPU_SLOTS` to change that.
+- While both slots are busy, a job prints `[gpulock] all 2 GPU slots busy (pid … file …); waiting...` and polls every 2 s.
+- The kernel drops a lock when its process dies, so a crashed job never leaves a stale slot.
+- A batch holds one slot for its whole run.
+- `--no-lock` skips the lock (only for debugging).
+- In the test, two concurrent 1080p jobs each ran at about solo speed: one job does not saturate the 3090. Memory use is a few GB per job.
+
+### Final-drop colour (section F)
+
+```bash
+# whole world in colored pencil over the engraving, colour from the source clip, Klimt gold leaf
+$PY tools/engrave/engrave.py F5a.mp4 F5a_pencil.mp4 --out-height 1080 --color pencil --gold auto
+
+# colour flood: an animated mask (video, PNG dir, 'dir/*.png' or 'dir/%05d.png'); white = coloured
+$PY tools/engrave/engrave.py F1_color.mp4 F1_flood.mp4 --out-height 1080 --bloom work/F1_wipe/ --gold auto
+
+# colour onto a B&W clip: from a palette gradient map, or from another (registered) colour clip
+$PY tools/engrave/engrave.py bw.mp4 out.mp4 --bloom mask.mp4 --palette residue      # klimt | kandinsky | '#hex,...'
+$PY tools/engrave/engrave.py bw.mp4 out.mp4 --bloom mask.mp4 --bloom-color color.mp4
+```
+
+- **`--color pencil`** keeps the same ink engraving and lays colored pencil under it:
+  - **Layers:** three stroke layers at 0°, +22° and −34° to the hatch flow field. Where there is no structure, such as sky, they fall back to a hand-hatched −35° diagonal.
+  - **Build-up:** pressure comes from the source chroma. Light colour is one sparse layer that skips the paper tooth; strong colour builds all three layers and fills the tooth. Neutral areas stay clean paper.
+  - **Colour fidelity:** the pigment is solved so that strokes plus the paper between them average to the source colour. The source's own warm paper and its dark linework are removed first.
+  - **Ink:** in coloured areas the ink follows value instead of luma, so a saturated blue wall is hatched lightly rather than going black. The source's own pencil texture is kept from turning into ink dashes.
+- **`--gold auto|MASK`:**
+  - `auto` picks gold/ochre areas of the colour source (hue 35–62°, saturated, bright, with morphological closing). A mask (video, image or sequence) also works.
+  - The leaf is a crinkled foil height field, shaded by a light that orbits every 5 s, with point flakes that twinkle smoothly. Nothing is random per frame.
+  - Ink hatching is lifted off the leaf, and a crisp ink line runs along its edge.
+  - The leaf only shows where the bloom mask is on. With `--color pencil` that is everywhere.
+- **Temporal stability:**
+  - The stroke grain and foil are not re-drawn each frame. Two texture-coordinate fields ride on smoothed background flow and are reset alternately with a cross-fade (Neyret texture advection). The pigment is flow-warped and smoothed over time.
+  - Measured on a pan over the T3 keyframe, the flow-compensated frame difference is 19.8 for pencil vs 28.7 for ink only. The per-frame series is flat: there are no pops at the 24-frame resets.
+- **`--bloom` uses the same strokes.** It replaces the old flat wash, which went pale and muddy.
+
 Key flags (both CLIs):
 
 | Flag | Meaning |
 |---|---|
 | `--strength S` | 1 means a full engraving. 0 means the source, re-printed in the paper/ink palette. `auto` sets it per frame from crispness: a crisp engraved plate (high-pass ≥ 0.10 at 480 lines) gets 0.35, a gray-wash frame (≤ 0.05) gets 1, and the value is smoothed over time. |
 | `--ramp-in SEC` (video) | Ramps strength from `--strength-start` (0.25) up to `--strength` over the first SEC seconds, so a crisp plate frame dissolves into the filter. |
-| `--bloom MASK` `--bloom-color SRC` | Video or image. Where the mask is white, colored-pencil colour from SRC (default: the input) is laid onto the paper under the ink. This is for the colour-bloom sequences. |
+| `--bloom MASK` `--bloom-color SRC` | Video, image, PNG directory, glob or `%05d` pattern. It is animated (the last frame is held if the mask is shorter than the clip). Where the mask is white, colored-pencil strokes in SRC's colour (default: the input) are laid under the ink. |
+| `--color pencil` / `--palette P` / `--gold auto\|MASK` / `--color-lift` | Final-drop colour (see above). `--palette` takes `residue`, `klimt`, `kandinsky` or `'#hex,#hex,…'`. Gray areas get a luminance gradient map; coloured areas snap to the nearest palette hue. |
+| `--batch FILE` / `--no-lock` | See "Batch mode and the GPU lock". |
 | `--matte-out DIR` / `--matte-in M` | Write the matte (PNGs plus `matte.mp4`), or reuse one. Reusing skips BiRefNet: about 6.5 fps instead of 2.7, which is useful for look tweaks. |
 | `--keep-color` | Any saturated pixel anywhere stays in colour: residue ribbons, ghost Jades. |
 | `--no-matte` | Engrave the whole frame. |
@@ -100,7 +154,10 @@ Key flags (both CLIs):
 | 864×496 native | 5.4 | |
 | 1080p with `--matte-in` | ~6.5 | |
 
-So a 5 s shot takes about 45 s at 1080p. BiRefNet is the bottleneck. `anime6b` for Jade costs about 290 ms/frame more than `animevideov3`.
+| 1920×1080 `--color pencil --gold auto` | 1.6 | Matte ~240, engrave ~200, SR ~95 |
+| 1080p `--bloom --palette` with `--matte-in` | 3.2 | |
+
+So a 5 s shot takes about 45 s at 1080p (about 75 s in pencil mode). BiRefNet is the bottleneck. `anime6b` for Jade costs about 290 ms/frame more than `animevideov3`.
 
 ## Caveats
 
@@ -110,5 +167,8 @@ So a 5 s shot takes about 45 s at 1080p. BiRefNet is the bottleneck. `anime6b` f
 - **Low-colour silhouettes may be dropped.** A heavily occluded Jade with no visible orange or skin may lose components. A shot that is all hair and black top from behind may need `--matte-in` with a hand-made or SAM matte.
 - **Multiple Jades.** Ghost Jades and the committee are colourful, so they pass the colour test. Gray TVA agents are rejected by design. Translucent ghosts are segmented as solid unless `--keep-color` catches them.
 - **Line spacing is screen-relative.** It does not change with zoom, and big dolly-ins will look printed-on. Lines follow motion through flow advection, but large parallax or disocclusions re-grow lines over 2–4 frames. That is visible as a soft shimmer at the edges of fast-moving foreground props.
-- **Bloom is a first pass.** The tint is a flat colored-pencil wash with paper tooth, not directional pencil strokes.
+- **Matte in colour worlds.** In pencil/bloom mode, colour is no longer a Jade cue, because the world is coloured too. The matte then relies on BiRefNet plus the temporal prior. Colourful props that BiRefNet calls salient may pass through unengraved; use `--matte-in` for hero shots.
+- **`--gold auto` catches every gold-ish pixel.** That includes ochre buildings and an orange-yellow wave stripe. Give a mask when you only want specific shapes gilded.
+- **Palette mode follows the source's luminance.** On B&W clips the palette tracks soft gradients in the source sky, which can read as wood-grain bands.
+- **A flood edge is only as good as its mask.** Feather the mask over 40 px or more.
 - **Output is bitrate-hungry.** Fine line art needs a lot of bitrate: CRF 16 is about 10–15 MB/s at 1080p.

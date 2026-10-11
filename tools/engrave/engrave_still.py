@@ -3,6 +3,7 @@
 
   engrave_still.py IN.png [IN2.jpg ...] -o OUTDIR [--strength 0..1] [--upscale 2] [--matte-out DIR]
   engrave_still.py IN.png -o OUT.png ...         (single input -> explicit file name)
+  engrave_still.py COLOR.png -o OUT.png --color pencil [--gold auto] [--palette klimt]
 
 Each still is rendered with a few extra Gabor iterations (no previous frame to inherit from).
 """
@@ -41,6 +42,8 @@ def main():
     if a.matte_out:
         os.makedirs(a.matte_out, exist_ok=True)
 
+    from gpulock import GpuSlot
+    slot = GpuSlot(label="still").acquire()
     pipe = None
     for path in a.inputs:
         img = cv2.imread(path, cv2.IMREAD_COLOR)
@@ -54,11 +57,14 @@ def main():
                             matte=not a.no_matte, keep_color=a.keep_color, seed=a.seed)
         pipe.reset()
         ext = cv2.imread(a.matte_in, cv2.IMREAD_GRAYSCALE) if a.matte_in else None
-        bloom = cv2.imread(a.bloom, cv2.IMREAD_GRAYSCALE) if a.bloom else None
+        bloom = cv2.imread(a.bloom, cv2.IMREAD_GRAYSCALE) if a.bloom else (1.0 if a.color == "pencil" else None)
         bcol = cv2.imread(a.bloom_color)[:, :, ::-1].copy() if a.bloom_color else None
         if bloom is not None and bcol is None:
             bcol = cv2.resize(rgb, (pipe.ow, pipe.oh), interpolation=cv2.INTER_LANCZOS4)
-        out, m = pipe(rgb, strength=a.strength, bloom=bloom, bloom_rgb=bcol, ext_matte=ext)
+        gold = None
+        if a.gold:
+            gold = "auto" if a.gold == "auto" else cv2.imread(a.gold, cv2.IMREAD_GRAYSCALE)
+        out, m = pipe(rgb, strength=a.strength, bloom=bloom, bloom_rgb=bcol, ext_matte=ext, gold=gold)
         stem = os.path.splitext(os.path.basename(path))[0]
         dst = a.out if single else os.path.join(a.out, stem + "_engraved.png")
         cv2.imwrite(dst, out[:, :, ::-1])
@@ -69,6 +75,7 @@ def main():
             sbs = np.concatenate([src, out], 1)
             cv2.imwrite(os.path.splitext(dst)[0] + "_sbs.jpg", sbs[:, :, ::-1], [cv2.IMWRITE_JPEG_QUALITY, 92])
         print(f"{path} -> {dst}  ({pipe.ow}x{pipe.oh})")
+    slot.release()
 
 
 if __name__ == "__main__":

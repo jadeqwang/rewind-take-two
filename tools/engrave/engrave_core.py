@@ -110,6 +110,10 @@ class EngraveParams:
     field_damp: float = 0.6             # how much of each frame's Gabor re-alignment is applied
     outline: float = 1.0                # dark ink outline around the matte (0 = off)
     outline_px: float | None = None     # outline thickness (default height / 420)
+    palette: str | None = None          # pencil colours: None = from the colour source, or a name/hex list
+    color_lift: float = 1.0             # in coloured areas, ink tone follows value instead of luma
+    pencil_reset: int = 48              # frames per texture-advection cycle of the pencil grain
+    pencil_angle: float = -35.0         # pencil hatch angle (degrees) where there is no structure
 
 
 class Engraver:
@@ -124,6 +128,7 @@ class Engraver:
         self.olw = p.outline_px or max(1.2, h / 420.0)
         gen = torch.Generator().manual_seed(seed)
         self._build_bank()
+        self.pencil = None
         # static textures (paper does not move: it is the paper)
         mott = value_noise(h, w, h / 6, gen, device) * 0.6 + value_noise(h, w, h / 30, gen, device) * 0.4
         fine = torch.rand(1, 1, h, w, generator=gen).to(device)
@@ -132,7 +137,6 @@ class Engraver:
         g = p.grain
         self.paper_tex = 1.0 + g * (0.035 * (mott - 0.5) + 0.05 * (fine - fine.mean()) + 0.06 * (fibre - fibre.mean()))
         self.ink_starve = (g * 0.9 * (fibre - fibre.mean()) / (fibre.std() + 1e-6) * 0.06)
-        self.pencil_tooth = smoothstep(0.35, 0.75, gblur(torch.rand(1, 1, h, w, generator=gen).to(device), 0.9) * 2.2 - 0.6)
         self.wobble = (value_noise(h, w, self.P * 9, gen, device) - 0.5) * 0.9  # phase wobble (radians/2pi)
         yy, xx = torch.meshgrid(torch.arange(h, device=device, dtype=torch.float32),
                                 torch.arange(w, device=device, dtype=torch.float32), indexing="ij")
@@ -144,6 +148,8 @@ class Engraver:
         self.f = None
         self.f2 = None
         self.tone_prev = None
+        if getattr(self, "pencil", None) is not None:
+            self.pencil.reset()
         self.J = None
         self.levels = None
         self.offset = torch.zeros(2, device=self.dev)
@@ -216,6 +222,7 @@ class Engraver:
         theta_g = 0.5 * torch.atan2(2 * Txy, Txx - Tyy)
         theta_t = theta_g + math.pi / 2  # line (tangent) direction
         self.coh = coh
+        self.orient_w = w * smoothstep(0.15, 0.6, tr / tr.mean())  # absolute: soft sky is not structure
         return torch.remainder(theta_t, math.pi)
 
     def _gabor(self, f, theta, n_iter):
@@ -251,16 +258,28 @@ class Engraver:
     @torch.no_grad()
     def step(self, rgb: torch.Tensor, matte: torch.Tensor | None = None, flow: torch.Tensor | None = None,
              strength: float = 1.0, bloom: torch.Tensor | None = None, bloom_rgb: torch.Tensor | None = None,
-             jade_rgb: torch.Tensor | None = None, return_debug: bool = False):
+             jade_rgb: torch.Tensor | None = None, gold: torch.Tensor | None = None,
+             return_debug: bool = False):
         """rgb (1,3,H,W) 0..1; matte (1,1,H,W) 0..1 (1 = Jade, passed through);
         flow (1,2,H,W) backward flow in px (current -> previous frame), background-only is best.
         bloom (1,1,H,W) mask where colored-pencil colour from bloom_rgb (default rgb) shows through.
-        jade_rgb: what is composited inside the matte (default rgb), e.g. an anime-SR upscale."""
+        jade_rgb: what is composited inside the matte (default rgb), e.g. an anime-SR upscale.
+        gold (1,1,H,W): gold-leaf mask (needs a bloom/colour mask to be visible too)."""
         p = self.p
         if matte is None:
             matte = torch.zeros_like(rgb[:, :1])
         world = 1.0 - matte
         y = self._tone(rgb)
+        if bloom is not None and p.color_lift > 0:
+            # in coloured areas the ink follows value, not luma: a saturated blue wall is a light,
+            # coloured wall with some hatching, not a black one
+            v = rgb.max(1, keepdim=True).values
+            mn = rgb.min(1, keepdim=True).values
+            colw = smoothstep(0.03, 0.18, gblur(v - mn, 2.0))  # how coloured the source is here
+            self._colw = colw * bloom
+            vl = 1 - (1 - v) * 0.7
+            # only where the source is actually coloured: gray buildings keep their ink in the flood
+            y = y + (vl - y) * (self._colw * p.color_lift).clamp(0, 1)
 
         # --- tone ------------------------------------------------------------------------------
         lo, hi = self._levels(y, world)
@@ -303,6 +322,9 @@ class Engraver:
         self.tone_prev = tone_s
 
         cover = (smoothstep(p.white_point, 1.0, tone_s) * p.max_cover)
+        if bloom is not None and p.color_lift > 0:
+            cw = p.color_lift * self._colw
+            cover = smoothstep(p.white_point + 0.15 * cw, 1.0, tone_s) * p.max_cover * (1 - 0.5 * cw)
         thr = torch.cos(math.pi * cover)
         dfdx = math.pi * 2 / self.P * torch.sin(math.pi * cover).clamp(min=0.25)  # f-units per px
         ink = ((f - thr) / dfdx + 0.5).clamp(0, 1)
@@ -324,14 +346,23 @@ class Engraver:
             ink = torch.maximum(ink, ink2)
 
         # --- contour ink (two-scale XDoG on the analysed tone) ---------------------------------
+        hatch = ink
+        e = None
         if p.edges > 0:
             k = p.edges
             sf = self.esig
             dog_f = gblur(yc, sf) - gblur(yc, sf * 1.6)           # fine: rivets, window bars, ties
+            kf = kc = k
+            if bloom is not None and p.color_lift > 0:
+                # in pencil areas the source's own pencil texture must not turn into ink dashes;
+                # only strong contours survive
+                cb = bloom * (0.4 + 0.6 * self._colw / (bloom + 1e-4))
+                kf = k / (1 + 3.0 * p.color_lift * cb)
+                kc = k / (1 + 1.2 * p.color_lift * cb)
             sc = self.P * 0.45
             dog_c = gblur(yc, sc) - gblur(yc, sc * 1.6)           # coarse: silhouettes of forms
-            e = torch.maximum(smoothstep(0.018 / k, 0.04 / k, -dog_f),
-                              smoothstep(0.03 / k, 0.06 / k, -dog_c) * 0.9)
+            e = torch.maximum(smoothstep(0.018 / kf, 0.04 / kf, -dog_f),
+                              smoothstep(0.03 / kc, 0.06 / kc, -dog_c) * 0.9)
             ink = torch.maximum(ink, e)
             if p.carve > 0:
                 # white-line engraving: the lit side of an edge is cut back to paper inside the darks
@@ -345,7 +376,30 @@ class Engraver:
         inkc = torch.tensor(p.ink, device=self.dev).view(1, 3, 1, 1)
         if bloom is not None:
             src = bloom_rgb if bloom_rgb is not None else rgb
-            paper = self._pencil(paper, src, bloom)
+            if self.pencil is None:
+                from pencil import Pencil
+                self.pencil = Pencil(self.h, self.w, self.P, self.dev, palette=p.palette,
+                                     reset_frames=p.pencil_reset, paper=p.paper)
+            pflow = flow if p.advect != "fixed" else None
+            gm = gold * bloom if gold is not None else None
+            # pencil follows forms where there is structure, else a hand-hatched diagonal
+            wp = self.orient_w
+            pa = math.radians(p.pencil_angle)
+            cx = wp * torch.cos(2 * theta) + (1 - wp) * math.cos(2 * pa)
+            sy = wp * torch.sin(2 * theta) + (1 - wp) * math.sin(2 * pa)
+            th_p = torch.remainder(0.5 * torch.atan2(sy, cx), math.pi)
+            mult, grgb, ga, _ = self.pencil.step(th_p, pflow, src, bloom * world, gm)
+            paper = paper * mult
+            if grgb is not None:
+                ga = (ga * world).clamp(0, 1)
+                paper = paper * (1 - ga) + grgb * self.paper_tex * ga
+                # leaf is laid over the hatching; contour ink stays
+                lines = hatch * (1 - 0.8 * ga)
+                ink = torch.maximum(lines, e * (1 - 0.3 * ga)) if e is not None else lines
+                # Klimt outlines his gilded forms: a crisp ink line along the leaf boundary
+                gb = gblur(ga, max(0.8, self.P * 0.18))
+                ring = (1 - (2 * gb - 1).abs()).clamp(0, 1)
+                ink = torch.maximum(ink, smoothstep(0.55, 0.8, ring) * smoothstep(0.05, 0.3, ga.amax()))
         eng = paper * (1 - ink) + inkc * ink
 
         # --- strength: blend with the source re-printed in the same paper/ink palette ----------
@@ -369,11 +423,3 @@ class Engraver:
         if return_debug:
             return out, dict(theta=theta, f=f, ink=ink, tone=tone_s)
         return out
-
-    def _pencil(self, paper, src, mask):
-        """Colored-pencil wash: source chroma laid onto the paper through a tooth texture."""
-        lum = (0.2126 * src[:, 0:1] + 0.7152 * src[:, 1:2] + 0.0722 * src[:, 2:3])
-        chroma = src / (lum + 0.05) * 0.6
-        tint = (chroma.clamp(0, 2) * 0.55 + 0.45).clamp(0, 1.15)
-        a = (mask * (0.55 + 0.45 * self.pencil_tooth)).clamp(0, 1)
-        return paper * (1 - a) + paper * tint * a

@@ -34,6 +34,16 @@ def add_look_args(ap):
     g.add_argument("--no-cross", action="store_true", help="no cross-hatching in the darks")
     g.add_argument("--outline", type=float, default=1.0, help="ink outline around Jade, 0 = off")
     g.add_argument("--grain", type=float, default=1.0, help="paper/ink texture")
+    g = ap.add_argument_group("colour (final drop / bloom)")
+    g.add_argument("--color", default="none", choices=["none", "pencil"],
+                   help="pencil: the whole world gets directional colored-pencil strokes over the engraving")
+    g.add_argument("--palette", help="pencil colours from a palette gradient map instead of the source colour: "
+                                     "residue | klimt | kandinsky | '#hex,#hex,...'")
+    g.add_argument("--gold", help="gold leaf: 'auto' (gold/yellow areas of the colour source) or a mask "
+                                  "video/image/PNG dir (white = leaf)")
+    g.add_argument("--color-lift", type=float, default=1.0,
+                   help="in coloured areas ink follows value, not luma (lighter hatching on saturated colour)")
+    g = ap.add_argument_group("motion")
     g.add_argument("--advect", default="flow", choices=["flow", "pan", "fixed"],
                    help="how the line field follows motion")
     g.add_argument("--iters", type=int, default=2, help="Gabor re-alignment iterations per frame")
@@ -44,4 +54,5 @@ def params_from_args(a) -> EngraveParams:
     return EngraveParams(period=a.period, fallback_angle=a.fallback_angle, fallback_weight=a.fallback_weight,
                          contrast=a.contrast, gamma=a.gamma, edges=a.edges, carve=a.carve,
                          tensor_sigma=a.tensor_sigma, cross=not a.no_cross,
-                         outline=a.outline, grain=a.grain, advect=a.advect, iters=a.iters)
+                         outline=a.outline, grain=a.grain, advect=a.advect, iters=a.iters,
+                         palette=a.palette, color_lift=a.color_lift)

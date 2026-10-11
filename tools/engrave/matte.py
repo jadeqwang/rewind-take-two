@@ -48,12 +48,22 @@ def chroma_map(rgb: torch.Tensor) -> torch.Tensor:
     return mx - mn
 
 
+_NETS = {}
+
+
+def get_birefnet(device="cuda"):
+    """One BiRefNet per process (batch mode reuses it across clips)."""
+    if device not in _NETS:
+        _NETS[device] = BiRefNet(device)
+    return _NETS[device]
+
+
 class Matter:
     """Stateful per-sequence matte. Works at any resolution (run it on the source frames)."""
 
     def __init__(self, device="cuda", color_lo=0.10, color_hi=0.20, reach=0.04, min_color_frac=0.015,
                  keep_color=False, temporal=0.45, feather=1.0, motion_reach=0.06, max_growth=1.6):
-        self.net = BiRefNet(device)
+        self.net = get_birefnet(device)
         self.dev = device
         self.color_lo, self.color_hi = color_lo, color_hi
         self.reach = reach               # how far (fraction of height) colour may extend the matte
@@ -65,6 +75,7 @@ class Matter:
         self.max_growth = max_growth      # area jump that counts as a segmentation flip
         self.prev = None
         self.a_ref = None
+        self.world_color = False          # set when the world itself is coloured (pencil/bloom)
 
     def reset(self):
         self.prev = None
@@ -96,8 +107,9 @@ class Matter:
                 # it regrow from further away
                 short = max(0.0, 1.0 - a_prev / a_ref)
                 reach = (self.motion_reach + 0.2 * short) * h
-                gate = torch.maximum(self._dilate((pw > 0.3).float(), reach),
-                                     self._dilate(colb, 0.02 * h))
+                gate = self._dilate((pw > 0.3).float(), reach)
+                if not self.world_color:
+                    gate = torch.maximum(gate, self._dilate(colb, 0.02 * h))
                 m = m * gate
                 a_cur = (m > 0.5).float().sum().item()
                 if a_cur > self.max_growth * max(a_prev, a_ref):  # flipped to a big prop: hug previous
@@ -122,10 +134,11 @@ class Matter:
                     m = m * km
 
         # colour near the silhouette joins the matte
-        near = self._dilate((m > 0.3).float(), max(2, self.reach * h))
-        if self.keep_color:
-            near = torch.ones_like(near)
-        m = torch.maximum(m, col * near)
+        if not self.world_color:  # in a coloured world, colour says nothing about Jade
+            near = self._dilate((m > 0.3).float(), max(2, self.reach * h))
+            if self.keep_color:
+                near = torch.ones_like(near)
+            m = torch.maximum(m, col * near)
 
         # temporal smoothing with the warped previous matte where they roughly agree
         if pw is not None and self.temporal > 0:
