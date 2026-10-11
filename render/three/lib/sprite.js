@@ -18,11 +18,15 @@ export async function loadSpriteClip(dir, { maxFrames = 96, cellH = 512 } = {}) 
   const base = '/' + dir.replace(/^\/+/, '');
   const info = await (await fetch(base + '/info.json')).json();
   const count = info.frames ?? info.count ?? info.frame_count;
-  let [a, b] = info.loop || [0, count - 1];
+  // loop: [a, b] 0-based inclusive, or {first, last} 1-based where 'last' ~= 'first' (play first..last-1)
+  const oneBased = /1-based/.test(info.frame_pattern || '') || info.first_index === 1;
+  let a = 0, b = count - 1;
+  if (Array.isArray(info.loop)) [a, b] = info.loop;
+  else if (info.loop && info.loop.first) { a = info.loop.first - 1; b = info.loop.last - 2; }
   const step = Math.max(1, Math.ceil((b - a + 1) / maxFrames));
   const idx = []; for (let i = a; i <= b; i += step) idx.push(i);
-  const pat = info.pattern || 'rgba/f_%04d.png';
-  const name = (i) => pat.replace(/%0(\d)d/, (_, w) => String(i + (info.first_index ?? 0)).padStart(+w, '0'));
+  const pat = (info.pattern || info.frame_pattern || 'rgba/f_%04d.png').split(' ')[0];
+  const name = (i) => pat.replace(/%0(\d)d/, (_, w) => String(i + (oneBased ? 1 : 0)).padStart(+w, '0'));
   const imgs = await Promise.all(idx.map((i) => loadImage(`${base}/${name(i)}`)));
   const bw = imgs[0].width, bh = imgs[0].height, sc = cellH / bh, cw = Math.round(bw * sc), ch = cellH;
   const cols = Math.max(1, Math.floor(8192 / cw)), rows = Math.ceil(imgs.length / cols);
@@ -36,13 +40,14 @@ export async function loadSpriteClip(dir, { maxFrames = 96, cellH = 512 } = {}) 
   }
   const tex = new THREE.CanvasTexture(cv);
   tex.colorSpace = THREE.NoColorSpace; tex.generateMipmaps = true; tex.minFilter = THREE.LinearMipmapLinearFilter; tex.anisotropy = 4;
-  const feetY = info.baseline_y != null ? info.baseline_y * sc : bot;
+  const fb = info.baseline_y ?? info.feet_baseline_y;
+  const feetY = fb != null ? fb * sc : bot;
   return { tex, cols, rows, n: imgs.length, fps: (info.fps || 24) / step, boxW: cw, boxH: ch, feetY, topY: top };
 }
 
 export class SpriteActor {
   // clips: { walkFront, walkBack, crank, idle } of loadSpriteClip results (any may be missing)
-  constructor(eng, clips, { height = 1.12, strideWorld = 1.25, id = 88.8, pushConst = null } = {}) {
+  constructor(eng, clips, { height = 1.3, strideWorld = 0.62, id = 88.8, pushConst = null } = {}) {
     this.eng = eng; this.clips = clips; this.height = height; this.strideWorld = strideWorld;
     this.root = new THREE.Group();
     this.pushConst = pushConst || { value: 0 };
@@ -101,6 +106,7 @@ export class SpriteActor {
 
 export async function loadJadeSprites(root = 'media/shots/E_sprites') {
   const tryLoad = async (n, o) => { try { return await loadSpriteClip(`${root}/${n}`, o); } catch (e) { return null; } };
-  const [walkFront, walkBack, crank] = await Promise.all([tryLoad('E_walk_front'), tryLoad('E_walk_back'), tryLoad('E_crank')]);
+  const pick = async (a, b) => (await tryLoad(a)) || (await tryLoad(b));
+  const [walkFront, walkBack, crank] = await Promise.all([pick('walk_front', 'E_walk_front'), pick('walk_back', 'E_walk_back'), pick('crank', 'E_crank')]);
   return { walkFront, walkBack, crank };
 }

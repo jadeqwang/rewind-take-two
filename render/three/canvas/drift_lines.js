@@ -12,7 +12,7 @@ export function draw(lt, env) {
   const g = env.ctx, p = env.params, t = env.t;
   const cx = p.cx ?? 960, cy = p.cy ?? 520, n = p.n ?? 150, boom = p.boom ?? 144.54;
   const bloomAt = p.bloomAt ?? 1e9, bx = p.bloomX ?? cx + 220, by = p.bloomY ?? cy - 160;
-  const kick = smooth(boom, boom + 1.4, t);              // the boom throws the filings outward
+  const kick = smooth(boom, boom + 1.4, t) * (1 - 0.7 * smooth(p.regather ?? 146.3, (p.regather ?? 146.3) + 1.2, t)); // the boom throws the filings outward; they drift back for the stroke
   const twos = Math.floor(t * 12) / 12;                   // drawn on twos
   g.save();
   g.lineCap = 'round';

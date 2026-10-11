@@ -184,6 +184,34 @@ The placeholder figure stands where Jade's sprite would. The plan:
 - **Pencil in her hair.** The placeholder already carries the bun-and-pencil silhouette, so the "she draws the
   connection" beat can be staged at the pivot anchor. She pulls the pencil, the crank turns, and the bloom starts there.
 
+
+## Section E / film modules (added for the film)
+
+| Module | Shot(s) | Params |
+|---|---|---|
+| `scenes/e_loop.js` | G4 (148.08–151.62), M1 (151.62–153.98), M3 (165.18–169.40) | `shot: 'G4' \| 'M1' \| 'M3'`, `sprites: false` (force the 3D Jade) |
+| `scenes/e_mobius.js` | M2 (159.14–165.18) Möbius Lake Shore Drive | `textFlipX/Y` (debug) |
+| `scenes/penrose_loop.js` | clip 1, and O1 (211.64–218.92) | `pull: [viewH0, viewH1]`, `pullDur`, `pullFrom`, `color` (0..1 = colour world) |
+| `scenes/f6_clock.js` | offered for F6 (190.58–195.86): the clock's hands become the Penrose stairs | `from`, `snap` (song s), `color` |
+| `canvas/trace_lyric.js` | engine Canvas2D: M3 lyric, "trace" drawn as a dotted line that loses the path | `size`, `y`, `halo` |
+| `canvas/drift_lines.js` | engine Canvas2D: G1–G3 loose engraving lines drifting like iron filings | `cx`, `cy`, `n`, `boom`, `bloomAt`, `bloomX/Y` |
+
+- **Song time.** Inside the engine, `draw(lt, env)` uses `env.t` (absolute song seconds). In the harness, `t` is
+  shot-local (song time = shot start + t). Moves are keyed to the tracked beats in `lib/songgrid.js`, which is generated
+  from `analysis/cinematic/timing.json`.
+- **Engraver additions:**
+  - `spriteMaterial()` / `spriteFrame()`: alpha-tested anime atlases drawn into the G-buffer (mat 25: unhatched,
+    inked, haloed).
+  - `material({decal, decalMode, flatLight})`: painted text/lines on a surface through uv (`decalMode` 1 = ink,
+    2 = residue orange).
+  - `frame.blooms`: up to 4 colour-bloom circles.
+  - Water (mat 28) is drawn with screen-space wave lines.
+  - `Stage.setCamera(..., persp, fov)`: blends perspective into orthographic (G4's snap).
+- **`lib/sprite.js`.** `loadJadeSprites()` reads `media/shots/E_sprites/{E_walk_front,E_walk_back,E_crank}/`
+  (`info.json` + `rgba/f_####.png`). `SpriteActor.update({pos, dir, mode: 'walk'|'crank'|'idle', dist, t, camAz})` picks
+  the clip, flips it for the other iso diagonal, and drives the walk cycle by distance.
+- **`tools/capture.mjs`** now serves the repo root (so scenes can load `media/`) and awaits async `init`.
+
 ## Files
 
 - `lib/engrave.js`: Engraver (shadow, G-buffer material, composite, downsample), MAT ids, palette, style.

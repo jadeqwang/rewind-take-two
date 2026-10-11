@@ -90,7 +90,7 @@ export function createScene(defaults = {}) {
     return { tgt: V(6.6, 5.0, -3.2), viewH, az, el, persp };
   }
   function jadeM1(s) {
-    const x = 2.1 + 1.15 * (s - 151.62);
+    const x = 3.3 + 0.62 * (s - 151.62);
     return { pos: V(x, Y0, 0), dir: V(1, 0, 0), dist: x };
   }
   function camM1(s) {
@@ -103,7 +103,7 @@ export function createScene(defaults = {}) {
   const M3 = { rot0: bb(95, 2), rot1: bb(95, 4), crank0: bb(95, 1) + 0.08 };
   function camM3(s) {
     const u = smoother(bb(95, 4), 169.40, s);
-    const tgt = V(8.7, 2.6, -1.9).lerp(V(7.6, 4.6, -3.0), u);
+    const tgt = V(8.2, 2.3, -2.5).lerp(V(7.6, 4.6, -3.0), u);
     return { tgt, viewH: lerp(5.9, 17.5, u * u * (3 - 2 * u)), az: ISO_AZ, el: ISO_EL, persp: 0 };
   }
 
