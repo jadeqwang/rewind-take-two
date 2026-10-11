@@ -95,6 +95,144 @@ All shots are in the engine and render end to end. The merge check against E.js 
 
 Cost of revision 4: 9 nano-banana-pro edits, about $1.21.
 
+## Revision 5 (v3 pass): the restaged chase
+
+Jade's v2 notes (`docs/revisions/B.md`, plan in `docs/revisions/B_research.md`). Drop 2 now replays the rev-B level
+(platform → beam → chasm → lawn → hotel → wall → the tabletop street of books), always left to right or up, never at an
+agent. Every shot from E1 to E7 uses the new `media/shots/B_<take>/take_1*` clips; the v2 tables above and below are
+history. Review clips: `media/reviews/v3/B/` (+ `manifest_drop2.json`).
+
+| Shot | Time | Content | Clip |
+|---|---|---|---|
+| E1 + E2a | 112.96–114.905 | **v2, restored (rev 5b).** Residue bloom on the L tracks, the sprint, the superman dive and roll, the column kick; ghosts 1–3 with the counter. | v2 `trk_sprint`, `trk_dash`, `trk_walljump` |
+| E2 4–8 | 114.905–116.95 | Hard cut to the v3 level; one cut per chop, each attempt ending on its chop and popping a line-art ghost over the next: off the platform mid-leap, short of the far wall, lawn zig, zag past the notice board, wall-kick at the hotel corner. ◀◀ scrub, flash, punch, `GHOSTS n`. Hues continue from v2's ghosts 1–3. | `leap` (in 0, ×1.6), `chasm_short`, `lawn`, `lawn2`, `kick` |
+| E2 9–13 | 116.95–119.44 | One held shot of the side wall (plate ×1.4 from the top edge). Five attempts; ghosts at the awning, the ledge, the stairs, the top landing and just short of the cornice: a ladder of five Jades, 27–38% of frame height. Ghosts 11 and 12 step aside 0.3 s after freezing. | `climb` |
+| E3 | 119.44–122.95 | rev-A's watercolor singer (`media/sing/E3/v3_sync_1080.mp4`, in 0, rate 1), push 1.0→1.08 on her head (960, 380). Orbit re-fitted: centre (960, 600), 780×400, −8°; occluder = the take matted by her per-frame matte, so ribbons always pass behind her. "Rewind." lower third as v2. | rev-A |
+| E4a | 122.95–124.38 | **Up her own ghost ladder (rev 5b).** Same ×1.4 wall framing as E2 9–13; the five climb ghosts sit at their frozen poses as rungs and each brightens as she passes through it; she reaches the cornice in ghost 13's pose on the cut. "Rewind." painted large on the brickwork (IM Fell, residue orange, multiply) from 123.0. | `climb` (in 3.45, ×1.75) |
+| E4b | 124.38–126.25 | A gold ghost lying on the roof hauls her up by the wrist; she is over the ledge before the cut. | `haul_b` (in 0.05, ×1.3) |
+| E5 | 126.25–128.76 | **The hint while sliding (rev 5b).** Hand in hand down the giant book (Escher, *Still Life and Street*); the leading gold ghost points at the upright book at frame right, whose spine label reads `BANACH–` / `TARSKI` (pinned on 1517–1680 × 226–348; the camera is locked, the label was tracked and does not drift). They leave the book's bottom edge on the cut. | `slide_point` (in 0.8, ×1.4) |
+| E6a | 128.76–131.38 | **Swarm boost (rev 5b).** Agents rush in from both sides; the kneeling blue ghost heaves her straight up (foot leaves the hands on the 130.04 beat); the agents crash into each other beneath her on 130.94 (punch + shake); she hangs at the peak. The ghost is baked opaque (`ghostfill.py`: line art over a pale fill inside her matte) because the agents pile through her and a static clean plate would erase them. | `swarm_boost` (in 0.315, ×1.14) |
+| E6b | 131.38–131.82 | Freeze + flash; she bursts into 150 motes in mid-air over the frozen heap (nano plate without the girls + the ghost still). | `swarm_boost` frame 79 |
+| E6c | 131.82–134.00 | Two mote clouds implode into two crouched Jades over the heap; on the bar line 132.26 they sprint apart with an orange and a blue ribbon. The take's rainbow streaks: reds remapped, the rest hidden under the clean heap plate. | `two` |
+| E7 | 134.00–139.00 | **A cut on every beat (12 cuts):** hero run at camera with ghosts flanking, agent's residue meter spinning (×3, the shake grows), Loop aerial (×2), stream gap jump, field vault, split pair, cartwheel. Over the top, 24 Kandinsky ribbons pile up (one every half beat, none leave), and a multiply colour wash rises to 0.4 so the frame saturates. A full white flash ends the last cut. | `e7_hero_1`, `e7_meter_1`, `e7_city_1` + reuse |
+| E8a | 139.00–139.68 | **"Anomaly"**: hard freeze (0.08 s hold) and a woodblock negative. In the ring of agents, all heads snap to camera in unison and the sunglasses read white. A terminal panel types `TIME VARIANCE █████████` / `ANOMALY DETECTED.` on the spoken words. | `e8_ring_1` |
+| E8b | 139.68–140.12 | "detected": a row of six agents in profile snaps to camera together, still in negative. | `e8_line_1` |
+| E8c | 140.12–141.00 | The agency terminal fills the screen in alarm, white on ink, IBM Plex Mono 88 px: `TIME VARIANCE █████████` / `ANOMALY DETECTED.` / `TRACE: LOCKED` (typed). It cuts to G1 on 141.00. | ENG |
+
+## Revision 2 (coordinator notes)
+
+1. **E1** is now residue, not confetti. A coloured-pencil radial bloom (`tools/sections/D/bloom.py` → `media/shots/_D/e1_bloom.png`: orange core, pale blue, a little gold at the rim, radial pencil strokes and paper tooth, with an additive glow copy) expands from her as a wave and clears. Nine residue ribbons (orange → blue or gold, pencil grain, bloom) stream outward, and the motes are round orange/blue/gold only. The flat orange solid is gone.
+2. **Ghosts are luminous coloured-pencil afterimages.** Each frozen iteration is baked by `tools/sections/D/ghostsprite.py` into a full-frame RGBA sprite (cached in `media/shots/_D/sprites/`):
+   - lifted pastel interior at about 0.9 alpha, with her own line work kept as darker hue strokes and 45° pencil hatching;
+   - a thin bright outline in the hue;
+   - a soft outer glow in the hue.
+
+   Distant ghosts get a thicker outline and glow so they survive downscaling. They are placed as image layers. In E2a/E2b each ghost freezes where she was, then glides over 0.35 s to its own spot (E2b fans away from the agents). E2c positions were re-spread so nothing stacks on the agents. The moving ghosts in E4/E7 are engine ghost instances, raised to 0.75–0.8 opacity.
+3. **E2c** runs a slow push-in from 1.10 to 1.22, and ghosts 1–3 on the track deck are larger (scale 0.24) and outlined. They now read as small coloured Jades.
+4. **E8** redaction: left as the engine's inverted mode, as directed.
+5. **Wall-kick retake swapped in:** `trk_walljump` take 2, re-prompted "no visual effects". It has no rainbow trail and does a clean column kick into an inverted backflip. Ghost 3 freezes on the inverted flip (3.62 s, played at 1.4×).
+
+**A bug found while doing this:** the ribbon module wants absolute design px, but my paths were centre-origin, so most residue ribbons in revision 1 were half off-screen. `ribbon()` now converts. The E2 trails, E4 follow, E6b split trails and E7 pile-up all show now.
+
+## Revision 3: E3 placed in this timeline
+
+- **Take:** `media/sing/E3/take_3_lips.mp4` (720p). It is not engraved: the pencil look is approved as made. The engine upscales it to 1080p with Lanczos when it extracts frames.
+- **Lip sync:** `clip_time = song_time − 119.14 + lag`. The lag is set by **`E3_VARIANT`** at the top of `tools/sections/D/build_timeline.py`. The values come from `media/sing/review/E3_take_3_lips_ABC.json`, so they match the A/B/C composites Jade listens to:
+
+  | Variant | Lag | Clip in at 119.44 | Lips |
+  |---|---|---|---|
+  | A | 0.90 | 1.20 | 0.15 s earlier |
+  | **B** (default) | 0.75 | 1.05 | as measured |
+  | C | 0.60 | 0.90 | 0.15 s later |
+
+  To switch: change the constant, rerun the build script, re-render.
+- **Ribbons:** seven orange/pale-blue coloured-pencil ribbons spiral in from beyond the frame edges and settle onto a tilted orbit around her head and shoulders. The orbit is centred (900, 470), radii 570 × 335, −10°, so it clears her head.
+  Where an orbit crosses her body it passes behind her. An occluder layer redraws the same take through her first-frame silhouette (`media/sing/first/her_mask_first_frame.png`, eroded, with a stray plaza blob removed; it becomes `media/shots/E3/occluder_mask.mp4`). Her face is never touched.
+- **Look:** a light pencil grain (0.045, size 1.2, on twos) plus paper 0.18, so her glasses stay intact.
+- **Lyric:** "Rewind." in IM Fell, orange #F08A24, in the lower third, timed to the word.
+- **Risk:** the takes keep the first frame's head pose, but if she drifted, the static occluder would let a ribbon edge show over her hair rim. I didn't see this in 119.5–122.9.
+
+## Revision 4: rough-cut v1 review fixes (`docs/reviews/roughcut_v1.md`, top-10 items 3, 4, 8 and 9)
+
+1. **Ghosts read as Jades (113.89–119.44, 127.88–129.62).**
+   - **New ghost look:** `ghostsprite.py` now bakes a translucent line-art Jade in the F6c/F8 manner. Her own drawing is turned into a duotone: crisp hue-ink line work, eyes, mouth and hair at full alpha, a pale hue fill at about 0.55, a bright near-white rim in the hue and a soft hue glow.
+   - **E2c sizing:** every constellation ghost is now **290 px tall (27% of frame height)**. Horizontal poses are limited by their width.
+   - **E2c layout:** each ghost has its own slot around the agents.
+     - Ghosts 1–8 already stand there; 8 pops on its chop.
+     - Ghosts 9–12 freeze exactly where she is on their chop, then grow and glide to their slot in 0.35 s.
+     - Ghost 13 stays where it froze.
+   - **E2c push-in:** now 1.00 → 1.08, so every slot stays in frame.
+   - **E5b gold twin:** the opaque twin is now a ghost.
+     - A nano clean plate removes her from the left half (`media/shots/E5/plate_e5b_left.png`, feathered before the warp's black wedge, which caused the earlier seam).
+     - She is redrawn per frame as a gold line-art ghost at 0.85 × ~0.6 fill with a glow outline (`tools/sections/D/ghostseq.py` → `media/shots/E5/ghost_twin_gold_{rgb,alpha}.mp4`).
+     - Live Jade on the right is matted by `take_e5_hand_1_right/`.
+2. **Anagram stall (126.25–130.50).** The total timing is unchanged (126.25 → 130.50).
+   - **E5a** keeps 126.25–127.88. Its blank right half is filled with a nano-painted Loop street canyon with an L trestle (`plate_e5a_fill.png`, masked to the blank region). The duplicate girl that nano drew there was removed with a second edit.
+   - **E5b** hand-off now runs **127.88–129.62 (1.74 s)**; the slip is visible in the twin's hand.
+   - **E5c** is **0.88 s (two beats, 129.62–130.50)**, and the question is already written when it appears.
+3. **E3 lyric.** "Rewind." is now ink on a paper halo, size 112, y 1000, below the jacket band, with the period. The ribbon orbit was retuned for the singing director's 1.3× push-in (centre (949, 571), radii 740 × 435). The occluder mask builder now applies the same crop remap as `tools/sing/polish.py remap-mask`. Their remapped cached mask is used as is.
+4. **NYC landmarks.**
+   - **E5b:** the Empire State Building behind her is replaced by a flat-crowned Chicago tower (nano edit, patched).
+   - **E6a/E6b:** the ESB and Chrysler in the rooftop skylines are replaced by Chicago towers, including a Willis-like one. The fix is a nano edit of an engraved frame, patched where it differs.
+5. **E7 ribbons** are capped at 10, one more per beat, thinner and with more pencil grain, so the meter close-ups stay readable.
+
+**Still open after revision 4:**
+- E6b's camera drifts slightly, so a small spire near the centre skyline is still visible late in the shot (about 133+).
+- The Grant Park field plate (E2b and the E7 reuse) also has a spire resembling the ESB in its distant skyline.
+- E4's stream still uses engine-tinted ghosts, not line-art.
+- E8 redaction is left as it is, per the coordinator.
+
+Cost of revision 4: 9 nano-banana-pro edits, about $1.21.
+
+## Revision 5 (v3 pass): the restaged chase
+
+Jade's v2 notes (`docs/revisions/B.md`, plan in `docs/revisions/B_research.md`). Drop 2 now replays the rev-B level
+(platform → beam → chasm → lawn → hotel → wall → the tabletop street of books), always left to right or up, never at an
+agent. Every shot from E1 to E7 uses the new `media/shots/B_<take>/take_1*` clips; the v2 tables above and below are
+history. Review clips: `media/reviews/v3/B/` (+ `manifest_drop2.json`).
+
+| Shot | Time | Content | Clip |
+|---|---|---|---|
+| E1 | 112.96–113.89 | v2 residue bloom + mote burst; she bursts off along the platform. Chop 1 freezes her mid-sprint. | `plat` |
+| E2 1–8 | 113.89–116.95 | One hard cut per chop, each attempt ending on its chop and popping a line-art ghost that hangs over the next attempt: mid-leap, on the beam, short of the far wall, flat dive, lawn zig, zag past the notice board, wall-kick. ◀◀ scrub, flash, punch, `GHOSTS n`. | `leap` ×2, `chasm_short`, `chasm_dash`, `lawn`, `lawn2`, `kick` |
+| E2 9–13 | 116.95–119.44 | One held shot of the side wall (plate ×1.4 from the top edge). Five attempts; ghosts at the awning, the ledge, the stairs, the top landing and just short of the cornice: a ladder of five Jades, 27–38% of frame height. Ghosts 11 and 12 step aside 0.3 s after freezing. | `climb` |
+| E3 | 119.44–122.95 | rev-A's watercolor singer (`media/sing/E3/v3_sync_1080.mp4`, in 0, rate 1), push 1.0→1.08 on her head (960, 380). Orbit re-fitted: centre (960, 600), 780×400, −8°; occluder = the take matted by her per-frame matte, so ribbons always pass behind her. "Rewind." lower third as v2. | rev-A |
+| E4a | 122.95–124.38 | The boost: a blue ghost (an earlier iteration) kneels and launches her (launch on 123.50, cornice catch on the cut). "Rewind." pinned on the limestone wall, IM Fell, residue orange. | `boost` (in 1.04, ×1.3) |
+| E4b | 124.38–126.25 | A gold ghost lying on the roof hauls her up by the wrist; she is over the ledge before the cut. | `haul_b` (retake; in 0.05, ×1.3) |
+| E5a | 126.25–128.76 | She and the gold ghost (leading, lower) slide hand in hand down a giant book in Escher's *Still Life and Street*. | `slide` (in 0, ×1.1) |
+| E5b | 128.76–130.50 | The gold ghost points at two identical spines; both labels read `BANACH–` / `TARSKI` (pinned, IM Fell ink capitals); she realises and smirks. | `spine` (in 1.9) |
+| E6a | 130.50–131.38 | Dodge roll; the agents collide on 130.94 (punch); jump cut on that beat to her spring from bare ground, airborne at 131.38. | `roll_b` (retake) |
+| E6b | 131.38–131.82 | Freeze + flash; she bursts into 150 motes over a clean frozen plate. | `roll_b` frame 92 |
+| E6c | 131.82–134.00 | Two mote clouds implode into two crouched Jades over the heap; on the bar line 132.26 they sprint apart with an orange and a blue ribbon. The take's rainbow streaks: reds remapped, the rest hidden under the clean heap plate. | `two` |
+| E7 | 134.00–139.00 | `plat` and `leap` with the doubling (2, 4, 8, 16 on 134.00/134.44/134.88/135.32, continuing across the cut), the v2 meter insert, `chasm_dash` with sixteen copies fanned into a sheaf, `ear`, `lawn` with the copies running away; v2 wash, capped ribbons, white flash on 139.00. | |
+| E8 | 139.00–141.00 | Unchanged. | v2 |
+
+Rev 5b (Jade's notes on the v3 cut, `media/reviews/v3/B/manifest_drop2.json`): keep v2's opening and cut to the v3
+retries; compress the hint (point while sliding, boost, swarm, double and split). Dropped: `boost`, `slide`, `spine`,
+`roll`, `roll_b`, and the retries on the beam and the flat dive.
+
+**Ghost twins** (E4b, E5, E6a), as v2's E5b gold twin but per frame:
+`split2.py` splits the shared engrave matte into the two girls (seed boxes + a marker watershed on the frame, tracked
+frame to frame; `--kmeans` for the slide, where they hold hands throughout; `swarm_boost` = tracked before the launch,
+k-means after, on the colour-gated `jmatte` so the agents stay out) → `take_1_ghost/` and `take_1_live/`;
+`patch.py` lays a nano clean plate (`media/shots/B_plate_*/kf_v1.jpg`) only where the ghost girl ever is;
+`ghostseq.py` bakes her as a moving line-art ghost (`media/shots/_D/v3/ghost_*_{rgb,alpha}.mp4`). The live girl is drawn
+on top from her own matte. The lawn copies use a colour-gated matte (`jmatte.py`) because the engrave matte also holds
+the agents. `HUE[5]` vermilion became amber `#E9A23B` (no red).
+
+**Changed from the brief:** the atomize burst plays one beat on the frozen frame (131.38–131.82) before the implode,
+so `two` runs 131.82–134.00; the boost→haul cut stays at 124.38; the haul is a retake because in take 1 the hauled
+girl crawls over the lying one and the two cannot be separated.
+
+**Cost:** 2 Seedance retakes (`roll_b`, `haul_b`) ≈ $1.50, 5 nano clean plates ≈ $0.67; rev 5b: 2 nano clean plates
+(`plate_slidept`, `plate_swarm`) ≈ $0.27 (the `slide_point` and `swarm_boost` takes were ordered by the coordinator).
+
+**Weak:** the E7 chasm sheaf and the lawn fan read as a dense rainbow mass more than as sixteen separate Jades; the
+level ghosts in E2 1–8 sit over a different place for 0.4 s (the next attempt), so they read as afterimages, not
+positions; the haul plate's roof is slightly lighter inside the patch; in E6a the agents pile onto the blue ghost
+(she stands among them, opaque and pale) rather than meeting in empty space, and her foot stays ghost-tinted for a
+few frames while it sits in the cupped hands.
+
 ## Ghost choreography (the 13 chops)
 
 The chop times come from `timing.json → lyrics.vocal_chops`. Ghost k is revealed on chop k (ghosts layer `on: [t]`, with a 0.12 s pop).

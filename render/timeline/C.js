@@ -1,6 +1,7 @@
 // Section C: Verse 2, "the precision platformer" (V2a–V2n, 56.54–112.96). Director's doc: docs/sections/C.md
 // Cut list locked to the timing.json beat grid. Each row = one cut: [start, end, clip, take, clipIn, rate, extra].
 // Plates are engraved takes (tools/engrave); clips with Jade carry the engrave matte so she stays in colour.
+import verse2B from './_B_verse2.js';   // rev-B: 94.06–112.96 (the restaged chase) lives in _B_verse2.js
 const S = 'media/shots/';
 const GIRL = new Set(['V2a3', 'V2b3', 'V2c4', 'V2c5', 'V2d2', 'V2e2', 'V2f2', 'V2h1', 'V2i1', 'V2i2', 'V2i3', 'V2i4',
   'V2j1', 'V2j2', 'V2k1', 'V2k2', 'V2k3', 'V2l1', 'V2l2', 'V2m1', 'V2n1']);
@@ -61,20 +62,6 @@ const CUTS = [
   [92.79, 93.00, 'V2g1', 1, 0.72, 1, { scale: 1.3, y: 40, flash: true }],
   // V2h respawn (bar 54), V2i race, V2j field (top-down), V2k too fast, V2l ring, V2m shot
   [93.66, 94.06, 'V2h1', 2, 0.25, 1.2, { scale: 1.5, x: 480, y: -240 }],
-  [94.06, 95.86, 'V2i1', 1, 0.5, 1, { ghost: [[0, 230], [0.9, 60, 'inOut'], [1.8, -170, 'inOut']] }],
-  [95.86, 96.74, 'V2i1', 1, 2.6, 1, { ghost: [[0, -190], [0.88, -420, 'inOut']] }],
-  [96.74, 97.62, 'V2i3', 1, 0.5, 1, { ghost: [[0, -160], [0.88, -380, 'inOut']] }],
-  [97.62, 98.28, 'V2i4', 1, 0.3, 1.5],
-  [98.28, 100.70, 'V2j1', 1, 0.0, 1, { ribbon: 2.4 }],
-  [100.70, 102.46, 'V2j2', 1, 0.3, 1.3],
-  [102.46, 104.22, 'V2j1', 1, 3.5, 1, { ribbon: 1.7 }],
-  [104.22, 105.98, 'V2k2', 2, 1.2, 1, { stutter: 1.35, scale: 1.06 }],
-  [105.98, 107.72, 'V2k2', 2, 3.6, 1, { stutter: 1.35, scale: 1.06 }],
-  [107.72, 108.67, 'V2k3', 2, 0.5, 1.2],
-  [108.67, 109.92, 'V2l1', 1, 0.3, 1.5, { stutter: 1.0 }],
-  [109.92, 110.78, 'V2l2', 1, 1.4, 1],
-  [110.78, 111.22, 'V2m1', 2, 0.35, 1, { flash: true, flashAt: 0.1, flashAmt: 0.45 }],
-  [112.66, 112.96, 'V2n1', 1, 1.78, 1],
 ];
 
 const plate = (clip, take) => `${S}${clip}/take_${take}_engraved.mp4`;
@@ -130,19 +117,13 @@ function shotFor([start, end, clip, take, clipIn, rate, x = {}], i, T) {
 }
 
 export default function sectionC({ T }) {
-  const shots = CUTS.map((c, i) => shotFor(c, i, T));
+  const shots = [...CUTS.map((c, i) => shotFor(c, i, T)), ...verse2B({ T }).shots];
 
   // 92.79 kaizo trap → 2 frames of black → "Reload." LOADING screen (V2h)
   shots.push({ id: 'C_V2g_black', start: 93.00, end: 93.07, layers: [{ type: 'solid', color: '#000000' }] });
   shots.push({ id: 'C_V2h_loading', start: 93.07, end: 93.66, background: INK, layers: [
     { type: 'canvas', module: 'hud', params: { mode: 'loading', title: 'Reload.', titleSize: 64, deaths: 4097, spinner: true,
       tip: 'The Time Variance █████████ can only follow what it can trace.', progress: [[0, 0], [0.55, 1, 'outCubic']], bg: INK } }] });
-  // V2n: freeze on the hit, invert (P5 grammar), arcade CONTINUE? 9 … 8; the ◀◀ slam is the V2n1 cut at 112.66
-  shots.push({ id: 'C_V2n_continue', start: 111.22, end: 112.66, background: PAPER, layers: [
-    { type: 'video', src: plate('V2m1', 2), in: 0.79, rate: 1, freeze: 0, fit: 'cover', x: [[0, 0], [0.3, 330, 'outCubic']] },
-    { type: 'video', src: plate('V2m1', 2), in: 0.79, rate: 1, freeze: 0, fit: 'cover', x: [[0, 0], [0.3, 330, 'outCubic']], matte: matte('V2m1', 2), keepColor: true },
-    { type: 'solid', color: PAPER, rect: [0, 0, 780, 1080], opacity: [[0, 0], [0.3, 0.92]] },  // inverts to ink under `negative`
-  ], fx: [{ type: 'negative', amount: [[0, 0], [0.3, 1, 'outCubic']] }, { type: 'wobble', amount: [[0, 0.6], [0.4, 0]] }] });
   shots.sort((a, b) => a.start - b.start);
 
   const ov = (id, start, end, layer) => ({ id, start, end, layers: [layer] });
@@ -151,12 +132,6 @@ export default function sectionC({ T }) {
     ov('C_hud_car', 56.54, 90.14, { type: 'canvas', module: 'hud', opacity: [[0, 0, 'hold'], [0.042, 1, 'hold'], [0.083, 0.25, 'hold'], [0.125, 1]],
       params: { mode: 'platformer', side: 'right', iteration: 4097, deaths: 4096, timer: { from: '56.54' } } }),
     ov('C_hud_respawn', 93.66, 94.06, { type: 'canvas', module: 'hud', params: { mode: 'platformer', side: 'right', color: INK, margin: 104, iteration: 4097, deaths: 4097, timer: { from: '56.54' } } }),
-    // dark chip behind the race readout (it sat over busy brick); no red anywhere
-    { id: 'C_race_chip', start: 94.06, end: 98.28, layers: [{ type: 'solid', color: INK, rect: [1300, 36, 600, 112], opacity: 0.95 }] },
-    ov('C_hud_race', 94.06, 98.28, { type: 'canvas', module: 'hud', params: { mode: 'race', side: 'right', iteration: 4096,
-      split: [[0, 0.42], [1.8, 0.12], [2.6, -0.04], [4.2, -0.31]], color: PAPER, splitColor: [[0, PAPER, 'hold'], [2.55, '#5fd16a']] } }),
-    ov('C_hud_field', 98.28, 110.78, { type: 'canvas', module: 'hud', params: { mode: 'platformer', side: 'right', color: INK, iteration: 4097, deaths: 4097, timer: { from: '56.54' } } }),
-    ov('C_hud_continue', 111.30, 112.66, { type: 'canvas', module: 'hud', x: -560, params: { mode: 'continue', from: 9, every: 0.8, start: '111.40', press: 'PRESS ◀◀' } }),
 
     // lyrics
     ov('C_lyr_nowim', 83.40, 84.86, { type: 'canvas', module: 'lowerthird', params: { color: PAPER, text: 'And now I’m', sync: 'lyric', size: 76 } }),
@@ -164,16 +139,7 @@ export default function sectionC({ T }) {
       color: PAPER, accent: ORANGE, impact: 1.4, tilt: 3 } }),
     ov('C_lyr_sirens', 90.14, 92.79, { type: 'canvas', module: 'pin', params: { style: 'etch', text: 'sirens in my mirror …', sync: 'lyric', size: 74, color: '#fbf8f1', panel: 'rgba(11,11,12,0.6)',
       corners: [800, 682, 1780, 746, 1776, 812, 800, 752] } }),
-    ov('C_lyr_race', 94.06, 98.28, { type: 'canvas', module: 'lowerthird', params: { color: INK, halo: 0.9, size: 74 } }),
-    ov('C_lyr_zigzag', 98.28, 104.17, { type: 'canvas', module: 'lowerthird', params: { color: '#c8661a', halo: 1, haloColor: PAPER, size: 84, y: 980 } }),
-    ov('C_lyr_toofast', 104.17, 108.67, { type: 'canvas', module: 'lowerthird', params: { color: INK, halo: 0.9, size: 74 } }),
-    ov('C_lyr_nowarning', 108.67, 110.78, { type: 'canvas', module: 'lowerthird', params: { color: INK, halo: 0.9, size: 74 } }),
-    ov('C_lyr_shot', 110.78, 111.62, { type: 'canvas', module: 'whisper', params: { text: 'shot', sync: 'lyric', x: 420, y: 330, size: 44 } }),
-    ov('C_lyr_timestops', 111.62, 112.66, { type: 'canvas', module: 'whisper', params: { text: '… and time stops', sync: 'lyric', x: 400, y: 990, size: 34, color: '#a9a49b' } }),
-    // the hit: Celeste mote burst at her torso (V2m1 impact point, read off the plate)
-    ov('C_motes', 110.78, 112.66, { type: 'canvas', module: 'motes', keepColor: true, params: { at: '110.93', x: 1000, y: 470, count: 64 } }),
-    // the ◀◀ on the arcade button (no model-drawn glyphs)
-    ov('C_rw_glyph', 112.66, 112.96, { type: 'canvas', module: 'pin', params: { style: 'plain', text: '◀◀', font: '"Press Start 2P"', size: 120, color: INK, x: 700, y: 470, rotate: -8 } }),
+    ...verse2B({ T }).overlays,
   ];
   return { section: 'C', shots, overlays };
 }

@@ -1,0 +1,179 @@
+[
+ {
+  "note": "always be running away from them, jump from a train platform onto a steel beam, jump over a chasm, trajectory looks like she’s not about to make it, but then she uses a dash",
+  "v2_time": "1:34",
+  "shots": [
+   "V2i",
+   "B_plat",
+   "B_leap",
+   "B_chasm_short",
+   "B_chasm_dash",
+   "B_chasm_dash_b"
+  ],
+  "status": "done",
+  "after": "media/reviews/v3/B/0134_platform_beam_chasm_dash.mp4",
+  "before_range": [
+   93.07,
+   98.28
+  ],
+  "what_changed": "Always left to right: she sprints down the L platform with agents flooding in behind ('A SHADOW' / 'CHASING ME' on the hanging signs, word-timed; 'me' is sung after the cut, so it lands with 'chasing'), leaps onto the steel beam, and at the chasm her graphite shadow jumps first, falls short at the wall and bursts into grey motes on the 97.18 downbeat. She jumps the same gap, drops below the lip, and on 'race' a Celeste dash fires (2-frame freeze, dark frame, white ring, three pale-blue afterimages laid flat across the gap), and she skids onto the lawn before the cut. One retake (chasm_dash_b, $0.75) gave her a short falling arc; it is joined at the dash to take 1's landing."
+ },
+ {
+  "note": "“zigzag across the grass” - running inside a circle of agents is tense but unexciting, we should take an actual grassy field in Chicago (perhaps near the Drake Hotel, renamed Hilbert) and she’s zigzagging, and they’ve opened fire but miss her several times, one speaks into an earpiece, and at “just too fast” one of them spawns around the corner from the Hilbert Hotel",
+  "v2_time": "1:38",
+  "shots": [
+   "V2j",
+   "B_lawn",
+   "B_lawn2",
+   "B_ear"
+  ],
+  "status": "done",
+  "after": "media/reviews/v3/B/0138_zigzag_field.mp4",
+  "before_range": [
+   98.28,
+   104.22
+  ],
+  "what_changed": "The ring of agents is gone: an open lawn by the Hilbert Hotel, agents in a firing line at frame left, and she zigzags away toward the hotel, turning on the beats. Four misses on 98.94/99.38/99.82/100.26: a ruled trace line to where she just was, a muzzle starburst, turf thrown up and a scar that stays. 'I ZIGZAG' is painted flat on the lawn in perspective, word-timed ('zag' on the second z in the vocal, 98.78). Closer: 'ACROSS THE FIELD OF GRASS' on a park notice board; a miss punches a hole in the board (101.14), another hits turf behind her (102.00). Then an agent with two fingers to his earpiece while she is tiny, far off. The take's own cut-back toward the agents is skipped with a jump cut on the 101.58 beat; 'grass' lands on the board two frames before the cut, so it is held as a lower third over the earpiece shot."
+ },
+ {
+  "note": "running towards agents doesn’t make sense, the point is to run away from them, and she’s fundamentally a pacifist heroine",
+  "v2_time": "1:44",
+  "shots": [
+   "V2k",
+   "V2l",
+   "V2m",
+   "V2n",
+   "B_skip",
+   "B_glance",
+   "B_skid",
+   "B_cornerclean",
+   "B_pistol",
+   "B_shot"
+  ],
+  "status": "partial",
+  "after": "media/reviews/v3/B/0144_too_fast_no_warning.mp4",
+  "before_range": [
+   104.22,
+   112.96
+  ],
+  "what_changed": "She never runs at an agent. Side-scroll to the hotel with the v2 frame-skip on every beat (the agents jump pose per beat but, in this take, do not visibly close distance), a glance back at an empty lawn, then at the hotel corner the agent spawns on the 107.72 downbeat, flickering in over three frames (he is painted out with the engraved clean plate before that), and she skids to a stop. 'With no warning' punches in on the same take; there is no trace line. Low-angle pistol kept at or below her waist, the hit with the mote burst at the impact point, and CONTINUE? now freezes on the new hit frame. Partial only because the agents don't actually close in during the frame-skip."
+ },
+ {
+  "note": "running towards agents doesn’t make sense, the point is to run away from them, and she’s fundamentally a pacifist heroine",
+  "v2_time": "1:53",
+  "shots": [
+   "E1",
+   "E2"
+  ],
+  "status": "done",
+  "after": "media/reviews/v3/B/0153_thirteen_retries.mp4",
+  "before_range": [
+   112.96,
+   119.44
+  ],
+  "what_changed": "Rev 5b: 112.96-114.905 is v2's opening again (see the 'initial dodge roll' note); chops 4-8 are five v3 retries in level order, one hard cut per chop, each freezing as a coloured line-art ghost: off the platform mid-leap, short of the far wall, lawn zig, zag past the notice board, wall-kick at the hotel corner; then one held shot up the side wall where chops 9-13 leave a ladder of five ghosts."
+ },
+ {
+  "note": "2:07 - the boost: she should actually climb up successfully after the boost (or cut to another scene before we see her drop downwards from the boost)",
+  "v2_time": "2:07",
+  "shots": [
+   "E4a",
+   "E4b"
+  ],
+  "status": "done",
+  "after": "media/reviews/v3/B/0203_boost_and_climb.mp4",
+  "before_range": [
+   122.95,
+   126.25
+  ],
+  "what_changed": "Rev 5b: no wall boost. She climbs the fire escape up her own five ghosts from the E2 climb shot (each at its frozen pose, brightening as she passes through it) and reaches the cornice in ghost 13's pose on the 124.38 cut; then the gold ghost lying on the roof hauls her over the ledge (haul_b) before 126.25. \"Rewind.\" is painted large on the brickwork from 123.0."
+ },
+ {
+  "note": "2:08 - ‘banach tarski’ hint - what if we find a more clever way to deliver the hint? just a crazy idea, what if there are giant books on the table and ethereal Jade grabs protagonist Jade’s hand and as they slide, ethereal Jade points out a ‘banach-tarski’ on the spine of a book? then the moment being surrounded by agents would be a good moment to do a dodge roll as agents rush each other, and she atomizes in mid-air and lands as two copies who run in separate directions",
+  "v2_time": "2:08",
+  "shots": [
+   "E5a",
+   "E5b",
+   "E6a",
+   "E6b",
+   "E6c"
+  ],
+  "status": "done",
+  "after": "media/reviews/v3/B/0206_books_hint_split.mp4",
+  "before_range": [
+   126.25,
+   134.0
+  ],
+  "what_changed": "Rev 5b: compressed. Sliding hand in hand down the giant book (new take slide_point), the gold ghost points at the upright book's spine label, which reads BANACH– / TARSKI. Then (new take swarm_boost) the blue ghost boosts her straight up as the agents rush in (foot leaves the hands on 130.04), the agents crash into each other beneath her on 130.94, she hangs at the peak, freezes and bursts into motes on 131.38, two Jades form and land, and on 132.26 they sprint apart. The standing pointing shot and the dodge roll are gone."
+ },
+ {
+  "note": "2:06 - I like the rainbow running Jades, but the placement of where the agents are doesn’t make sense for the directly she’s going. It makes sense for them to be pursuing her and she’s running away from them. It also make sense for this to be a post ‘banach-tarski’ moment.",
+  "v2_time": "2:06",
+  "shots": [
+   "E7"
+  ],
+  "status": "done",
+  "after": "media/reviews/v3/B/0214_rainbow_jades.mp4",
+  "before_range": [
+   134.0,
+   141.0
+  ],
+  "what_changed": "The rainbow Jades moved after the split (134.00-139.00): on the platform and the beam they double on every beat (2, 4, 8, 16) with the agents behind them, then the meter insert, sixteen copies fanning over the chasm and dashing, the agent on his earpiece, and the copies running away across the lawn into the white flash. Weakest part: the sixteen-copy chasm sheaf and the lawn fan are dense and read more as a rainbow mass than as separate Jades."
+ },
+ {
+  "note": "There’s some really good ideas in the chase scenes, but we can make them massively better. Take a closer look at Kaizo Trap, online footage of games like Celeste, and super Meat Boy. And then let’s do a pass on thinking deeply about improvements to chase scenes:",
+  "v2_time": "1:53-2:21",
+  "shots": [
+   "E1",
+   "E2",
+   "E3",
+   "E4",
+   "E5",
+   "E6",
+   "E7",
+   "E8"
+  ],
+  "status": "done",
+  "after": "media/reviews/v3/B/0153_drop2_whole.mp4",
+  "before_range": [
+   112.96,
+   141.0
+  ],
+  "what_changed": "All of Drop 2 restaged on the rev-B level (left to right, away from the agents), with rev-A's watercolor singer in E3 (ribbons re-fitted to her per-frame matte, slow 1.0-1.08 push on her head). E8 unchanged."
+ },
+ {
+  "note": "the initial dodge roll from v2 at 1:53 (for about 1.5 seconds before she flips into the same frame as the agents) is a really cool shot, maybe we can keep that and then cut to her running in the start of the v3 sequence",
+  "v2_time": "1:53",
+  "shots": [
+   "E1",
+   "E2a",
+   "E2 4-8"
+  ],
+  "status": "done",
+  "after": "media/reviews/v3/B/0153_thirteen_retries.mp4",
+  "before_range": [
+   112.96,
+   119.44
+  ],
+  "what_changed": "v2's E1 + E2a restored exactly (residue bloom on the L tracks, sprint, superman dive and roll, column kick, ghosts 1-3 with the counter), 112.96-114.905. Hard cut at 114.905 to the v3 retries, starting with her sprinting off the platform into the leap; the eight v3 level retries are compressed to five (chops 4-8), ghost hues continuing from v2's 1-3. The climb ladder (chops 9-13) is unchanged."
+ },
+ {
+  "note": "compression of the Banach Tarski hint, because standing still while pointing at it is too overstated. ethereal Jade can point to a book while they're sliding together, then another Jade boosts her, agents swarm her, she doubles and splits",
+  "v2_time": "2:03-2:14",
+  "shots": [
+   "E4a",
+   "E4b",
+   "E5",
+   "E6a",
+   "E6b",
+   "E6c"
+  ],
+  "status": "done",
+  "after": "media/reviews/v3/B/0206_books_hint_split.mp4",
+  "before_range": [
+   122.95,
+   134.0
+  ],
+  "what_changed": "122.95-126.25: she climbs up her own ghost ladder to the cornice, then the gold ghost hauls her onto the roof (see 0203_boost_and_climb.mp4). 126.25-128.76: new take slide_point; they slide hand in hand and the gold (ethereal) Jade points at the upright book's spine, whose label reads BANACH– / TARSKI (corner-pinned, legible at 960x540). 128.76-131.38: new take swarm_boost; agents rush in from both sides, the blue ghost boosts her straight up (launch 130.04), the agents crash into each other beneath her (130.94), she hangs at the peak. 131.38: freeze, flash, mote burst; 131.82 two Jades form and land; 132.26 they sprint apart. The spine shot and the dodge roll are dropped; E7 and E8 unchanged."
+ }
+]
