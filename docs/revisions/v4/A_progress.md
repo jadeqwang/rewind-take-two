@@ -91,7 +91,7 @@ Updated: 2026-10-11 17:50. Clock times below are local (CDT). Brief: `docs/revis
 
 ## Running now
 
-Nothing. Handed over to Jade (17:50); waiting for her review of the two clips.
+Nothing. **Jade approved both clips** (see decisions). A's brief is done unless B's Bean push needs a re-check (step 8).
 
 ## Next steps, in order
 
@@ -126,6 +126,9 @@ Nothing. Handed over to Jade (17:50); waiting for her review of the two clips.
 - 17:25, Jade: "let's go with H2+F6". **The pick is `media/sing/v4/stills/pick_H2+F6.png`** (hair `hair_gloss__gpt_1`,
   face `face_e3_neutral__nbp_1`). Unsmiling, so the v4 take prompt in `wc_takes.py` stands as written.
 
+- After watching `0012_singing_S1.mp4` and `0233_singing_V3S.mp4`, Jade: "both of those look good, i didn't even notice
+  blinking". Both takes approved; no blink-free V3S take needed (step 7 is off).
+
 ## What B needs (v4-B, 2026-10-11 ~17:25)
 
 - S1: her on the plate as `media/sing/S1/v4_sync_1080.mp4` **and** a per-frame matte dir
@@ -154,4 +157,4 @@ B's push runs 13.04-13.92: she is small (face about 13 % of frame height) on "Th
 
 ## Open questions
 
-- Jade: is the closed-eyes opening of V3S (2:33) fine, or a blink-free take?
+None.

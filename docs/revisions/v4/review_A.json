@@ -27,6 +27,6 @@
       ]
     ],
     "what_changed": "Both singing shots are remade from the still you picked (H2 hair from gpt-image-2.5, F6 face from nano-banana-pro): smooth glossy hair with highlights, and no smile at any point in either take. Five image models were tried for the hair and three for the expression. She is at the same scale, position and framing as v3, over the same Bean plates, and every pixel of the first frame is your picked portrait (no model repainted her). 0:12 and 2:33 are rendered in the film; the _take clips are the plain takes with the song. Lip sync is measured from lip closures and baked into the files (0:12 +0.45 s, 2:33 +0.09 s, untouched frames); nobody has checked it by ear, so please listen for sync. 2:33 opens with her eyes closed for about a quarter of a second before she starts the line, and she blinks once more on 'my'; a spare take without blinks exists but its mouth runs slow and would need a retime. 0:12 will change again when B's wide Bean opening goes in (she starts small and the camera pushes in); B builds that on these files. The held 'Rewind.' at 2:00 was not remade because B's note replaces that shot.",
-    "question": "Is the closed-eyes opening at 2:33 fine, or do you want a blink-free take there (one more take, about $1.60)?"
+    "jade": "Approved 2026-10-11: \"both of those look good, i didn't even notice blinking\". The 2:33 take stays as it is."
   }
 ]
