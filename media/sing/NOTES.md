@@ -234,3 +234,64 @@ Each `v3_sync_1080.mp4` is already lip-synced: **file time 0 = the shot's in-poi
 
 nano-banana-pro 2 × $0.134 = $0.27; Seedance 2.5 720p: S1 8 s $1.85, E3 2 × 5 s $2.31, V3S 2 × 7 s $3.24.
 **Total $7.67** of the $30 cap.
+
+---
+
+# v4 glossy hair, no smile (2026-10-11 evening, revision pass v4, instance A)
+
+Jade's notes on the v3 preview: hair "more glossy and natural looking", "try a couple image models", "reduce smiling
+magnitude in order to fit the mood of the song", stills first and then animate. S1 and V3S are remade; E3 is not
+(B's 2:00 note replaces that shot). Everything is beside the v3 files with a `v4_` prefix; no v3 file changed.
+
+## Files for the engine
+
+Same contract as v3: **file time 0 = the shot's in-point, rate 1, no lag to add**, 1920×1080, 24 fps, clean plate, no
+push, grain or grade. Same figure scale, position and bottom cut line as v3 (face height 343.7 vs 341.5 px, eye
+midpoint within 2 px on frame 0).
+
+| Shot | Song in–out | File | Take | Sync baked in | Matte (per frame, BiRefNet on the synced file, no grow) |
+|---|---|---|---|---|---|
+| S1 (+S1b, S2_her) | 12.60–19.64 | `media/sing/S1/v4_sync_1080.mp4` (7.46 s) | `v4_take_1` | one lag, +0.45 s; untouched frames | `media/sing/S1/v4_sync_1080_matte/` (179 PNG) |
+| V3S | 153.98–159.14 | `media/sing/V3S/v4_sync_1080.mp4` (5.54 s) | `v4_take_2` | one lag, +0.09 s; untouched frames | `media/sing/V3S/v4_sync_1080_matte/` (133 PNG) |
+
+`render/timeline/A.js` (`S1_SRC`, `A_S1_lyric` matte) and `render/timeline/E.js` (`V3S_SRC`, `V3S_lyric` matte) point at
+these. The S1 take's figure reaches the bottom edge on every frame (bottom-row span 478–483 / 1422–1429 px).
+
+## How it was made
+
+1. **Still candidates** (`tools/sing/v4_stills.py`, $2.44): hair and expression edited separately on the top of
+   `inputs/jade_watercolor_jacket_v6.png`. Hair: nano-banana-pro, gpt-image-2.5-flare, seedream-5-pro,
+   grok-imagine-image-2.0, flux-1-kontext-max. Expression (small closed-lip smile, a trace, neutral, tense):
+   nano-banana-pro, gpt-image-2.5-flare, seedream-5-pro. In `media/sing/v4/stills/` with a JSON beside each; sheet
+   `contact_sheet_v4A.jpg`. flux-kontext repainted her face without glasses; grok barely changed the hair; the
+   "natural" prompt turned the hair brown on all three models; the "tense" faces read tired.
+2. **Jade's pick: H2 + F6** = `hair_gloss__gpt_1` + `face_e3_neutral__nbp_1`. `tools/sing/v4_pick.py` (no paid call)
+   maps both onto the portrait at 2× by eye/nose landmarks, registers the face layer on the glasses and lays the
+   face oval into the hair candidate → `media/sing/v4/stills/pick_H2+F6.png`.
+3. **First frames without a repaint** (`tools/sing/v4_first.py`). `wc_paint.py` with the new portrait shrank her to
+   0.77× twice (`first/v4_paint_wc_{1,2}.*`, rejected). BiRefNet mattes her cleanly straight off the portrait's own
+   paper, so the plate goes behind her by compositing in v3 geometry; only the sleeve ends past the portrait's edges
+   come from the v3 figure. → `first/v4_S1_first.jpg`, `first/v4_V3S_first.jpg`, `first/v4_her_mask_first_frame.png`.
+4. **Takes** (`WC_VER=v4 tools/sing/wc_takes.py`, Seedance 2.5 720p avatar, same slices as v3; the prompt now says she
+   never smiles and sings tense and determined):
+
+| Take | Lag (corr / closures) | Verdict |
+|---|---|---|
+| S1 `v4_take_1` | +0.49 / +0.47, +0.41 | **pick**; blink at about 16.2 (on the cutaway) |
+| S1 `v4_take_2` | +0.39 / +0.39, +0.66 | spare: lag drifts, eyes closed at 12.9 |
+| V3S `v4_take_1` | −0.20 / −0.08, −0.32 | spare: no blinks, but the mouth runs at about 0.9× |
+| V3S `v4_take_2` | +0.13 / +0.04, +0.06 (r .68) | **pick**; eyes closed for the first 6 frames, blink on "my" |
+
+5. `WC_VER=v4 wc_post.py sync|matte|review_sync` (`SYNC_V4`).
+
+## What is weak
+
+- V3S opens with her eyes closed for 0.25 s, then she opens them and sings.
+- Lags are measured from lip closures; nobody has judged them by ear.
+- The gpt-image hair is about 1.05 px per portrait px, upscaled 1.3× in the first frame. The takes are 720p, so it
+  does not show there.
+
+## Cost (tags `v4A_*`)
+
+Stills $2.44 (18 images), rejected repaint $0.27, Seedance 2.5 720p 2 × 8 s + 2 × 7 s = $6.94. **Total $9.64** of the
+$50 soft limit.

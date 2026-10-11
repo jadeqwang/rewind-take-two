@@ -33,7 +33,8 @@ const PLATE = {
 // v2 (pencil trace): S1_SRC 'media/sing/S1/take_1_lips.mp4', S1_IN = 12.6 - 12.9 + 1.04, S2_her on take_1_lips_wide.mp4, push from 1.3
 const LIP = 'B';
 const S1_IN = 0 + { A: 0.15, B: 0, C: -0.15 }[LIP];   // clip time at song 12.60
-const S1_SRC = 'media/sing/S1/v3_sync_1080.mp4';
+// v4 (Jade: glossier hair, no smile; media/sing/NOTES.md, "v4"): same framing, scale and timing as v3. v3: 'media/sing/S1/v3_sync_1080.mp4'
+const S1_SRC = 'media/sing/S1/v4_sync_1080.mp4';
 // slow push over the three singing cuts (1.0 -> 1.08 keeps the band, dot and 1420 MHz roundel in frame)
 const S1_PUSH = (a, b) => ({ from: { scale: a }, to: { scale: b }, ease: 'linear' });
 // v2's S2 push from her face into the Lake Shore Drive headlights (unused since v3; kept for switching back)
@@ -199,7 +200,7 @@ export default ({ T }) => ({
     // render/timeline/_arc_lyric.js), one word per sung onset, behind her (her matte is laid back over it). S1x: "MY
     // DISSERTATION DEFENSE," on the plaza paving of the reflection. Layer times are local to 12.60: S1 0-3.54, S1x 3.54-7.04.
     { id: 'A_S1_lyric', start: 12.6, end: 19.64, layers: (() => {
-      const ARC = 'render/timeline/_arc_lyric.js', HER = { src: 'media/sing/S1/v3_sync_1080_matte/', mode: 'luma' };
+      const ARC = 'render/timeline/_arc_lyric.js', HER = { src: 'media/sing/S1/v4_sync_1080_matte/', mode: 'luma' };
       const arc = (text, times, r, at) => ({ text, times, cx: 965, cy: 981, r, ...at, size: 88, style: 'woodcut' });
       const LEFT = [arc('THE NIGHT', ['word:the@13', 'word:night@13'], 1014, { to: -31 }), arc('BEFORE', ['word:before@13'], 930, { to: -31 })];
       // S1x: the plate drifts left about 38 px/s; the quad rides it (plate px before the layer's 1.04 scale)

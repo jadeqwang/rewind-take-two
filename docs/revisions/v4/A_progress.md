@@ -1,6 +1,6 @@
 # v4 instance A progress (the singing clips)
 
-Updated: 2026-10-11, session start. Brief: `docs/revisions/v4/A.md`.
+Updated: 2026-10-11 17:50. Clock times below are local (CDT). Brief: `docs/revisions/v4/A.md`.
 
 ## Done
 
@@ -45,14 +45,14 @@ Updated: 2026-10-11, session start. Brief: `docs/revisions/v4/A.md`.
   modified. The v4 prompt wording assumes an unsmiling pick: if Jade picks F1/F2 (small smile), soften `LOOK["v4"]`
   and `V4` in `wc_takes.py`.
 
-- **Jade asked for a combo sheet (18:05):** H1, H2, H3 × F5, F6, F7, F10 → 12 combined stills
+- **Jade asked for a combo sheet (17:15):** H1, H2, H3 × F5, F6, F7, F10 → 12 combined stills
   `media/sing/v4/stills/pick_<H>+<F>.png` (2x portrait, each with `.json` and `_check.jpg`), sheet
   `media/sing/v4/stills/combos_H123_F5-6-7-10.jpg` (copy `media/reviews/v4/A/stills_combos_H123_F5-6-7-10.jpg`).
   No paid calls. Keys: H1 `hair_gloss__nbp_1`, H2 `hair_gloss__gpt_1`, H3 `hair_gloss__sdr_1`, F5
   `face_e2_trace__sdr_1`, F6 `face_e3_neutral__nbp_1`, F7 `face_e3_neutral__gpt_1`, F10 `face_e4_tense__gpt_1`.
   F7 still measures a slight smile (0.18); F5, F6, F10 measure none.
 
-- **v4 first frames done** (18:45). `media/sing/first/v4_S1_first.jpg` (over `plate_close_1`), `v4_V3S_first.jpg`
+- **v4 first frames done** (17:32). `media/sing/first/v4_S1_first.jpg` (over `plate_close_1`), `v4_V3S_first.jpg`
   (over `plate_truth_1`), `v4_her_mask_first_frame.png`, `v4_fig.jpg` + `v4_her_alpha.png` (sheet geometry). Copies
   for review: `media/reviews/v4/A/still_S1_first_frame.jpg`, `still_V3S_first_frame.jpg`.
   - **Method changed from v3: no repaint.** `wc_paint.py` with the new portrait shrank her to 0.77x on both tries
@@ -63,7 +63,7 @@ Updated: 2026-10-11, session start. Brief: `docs/revisions/v4/A.md`.
   - Against v3: same x0/y0/scale; bottom-row figure span v3 673-1928, v4 674-1938 (crop px of 2576); matte area
     x1.011. `v4_base16.jpg` / `v4_base.json` exist too (from `wc_base.py`, x0 pinned to 724) but are not used.
 
-- **Takes done** (19:00; 4 x Seedance 2.5 720p, $6.94; spend total about $232.21). All 16:9, none reframed, none
+- **Takes done** (17:39; 4 x Seedance 2.5 720p, $6.94; spend total about $232.21). All 16:9, none reframed, none
   smile. Lags from `look.py` (`media/sing/<SHOT>/v4_take_N.look.json`, `_look.jpg`, `_win.jpg`):
   - S1 `v4_take_1` **pick**: closures +0.47 / +0.41, opening +0.49 → one lag +0.45. Blink at about 16.2 (off her, on
     the cutaway). `v4_take_2`: lag drifts 0.39 → 0.66, eyes closed at 12.9; spare.
@@ -75,12 +75,23 @@ Updated: 2026-10-11, session start. Brief: `docs/revisions/v4/A.md`.
   the synced file, no grow. Plain review clips (take + song, not rendered in the film):
   `media/reviews/v4/A/0012_singing_S1_take.mp4`, `0233_singing_V3S_take.mp4`.
 
+- **Checked against v3** (17:40): face height 343.7 vs 341.5 px, eye midpoint within 2 px on frame 0; S1 take matte
+  bottom span 478-483 / 1422-1429 (v3 472-484 / 1417-1427), no gap on any frame; matte clean over pale paper.
+  `v4-B` told and agreed (it is not editing A.js / E.js; its Bean push for S1 waits on Jade's go and will build on the
+  v4 paths).
+- **Timelines point at v4** (17:41, uncommitted until the preview renders pass): `render/timeline/A.js` `S1_SRC` and
+  the `A_S1_lyric` `HER.src` matte dir; `render/timeline/E.js` `V3S_SRC` and the `V3S_lyric` `HER.src`.
+
+- **Rendered in the film** (17:42, 540p preview): `media/reviews/v4/A/0012_singing_S1.mp4` (12.6-19.64),
+  `media/reviews/v4/A/0233_singing_V3S.mp4` (153.98-159.14). Both checked on frame sheets: lyric arcs sit behind her
+  with the v4 mattes, no smile, hair holds. V3S opens with her eyes closed for 6 frames (0.25 s).
+- **Manifest** `docs/revisions/v4/review_A.json`: status `done`, with one question (the V3S opening blink).
+- **Notes** `media/sing/NOTES.md`: v4 section added. Timelines, docs and scripts committed.
+- **Spend:** v4A total $9.64 of the $50 soft limit (stills $2.44, rejected repaint $0.27, takes $6.94).
+
 ## Running now
 
-Nothing long. Checking the mattes and bottom edge against v3, then: tell `v4-B` the files are there, set `S1_SRC` in
-`render/timeline/A.js` and the V3S source in `render/timeline/E.js` (tell B first), preview-render the two ranges
-(`node render/engine/render.mjs --range … --preview --encode`), cut the film review clips, update
-`docs/revisions/v4/review_A.json`, add a v4 section to `media/sing/NOTES.md`, commit.
+Nothing. Handed over to Jade (17:50); waiting for her review of the two clips.
 
 ## Next steps, in order
 
@@ -96,18 +107,23 @@ Nothing long. Checking the mattes and bottom edge against v3, then: tell `v4-B` 
 4b. Combine the picks into one portrait (free, local: both are aligned to the portrait, so paste the face oval of
    the F pick into the H pick with a feathered mask; or one nano-banana-pro call with both as references if the
    seam shows). Save as `media/sing/v4/stills/pick_portrait.png` (971x1620 geometry or 2x), show Jade once.
-5. (running) Animate the pick (v3 method, except the first frames, see above: `wc_base` → `wc_paint` → `wc_restore` → `wc_comp` → `wc_takes` → `look.py` →
+5. (done) Animate the pick (v3 method, except the first frames, see above: `wc_base` → `wc_paint` → `wc_restore` → `wc_comp` → `wc_takes` → `look.py` →
    `wc_post.py`), S1 and V3S only. The v3 scripts hard-code `inputs/jade_watercolor_jacket_v6.png`, `v3_` file
    names and the prompt line "begins on her painted smile and sings from it": give them a v4 source/prefix and
    rewrite that line for the picked expression. Outputs: `media/sing/first/v4_*`, `media/sing/<SHOT>/v4_take_N.*`,
    `media/sing/<SHOT>/v4_sync_1080.mp4` + `v4_sync_1080_matte/` (see "What B needs"). E3 is on hold (B's 2:00 note replaces it; ask `v4-B` first).
-6. Review clips in `media/reviews/v4/A/`, manifest `docs/revisions/v4/review_A.json`. Say in the hand-over that
-   Jade should listen for lip sync.
+6. (done) Review clips and manifest; hand-over says to listen for lip sync.
+7. If Jade wants a blink-free V3S: `WC_VER=v4 $PY tools/sing/wc_takes.py submit V3S --note="no blink at the start"`
+   (about $1.62), `look.py V3S v4_take_3`, set `SYNC_V4["V3S"]` in `wc_post.py`, `sync`, `matte`, re-render
+   153.98-159.14. Or use spare `v4_take_1` with knots (153.98, 0.29), (154.722, 0.958), (157.12, 3.125),
+   (159.14, 5.25): rates about 0.9, so every frame is a cross-fade.
+8. When `v4-B` puts the wide Bean push into `A.js` (waiting on Jade's go), re-check S1 lip sync at small scale and
+   re-cut `0012_singing_S1.mp4` if B asks.
 
 ## Jade's decisions (verbatim, with time)
 
-- 18:05, Jade: "can you show me H1, H2, H3, combined with F5, F6, F7, f10 on a sheet?" (done).
-- 18:20, Jade: "let's go with H2+F6". **The pick is `media/sing/v4/stills/pick_H2+F6.png`** (hair `hair_gloss__gpt_1`,
+- 17:15, Jade: "can you show me H1, H2, H3, combined with F5, F6, F7, f10 on a sheet?" (done).
+- 17:25, Jade: "let's go with H2+F6". **The pick is `media/sing/v4/stills/pick_H2+F6.png`** (hair `hair_gloss__gpt_1`,
   face `face_e3_neutral__nbp_1`). Unsmiling, so the v4 take prompt in `wc_takes.py` stands as written.
 
 ## What B needs (v4-B, 2026-10-11 ~17:25)
@@ -124,7 +140,7 @@ Nothing long. Checking the mattes and bottom edge against v3, then: tell `v4-B` 
 - In `render/timeline/A.js` B edits S1's layers (plate, scale, kenBurns) and the `A_S1_lyric` overlay; A changes
   only `S1_SRC` / `S1_IN`. B builds against the v3 files until ours land. Tell B before editing.
 
-### More from v4-B (~18:05), for the S1 take
+### More from v4-B (~17:15), for the S1 take
 
 Previz: `media/reviews/v4/B/plans/bean/previz.mp4`, plan `docs/revisions/v4/plans/bean.md`.
 1. Matte dir is `<take file minus .mp4>_matte/` (`v4_sync_1080_matte/`), tight like v3's: BiRefNet on the synced
@@ -138,4 +154,4 @@ B's push runs 13.04-13.92: she is small (face about 13 % of frame height) on "Th
 
 ## Open questions
 
-None.
+- Jade: is the closed-eyes opening of V3S (2:33) fine, or a blink-free take?

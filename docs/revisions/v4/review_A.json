@@ -2,11 +2,31 @@
   {
     "note": "singing clips: (1) can we make my hair in the water color style more glossy and natural looking? Can you try a couple image models to see if that can be done? (2) reduce smiling magnitude in order to fit the mood of the song? maybe we try some still images to see if we can make that work and then try animating it?",
     "v3_time": "0:12",
-    "shots": ["S1", "V3S"],
-    "status": "question",
-    "after": "media/reviews/v4/A/stills_contact_sheet.jpg",
-    "before_range": [12.6, 16.14],
-    "what_changed": "Stills only so far, nothing animated. Hair and expression were edited separately on the reference portrait: 8 hair candidates (H1-H8, five image models) and 10 expression candidates (F1-F10, three models, from a small closed-lip smile to none and tense). H5 (flux-kontext) repainted her face and dropped her glasses, so it is out; H4 (grok) barely changed the hair; H6-H8 turned the hair brown.",
-    "question": "Which hair (H1-H8) and which expression (F1-F10)? The two get combined into one still, then S1 and V3S are animated from it."
+    "shots": [
+      "S1",
+      "V3S"
+    ],
+    "status": "done",
+    "after": "media/reviews/v4/A/0012_singing_S1.mp4",
+    "after_more": [
+      "media/reviews/v4/A/0233_singing_V3S.mp4",
+      "media/reviews/v4/A/0012_singing_S1_take.mp4",
+      "media/reviews/v4/A/0233_singing_V3S_take.mp4",
+      "media/reviews/v4/A/still_S1_first_frame.jpg",
+      "media/reviews/v4/A/stills_contact_sheet.jpg",
+      "media/reviews/v4/A/stills_combos_H123_F5-6-7-10.jpg"
+    ],
+    "before_range": [
+      12.6,
+      19.64
+    ],
+    "before_range_more": [
+      [
+        153.98,
+        159.14
+      ]
+    ],
+    "what_changed": "Both singing shots are remade from the still you picked (H2 hair from gpt-image-2.5, F6 face from nano-banana-pro): smooth glossy hair with highlights, and no smile at any point in either take. Five image models were tried for the hair and three for the expression. She is at the same scale, position and framing as v3, over the same Bean plates, and every pixel of the first frame is your picked portrait (no model repainted her). 0:12 and 2:33 are rendered in the film; the _take clips are the plain takes with the song. Lip sync is measured from lip closures and baked into the files (0:12 +0.45 s, 2:33 +0.09 s, untouched frames); nobody has checked it by ear, so please listen for sync. 2:33 opens with her eyes closed for about a quarter of a second before she starts the line, and she blinks once more on 'my'; a spare take without blinks exists but its mouth runs slow and would need a retime. 0:12 will change again when B's wide Bean opening goes in (she starts small and the camera pushes in); B builds that on these files. The held 'Rewind.' at 2:00 was not remade because B's note replaces that shot.",
+    "question": "Is the closed-eyes opening at 2:33 fine, or do you want a blink-free take there (one more take, about $1.60)?"
   }
 ]

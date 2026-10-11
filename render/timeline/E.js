@@ -41,7 +41,8 @@ function gShot(id, start, end, drift, note) {
 const V3S_VARIANT = 'B';
 const V3S_T0 = 153.98;
 const V3S_LAG = { A: 0.15, B: 0, C: -0.15 }[V3S_VARIANT];
-const V3S_SRC = 'media/sing/V3S/v3_sync_1080.mp4';
+// v4 (Jade: glossier hair, no smile; media/sing/NOTES.md, "v4"): same framing, scale and timing as v3. v3: 'media/sing/V3S/v3_sync_1080.mp4'
+const V3S_SRC = 'media/sing/V3S/v4_sync_1080.mp4';
 const v3s = (id, start, end) => ({ id, start, end, background: '#000000',
   layers: [{ id: 'sing', type: 'video', src: V3S_SRC, in: start - V3S_T0 + V3S_LAG, rate: 1, fit: 'cover', keepColor: true }] });
 
@@ -54,7 +55,7 @@ export default ({ T }) => ({
     // the Bean's rim, but here the mirror shows the truth, so it is written in residue-orange coloured pencil instead of
     // cut in white line. One word per sung onset; behind her (her matte is laid back over it); not over the cutaway.
     { id: 'V3S_lyric', start: 153.98, end: 159.14, layers: (() => {
-      const ARC = 'render/timeline/_arc_lyric.js', HER = { src: 'media/sing/V3S/v3_sync_1080_matte/', mode: 'luma' };
+      const ARC = 'render/timeline/_arc_lyric.js', HER = { src: 'media/sing/V3S/v4_sync_1080_matte/', mode: 'luma' };
       const arc = (text, times, r, at) => ({ text, times, cx: 965, cy: 981, r, ...at, size: 88, style: 'pencil', color: '#F08A24' });
       const LEGEND = [arc('THE NIGHT', ['word:the@153', 'word:night@153'], 1014, { to: -31 }), arc('BEFORE', ['word:before@154'], 930, { to: -31 }),
         arc('MY', ['word:my@157'], 1014, { from: 31 }), arc('DISSERTATION', ['word:dissertation@157'], 930, { from: 31 }),
