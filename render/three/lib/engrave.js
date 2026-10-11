@@ -23,12 +23,12 @@ export const N_MAT = 32;
 
 // colored-pencil palette per material (sRGB hex). Warm: orange, sky blue, gold; Klimt/Kandinsky accents.
 export const PALETTE = {
-  [MAT.stone]: '#F2B42A', [MAT.brick]: '#F2641A', [MAT.steel]: '#3B97EC', [MAT.ties]: '#C77A3A',
+  [MAT.stone]: '#F2B42A', [MAT.brick]: '#F58A1F', [MAT.steel]: '#3B97EC', [MAT.ties]: '#C77A3A',
   [MAT.rail]: '#2E4790', [MAT.roof]: '#EE9A22', [MAT.ground]: '#F3D08C', [MAT.glass]: '#2754C2',
   [MAT.suit]: '#24262E', [MAT.skin]: '#E9B494', [MAT.shades]: '#101014', [MAT.shirt]: '#F4F1EA',
   [MAT.jJacket]: '#F6F3EC', [MAT.jBand]: '#FF7A1A', [MAT.jHair]: '#17151A', [MAT.jPants]: '#1C2A4A',
   [MAT.jShoe]: '#F8F6F0', [MAT.jTop]: '#121216', [MAT.jPencil]: '#F2C230', [MAT.brass]: '#E0A526',
-  [MAT.tower]: '#D9A21E', [MAT.door]: '#B23A26', [MAT.darkStone]: '#C9672F', [MAT.phones]: '#FF7A1A',
+  [MAT.tower]: '#D9A21E', [MAT.door]: '#A8327E', [MAT.darkStone]: '#D9822F', [MAT.phones]: '#FF7A1A',
   [MAT.car]: '#1A1B22', [MAT.road]: '#C9C2B4', [MAT.water]: '#4FA3E0',
 };
 
@@ -331,8 +331,9 @@ float pencil(vec2 px, float ang, float pressure, float seed) {
 }
 
 vec3 shadeColor(vec3 c) {
-  // shadow pencil: deepen, cool toward ultramarine/violet (colored-pencil layering)
-  return mix(c * c, vec3(0.20, 0.22, 0.45), 0.35);
+  // shadow pencil: deepen while keeping the hue (squaring orange made it crimson: no red in this film),
+  // cooled toward ultramarine (colored-pencil layering)
+  return mix(c * 0.7, vec3(0.22, 0.25, 0.52), 0.32);
 }
 
 // Klimt gold mosaic (towers, turntable): returns pattern ink (0..1) and color tweak
@@ -421,7 +422,7 @@ void main() {
       ink = max(ink, (1.0 - smoothstep(0.035, 0.07, ring)) * step(r, 1.02) * 0.9);
       if (bloom > 0.0 && r < 1.0) {
         float k = floor(r * 4.0);
-        vec3 rc = k < 1.0 ? vec3(0.95, 0.38, 0.12) : k < 2.0 ? vec3(0.96, 0.78, 0.22) : k < 3.0 ? vec3(0.33, 0.63, 0.95) : vec3(0.98, 0.52, 0.18);
+        vec3 rc = k < 1.0 ? vec3(0.97, 0.52, 0.13) : k < 2.0 ? vec3(0.96, 0.78, 0.22) : k < 3.0 ? vec3(0.33, 0.63, 0.95) : vec3(0.98, 0.52, 0.18);
         float cov = pencil(frag, 1.05 + k * 0.6, 0.95, 3.0 + k) * bloom;
         col = mix(col, col * rc, cov);
       }

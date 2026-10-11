@@ -72,7 +72,7 @@ export function createScene() {
 
   function draw(t) {
     update(t);
-    st.render({ seed: boilSeed(t, meta.loop), sun: { x: 250, y: 165, r: 64 }, target: st.target, bloomAll: params.color });
+    st.render({ seed: boilSeed(t, meta.loop), sun: params.sun === false ? null : { x: 250, y: 165, r: 64 }, target: st.target, bloomAll: params.color });
   }
 
   // compositing anchors: where a 2D Jade billboard could stand (the seam corner and the turntable)

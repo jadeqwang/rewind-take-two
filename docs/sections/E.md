@@ -59,6 +59,22 @@ Made by a generation sub-agent (Seedance 2.0 720p from nano-banana-pro keyframes
 - Sprites (`media/shots/E_sprites/{walk_front,walk_back,crank}`): RGBA, stabilised walk-in-place loops with feet
   baselines, used by `lib/sprite.js` in M1–M3. Jade is ~240 px tall in M3 and ~200 px at the end of M1.
 
+## Rough cut v1 fixes (docs/reviews/roughcut_v1.md, items 4 and 7 + section E)
+
+- **M3 "trace" (168.12–169.40):** the word is now traced left to right in bold dots (~0.4 s), fills in as solid ink, and stays legible to the cut;
+  only then does the dotted line leave the last letter and wander off frame. No more grey smear.
+- **M2 road lyric (161.00–165.18):** painted at ×3 size as a crawl. The word being sung sits on the flat back stretch of the loop, reading upright;
+  sung words slide back into the twist and fade (they were reading upside down at the front). Sedans run at ×2 speed. The 162.30 clunk gets a flash,
+  a punch-in and a harder shake. The camera pushes tighter on Jade at the crank (viewH 5.6).
+- **No red:** the palette now uses orange brick #F58A1F (was #F2641A), a magenta door #A8327E (was crimson #B23A26) and darkStone #D9822F. The
+  shadow pencil no longer squares the base colour (squaring turned orange into crimson): it keeps the hue and cools toward ultramarine. The sun's
+  inner ring is orange. Red-pixel audit (hue <14°/>335°, sat >0.45) on 167.6, 168.5, 169.2 and 214.0 finds 0–5 pixels per frame.
+- **The "target" circles** (the engraved sun) are removed from all Section E 3D shots and O1 (`sun: false`).
+- **V3S lyric:** the ink halo is raised to 0.85, so the cutaway over the light diorama reads.
+- **G2:** reframed 5% down and scaled 0.95, so the raised hand no longer clips the top edge.
+- **G1:** wider speed variance in the drifting lines.
+- Not done: Jade's head turn in G1 (it would need a new take). The singing clip is untouched (the singing director owns `media/sing/`).
+
 ## What's weak / next
 
 - G4's first ~0.3 s (perspective) hatches heavily, because the line pitch maths assumes an orthographic camera. It reads

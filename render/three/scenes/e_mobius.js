@@ -170,46 +170,54 @@ export function createScene(defaults = {}) {
   function paintText(s) {
     const g = textCanvas.getContext('2d');
     g.clearRect(0, 0, 8192, 512);
-    const fs = 150;
+    const fs = 440;
     g.font = `${fs}px ${fontOK ? 'IMFellE' : 'serif'}`;
     g.textBaseline = 'middle';
     // centre-line dashes (painted road)
     g.fillStyle = 'rgba(0,0,0,0.85)';
     for (let x = 0; x < 8192; x += 180) g.fillRect(x, 250, 80, 12);
-    // the lyric runs along the flat back stretch of the loop (u = 215..345 deg), left to right on screen
+    // the lyric at x3 size, as a crawl: the word being sung sits on the flat back stretch of the loop (u ~ 292 deg),
+    // where it reads upright; sung words slide back along the road into the twist; unsung words are not painted yet
     const words = WORDS.filter((w) => w[1] > 160.9 && w[1] < 164.5);
-    const gap = fs * 0.36;
-    const total = words.reduce((acc, w) => acc + g.measureText(w[0]).width + gap, -gap);
-    const uMid = (277 / 360) * 8192;
-    let x = uMid - total / 2;
-    for (const [w, ws] of words) {
-      const width = g.measureText(w).width;
-      const a = clamp((s - ws) * 12);                       // 2-frame ink bleed in
-      // orientation on screen of the texture axes at this word (u -> texture x, v -> texture up)
+    const gap = fs * 0.34;
+    const xs = []; let acc = 0;
+    for (const [w] of words) { const wd = g.measureText(w).width; xs.push([acc, wd]); acc += wd + gap; }
+    const uC = (292 / 360) * 8192;
+    let k = 0; while (k < words.length - 1 && s >= words[k + 1][1]) k++;
+    // ease the crawl from word k-1's centre to word k's centre over 0.22 s after k's onset
+    const cen = (i) => xs[i][0] + xs[i][1] / 2;
+    const e = smooth(words[k][1], words[k][1] + 0.22, s);
+    const off = uC - (k > 0 ? cen(k - 1) + (cen(k) - cen(k - 1)) * e : cen(0));
+    for (let i = 0; i < words.length; i++) {
+      const [w, ws] = words[i];
+      const a = clamp((s - ws) * 12);
+      if (a <= 0) continue;
+      const width = xs[i][1], x = xs[i][0] + off;
+      if (x + width < 0 || x > 8192) continue;
       const u = UJ + (x + width / 2) / 8192 * 2 * Math.PI;
+      const uDeg = (x + width / 2) / 8192 * 360;
+      const win = smooth(232, 258, uDeg) * (1 - smooth(352, 372, uDeg));   // only on the flat back stretch
+      if (win <= 0.01) continue;
       const p0 = st.project(P(u, 0)), pu = st.project(P(u + 0.01, 0)), pv = st.project(P(u, 0.05));
-      const fx = (pu.x - p0.x) < 0, fy = (pv.y - p0.y) > 0;  // screen y grows downward
-      if (a > 0) {
-        g.save(); g.globalAlpha = a;
-        g.clearRect(x - 10, 70, width + 20, 372);           // the dashes make way for the word
-        g.fillStyle = '#000';
-        g.translate(x + width / 2, 256); g.scale(fx ? -1 : 1, fy ? -1 : 1);
-        g.fillText(w, -width / 2, 0);
-        g.restore();
-      }
-      x += width + gap;
+      const fx = (pu.x - p0.x) < 0, fy = (pv.y - p0.y) > 0;
+      g.save(); g.globalAlpha = a * win;
+      g.clearRect(x - 14, 20, width + 28, 472);
+      g.fillStyle = '#000';
+      g.translate(x + width / 2, 268); g.scale(fx ? -1 : 1, fy ? -1 : 1);
+      g.fillText(w, -width / 2, 0);
+      g.restore();
     }
     textTex.needsUpdate = true;
   }
 
   // ---------------------------------------------------------------- motion
-  const OMEGA = 1.55;                                     // rad/s: a lap in ~4 s, "speeding"
+  const OMEGA = 3.1;                                      // rad/s: a lap in ~2 s, "speeding"
   const theta = (s) => lerp(thA, thB, clunk((s - ROT0) / (ROT1 - ROT0)));
   function carState(k, s) {
     // unbounded band parameter; the lead car (k=0) reaches the join's incoming end just as Jade starts the crank
     const uArrive = UJ - DEL + 2 * Math.PI * 2;           // lap parity even: on the top face at the join
     const tArrive = ROT0 - 0.05;
-    const u = uArrive - OMEGA * (tArrive - s) - k * 1.55;
+    const u = uArrive - OMEGA * (tArrive - s) - k * 2.3;
     const vSeg = OMEGA * R;                                // linear speed
     if (k === 0 && s > tArrive) {
       // on the segment: drives in along state A, brakes while the crank turns, then exits along the chord
@@ -258,8 +266,8 @@ export function createScene(defaults = {}) {
     jade.update({ pos: jp, dir: V(1, 0, 0), mode: cranking ? 'crank' : 'idle', t: s - START, camAz: ISO_AZ });
     // camera: wide on the loop, in toward Jade and the join for the crank, back out on "Lake Shore"
     const inU = smoother(160.2, ROT0, s) * (1 - smoother(ROT1 + 0.1, 163.4, s));
-    const tgt = V(0.2, 1.7, 0.6).lerp(V(1.6, Y + 0.1, -0.2), inU);
-    st.setCamera(tgt, lerp(9.6, 7.4, inU), ISO_AZ, ISO_EL);
+    const tgt = V(0.2, 1.7, 0.6).lerp(V(2.2, Y + 0.2, 0.2), inU);
+    st.setCamera(tgt, lerp(9.6, 5.6, inU), ISO_AZ, ISO_EL);
     paintText(s);
   }
 
@@ -268,7 +276,7 @@ export function createScene(defaults = {}) {
     update(s);
     const pj = st.project(this_pier.clone().setY(Y + 0.6));
     const ppu = st.pixelsPerUnit();
-    st.render({ seed: boilSeed(s, 1000), target: st.target, sun: params.sun === false ? null : { x: 250, y: 165, r: 64 },
+    st.render({ seed: boilSeed(s, 1000), target: st.target, sun: null,
       blooms: [{ x: pj.x, y: pj.y, r: ppu * (0.85 + 0.9 * smooth(ROT0, ROT1 + 0.5, s)) }] });
   }
 

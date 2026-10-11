@@ -20,7 +20,7 @@ export function draw(lt, env) {
     // cluster placement: a ring field around her, avoiding her body
     const r0 = 260 + 720 * Math.sqrt(hash(i, 1));
     const a0 = hash(i, 2) * Math.PI * 2;
-    const w = (0.035 + 0.05 * hash(i, 3)) * (hash(i, 4) < 0.5 ? 1 : -1) * 0.6;
+    const w = (0.02 + 0.11 * hash(i, 3) ** 2) * (hash(i, 4) < 0.5 ? 1 : -1) * 1.1;   // wide speed variance: the page never sits still
     const ang = a0 + w * (twos - 141) + 0.0;
     const r = r0 * (1 + 0.55 * kick * (0.6 + 0.8 * hash(i, 5))) + 14 * Math.sin(twos * 0.9 + i);
     const x = cx + Math.cos(ang) * r * 1.35, y = cy + Math.sin(ang) * r * 0.82;

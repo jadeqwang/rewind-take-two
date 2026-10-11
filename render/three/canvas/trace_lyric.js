@@ -19,7 +19,7 @@ export function draw(lt, env) {
   const ws = words.map((w) => ({ ...w, width: g.measureText(w.text).width }));
   const total = ws.reduce((a, w) => a + w.width + space, -space);
   let x = 960 - total / 2;
-  const halo = p.halo ?? 0.85;
+  const halo = p.halo ?? 0.9;
   // soft paper halo behind what is shown, for legibility over the diorama
   const shownW = ws.filter((w) => t >= w.start);
   if (halo > 0 && shownW.length) {
@@ -33,42 +33,49 @@ export function draw(lt, env) {
   }
 }
 
-// the word drawn as a dotted trace, then the trace losing the path
+// "trace": a pencil point traces the word left to right in a crisp dotted line (~0.4 s, legible), the letters settle into
+// solid ink behind the pen, then the tracing line loses the path: it leaves the last letter and wanders off-frame on
+// the riser. The word itself stays put and readable to the cut.
 function drawTrace(g, w, x, y, size, t, env) {
-  const t0 = w.start, t1 = t0 + 0.45, tLose = 168.6, tEnd = 169.4;
+  const t0 = w.start, t1 = t0 + 0.42, tLose = 168.62, tEnd = 169.4;
   if (t < t0) return;
   const reveal = clamp((t - t0) / (t1 - t0));
-  const lose = smooth(tLose, tEnd, t);
+  const settle = smooth(t1 - 0.05, t1 + 0.25, t);
   g.save();
-  g.strokeStyle = C.ink; g.fillStyle = C.ink;
-  g.lineWidth = 2.2; g.lineCap = 'round';
-  // letters: dotted outline, revealed left to right like a pen tracing them
+  g.strokeStyle = C.ink; g.fillStyle = C.ink; g.lineCap = 'round'; g.lineJoin = 'round';
+  // revealed region follows the pen
   g.save();
-  g.beginPath(); g.rect(x - 4, y - size * 1.2, (w.width + 8) * reveal, size * 1.6); g.clip();
-  g.setLineDash([0.1, 6.5]);
-  g.globalAlpha = 1 - 0.85 * lose;
-  // the dots drift apart as the trace forgets the shape
-  const jit = lose * size * 0.5;
-  g.translate(hsig(1, Math.floor(t * 12)) * jit * 0.1, 0);
+  g.beginPath(); g.rect(x - 6, y - size * 1.3, (w.width + 12) * reveal, size * 1.8); g.clip();
+  // dotted tracing line round each letter: bold dots, legible at phone size
+  g.lineWidth = Math.max(3, size * 0.06);
+  g.setLineDash([0.1, size * 0.11]);
+  g.globalAlpha = 1 - 0.55 * settle;
   g.strokeText(w.text, x, y);
+  // the traced letters fill in with ink as the pen passes (crisp, no blur)
+  g.setLineDash([]);
+  g.globalAlpha = 0.35 + 0.65 * settle;
+  g.fillText(w.text, x, y);
   g.restore();
-  // the wandering line: leaves the last letter and drifts off across the page and out of frame
-  if (t > t0 + 0.3) {
-    const len = smooth(t0 + 0.3, tEnd, t);
-    const pts = [];
-    let px = x + w.width + 4, py = y - size * 0.3, ang = -0.2;
-    const N = 160;
+  // pen point while tracing
+  const penX = x + (w.width + 8) * reveal, penY = y - size * (0.32 + 0.18 * Math.sin(reveal * 19));
+  // after the word: the line loses the path and wanders off
+  const pts = [[penX, penY]];
+  if (t > t1) {
+    const len = smooth(t1, tEnd, t) * (0.3 + 0.7 * smooth(tLose - 0.2, tEnd, t));
+    let px = penX, py = penY, ang = -0.35;
+    const N = 190;
     for (let i = 0; i < N * len; i++) {
-      ang += hsig(7, i, Math.floor(i / 9)) * 0.22 + Math.sin(i * 0.07) * 0.05 - 0.004;
+      ang += hsig(7, i, Math.floor(i / 9)) * 0.24 + Math.sin(i * 0.07) * 0.06 - 0.006;
       px += Math.cos(ang) * 9; py += Math.sin(ang) * 9;
       pts.push([px, py]);
     }
-    g.setLineDash([0.1, 7]);
+    g.lineWidth = Math.max(3, size * 0.05);
+    g.setLineDash([0.1, size * 0.13]);
     g.beginPath();
     pts.forEach(([a, b], i) => (i ? g.lineTo(a, b) : g.moveTo(a, b)));
     g.stroke();
-    // the pen point
-    if (pts.length) { const [a, b] = pts[pts.length - 1]; g.setLineDash([]); g.beginPath(); g.arc(a, b, 3.2, 0, 7); g.fill(); }
   }
+  const [a, b] = pts[pts.length - 1];
+  g.setLineDash([]); g.beginPath(); g.arc(a, b, Math.max(3.5, size * 0.065), 0, 7); g.fill();
   g.restore();
 }

@@ -5,7 +5,8 @@
 //   M1 151.62 (87:1)  V3S 153.98-159.14 (singing take, cutaway 90:2-90:3)  M2 159.14 (91:2)  M3 165.18 (94:4.4)
 //   O1 211.64 (121:1) - 218.92 (125:1)
 const PAPER = '#ECE7DC';
-const three = (module, params = {}) => ({ id: '3d', type: 'three', module, params, linear: false, samples: 1 });
+// sun: false everywhere - the ringed sun read as an unexplained target in rough cut v1
+const three = (module, params = {}) => ({ id: '3d', type: 'three', module, params: { sun: false, ...params }, linear: false, samples: 1 });
 
 // G1-G3: the matted anime clip sits over the drifting engraving lines on a blank page. Clips are filled in from
 // media/shots/G*/chosen.json once approved (see E.md); until then the page shows the lines and a pending note.
@@ -13,7 +14,7 @@ const G_CLIPS = {
   // id: { src, matte, in, rate }  from media/shots/G*/chosen.json (G2 at 1.15x: pencil clears the bun at ~144.64,
   // the shot ends inside the hair fan; G3 at 1.4x fits the whole stroke into the shot)
   G1: { src: 'media/shots/G1/take_1_engraved.mp4', matte: 'media/shots/G1/take_1_matte/matte.mp4', in: 0.0, rate: 1.0 },
-  G2: { src: 'media/shots/G2/take_4_engraved.mp4', matte: 'media/shots/G2/take_4_matte/matte.mp4', in: 0.46, rate: 1.15 },
+  G2: { src: 'media/shots/G2/take_4_engraved.mp4', matte: 'media/shots/G2/take_4_matte/matte.mp4', in: 0.46, rate: 1.15, y: 54, scale: 0.95 },  // reframed down: the raised hand clipped the top edge
   G3: { src: 'media/shots/G3/take_4_engraved_soft.mp4', matte: 'media/shots/G3/take_4_matte/matte_dilated6.mp4', in: 1.2, rate: 1.4 },
 };
 function gShot(id, start, end, drift, note) {
@@ -22,7 +23,7 @@ function gShot(id, start, end, drift, note) {
     { id: 'paper', type: 'solid', color: PAPER },
     { id: 'lines', type: 'canvas', module: 'render/three/canvas/drift_lines.js', params: drift },
   ];
-  if (c) layers.push({ id: 'jade', type: 'video', src: c.src, in: c.in ?? 0, rate: c.rate ?? 1, fit: 'cover',
+  if (c) layers.push({ id: 'jade', type: 'video', src: c.src, in: c.in ?? 0, rate: c.rate ?? 1, fit: 'cover', y: c.y ?? 0, scale: c.scale ?? 1,
     ...(c.matte ? { matte: { src: c.matte, mode: c.matteMode || 'luma' } } : { blend: 'multiply' }), keepColor: true });
   else layers.push({ id: 'pending', type: 'canvas', module: 'slate', opacity: 0.0, params: { title: id, note } });
   return { id, start, end, background: PAPER, layers, fx: [{ type: 'paper', amount: 0.5 }] };
@@ -42,7 +43,7 @@ export default ({ T }) => ({
     // V3-1 lyric over the whole singing slot (incl. the cutaway), Section A's lower-third style; paper ink with a soft
     // ink halo because the plate's lower third is her white jacket
     { id: 'V3S_lyric', start: 153.98, end: 159.14, layers: [{ type: 'canvas', module: 'lowerthird', stage: 'post',
-      params: { color: PAPER, size: 50, y: 1022, halo: 0.5, haloColor: '#0b0b0c' } }] },
+      params: { color: PAPER, size: 50, y: 1022, halo: 0.85, haloColor: '#0b0b0c' } }] },
   ],
   shots: [
     gShot('G1', '81:1', '83:1', { boom: 144.54, cx: 990, cy: 600 }, 'G1 float clip pending'),
@@ -60,7 +61,8 @@ export default ({ T }) => ({
     v3s('V3S_b', 157.84, 159.14),                         // 157.84 = 90:3
     // M2: Mobius Lake Shore Drive (lyric painted on the road inside the module)
     { id: 'M2', start: 159.14, end: 165.18, background: PAPER, layers: [three('render/three/scenes/e_mobius.js')],
-      fx: [{ type: 'shake', on: [162.30], amp: 6, decay: 0.2 }] },
+      fx: [{ type: 'shake', on: [162.30], amp: 10, decay: 0.22 }, { type: 'flash', at: [162.30], dur: 0.12, amount: 0.45, color: '#ffffff' },
+        { type: 'punch', on: [162.30], amount: 0.04, decay: 0.25 }] },
     // M3: routed onto the Penrose stairs; "it couldn't trace"
     { id: 'M3', start: 165.18, end: '97:1', background: PAPER, layers: [
       three('render/three/scenes/e_loop.js', { shot: 'M3' }),
