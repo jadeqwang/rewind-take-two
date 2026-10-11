@@ -45,9 +45,16 @@ Updated: 2026-10-11, session start. Brief: `docs/revisions/v4/A.md`.
   modified. The v4 prompt wording assumes an unsmiling pick: if Jade picks F1/F2 (small smile), soften `LOOK["v4"]`
   and `V4` in `wc_takes.py`.
 
+- **Jade asked for a combo sheet (18:05):** H1, H2, H3 × F5, F6, F7, F10 → 12 combined stills
+  `media/sing/v4/stills/pick_<H>+<F>.png` (2x portrait, each with `.json` and `_check.jpg`), sheet
+  `media/sing/v4/stills/combos_H123_F5-6-7-10.jpg` (copy `media/reviews/v4/A/stills_combos_H123_F5-6-7-10.jpg`).
+  No paid calls. Keys: H1 `hair_gloss__nbp_1`, H2 `hair_gloss__gpt_1`, H3 `hair_gloss__sdr_1`, F5
+  `face_e2_trace__sdr_1`, F6 `face_e3_neutral__nbp_1`, F7 `face_e3_neutral__gpt_1`, F10 `face_e4_tense__gpt_1`.
+  F7 still measures a slight smile (0.18); F5, F6, F10 measure none.
+
 ## Running now
 
-Nothing. **Waiting for Jade's pick** (asked in the pane ~17:45): one H and one F from the contact sheet.
+Nothing. **Waiting for Jade's pick** from the combo sheet (shown ~18:10): one of the 12 `pick_<H>+<F>.png`.
 
 ## Next steps, in order
 
@@ -73,7 +80,7 @@ Nothing. **Waiting for Jade's pick** (asked in the pane ~17:45): one H and one F
 
 ## Jade's decisions (verbatim, with time)
 
-None yet in this session.
+- 18:05, Jade: "can you show me H1, H2, H3, combined with F5, F6, F7, f10 on a sheet?" (done; no pick yet).
 
 ## What B needs (v4-B, 2026-10-11 ~17:25)
 
@@ -88,6 +95,18 @@ None yet in this session.
 - E3 is going (replaced by game action). Do not remake it.
 - In `render/timeline/A.js` B edits S1's layers (plate, scale, kenBurns) and the `A_S1_lyric` overlay; A changes
   only `S1_SRC` / `S1_IN`. B builds against the v3 files until ours land. Tell B before editing.
+
+### More from v4-B (~18:05), for the S1 take
+
+Previz: `media/reviews/v4/B/plans/bean/previz.mp4`, plan `docs/revisions/v4/plans/bean.md`.
+1. Matte dir is `<take file minus .mp4>_matte/` (`v4_sync_1080_matte/`), tight like v3's: BiRefNet on the synced
+   file, no grow, no extra feather (she sits over pale paving at 42 % scale; a grown matte carries a dark rim).
+2. Her figure must reach the bottom edge of the frame across her whole width on every frame 12.60-13.92, arms at
+   her sides as in v3 (she is anchored to that edge while small).
+3. Behind her keep `plate_close_1` in the v3 crop: no baked push, grain or grade.
+4. Tell B if her scale, position or bottom cut line moves more than a few px from v3.
+B's push runs 13.04-13.92: she is small (face about 13 % of frame height) on "The" at 13.20, full size by
+"before". B has not edited `A.js` for S1 yet.
 
 ## Open questions
 
