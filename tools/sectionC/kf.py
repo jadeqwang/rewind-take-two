@@ -317,6 +317,20 @@ car_night("V2a4_s2", SIDE + "A wide multi-lane elevated highway at night: a dens
 job("V2a4_n2", NBP, NIGHT + SIDE + "A wide multi-lane elevated highway at night: a dense pack of eight " + SEDANS +
     ", racing left to right in staggered rows, filling the lower two thirds of the frame; two more black sedans merge "
     "in from an on-ramp at the upper right. Horizontal speed lines. " + LOOP_SKY + STYLE_NOGIRL)
+# rev 4: V2k re-done with the bun + pencil clearly visible (the pencil is the film's plant before G2)
+BUN = ("Her hair is clearly up in a tight loose bun high on the back of her head with the yellow pencil stuck through it, "
+       "plainly visible in this view; no hair hanging down, no ponytail. ")
+jade_day("V2k1_n4", "A low ground-level camera just behind the anime girl's right shoulder as she runs across an engraved "
+         "grass field, framed from the hips up, filling the frame edge to edge: her back and shoulder (white jacket "
+         "with the pale-blue circle on the back, orange band) large in the left foreground, her head turned back over "
+         "her shoulder in three-quarter profile. " + BUN + "Behind her in the field, five agents in black suits run "
+         "after her at mid-distance; the engraved Chicago skyline far behind.", agents=True)
+jade_day("V2k2_n4", SIDE + "At ground level in a grass field: the anime girl sprints left to right, large in the frame. "
+         + BUN + "Behind her on the left, a staggered line of agents in black suits running after her, the closest only "
+         "a few strides behind; engraved Chicago skyline behind.", agents=True)
+jade_day("V2k3_n4", SIDE + "A close tracking shot in a grass field: the anime girl sprints left to right, large in frame, "
+         "her head snapping toward the far side in shock. " + BUN + "Running neck and neck with her on her far side, an "
+         "agent in a black suit and black sunglasses keeps pace effortlessly, blank-faced.", agents=True)
 
 if __name__ == "__main__":
     cmd = sys.argv[1] if len(sys.argv) > 1 else "list"

@@ -28,10 +28,10 @@ const CUTS = [
   // V2c the bridge (bar 42): three held heroes on the "oh" swells (73.34, 76.93, 80.46)
   [72.48, 73.34, 'V2c1', 1, 1.0, 1.5],
   [73.34, 75.12, 'V2c2', 1, 1.5, 1, { hero: true }],
-  [75.12, 76.02, 'V2c3', 1, 1.4, 1],
+  [75.12, 76.02, 'V2c3', 1, 1.4, 1, { scale: 1.3, y: 150 }],
   [76.02, 76.90, 'V2c4', 1, 1.0, 1],
   [76.90, 78.66, 'V2c5', 1, 0.5, 1.2, { hero: true }],
-  [78.66, 79.56, 'V2c3', 1, 3.0, 1.2],
+  [78.66, 79.56, 'V2c3', 1, 3.0, 1.2, { scale: 1.3, y: 150 }],
   [79.56, 80.44, 'V2c6', 1, 1.5, 1.2],
   [80.44, 82.22, 'V2c7', 1, 1.0, 1, { hero: true }],
   [82.22, 83.10, 'V2c8', 1, 0.0, 1],
@@ -135,7 +135,7 @@ export default function sectionC({ T }) {
   const ov = (id, start, end, layer) => ({ id, start, end, layers: [layer] });
   const overlays = [
     // HUD cluster (top-right, this section only); 4-frame pop on bar 33
-    ov('C_hud_car', 56.54, 92.79, { type: 'canvas', module: 'hud', opacity: [[0, 0, 'hold'], [0.042, 1, 'hold'], [0.083, 0.25, 'hold'], [0.125, 1]],
+    ov('C_hud_car', 56.54, 90.14, { type: 'canvas', module: 'hud', opacity: [[0, 0, 'hold'], [0.042, 1, 'hold'], [0.083, 0.25, 'hold'], [0.125, 1]],
       params: { mode: 'platformer', side: 'right', iteration: 4097, deaths: 4096, timer: { from: '56.54' } } }),
     ov('C_hud_respawn', 93.66, 94.06, { type: 'canvas', module: 'hud', params: { mode: 'platformer', side: 'right', color: INK, iteration: 4097, deaths: 4097, timer: { from: '56.54' } } }),
     // dark chip behind the race readout (it sat over busy brick); no red anywhere
@@ -149,7 +149,7 @@ export default function sectionC({ T }) {
     ov('C_lyr_nowim', 83.40, 84.86, { type: 'canvas', module: 'lowerthird', params: { color: PAPER, text: 'And now I’m', sync: 'lyric', size: 76 } }),
     ov('C_lyr_back', 84.86, 89.40, { type: 'canvas', module: 'slam', params: { text: 'back on the road', sync: 'lyric', font: 'fell', size: 120, x: 1340, y: 200, maxWidth: 1000,
       color: PAPER, accent: ORANGE, impact: 1.4, tilt: 3 } }),
-    ov('C_lyr_sirens', 90.14, 92.79, { type: 'canvas', module: 'pin', params: { style: 'etch', text: 'sirens in my mirror …', sync: 'lyric', size: 64,
+    ov('C_lyr_sirens', 90.14, 92.79, { type: 'canvas', module: 'pin', params: { style: 'etch', text: 'sirens in my mirror …', sync: 'lyric', size: 74, color: '#fbf8f1', panel: 'rgba(11,11,12,0.6)',
       corners: [800, 682, 1780, 746, 1776, 812, 800, 752] } }),
     ov('C_lyr_race', 94.06, 98.28, { type: 'canvas', module: 'lowerthird', params: { color: INK, halo: 0.9, size: 74 } }),
     ov('C_lyr_zigzag', 98.28, 104.17, { type: 'canvas', module: 'lowerthird', params: { color: '#c8661a', halo: 1, haloColor: PAPER, size: 84, y: 980 } }),
