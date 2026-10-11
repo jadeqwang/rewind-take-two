@@ -1,0 +1,115 @@
+# Section D: Drop 2 + "Anomaly detected" (112.96–141.00)
+
+Shots E1, E2, E4–E8. E3 (119.44–122.95, singing #2) belongs to the singing director, and its slot is left empty.
+Timeline: `render/timeline/D.js`. It is **generated** by `tools/sections/D/build_timeline.py` from `media/shots/_D/takes.json`, so edit those two files rather than D.js.
+EDL mirror: `media/shots/D_edl.json`.
+Solo preview, with a slate in the E3 slot:
+`node render/engine/render.mjs --timeline render/timeline/_D_solo.js --range 112.96 141 --preview --encode`
+→ `render/engine/out/D_solo/D_solo_preview_112.96-141.00.mp4`.
+
+## Status
+
+All shots are in the engine and render end to end. The merge check against E.js shows no overlaps: D ends at 141.00 and G1 starts there.
+`render/timeline.js --list` currently fails because of **section A**: `A.js` imports a missing `_A_tracks.js`. That is not a D problem.
+
+| Shot | Time | Content | Source clips (Seedance 2.0 720p, engraved) |
+|---|---|---|---|
+| E1 | 112.96–113.89 | The frame floods orange, a pale-blue multiply wash passes over it, and a 260-mote Kandinsky burst comes from her start pose with a white flash and shake. Underneath, she bursts off her mark on the L tracks. | `trk_sprint_1` |
+| E2a | 113.89–114.905 | **L tracks, chops 1–3.** Each attempt ends exactly on its chop and freezes there as a coloured ghost. The next attempt begins with a 3-frame ◀◀ scrub (0.25 s of source), then plays: sprint → superman dash → wall-kick backflip. | `trk_sprint_1`, `trk_dash_1`, `trk_walljump_1` over a clean plate `E2/plate_trk.png` |
+| E2b | 114.905–116.95 | **Grant Park ground level, chops 4–8, a hard cut on every chop**: slide under the arms, aerial cartwheel over them, leapfrog vault, spin past (two poses). | `fld_slide/cartwheel/vault/spin_1` |
+| E2c | 116.95–119.44 | **The constellation, chops 9–13.** In a wide, she circles the ring of 8 agents. Ghosts 1–8 already stand around it: 1–3 small on the elevated tracks, 4–8 on the lawn. Every chop freezes another ghost where she is at that moment. A slow 1.06 push-in runs throughout. | `ring_circle_1` (srcTime remap so every chop lands on a visible pose) |
+| HUD | 113.89–119.44 | `GHOSTS n`, Press Start 2P, top right, ink on a paper chip. It ticks +1 on each chop with a snap odometer roll. | |
+| E4 | 122.95–126.25 | **"Rewind." #2, Super Meat Boy replay.** She leaps the gap in the L tracks toward the bewildered agents. Six earlier and later attempts on the same route (±0.33/0.67/1.0 s) fan in over 0.6 s, each in its own hue, so a stream of colour pours across the gap. A residue ribbon follows her matte. The lyric is IM Fell in Jade orange (residue). | `e4_stream_2` |
+| E5a | 126.25–127.88 | **Co-op boost** (Celeste). The kneeling twin is a blue ghost: the left part of the frame's matte is colourised. She steps into the cupped hands and vaults onto the roof. | `e5_boost_2` |
+| E5b | 127.88–128.76 | **Slip hand-off.** A gold ghost twin hands her the folded slip. | `e5_hand_1` |
+| E5c | 128.76–130.50 | Insert: her hands hold the slip, and *What's an anagram of / Banach–Tarski?* is already written in graphite (`pencil` module, corner-pinned to the paper; the slip barely moves, ≤8 px). It is held 1.74 s. | `e5_slip_1` |
+| E6a | 130.50–131.38 | **Banach–Tarski.** She stands, smirking, as agents close in from both sides. On beat 75:2 (130.94) the frame freezes and flashes. She bursts into 150 orange/blue/white motes, and her spot becomes a clean plate (nano-banana removal → engraved → feathered composite). | `e6_single_1` |
+| E6b | 131.38–134.00 | Two motes clouds implode (time-reversed) into **two Jades**, back to back. They burst apart in opposite directions while the agents collide and split. The orange and blue ribbons trail them. | `e6_split_1` |
+| E7 | 134.00–139.00 | **A cut on every beat (12 cuts):** hero run at camera with ghosts flanking, agent's residue meter spinning (×3, the shake grows), Loop aerial (×2), stream gap jump, field vault, split pair, cartwheel. Over the top, 24 Kandinsky ribbons pile up (one every half beat, none leave), and a multiply colour wash rises to 0.4 so the frame saturates. A full white flash ends the last cut. | `e7_hero_1`, `e7_meter_1`, `e7_city_1` + reuse |
+| E8a | 139.00–139.68 | **"Anomaly"**: hard freeze (0.08 s hold) and a woodblock negative. In the ring of agents, all heads snap to camera in unison and the sunglasses read white. A terminal panel types `TIME VARIANCE █████████` / `ANOMALY DETECTED.` on the spoken words. | `e8_ring_1` |
+| E8b | 139.68–140.12 | "detected": a row of six agents in profile snaps to camera together, still in negative. | `e8_line_1` |
+| E8c | 140.12–141.00 | The agency terminal fills the screen in alarm, white on ink, IBM Plex Mono 88 px: `TIME VARIANCE █████████` / `ANOMALY DETECTED.` / `TRACE: LOCKED` (typed). It cuts to G1 on 141.00. | ENG |
+
+## Ghost choreography (the 13 chops)
+
+The chop times come from `timing.json → lyrics.vocal_chops`. Ghost k is revealed on chop k (ghosts layer `on: [t]`, with a 0.12 s pop).
+Each chop also gets a pale-blue flash (0.08 s, 0.35), a VHS-rewind blip (0.12 s) and a 3.5 % zoom punch.
+Ghosts are the matted frame at `freeze` (source seconds) of the clip, colourised (`tint` 0.82), at 0.62–0.7 opacity.
+For hits 1–8, the clip's in-point is solved backwards from the freeze, so the live pose on the chop frame *is* the ghost.
+Hues follow the Kandinsky order (orange, blue, gold, magenta, green), then the in-betweens.
+
+| # | Chop | Clip (engraved) | Freeze s | Hue | Where it lives in E2c (design px from centre; scale) |
+|---|---|---|---|---|---|
+| 1 | 113.89 | `E2/take_trk_sprint_1` | 2.75 | #F08A24 | elevated track deck (0, −485) × 0.12 |
+| 2 | 114.35 | `E2/take_trk_dash_1` | 1.96 | #3E6FD8 | track deck (260, −478) × 0.12 |
+| 3 | 114.78 | `E2/take_trk_walljump_1` | 2.71 | #C9A227 | track deck (520, −488) × 0.12 |
+| 4 | 115.24 | `E2/take_fld_slide_1` (jmatte) | 3.15 | #C23B8E | lawn front (−60, 370) × 0.45 |
+| 5 | 115.67 | `E2/take_fld_cartwheel_1` (jmatte) | 1.83 | #3FA55B | lawn left (−820, 40) × 0.42 |
+| 6 | 116.03 | `E2/take_fld_vault_1` (jmatte) | 3.00 | #E4572E | lawn back-left (−700, −200) × 0.30, flipped |
+| 7 | 116.52 | `E2/take_fld_spin_1` (jmatte) | 2.30 | #8DB8E8 | lawn back (−330, −270) × 0.30 |
+| 8 | 116.95 | `E2/take_fld_spin_1` (jmatte) | 0.95 | #E8D04A | right edge (850, −80) × 0.38, flipped; pops on the cut |
+| 9 | 117.39 | `E2/take_ring_circle_1` (jmatte) | 1.13 | #8E5CC8 | where she is (front right) |
+| 10 | 117.83 | same | 1.71 | #2BA59A | back right |
+| 11 | 118.25 | same | 2.40 | #F28DB2 | back left |
+| 12 | 118.71 | same | 3.21 | #4B4FC4 | front left |
+| 13 | 119.15 | same | 3.62 | #9CCB3B | front right, by the agents |
+
+Ghosts 1–3 and 4–7 first appear in their own shots, frozen exactly where she was. In E2c they reappear as the committee around the agents.
+The full table, including the E4 swarm instances, is in `media/shots/_D/ghost_table.json`.
+
+## Typography
+
+| Shot | Text | Module and font |
+|---|---|---|
+| E2 | `GHOSTS n` counter (one HUD cluster only) | `hud` mode `iteration`, Press Start 2P |
+| E4 | "Rewind." | `lowerthird`, IM Fell, Jade orange, because the lyric is residue |
+| E5c | Anagram slip | `pencil`, Reenie Beanie graphite, corner-pinned |
+| E8 | Agency terminal | `terminal`, IBM Plex Mono, alarm inverted |
+
+The agency is always written `TIME VARIANCE █████████`. In alarm the redaction bar draws in the inverted ink, so it is a paper-coloured bar on black. The engine's terminal module does this.
+No model-drawn text anywhere: every keyframe was prompted blank, and the slip was blank paper.
+
+## Changes from the shot list (and why)
+
+- **E1** comes out of the CONTINUE ◀◀ (section C) straight into her first deliberate attempt on the L tracks, under the colour flood. The impact gets the burst and the colour fill, and she is moving before chop 1, so the first ghost has a run to freeze.
+- **E2** cuts by setting (tracks → field → ring) rather than "around the field and the L tracks" at random. The ghost count stays legible, and every ghost freezes where she was before E2c gathers them into the constellation.
+- **E5** "boost onto a rooftop": the Seedance take has her vault a blank engraved wall onto a cornice rather than a rooftop seen from above. It still reads.
+- **E7** adds an agent's **residue meter** prop: a pocket-watch-like dial whose needle spins wildly, shown three times with growing shake. "Agents' residue meters spinning wildly" needed an object. The dial has tick marks only, no numbers.
+- **E8**: the agents turn in two shots (ring, then line) on "Anomaly" and "detected", then the full-screen terminal holds for the last 0.88 s. The words are typed by the panel first, so the terminal never lags the voice.
+
+## What's weak
+
+- **E2c is a medium-wide rather than a high wide.** Ghosts 1–3 are tiny on the track deck (scale 0.12), and at 1080p they read as colour flecks rather than poses. The 720p source makes the ghosts soft in the wide.
+- **E2b ghosts pile up on the right** because every field attempt ends near the agents. They overlap at 116.4–116.9 and read as a colourful knot, not separate figures. Spreading them would mean not freezing where she was.
+- **The walljump take** (`trk_walljump_1`) has Seedance's invented rainbow trail behind her flip, and ghost 3 keeps it. It is on-palette, but it is a model invention. Take 2, re-prompted "no VFX", was still queued when I finished. If it lands it can be swapped in `takes.json` (`trk_walljump.take`, check `freeze`).
+- **E5a and E5b**: both girls are generated as two copies of Jade, and the "ghost" is a colourised matte region of the left girl, with a box split at x = 0.345 / 0.5. In E5a, if the jumping Jade crosses that line, part of her would tint; that does not happen in 126.25–127.88.
+- **E6a's clean plate** shows a faint blur where her shadow was. It is hidden under the motes and lasts 0.44 s.
+- **E8a**: the ring agents only half-turn (Seedance made a mild move). The unison snap really lands in E8b, the line.
+- **chosen.json**: each shot folder holds several clips, so `chosen.json` is keyed by clip name. The real timeline usage (in/rate/srcTime/freeze) is in D.js and `takes.json`.
+- **E3 → E4 seam**: E4 starts at 122.95, the end of the E3 slot, rather than 123.00, to avoid a 1-frame gap. The singing director's E3 should end at 122.95.
+
+## Cost
+
+Section D spend: **$18.47** list-price estimate (budget $50). This already counts walljump take 2, which was still queued at hand-off.
+
+| Item | Cost |
+|---|---|
+| 16 nano-banana-pro calls (15 keyframes, including the ring retry, plus 1 clean-plate edit) | ≈ $2.15 |
+| 1 seedream-5-pro ring alternative | $0.10 |
+| 23 Seedance 2.0 720p takes, 4–5 s, including walljump take 2 | ≈ $16.2 |
+
+Project total at hand-off: $123.02 of $400.
+
+## Tools written (`tools/sections/D/`)
+
+| File | What it does |
+|---|---|
+| `kf.py` | Keyframe prompts and generation |
+| `dgen.py` | Registers the D_* shots into `vgen` at run time, so the shared `tools/gen/shots.py` is untouched; submit/collect |
+| `publish.py` | Links a take into `media/shots/E#` and runs `tools/engrave` with the matte kept |
+| `jmatte.py` | Jade-only matte. BiRefNet keeps agents that touch her; this gates the matte by her coloured pixels and/or a box (`--box --nocolor` makes the twin mattes) |
+| `mtrack.py` | Matte centroid/bbox per frame |
+| `ghostcheck.py` | Ghost freeze-frame review sheets |
+| `trim.py` | Model paper-margin trim |
+| `sheet.py` | Dense contact sheets |
+| `build_timeline.py` | Generates D.js, the EDL mirror and the ghost table |
