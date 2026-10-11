@@ -1,7 +1,7 @@
 # v4-B progress (everything except the singer)
 
 Brief: `docs/revisions/v4/B.md`. Rules: `docs/revisions/README.md`, `docs/revisions/v4/README.md`.
-A fresh session can carry on from this file alone. Last updated: 2026-10-11 19:02.
+A fresh session can carry on from this file alone. Last updated: 2026-10-11 19:25.
 
 ## Setup facts (saves re-discovering them)
 
@@ -28,7 +28,7 @@ A fresh session can carry on from this file alone. Last updated: 2026-10-11 19:0
 
 ## Running right now
 
-Nothing (see "State at 19:02" below). Sub-agent outputs are listed per note in the table above.
+The four execution sub-agents listed under "Execution round" below (started 19:25).
 
 Budget split of B's $90 (estimates for the planners to work inside): car $15, gunfire $25, co-op $30, Bean $10,
 D3 plate $3, reserve $7.
@@ -102,6 +102,51 @@ V3S) and is swapping `S1_SRC`, the S1 `HER.src`, `V3S_SRC` and the V3S `HER.src`
 push on those paths; her scale and bottom span match v3 within a few px.
 
 ## Jade's decisions (verbatim, with time)
+
+**19:20, pasted into the pane, verbatim:**
+
+> * storyboard looks good
+> * instead of tagging them 1 and 2, let’s go with blue and orange since that is already in their color palette, but we should tag them at the moment of split, so BLUE has white jacket with blue stripes, blue straps hanging from pants, and blue dots, and ORANGE has white jacket with orange stripes, orange straps, and orange dots.
+> * the bridge: let’s keep the environment still monochrome, so a B/W pencil
+> * yes, cutting a little bit of stopwatch is fine to make space for co-op
+> * bean update looks good, all those choices are fine in previz
+> * just noticed that at 2:00, gold ethereal jade’s arm pointing to Banach Tarski goes invisible for a moment when we need to see it
+> * animatic_C.mp4 is the best of the 3, split lyric is good, start over the shoulder is good, front readable is good
+> * gunshot - go with the earpiece closeup
+> * frame height seems fine, only 2 agents firing is fine
+
+How v4-B reads it (v4-B's interpretation, told to Jade at 19:22 so she can correct it):
+
+- **Co-op (note 7): go.** No `1P`/`2P` text tags. The twins are colour-coded in costume from the split (E6c, 128.32)
+  on: BLUE = white jacket, blue band, blue straps, blue dots; ORANGE = white jacket, orange band, orange straps,
+  orange dots. The environment stays black and white: the bridge is a giant pencil drawn in the engraving, and
+  buttons and bridge take no colour. The level gets two more beats: the stopwatch insert in E7 (135.76-136.62) goes
+  and the replay starts at 134.88, so the level is 129.62-134.88. Second "Rewind." at 123.00: not answered, default
+  stays (no lettering).
+- **New note (2:00 area):** the gold ghost's pointing arm in E5 (book slide, `BANACH–TARSKI`) disappears for a
+  moment. Fix it.
+- **Bean (note 2): go** as in the previz: centred, lands 13.92, pedestrians, no Seedance comparison.
+- **Car (note 4): option C** (one take: hold wide over her shoulder, push between the seats to the mirror; mirror
+  turned to the lens). Lyric split approved (SIRENS on the road sign, IN MY MIRROR on the mirror). Plates
+  right-reading. "start over the shoulder is good" is read as yes to starting the shot at 89.26 (V2f1 trimmed to
+  two beats): **this reading is v4-B's, flagged to Jade.**
+- **Gunfire (notes 5, 6): go**, with the cut at 102.46 kept and an earpiece close-up after it; her size and two
+  agents firing in G1 are fine.
+- Not answered, defaults stay in the cut: stamp `TIMELINE NOW CANON`; end-credit wording (draft); plate size at 0:26.
+
+## Execution round (started 19:25)
+
+Four Opus sub-agents, the same ones that wrote the plans, continued with Jade's decisions. They die with this
+session; on resume, read each plan file's "Execution" section and respawn from there with the plan as the brief.
+Each writes a manifest fragment to `docs/revisions/v4/fragments/<name>.json`; v4-B merges fragments into
+`review_B.json` and commits. No sub-agent commits.
+
+| Sub-agent | Notes | Edits | Cap, tag | After clip |
+|---|---|---|---|---|
+| `v4B-bean` | 2 | `render/timeline/A.js` (S1, `A_S1_lyric` only), new plate under `media/sing/plates/` | $5, `v4B_bean_` | `media/reviews/v4/B/0013_bean_wide.mp4` |
+| `v4B-car` | 4 | `render/timeline/C.js` (V2f rows, `C_lyr_sirens`), new shot folders beside `media/shots/V2f2/` | $8, `v4B_car_` | `media/reviews/v4/B/0130_car.mp4` |
+| `v4B-gun` | 5, 6 | `render/timeline/_B_verse2.js` (lawn shots), new `media/shots/B_g*` | $12, `v4B_gun_` | `media/reviews/v4/B/0139_gunfire.mp4` |
+| `v4B-coop` | 7 + E5 arm | `tools/sections/D/build_timeline.py` → `render/timeline/D.js`, `tools/sfx/build.py`, new `media/shots/C_coop/` | $12, `v4B_coop_` | `media/reviews/v4/B/0200_coop.mp4` |
 
 None yet in this pane. Defaults from the brief: plates `TVA 1729` (hero), `TVA 4104`, `TVA 4096`, `TVA 0900`;
 stamp `TIMELINE NOW CANON`; end credit yes, wording to confirm.
