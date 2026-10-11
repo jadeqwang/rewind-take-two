@@ -1,0 +1,16 @@
+# uv venv -p 3.12 tools/engrave/.venv
+# uv pip install -p tools/engrave/.venv/bin/python --index-strategy unsafe-best-match \
+#     --extra-index-url https://download.pytorch.org/whl/cu124 -r tools/engrave/requirements.txt
+torch==2.6.0+cu124
+torchvision==0.21.0+cu124
+transformers==4.57.6
+timm==1.0.30
+kornia==0.8.3
+einops==0.8.2
+huggingface-hub==0.36.2
+spandrel==0.4.2
+opencv-contrib-python-headless==5.0.0.93
+av==19.0.1
+numpy==2.5.4
+scipy==1.18.1
+pillow==12.3.0
