@@ -74,3 +74,37 @@ card, the motes and the C1 residue.
 
 Keyframes: about $7.5 (C1 11 variants $1.7; R2 16 stills $2.1; the rest $3.7). Video: 19 Seedance 2.0 720p takes
 about $12.0 (C1 ×2, C4 ×2, D8 ×2, all others ×1). Engraving, tracking and rendering were local.
+
+---
+
+# Section B: engine-only reuse shots (C2, P5, P6, R1, R3, R4)
+
+Spend: **$0**. Nothing was generated; it's all comp layers over existing footage. File: `render/timeline/B.js`
+(plus `_B_motes_hold.js`, a wrapper that freezes the engine's mote burst on the content clock).
+Review cut with the sound designer's mix: `media/shots/_A_review/AB_0-60_preview_sfx.mp4` (0–60 s, 540p).
+Sheets: `media/shots/_A_sheets/B_r1.jpg`, `B_r2.jpg`.
+
+| Shot | Time | What it does |
+|---|---|---|
+| C2 | 1.90–7.24 | One `comp` layer. C1 starts going backward, then 40 flashes of later shots, each played backward at the current speed (×2 → ×4 → ×8 → ×16). Cuts land on the tick onsets of `media/sfx/stems/03_rewind_ticks.wav`: every 8th, every 16th, every 2nd 32nd, every 3rd 64th. The flashes go from 5 frames down to 2. There are four passes: six hero images, F → E, Verse 2 + a death, then Section A backward, hard-stopping on C3 at 7.24. HUD (top-left cluster): `ITERATION` rolls 4,096 → 4,097 at about 6.8 s, under ◀◀ ×N. Residue ribbons whip right to left on each speed step, with a punch on every cut. |
+| P5 | 40.65–41.40 | P4's frame continues, the tape stops (`tapeStop` 0.35 s, warble and wobble), and the world flips to the woodblock negative over 0.3 s. Jade (matte) and her motes stay in colour, and the motes freeze in the air. |
+| P6 | 41.40–42.38 | The same frozen negative, with the pause menu (overlay `P6_menu`). The cursor moves RESUME → REWIND at 41.62 (the menu blip cue), and the selection blinks from 42.06 ("st-"). |
+| R1 | 42.38–42.65 | White flash, the negative snaps back to positive, paper and ink shards burst outward, shake and punch. |
+| R3 | 48.42–52.48 | "Rewind." #1: D8 → D1 backward (×4) on 12 fps holds for the half-time judder, with an echo smear, caustic ripple, pale-blue tint and VHS search. The residue ribbon un-spools (its layer clock runs backward). A clock ring sweeps counter-clockwise (◀◀ ×2/×4/×8). Big IM Fell **REWIND**: the letters arrive D-first and mirrored, then flip to read correctly. |
+| R4 | 52.48–56.54 | "Rewind." #2: back through S2, S1 (reversed), C4 and C3, decelerating (`outCubic`) to a stop on C3's Lake Shore Drive at 55.3. The ripple calms, the second REWIND (small, already reading correctly) fades, and a slow push lands on the tiny white car as the letterbox opens. That hands off to Section C's V2a1, a full-frame side-on shot of the car on LSD at night, at 56.54. |
+
+**Swapping C2 sources:** `C2_SOURCES` near the top of `B.js` is one song time per cut, in cut order. Change any number
+when a better shot lands; the cut times come from `TICKS`/`CUT_IDX` and don't need touching. The engine's comp only
+renders a source shot's `pre` layers (no fx, no post-stage text), and it skips shots that contain comps.
+
+**Checks:** the six hero flashes read (Penrose loop diorama, colour flood, ANOMALY terminal, Banach–Tarski twins,
+ghost constellation, bridge jump). The flash cadence matches the ticks by construction (onsets measured from the stem).
+
+**What's weak:**
+- **The P5/P6 negative** is mid-gray rather than stark white-on-black. P4's background is dense dark hatching, so its
+  inversion is light. I lift the world's blacks before the flip (`grade.lift`), which helps but stays a bit soft.
+  A purpose-made plate (a lighter car interior) would invert better.
+- **R1** spends most of its 0.27 s in the flash decay; the "shatter" is a shard burst, not a true glass-break.
+- **C2 depends on other sections' timing.** A flash shows whatever shot sits at its source time, so retimed E/F shots change the teaser. Re-check
+  `C2_SOURCES` after their final cuts.
+- `render/timeline/_A_test.js` now renders A + R2 + B alone, for when other sections' media are mid-write.
