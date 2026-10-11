@@ -13,3 +13,9 @@ analysis/karaoke/vr/*.wav
 analysis/karaoke/bin/
 analysis/karaoke/numba-cache/
 *.ses
+
+# Generation (tools/gen): media is never committed except small markdown reports; local ids stay in work/
+media/**
+!media/**/
+!media/**/*.md
+work/
