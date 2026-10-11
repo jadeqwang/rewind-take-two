@@ -134,6 +134,15 @@ How v4-B reads it (v4-B's interpretation, told to Jade at 19:22 so she can corre
   agents firing in G1 are fine.
 - Not answered, defaults stay in the cut: stamp `TIMELINE NOW CANON`; end-credit wording (draft); plate size at 0:26.
 
+**18:40, Jade in the pane, verbatim (after the gunfire clip):**
+
+> * the gunfire is almost right. at “zigzag” it’s almost right, but it doesn’t seem like they’re trying hard. I expect them to be aiming for where they think she’s going to be except she changed direction. same with “across the field of grass”
+> * HILBERT HOTEL (missing HOTEL on a blank sign above)
+
+v4-B's reading: every miss in G1 and G2 is aimed where she WOULD be if she kept her line (a lead), and she cuts the
+other way just before it lands, so the impact is ahead of her on her old line, not behind her. The rooftop sign reads
+HILBERT HOTEL wherever it shows: HOTEL goes on the blank panel above HILBERT. Sent to `v4B-gun` at 18:42.
+
 ## Execution round
 
 **Correction:** clock times written in this file before 17:55 ran ahead of the real clock (the "19:xx" entries
