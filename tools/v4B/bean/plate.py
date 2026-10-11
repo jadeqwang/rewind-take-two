@@ -192,6 +192,59 @@ def edit(src, key, dry=False):
     print("wrote", got)
 
 
+# ---- finish: the picked candidate -> the two plane images the engine plays (free) -----------------------------------
+PICK = PLATES + "/plate_wide_v4_B2.jpg"          # B2: whole Bean, arch, towers, 7 pedestrians (A1 border, B1 mirrored skyline)
+PICK_MATTE = PLATES + "/plate_wide_v4_B2_birefnet.png"   # BiRefNet on PICK at 2048 wide (tools/engrave venv): the Bean + the walking couple
+HZ = 752.0                                       # wide design y of the paving line (foot of the balustrade)
+PEOPLE = [(268, 688, 322, 756), (326, 696, 382, 756), (1518, 688, 1584, 756), (1600, 696, 1660, 756)]   # wide px boxes above HZ
+FAR_PAD = (533, 300)                             # far plane covers wide x -533..2453, y -300..1380 (16:9 about the centre)
+FAR_PX = 1.5                                     # far plane px per wide px
+
+
+def finish(src=PICK):
+    import numpy as np
+    from PIL import ImageFilter
+    k = 1 / WIDE                                                         # B2 px per wide px (2.8667)
+    b2 = Image.open(src).convert("RGB")
+    H16 = round(1080 * k)                                                # 3096: the wide frame is 16:9, B2 is 8 rows short of it
+    full = Image.new("RGB", (CW, H16)); full.paste(b2, (0, 0))
+    full.paste(b2.crop((0, CH - (H16 - CH), CW, CH)).transpose(Image.FLIP_TOP_BOTTOM), (0, CH))
+    # 1. the close plate's own pixels laid back (the model redrew the inset in register: template match at (1350, 106), scale 1.000)
+    bean = full.copy(); bean.paste(Image.open(CLOSE).convert("RGB"), PASTE, rim_mask())
+    bean.save(PLATES + "/plate_wide_v4.png"); print("wrote plate_wide_v4.png", bean.size)
+    # 2. Bean-plane alpha: the Bean (BiRefNet) filled down each column to the ground, everything below the paving line, the people
+    m = np.asarray(Image.open(PICK_MATTE).convert("L").resize((CW, CH), Image.BICUBIC), np.float32) / 255
+    m = np.vstack([m, np.repeat(m[-1:], H16 - CH, 0)])
+    solid = m > 0.5
+    filled = np.maximum.accumulate(solid, axis=0)                        # below the first solid pixel of each column
+    yy = np.arange(H16)[:, None] / k
+    ground = np.clip((yy - HZ) * k / 4 + 0.5, 0, 1)                      # 4 px soft edge on the paving line
+    people = Image.new("L", (CW, H16), 0); d = ImageDraw.Draw(people)
+    for x0, y0, x1, y1 in PEOPLE: d.rectangle([x0 * k, y0 * k, x1 * k, y1 * k], fill=255)
+    people = np.asarray(people.filter(ImageFilter.GaussianBlur(6)), np.float32) / 255
+    a = np.maximum.reduce([m, filled.astype(np.float32), ground * np.ones((1, CW), np.float32), people])
+    rgba = bean.convert("RGBA"); rgba.putalpha(Image.fromarray((np.clip(a, 0, 1) * 255).astype(np.uint8)))
+    rgba.save(PLATES + "/plate_wide_v4_bean.png"); print("wrote plate_wide_v4_bean.png")
+    # 3. far plane: the people above the paving line replaced by the balustrade and hedge beside them (they would show twice
+    #    once the planes slide), then padded outward by reflection (only the top corners ever see the pad) and resampled
+    far = full.copy()
+    for (x0, x1), src in (((262, 388), 140), ((1512, 1666), 1666)):       # the two groups; source = clear balustrade beside them
+        box = (int(x0 * k), int(684 * k), int(x1 * k), int(HZ * k + 8))
+        patch = far.crop((int(src * k), box[1], int(src * k) + box[2] - box[0], box[3]))
+        msk = Image.new("L", patch.size, 0); ImageDraw.Draw(msk).rectangle([10, 10, patch.size[0] - 11, patch.size[1]], fill=255)
+        far.paste(patch, box[:2], msk.filter(ImageFilter.GaussianBlur(5)))
+    ax, ay = FAR_PAD
+    arr = np.asarray(far)
+    px, py = round(ax * k), round(ay * k)
+    band = arr[:round(55 * k)]                                           # sky and tower facades above the Bean's top
+    reps = np.concatenate([band[::-1], band] * (py // (2 * len(band)) + 1), 0)[-py:]   # mirrored repeats upward
+    arr = np.concatenate([reps, arr], 0)
+    arr = np.pad(arr, ((0, max(0, py - (H16 - CH))), (px, px), (0, 0)), mode="symmetric")   # sides and bottom are never seen
+    farimg = Image.fromarray(arr).resize((round((1920 + 2 * ax) * FAR_PX), round((1080 + 2 * ay) * FAR_PX)), Image.LANCZOS)
+    farimg.save(PLATES + "/plate_wide_v4_far.jpg", quality=93); print("wrote plate_wide_v4_far.jpg", farimg.size)
+    print("BEAN0 %.5f  BEAN_C (%.2f, %.2f)  HZ %.1f  far base scale %.5f" % (BEAN0, *BEAN_C, HZ, (1920 + 2 * ax) / 1920))
+
+
 if __name__ == "__main__":
     a = [x for x in sys.argv[1:] if not x.startswith("--")]
     o = dict((x[2:].split("=", 1) + ["1"])[:2] for x in sys.argv[1:] if x.startswith("--"))
@@ -199,6 +252,8 @@ if __name__ == "__main__":
         guides()
     elif a[0] == "gen":
         gen(a[1], int(o.get("n", 1)), "dry-run" in o)
+    elif a[0] == "finish":
+        finish(*(a[1:2]))
     elif a[0] == "edit":
         edit(a[1], a[2], "dry-run" in o)
     else:

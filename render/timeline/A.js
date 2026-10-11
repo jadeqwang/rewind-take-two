@@ -37,6 +37,30 @@ const S1_IN = 0 + { A: 0.15, B: 0, C: -0.15 }[LIP];   // clip time at song 12.60
 const S1_SRC = 'media/sing/S1/v4_sync_1080.mp4';
 // slow push over the three singing cuts (1.0 -> 1.08 keeps the band, dot and 1420 MHz roundel in frame)
 const S1_PUSH = (a, b) => ({ from: { scale: a }, to: { scale: b }, ease: 'linear' });
+// v4 (Jade, 0:13: "start further away and then zoom in"): S1 opens on the whole Bean and pushes in to the v3 framing,
+// landing on beat 8:4 (13.92) as "before" is sung. Three planes at three rates (docs/revisions/v4/plans/bean.md): her
+// about the bottom-centre; the Bean and plaza (with the take's own plate and the arc lyric) about a point near the
+// Bean's top; the towers behind, slower, their foot locked to the paving line. Plates: media/sing/plates/plate_wide_v4.md.
+// v3: S1 was the take alone with S1_PUSH(1.0, 1.04), and the lyric and her matte rode the same push.
+const S1_MATTE = S1_SRC.replace(/\.mp4$/, '_matte/');
+const BEAN = (() => {
+  const HER0 = 0.42, BEAN0 = 0.47429, C = [955.79, 113.91], HZ = 752, FAR1 = 1.5, FAR_K = 1.55521;
+  const T0 = 0.44, T1 = 1.32, CREEP = 0.03, DUR = 3.54;   // shot-local: hold (2 % creep) to 13.04, push 13.04 -> 13.92
+  const ss = x => { x = Math.min(1, Math.max(0, x)); return x * x * (3 - 2 * x); };
+  const e = lt => lt <= T0 ? CREEP * Math.max(0, lt) / T0 : CREEP + (1 - CREEP) * (1 - Math.pow(1 - ss((lt - T0) / (T1 - T0)), 1.4));
+  const g = lt => 1 + 0.04 * Math.min(1, Math.max(0, lt / DUR));   // v3's slow push over the shot, about the frame centre
+  const sB = lt => Math.pow(BEAN0, 1 - e(lt)), sH = lt => Math.pow(HER0, 1 - e(lt)), r = lt => sB(lt) / BEAN0, rF = lt => Math.pow(FAR1, e(lt));
+  // a similarity s about point c, then g about the centre (the engine draws screen = 960 + x + scale * (p - 960))
+  const about = (s, c) => ({ scale: lt => g(lt) * s(lt), x: lt => g(lt) * (c[0] - 960) * (1 - s(lt)), y: lt => g(lt) * (c[1] - 540) * (1 - s(lt)) });
+  return {
+    her: about(sH, [960, 1080]),
+    bean: about(sB, C),                // layers drawn in the landed (v3) frame: the take, the arc lyric
+    beanPlate: about(r, C),            // plate_wide_v4_bean.png, drawn in the wide frame
+    far: { scale: lt => g(lt) * FAR_K * rF(lt), x: lt => g(lt) * (C[0] + r(lt) * (960 - C[0]) - 960),
+      y: lt => g(lt) * (C[1] + r(lt) * (HZ - C[1]) - 540 + rF(lt) * (540 - HZ)) },
+    takeIn: [[0, 0], [1.18, 0], [1.32, 1]],   // the take's own frame (live plate, headlights) takes over as the move lands
+  };
+})();
 // v2's S2 push from her face into the Lake Shore Drive headlights (unused since v3; kept for switching back)
 const HEAD = [1600, 690], PUSH = 4.5;
 const PUSH_KB = { from: { scale: 1.08, x: 0, y: 0 }, to: { scale: PUSH, x: -(HEAD[0] - 960) * PUSH, y: -(HEAD[1] - 540) * PUSH }, ease: 'inCubic' };
@@ -104,7 +128,16 @@ export default ({ T }) => ({
       ], fx: [LETTERBOX] },
     // ---------------------------------------------------------------- verse 1: the cutscene
     { id: 'S1', start: 12.6, end: 16.14, background: INK,
-      layers: [{ id: 'S1_take', type: 'video', src: S1_SRC, in: S1_IN, rate: 1, fit: 'cover', kenBurns: S1_PUSH(1.0, 1.04) }] },
+      layers: [
+        // the towers and the Bean plane, pre-rendered with these same transforms by tools/v4B/bean/bg.py (antialiased and
+        // given a slight motion blur; drawn here from the 5504 px plates they crawled). Frame k = song frame 303 + k.
+        // Unfiltered fallback: { type: 'image', src: 'media/sing/plates/plate_wide_v4_far.jpg', ...BEAN.far } under
+        // { type: 'image', src: 'media/sing/plates/plate_wide_v4_bean.png', ...BEAN.beanPlate }, both fit 'cover', end 1.4
+        { id: 'S1_wide', type: 'video', src: 'media/shots/S1_wide/bg_1080/', in: -0.024, rate: 1, fit: 'cover', end: 1.4 },
+        { id: 'S1_take', type: 'video', src: S1_SRC, in: S1_IN, rate: 1, fit: 'cover', opacity: BEAN.takeIn, ...BEAN.bean },
+        // her again by matte, so the comps that replay S1 (C2, R4) show her in the wide part too
+        { id: 'S1_her', type: 'video', src: S1_SRC, in: S1_IN, rate: 1, fit: 'cover', matte: { src: S1_MATTE, mode: 'luma' }, ...BEAN.her },
+      ] },
     // cutaway (bar 10): the Bean's reflection of Lake Shore Drive, headlights streaming (engraved Seedance take)
     // v3 (Jade): every word of V1-1 is sung by 17.43 and she only holds the note after, so no return to her: the
     // reflection holds two bars and the road follows on "I'm speeding down" (v2: S1x to 17.88, S1b 17.88-19.64 on her,
@@ -200,14 +233,15 @@ export default ({ T }) => ({
     // render/timeline/_arc_lyric.js), one word per sung onset, behind her (her matte is laid back over it). S1x: "MY
     // DISSERTATION DEFENSE," on the plaza paving of the reflection. Layer times are local to 12.60: S1 0-3.54, S1x 3.54-7.04.
     { id: 'A_S1_lyric', start: 12.6, end: 19.64, layers: (() => {
-      const ARC = 'render/timeline/_arc_lyric.js', HER = { src: 'media/sing/S1/v4_sync_1080_matte/', mode: 'luma' };
+      const ARC = 'render/timeline/_arc_lyric.js', HER = { src: S1_MATTE, mode: 'luma' };   // v4 A: 'media/sing/S1/v4_sync_1080_matte/'
       const arc = (text, times, r, at) => ({ text, times, cx: 965, cy: 981, r, ...at, size: 88, style: 'woodcut' });
       const LEFT = [arc('THE NIGHT', ['word:the@13', 'word:night@13'], 1014, { to: -31 }), arc('BEFORE', ['word:before@13'], 930, { to: -31 })];
       // S1x: the plate drifts left about 38 px/s; the quad rides it (plate px before the layer's 1.04 scale)
       const PLAZA = (dx, dy) => [172 + dx, 640 + dy, 690 + dx, 626 + dy, 662 + dx, 960 + dy, 140 + dx, 986 + dy];
       return [
-        ...LEFT.map(params => ({ type: 'canvas', module: ARC, stage: 'pre', noRewind: true, start: 0, end: 3.54, kenBurns: S1_PUSH(1.0, 1.04), params })),
-        { type: 'video', stage: 'pre', noRewind: true, start: 0, end: 3.54, src: S1_SRC, in: S1_IN, rate: 1, fit: 'cover', kenBurns: S1_PUSH(1.0, 1.04), matte: HER },
+        // v4: the lyric rides the Bean plane and she rides her own (v3: both kenBurns: S1_PUSH(1.0, 1.04))
+        ...LEFT.map(params => ({ type: 'canvas', module: ARC, stage: 'pre', noRewind: true, start: 0, end: 3.54, ...BEAN.bean, params })),
+        { type: 'video', stage: 'pre', noRewind: true, start: 0, end: 3.54, src: S1_SRC, in: S1_IN, rate: 1, fit: 'cover', ...BEAN.her, matte: HER },
         { type: 'canvas', module: 'pin', stage: 'pre', noRewind: true, start: 3.54, end: 7.04, scale: 1.04, blend: 'multiply',
           params: { style: 'ground', font: 'slab', uppercase: true, text: 'MY\nDISSERTATION\nDEFENSE,', times: ['word:my@16', 'word:dissertation@16', 'word:defense@17'],
             size: 92, color: INK, grain: 0.3, corners: [[0, PLAZA(8, -2)], [3.5, PLAZA(-125, 22)]] } },

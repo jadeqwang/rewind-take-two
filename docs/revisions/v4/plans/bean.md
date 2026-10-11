@@ -8,12 +8,14 @@ Cap $5, tag `v4B_bean_*`. Singer is now v4: `media/sing/S1/v4_sync_1080.mp4` + `
 
 | Step | Status |
 |---|---|
-| 1. Wide plate (nano-banana-pro 4K, outpaint of `plate_close_1.jpg` pasted unscaled at (1350, 106) in a 5504x3072 canvas). Script `tools/v4B/bean/plate.py` (`guides` free, `gen A|B` paid). Guides written: `media/sing/plates/plate_wide_v4_guide_{A,B}.jpg`. Candidates go to `media/sing/plates/plate_wide_v4_<A|B><i>.png` + `.json`. | generating B1, A1 (17:50 file clock) |
-| 2. Three-plane push in `render/timeline/A.js` (S1 + `A_S1_lyric` only) | not started |
-| 3. 540p check via `render/timeline/_A_test.js`, stills 12.62 / 13.04 / 13.33 / 13.5 / 13.92 / 15.5; R4 and C2 | not started |
-| 4. Hand-over: `media/reviews/v4/B/0013_bean_wide.mp4`, `0013_bean_wide.jpg`, `docs/revisions/v4/fragments/bean.json` | not started |
+| 1. Wide plate: **done**. Picked `media/sing/plates/plate_wide_v4_B2.jpg`; notes and rejected candidates in `media/sing/plates/plate_wide_v4.md`. Plane images built by `tools/v4B/bean/plate.py finish` (free): `plate_wide_v4_bean.png` (RGBA, 5504x3096 = wide frame at 2.8667 px per design px), `plate_wide_v4_far.jpg` (4479x2520, wide x -533..2453, y -300..1380). Geometry: BEAN0 0.47429, Bean fixed point (955.79, 113.91), paving line wide y 752, take background = close plate at scale 0.7355, offset (-66.5, -48.3) (SIFT on the v4 take). | done |
+| 2. Three-plane push in `render/timeline/A.js`: **done**. New constants `S1_MATTE` (derived from `S1_SRC`) and `BEAN` (curves) after `S1_PUSH`; shot `S1` layers `S1_wide` (pre-rendered towers + Bean plane, `media/shots/S1_wide/bg_1080/`, by `tools/v4B/bean/bg.py`; keep its numbers in step with `BEAN`), `S1_take` (fades in 13.78-13.92), `S1_her` (matte; so C2/R4 comps show her); overlay `A_S1_lyric`: arc layers ride `BEAN.bean`, her layer `BEAN.her`, `HER.src = S1_MATTE`. v3 values in comments. Drawing the 5504 px plates directly in the engine crawled during the hold (no mipmaps), hence the pre-render; motion blur 3 sub-frames over 0.2 frame (0.5 smeared the Bean behind a sharp her). | done |
+| 3. 540p check: stills `media/reviews/v4/B/plans/bean/build/` (`t12_625` ... `t15_500`, `sheet.jpg`). Reads as the Bean in the first frame; jacket holds against the slab lines; lyric on the Bean, words on their onsets, never doubled; the engine plays the pre-render in step (frame k = song frame 303 + k, checked). R4 (53.0-53.4) replays the pull-out reversed with her in it and no lyric; C2's only S1 flash (16.0) is landed, unchanged. | done |
+| 4. Hand-over: `media/reviews/v4/B/0013_bean_wide.mp4` (12.08-16.58, 540p, 2.0 MB), `0013_bean_wide.jpg`, `docs/revisions/v4/fragments/bean.json` (status done). | done |
 
-Spend so far: $0.
+**Weak:** her face is small on "The" (13.20; about 13 % of frame height); the top corners show repeated tower tops from the far plane's padding for a few frames mid-push (13.4-13.7); the people boxes carry a little hedge with them as the planes slide (hard to see at 540p); the v4 take's first frames have her looking down (v4-A's take). Not committed.
+
+Spend: $0.72 (A1, B1, B2 at $0.24), final. No edits were bought.
 
 ---
 
