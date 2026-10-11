@@ -9,12 +9,14 @@
 ## Takes
 - take_1: bytedance/seedance-2.0 720p 6 s, est $0.9, first frame `media/shots/V2a3/kf_n2.jpg`, state done
   > Static camera inside the speeding car. She drives: her eyes flick up to the rearview mirror, then she yanks the steering wheel hard to one side, her body leaning with the turn, then she grips the wheel and leans forward, flooring it. Streetlights streak past the window extremely fast. Her face keeps the first frame's angle, forehead smooth, never a face close-up. Keep the black-and-white wood-engraving look of the first frame on the whole world; only the anime girl is in color. No text, no letters, no logos.
+- take_2: bytedance/seedance-2.0 720p 5 s, est $0.75, first frame `media/shots/V2a3/kf_c4.jpg`, state done
+  > Static camera inside the speeding car at night. She drives hard and fast: she grips the wheel tighter, leans forward, flicks her eyes to the rearview mirror, then cranks the wheel sharply to one side, her body leaning with the swerve; the papers on the passenger seat slide. Streetlights streak past the windows extremely fast and white starburst strobe flashes sweep through the cabin from behind. Her face keeps the first frame's angle, forehead smooth, never a face close-up. Keep the black-and-white wood-engraving look of the first frame on the whole world; only the anime girl is in color. No text, no letters, no logos.
 
 ## Use in the cut
 
-- 59.20–60.08: take_1 from 0.3 s at rate 1.0
-- 62.30–63.62: take_1 from 3.5 s at rate 1.0
+- 59.20–60.08: take_2 from 0.3 s at rate 1.0
+- 62.30–63.62: take_2 from 3.4 s at rate 1.0
 
 ## Judgement
 
-OK: Jade at the wheel seen through the driver's window (left side, 1420 MHz patch on the correct sleeve). Little action (she just drives); used as two inserts.
+take_1 was a convertible (rough-cut review). take_2 is chosen: generated from section A's C4 sedan-interior keyframe (copied as kf_c4.jpg), with strobe flashes sweeping the cabin.

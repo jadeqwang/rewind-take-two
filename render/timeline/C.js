@@ -10,10 +10,10 @@ const CUTS = [
   // V2a car chase (bar 33): HUD pops in on the first frame
   [56.54, 58.30, 'V2a1', 1, 0.5, 1],
   [58.30, 59.20, 'V2a2', 1, 0.5, 1],
-  [59.20, 60.08, 'V2a3', 1, 0.3, 1],
-  [60.08, 61.40, 'V2a4', 1, 1.5, 1],
+  [59.20, 60.08, 'V2a3', 2, 0.3, 1],
+  [60.08, 61.40, 'V2a4', 2, 0.5, 1],
   [61.40, 62.30, 'V2a5', 1, 0.3, 1],
-  [62.30, 63.62, 'V2a3', 1, 3.5, 1],
+  [62.30, 63.62, 'V2a3', 2, 3.4, 1],
   // V2b kaizo road (bar 37): a cut every 2 beats, each trap = setup + payoff
   [63.62, 64.50, 'V2b1', 1, 1.0, 1],
   [64.50, 65.40, 'V2b1', 1, 2.4, 1.6],
@@ -56,12 +56,12 @@ const CUTS = [
   [98.28, 100.70, 'V2j1', 1, 0.0, 1, { ribbon: 2.4 }],
   [100.70, 102.46, 'V2j2', 1, 0.3, 1.3],
   [102.46, 104.22, 'V2j1', 1, 3.5, 1, { ribbon: 1.7 }],
-  [104.22, 105.98, 'V2k1', 1, 0.5, 1, { stutter: 1.35 }],
+  [104.22, 105.98, 'V2k1', 1, 0.5, 1, { stutter: 1.35, scale: 1.12 }],
   [105.98, 107.72, 'V2k2', 1, 0.5, 1, { stutter: 1.35 }],
   [107.72, 108.67, 'V2k3', 1, 0.5, 1.2],
   [108.67, 109.92, 'V2l1', 1, 0.3, 1.5, { stutter: 1.0 }],
   [109.92, 110.78, 'V2l2', 1, 1.4, 1],
-  [110.78, 111.22, 'V2m1', 1, 0.35, 1, { flash: true, flashAt: 0.1, flashAmt: 0.45 }],
+  [110.78, 111.22, 'V2m1', 2, 0.35, 1, { flash: true, flashAt: 0.1, flashAmt: 0.45 }],
   [112.66, 112.96, 'V2n1', 1, 1.78, 1],
 ];
 
@@ -78,23 +78,23 @@ function videoLayer(clip, take, clipIn, rate, x = {}) {
 }
 
 // beat-stepped clock: the plate jumps forward on every beat (frame-skipping agents); Jade (matte) stays continuous
-function stutterLayers(clip, take, clipIn, rate, k, start, end, T) {
+function stutterLayers(clip, take, clipIn, rate, k, start, end, T, scale = 1) {
   const beats = T.beats.filter(t => t > start + 0.02 && t < end - 0.02);
   const keys = [[0, clipIn, 'hold']];
   for (const b of beats) keys.push([b - start, clipIn + (b - start) * rate * k, 'hold']);
   keys.push([end - start, clipIn + (end - start) * rate * k]);
   const layers = [
-    { id: `${clip}_live`, type: 'video', src: plate(clip, take), in: clipIn, rate, fit: 'cover' },
-    { id: `${clip}_held`, type: 'video', src: plate(clip, take), srcTime: keys, fit: 'cover',
+    { id: `${clip}_live`, type: 'video', src: plate(clip, take), in: clipIn, rate, fit: 'cover', scale },
+    { id: `${clip}_held`, type: 'video', src: plate(clip, take), srcTime: keys, fit: 'cover', scale,
       matte: { ...matte(clip, take), mode: 'lumaInv' } },
   ];
-  if (GIRL.has(clip)) layers.push({ id: `${clip}_jade`, type: 'video', src: plate(clip, take), in: clipIn, rate, fit: 'cover',
+  if (GIRL.has(clip)) layers.push({ id: `${clip}_jade`, type: 'video', src: plate(clip, take), in: clipIn, rate, fit: 'cover', scale,
     matte: matte(clip, take), keepColor: true });
   return layers;
 }
 
 function shotFor([start, end, clip, take, clipIn, rate, x = {}], i, T) {
-  const layers = x.stutter ? stutterLayers(clip, take, clipIn, rate, x.stutter, start, end, T)
+  const layers = x.stutter ? stutterLayers(clip, take, clipIn, rate, x.stutter, start, end, T, x.scale)
     : [videoLayer(clip, take, clipIn, rate, x)];
   const needJade = x.ghost || x.ribbon;
   if (!x.stutter && needJade) {  // Jade again through her matte (keeps colour, drives the ribbon tracker)
@@ -112,7 +112,7 @@ function shotFor([start, end, clip, take, clipIn, rate, x = {}], i, T) {
   if (x.hero) fx.push({ type: 'punch', amount: 0.025, on: 'downbeat' });
   else fx.push({ type: 'punch', amount: 0.018, on: 'beat' });
   if (x.flash) fx.push({ type: 'flash', at: [x.flashAt ?? 0.12], dur: 0.05, amount: x.flashAmt ?? 0.9 });
-  if (x.slam) fx.push({ type: 'flash', at: [0], dur: 0.08, amount: 0.7 }, { type: 'shake', amp: 26, freq: 18, decay: 0.35, on: [start] });
+  if (x.slam) fx.push({ type: 'flash', at: [0], dur: 0.084, amount: 0.4 }, { type: 'shake', amp: 26, freq: 18, decay: 0.35, on: [start] });
   return { id: `C${String(i + 1).padStart(2, '0')}_${clip}`, start, end, background: INK, layers, fx };
 }
 
@@ -126,8 +126,8 @@ export default function sectionC({ T }) {
       tip: 'The Time Variance █████████ can only follow what it can trace.', progress: [[0, 0], [0.55, 1, 'outCubic']], bg: INK } }] });
   // V2n: freeze on the hit, invert (P5 grammar), arcade CONTINUE? 9 … 8; the ◀◀ slam is the V2n1 cut at 112.66
   shots.push({ id: 'C_V2n_continue', start: 111.22, end: 112.66, background: PAPER, layers: [
-    { type: 'video', src: plate('V2m1', 1), in: 0.79, rate: 1, freeze: 0, fit: 'cover', x: [[0, 0], [0.3, 330, 'outCubic']] },
-    { type: 'video', src: plate('V2m1', 1), in: 0.79, rate: 1, freeze: 0, fit: 'cover', x: [[0, 0], [0.3, 330, 'outCubic']], matte: matte('V2m1', 1), keepColor: true },
+    { type: 'video', src: plate('V2m1', 2), in: 0.79, rate: 1, freeze: 0, fit: 'cover', x: [[0, 0], [0.3, 330, 'outCubic']] },
+    { type: 'video', src: plate('V2m1', 2), in: 0.79, rate: 1, freeze: 0, fit: 'cover', x: [[0, 0], [0.3, 330, 'outCubic']], matte: matte('V2m1', 2), keepColor: true },
     { type: 'solid', color: PAPER, rect: [0, 0, 780, 1080], opacity: [[0, 0], [0.3, 0.92]] },  // inverts to ink under `negative`
   ], fx: [{ type: 'negative', amount: [[0, 0], [0.3, 1, 'outCubic']] }, { type: 'wobble', amount: [[0, 0.6], [0.4, 0]] }] });
   shots.sort((a, b) => a.start - b.start);
@@ -138,23 +138,25 @@ export default function sectionC({ T }) {
     ov('C_hud_car', 56.54, 92.79, { type: 'canvas', module: 'hud', opacity: [[0, 0, 'hold'], [0.042, 1, 'hold'], [0.083, 0.25, 'hold'], [0.125, 1]],
       params: { mode: 'platformer', side: 'right', iteration: 4097, deaths: 4096, timer: { from: '56.54' } } }),
     ov('C_hud_respawn', 93.66, 94.06, { type: 'canvas', module: 'hud', params: { mode: 'platformer', side: 'right', color: INK, iteration: 4097, deaths: 4097, timer: { from: '56.54' } } }),
-    ov('C_hud_race', 94.06, 98.28, { type: 'canvas', module: 'hud', params: { mode: 'race', side: 'right', color: INK, iteration: 4096,
-      split: [[0, 0.42], [1.8, 0.12], [2.6, -0.04], [4.2, -0.31]], splitColor: [[0, '#d2402f', 'hold'], [2.55, '#3f9a4a']] } }),
+    // dark chip behind the race readout (it sat over busy brick); no red anywhere
+    { id: 'C_race_chip', start: 94.06, end: 98.28, layers: [{ type: 'solid', color: INK, rect: [1300, 36, 600, 112], opacity: 0.95 }] },
+    ov('C_hud_race', 94.06, 98.28, { type: 'canvas', module: 'hud', params: { mode: 'race', side: 'right', iteration: 4096,
+      split: [[0, 0.42], [1.8, 0.12], [2.6, -0.04], [4.2, -0.31]], color: PAPER, splitColor: [[0, PAPER, 'hold'], [2.55, '#5fd16a']] } }),
     ov('C_hud_field', 98.28, 110.78, { type: 'canvas', module: 'hud', params: { mode: 'platformer', side: 'right', color: INK, iteration: 4097, deaths: 4097, timer: { from: '56.54' } } }),
     ov('C_hud_continue', 111.30, 112.66, { type: 'canvas', module: 'hud', x: -560, params: { mode: 'continue', from: 9, every: 0.8, start: '111.40', press: 'PRESS ◀◀' } }),
 
     // lyrics
     ov('C_lyr_nowim', 83.40, 84.86, { type: 'canvas', module: 'lowerthird', params: { color: PAPER, text: 'And now I’m', sync: 'lyric', size: 76 } }),
-    ov('C_lyr_back', 84.86, 89.40, { type: 'canvas', module: 'slam', params: { text: 'back on the road', sync: 'lyric', font: 'fell', size: 170, y: 330,
+    ov('C_lyr_back', 84.86, 89.40, { type: 'canvas', module: 'slam', params: { text: 'back on the road', sync: 'lyric', font: 'fell', size: 120, x: 1340, y: 200, maxWidth: 1000,
       color: PAPER, accent: ORANGE, impact: 1.4, tilt: 3 } }),
     ov('C_lyr_sirens', 90.14, 92.79, { type: 'canvas', module: 'pin', params: { style: 'etch', text: 'sirens in my mirror …', sync: 'lyric', size: 64,
       corners: [800, 682, 1780, 746, 1776, 812, 800, 752] } }),
     ov('C_lyr_race', 94.06, 98.28, { type: 'canvas', module: 'lowerthird', params: { color: INK, halo: 0.9, size: 74 } }),
-    ov('C_lyr_zigzag', 98.28, 104.22, { type: 'canvas', module: 'pin', blend: 'normal', params: { style: 'ground', text: 'I zigzag across\nthe field of grass',
-      sync: 'lyric', size: 96, color: ORANGE, corners: [300, 760, 1640, 700, 1700, 1010, 240, 1050] } }),
+    ov('C_lyr_zigzag', 98.28, 104.17, { type: 'canvas', module: 'lowerthird', params: { color: '#c8661a', halo: 1, haloColor: PAPER, size: 84, y: 980 } }),
     ov('C_lyr_toofast', 104.17, 108.67, { type: 'canvas', module: 'lowerthird', params: { color: INK, halo: 0.9, size: 74 } }),
     ov('C_lyr_nowarning', 108.67, 110.78, { type: 'canvas', module: 'lowerthird', params: { color: INK, halo: 0.9, size: 74 } }),
-    ov('C_lyr_shot', 110.78, 111.62, { type: 'canvas', module: 'whisper', params: { text: 'shot', sync: 'lyric' } }),
+    ov('C_lyr_shot', 110.78, 111.62, { type: 'canvas', module: 'whisper', params: { text: 'shot', sync: 'lyric', x: 420, y: 330, size: 44 } }),
+    ov('C_lyr_timestops', 111.62, 112.66, { type: 'canvas', module: 'whisper', params: { text: '… and time stops', sync: 'lyric', x: 400, y: 990, size: 34, color: '#a9a49b' } }),
     // the hit: Celeste mote burst at her torso (V2m1 impact point, read off the plate)
     ov('C_motes', 110.78, 112.66, { type: 'canvas', module: 'motes', keepColor: true, params: { at: '110.93', x: 1000, y: 470, count: 64 } }),
     // the ◀◀ on the arcade button (no model-drawn glyphs)

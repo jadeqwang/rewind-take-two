@@ -299,6 +299,24 @@ job("V2c2_n2", NBP, NIGHT + "Dramatic low angle at street level at night, behind
     "car's REAR (trunk, tail lights) small at the bottom center of the frame, driving AWAY from us toward a massive "
     "Chicago River bascule bridge whose leaf is rising up into the black engraved sky ahead like a tilting wall of "
     "steel, rivets and girders, the road surface tipping upward. Escher-like dizzying scale. " + STYLE_NOGIRL)
+# ------------------------------------------------------------------------------------------- rough-cut v1 fixes
+M3 = ("A medium side three-quarter view in an engraved grass field, the camera at chest height: the anime girl is hit "
+      "in the side of her torso (never the head) and recoils, her body bending away from the impact, arms flung out. "
+      "Her FACE IS CLEARLY DRAWN in three-quarter profile toward the camera: eyes squeezed tightly shut, brows pinched, "
+      "mouth open in a gasp, a few strands of hair across her cheek, the loose bun with the yellow pencil intact. From "
+      "the impact point on her jacket a burst of glowing orange and pale-blue square motes explodes outward. At the "
+      "left edge, a white engraved muzzle-flash starburst far away. ")
+jade_day("V2m1_n3", M3)
+job("V2m1_f3", FLARE, DAY + M3 + JADE + STYLE, [JADE_SHEET])
+LOOP_SKY = ("The skyline is unmistakably downtown CHICAGO: the Willis (Sears) Tower with its twin antennas, the tapered "
+            "John Hancock Center with its X-braces, the two round corncob Marina City towers, Art Deco Loop towers; no "
+            "Empire State Building, no New York water towers. ")
+car_night("V2a4_s2", SIDE + "A wide multi-lane elevated highway at night: a dense pack of eight " + SEDANS + ", racing "
+          "left to right in staggered rows, filling the lower two thirds of the frame; two more black sedans merge in "
+          "from an on-ramp curving down from the upper right. Horizontal speed lines. " + LOOP_SKY)
+job("V2a4_n2", NBP, NIGHT + SIDE + "A wide multi-lane elevated highway at night: a dense pack of eight " + SEDANS +
+    ", racing left to right in staggered rows, filling the lower two thirds of the frame; two more black sedans merge "
+    "in from an on-ramp at the upper right. Horizontal speed lines. " + LOOP_SKY + STYLE_NOGIRL)
 
 if __name__ == "__main__":
     cmd = sys.argv[1] if len(sys.argv) > 1 else "list"

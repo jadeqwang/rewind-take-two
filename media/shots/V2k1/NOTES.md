@@ -14,4 +14,4 @@
 
 ## Judgement
 
-Good: she runs toward camera-right with the agents behind. Background held on each beat (frame-skip).
+Good: she runs toward camera-right with the agents behind. Background held on each beat (frame-skip). Scaled 1.12 in the engine to hide the paper margins.

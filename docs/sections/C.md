@@ -137,9 +137,27 @@ HUD + typography). Contact sheet: `docs/sections/C_contact.jpg`.
   falling behind. The ghost also trails her feet in the V2i3 close-up. The race HUD stays on.
 - CONTINUE?: the frozen plate slides right; CONTINUE? / digit / PRESS ◀◀ sit in a clear ink panel on the left.
 
+### Rough-cut v1 fixes (rev 3, docs/reviews/roughcut_v1.md)
+
+1. **V2m blank face:** fixed. The raw V2m take had no face, so re-engraving could not help. I regenerated it from a new
+   keyframe (`V2m1/kf_n3`, face drawn in 3/4 view, eyes squeezed shut) as take_2 (take_3 is a spare). The CONTINUE? freeze is
+   re-frozen from take_2.
+2. **Zigzag lyric:** fixed. It is now a lower-third line in darker residue orange on a paper halo, drawn above the
+   plate, and it clears at 104.17 so it no longer overlaps "they".
+3. **Race split:** fixed. It is white, then turns green at 2.55 s, on a dark chip over the brick. No red remains.
+4. **V2a3 convertible:** fixed. V2a3 take_2 is generated from the C4 sedan-interior keyframe.
+5. **V2k1 margins:** fixed by scaling the plate 1.12 (including the frame-skip layers).
+6. **Empire State Building:** fixed. V2a4 take_2 is regenerated with a Chicago skyline (Willis, Hancock, Marina City).
+7. **"… and time stops":** added as a small whisper line under the CONTINUE? panel (111.62–112.66).
+
+Also done: the "back" slam is smaller and sits in the top right, so it no longer covers her head in V2e2. The landing
+flash is shortened and softened. The whispered *shot* now sits on the paper sky. Not done: the left-pointing road arrows
+in V2c3, the mirror-etch contrast, the size of the LOADING tip (it is fixed in the shared hud module), and Jade's hair
+in V2k.
+
 ### Chosen takes
 
-All clips use take_1 except **V2b4 take_2** (retake: the lamp actually falls) and **V2d2 take_2** (the hang). The
+All clips use take_1 except **V2b4 take_2** (retake: the lamp actually falls), **V2d2 take_2** (the hang), and, after the rough-cut review, **V2a3, V2a4 and V2m1 take_2**. The
 hero shots (V2c2, V2d2) got 2 takes each. Per-clip judgement is in each `NOTES.md` / `tools/sectionC/verdicts.json`.
 
 ### What's weak
@@ -168,4 +186,5 @@ hero shots (V2c2, V2d2) got 2 takes each. Per-clip judgement is in each `NOTES.m
 |---|---|
 | Keyframes (seedream-5-pro, nano-banana-pro, 1 gpt-image-2.5-flare; ~50 images incl. retries) | 5.88 |
 | Video (Seedance 2.0, 720p, 44 takes, ~200 s) | 30.15 |
-| **Section C total** | **36.03** of the $70 budget |
+| Rev 3 fixes (4 keyframes + 4 takes) | ~3.2 |
+| **Section C total** | **39.24** of the $70 budget |
