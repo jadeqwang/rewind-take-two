@@ -34,7 +34,8 @@ const PLATE = {
 const LIP = 'B';
 const S1_IN = 0 + { A: 0.15, B: 0, C: -0.15 }[LIP];   // clip time at song 12.60
 // v4 (Jade: glossier hair, no smile; media/sing/NOTES.md, "v4"): same framing, scale and timing as v3. v3: 'media/sing/S1/v3_sync_1080.mp4'
-const S1_SRC = 'media/sing/S1/v4_sync_1080.mp4';
+// v4 _open: the same take with the blink at 12.93-13.14 replaced by open eyes (tools/sing/v4_noblink.py); plain: 'media/sing/S1/v4_sync_1080.mp4'
+const S1_SRC = 'media/sing/S1/v4_sync_1080_open.mp4';
 // slow push over the three singing cuts (1.0 -> 1.08 keeps the band, dot and 1420 MHz roundel in frame)
 const S1_PUSH = (a, b) => ({ from: { scale: a }, to: { scale: b }, ease: 'linear' });
 // v4 (Jade, 0:13: "start further away and then zoom in"): S1 opens on the whole Bean and pushes in to the v3 framing,

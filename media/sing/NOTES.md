@@ -295,3 +295,11 @@ these. The S1 take's figure reaches the bottom edge on every frame (bottom-row s
 
 Stills $2.44 (18 images), rejected repaint $0.27, Seedance 2.5 720p 2 × 8 s + 2 × 7 s = $6.94. **Total $9.64** of the
 $50 soft limit.
+
+### v4 follow-up: S1 blink removed (B's wide Bean opening)
+
+With S1 now opening wide (B, `docs/revisions/v4/plans/bean.md`), the take's blink at file frames 8-13 (song 12.93-13.14)
+read as her looking down. `tools/sing/v4_noblink.py` lays the open eyes of frame 7 over frames 8-15 (similarity fit on
+nose, brow and face-side landmarks, feathered eye mask, last two frames blend back) → `media/sing/S1/v4_sync_1080_open.mp4`,
+same frames otherwise, so the sync and matte are unchanged (`v4_sync_1080_open_matte` links to `v4_sync_1080_matte`).
+`render/timeline/A.js` `S1_SRC` uses it; `v4_sync_1080.mp4` is kept.

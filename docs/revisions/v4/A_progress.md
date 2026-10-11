@@ -93,11 +93,15 @@ Updated: 2026-10-11 17:50. Clock times below are local (CDT). Brief: `docs/revis
 
 Nothing. **Jade approved both clips** (see decisions). A's brief is done unless B's Bean push needs a re-check (step 8).
 
-**Hands off `render/timeline/A.js` shot `S1` and overlay `A_S1_lyric`** (v4-B, ~17:50): Jade gave B the go on the Bean,
-and B's sub-agent is editing those two entries on the v4 paths. It does not touch `S1_SRC` / `S1_IN`. B will send
-the path of its after clip; then do step 8 (lip-sync look at small scale, 13.04-13.92, and re-cut
-`media/reviews/v4/A/0012_singing_S1.mp4` from that version with
-`node render/engine/render.mjs --range 12.6 19.64 --preview --encode --force --out media/reviews/v4/A/0012_singing_S1.mp4`).
+**B's Bean push is in** (B commit 87fc591, clip `media/reviews/v4/B/0013_bean_wide.mp4`). At B's request (18:10):
+- Blink at S1 file frames 8-13 (song 12.93-13.14) removed: `tools/sing/v4_noblink.py` lays frame 7's eyes over
+  frames 8-15 → `media/sing/S1/v4_sync_1080_open.mp4` (+ `_open_check.jpg`; matte dir `v4_sync_1080_open_matte` is a
+  symlink to `v4_sync_1080_matte`). `S1_SRC` in `render/timeline/A.js` now points at it; the plain file is kept.
+- Lip sync at small scale checked: mouth opens 13.27-13.35 on "The" (13.20), closure on 'b' at 13.89; holds.
+- `media/reviews/v4/A/0012_singing_S1.mp4` re-cut (540p, 12.6-19.64) with B's push and the _open file.
+- The remaining "looking down" in the wide is the pick's pose (head tilted, chin slightly down); only a new still
+  and takes would change it. Not raised as a problem by Jade.
+B will re-render its 0:13 clip from the committed swap.
 
 ## Next steps, in order
 
@@ -123,8 +127,7 @@ the path of its after clip; then do step 8 (lip-sync look at small scale, 13.04-
    (about $1.62), `look.py V3S v4_take_3`, set `SYNC_V4["V3S"]` in `wc_post.py`, `sync`, `matte`, re-render
    153.98-159.14. Or use spare `v4_take_1` with knots (153.98, 0.29), (154.722, 0.958), (157.12, 3.125),
    (159.14, 5.25): rates about 0.9, so every frame is a cross-fade.
-8. When `v4-B` puts the wide Bean push into `A.js` (waiting on Jade's go), re-check S1 lip sync at small scale and
-   re-cut `0012_singing_S1.mp4` if B asks.
+8. (done) Re-checked S1 at small scale after B's push; blink removed; 0:12 clip re-cut.
 
 ## Jade's decisions (verbatim, with time)
 
