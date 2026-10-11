@@ -62,11 +62,15 @@ export const rgba = (hex, a = 1) => { const [r, g, b] = hexRgb(hex); return `rgb
 export const mixHex = (a, b, u) => { const A = hexRgb(a), B = hexRgb(b); return '#' + A.map((x, i) => Math.round(lerp(x, B[i], clamp(u)) * 255).toString(16).padStart(2, '0')).join(''); };
 
 // REWIND palette (treatment: the world is a black-and-white woodcut; Jade and her residue are the only colour)
+// shot list "Global design system": residue = jacket orange #F08A24 → dot pale blue #8DB8E8; Klimt gold #C9A227
 export const PAL = {
-  ink: '#0B0B0C', paper: '#ECE7DC', graphite: '#2A2A2C', pencil: '#8D8A84',
-  orange: '#FF7A1A', sky: '#7EC8FF', paleBlue: '#BFE3FF', navy: '#1C2A4A',
+  ink: '#0B0B0C', paper: '#ECE7DC', graphite: '#5E5B57', pencil: '#8D8A84',
+  orange: '#F08A24', blue: '#8DB8E8', gold: '#C9A227', sky: '#7EC8FF', navy: '#1C2A4A',
   alert: '#FF2A2A', hud: '#F4F1EA',
 };
+// ghost iterations: hue steps along a Kandinsky spectrum (orange, blue, gold, magenta, green)
+export const KANDINSKY = ['#F08A24', '#3E6FD8', '#C9A227', '#C23B8E', '#3FA55B'];
+export const FONT = { fell: '"IM Fell English"', sign: 'Overpass', hud: '"Press Start 2P"', mono: '"IBM Plex Mono"', hand: '"Reenie Beanie"', slab: 'Anton' };
 
 // mm:ss.cc speedrun clock
 export function clock(t, cs = true) {

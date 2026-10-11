@@ -38,6 +38,7 @@ export class Compositor {
       uRepeat: { value: new THREE.Vector2() }, uRes: { value: new THREE.Vector2(W, H) }, uS: { value: this.S }, uOpacity: { value: 1 }, uLinear: { value: 0 }, uPremul: { value: 0 },
       uKey: { value: 0 }, uKeyColor: { value: new THREE.Vector3(0, 1, 0) }, uKeyLo: { value: 0 }, uKeyHi: { value: 0.1 }, uKeySpill: { value: 0 }, uKeyInvert: { value: 0 },
       uSat: { value: 1 }, uExposure: { value: 1 }, uContrast: { value: 1 }, uGamma: { value: 1 }, uInvert: { value: 0 }, uTint: { value: new THREE.Vector3(1, 1, 1) }, uLift: { value: new THREE.Vector3() },
+      uHue: { value: 0 }, uColorize: { value: new THREE.Vector4() },
       uColor: { value: new THREE.Vector4(0, 0, 0, 1) }, uMode: { value: 0 }, uSolid: { value: 0 },
     };
     this.layerMat = {}; for (const b of Object.keys(BLEND)) this.layerMat[b] = raw(FS_LAYER, U, b);
@@ -73,7 +74,14 @@ export class Compositor {
       e = { t, src: null }; this.texCache.set(slot, e);
     }
     if (e.src !== src || src instanceof HTMLCanvasElement) { e.t.image = src; e.t.needsUpdate = true; e.src = src; }
+    e.used = this.tick;
     return e.t;
+  }
+  // after each frame: free GPU textures for slots unused in the last 2 frames once there are many (ghost frames, old shots)
+  sweep() {
+    this.tick = (this.tick || 0) + 1;
+    if (this.texCache.size < 96) return;
+    for (const [k, e] of this.texCache) if ((e.used ?? 0) < this.tick - 2) { e.t.dispose(); this.texCache.delete(k); }
   }
 
   // draw one layer op into target. op: {tex|solid, tex2, mix, matte, matteMode, flip, matteFlip, linear, premul, inv (Matrix3 elements, row-major),
@@ -99,6 +107,8 @@ export class Compositor {
     U.uSat.value = g.saturation ?? 1; U.uExposure.value = g.exposure ?? 1; U.uContrast.value = g.contrast ?? 1; U.uGamma.value = g.gamma ?? 1; U.uInvert.value = g.invert ? 1 : 0;
     const tn = g.tint ? hexRgb(g.tint) : [1, 1, 1]; U.uTint.value.set(tn[0], tn[1], tn[2]);
     const lf = g.lift ? hexRgb(g.lift) : [0, 0, 0]; U.uLift.value.set(lf[0], lf[1], lf[2]);
+    U.uHue.value = (g.hue || 0) * Math.PI / 180;
+    if (g.colorize) { const cz = hexRgb(g.colorize); U.uColorize.value.set(cz[0], cz[1], cz[2], g.colorizeAmount ?? 0.65); } else U.uColorize.value.set(0, 0, 0, 0);
     U.uMode.value = op.mode === 'coverage' ? 1 : 0;
     this._draw(this.layerMat[op.blend || 'normal'] || this.layerMat.normal, target);
   }
@@ -108,7 +118,7 @@ export class Compositor {
     set('tComp', src.texture); set('tMask', mask ? mask.texture : this.white); set('uHasMask', mask ? 1 : 0);
     set('uRes', new THREE.Vector2(this.W, this.H)); set('uS', this.S); set('uTime', P.time || 0);
     for (const k of ['zoom', 'spin', 'drop', 'squash', 'warble', 'warbleSeed', 'wobble', 'tracking', 'trackPos', 'rewindLines', 'ripple', 'ripplePhase', 'chroma', 'vhs', 'iso', 'engrave',
-      'engraveCell', 'engraveAngle', 'sat', 'contrast', 'exposure', 'lift', 'grain', 'grainSize', 'grainSeed', 'paper', 'paperSeed', 'scan', 'vignette', 'letterbox']) set(k, +P[k] || 0);
+      'engraveCell', 'engraveAngle', 'sat', 'contrast', 'exposure', 'lift', 'grain', 'grainSize', 'grainSeed', 'paper', 'paperSeed', 'scan', 'vignette', 'letterbox', 'neg']) set(k, +P[k] || 0);
     set('shake', new THREE.Vector2(P.shakeX || 0, P.shakeY || 0));
     for (const k of ['tint', 'isoInk', 'isoPaper', 'bg', 'boxC']) { const c = hexRgb(P[k]); set(k, new THREE.Vector3(c[0], c[1], c[2])); }
     this.postMat.uniformsNeedUpdate = true;

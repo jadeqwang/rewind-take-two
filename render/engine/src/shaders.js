@@ -37,7 +37,7 @@ uniform vec2 uRes; uniform float uS;
 uniform float uOpacity, uLinear, uPremul;
 uniform int uKey;              // 0 none, 1 luma, 2 chroma
 uniform vec3 uKeyColor; uniform float uKeyLo, uKeyHi, uKeySpill, uKeyInvert;
-uniform float uSat, uExposure, uContrast, uGamma, uInvert; uniform vec3 uTint, uLift;
+uniform float uSat, uExposure, uContrast, uGamma, uInvert, uHue; uniform vec3 uTint, uLift; uniform vec4 uColorize;
 uniform vec4 uColor;           // solid layers: rgba (uses no texture)
 uniform int uMode;             // 0 colour, 1 coverage (mask write: alpha in all channels)
 uniform float uSolid;
@@ -86,6 +86,12 @@ void main(){
     c.rgb = c.rgb * uExposure;
     c.rgb = (c.rgb - .5) * uContrast + .5;
     c.rgb = mix(vec3(luma(c.rgb)), c.rgb, uSat);
+    if (uHue != 0.) {   // hue rotation in YIQ
+      float Y = dot(c.rgb, vec3(.299, .587, .114)), I = dot(c.rgb, vec3(.596, -.274, -.322)), Qq = dot(c.rgb, vec3(.211, -.523, .312));
+      float ch = cos(uHue), sh = sin(uHue); float I2 = I * ch - Qq * sh, Q2 = I * sh + Qq * ch;
+      c.rgb = vec3(Y + .956 * I2 + .621 * Q2, Y - .272 * I2 - .647 * Q2, Y - 1.106 * I2 + 1.703 * Q2);
+    }
+    if (uColorize.a > 0.) { float l = luma(c.rgb); c.rgb = mix(c.rgb, uColorize.rgb * (.18 + 1.05 * l) + vec3(.9) * smoothstep(.75, 1., l) * .25, uColorize.a); }
     c.rgb = c.rgb * uTint + uLift * (1. - c.rgb);
     c.rgb = pow(clamp(c.rgb, 0., 1.), vec3(1. / uGamma));
     if (uInvert > .5) c.rgb = 1. - c.rgb;
@@ -104,7 +110,7 @@ uniform sampler2D tComp, tMask;
 uniform vec2 uRes; uniform float uS, uTime, uHasMask;
 uniform float zoom, spin, drop, squash, warble, warbleSeed, wobble, tracking, trackPos, rewindLines, ripple, ripplePhase;
 uniform vec2 shake;
-uniform float chroma, vhs, iso, engrave, engraveCell, engraveAngle, sat, contrast, exposure, lift;
+uniform float chroma, vhs, iso, engrave, engraveCell, engraveAngle, sat, contrast, exposure, lift, neg;
 uniform vec3 tint, isoInk, isoPaper, bg;
 uniform float grain, grainSize, grainSeed, paper, paperSeed, scan, vignette, letterbox; uniform vec3 boxC;
 vec2 distort(vec2 uv){
@@ -187,6 +193,13 @@ void main(){
       world = mix(world, eng, engrave);
     }
     col = mix(col, world, iso * (1. - m));
+  }
+  // woodblock negative: the world's luminance flips (white lines on ink), masked layers keep their colour
+  if (neg > 0.) {
+    float m = uHasMask > .5 ? texture(tMask, uv).r : 0.;
+    float l = clamp(luma(col), 0., 1.);
+    vec3 nw = mix(isoInk, isoPaper, 1. - smoothstep(.04, .96, l));
+    col = mix(col, nw, neg * (1. - m));
   }
   // grade
   col *= exposure;

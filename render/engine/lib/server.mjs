@@ -1,7 +1,7 @@
 // server.mjs: static file server over the repo root (same origin, so canvases are never tainted) plus a PUT endpoint
 // the page uses to hand finished frames straight to disk (no base64 round trip through CDP).
 import { createServer } from 'node:http';
-import { createReadStream, existsSync, statSync, writeFileSync, renameSync, mkdirSync } from 'node:fs';
+import { createReadStream, existsSync, statSync, writeFileSync, renameSync, mkdirSync, readdirSync } from 'node:fs';
 import { resolve, extname, join, sep, basename } from 'node:path';
 
 const MIME = { '.html': 'text/html', '.js': 'text/javascript', '.mjs': 'text/javascript', '.json': 'application/json', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg',
@@ -22,6 +22,13 @@ export async function serve(root, { verbose = false } = {}) {
         writeFileSync(f + '.tmp', buf); renameSync(f + '.tmp', f);    // atomic: a killed render never leaves a half frame
         res.writeHead(200); res.end('ok');
       });
+      return;
+    }
+    if (path.startsWith('/__ls/')) {   // directory listing for timeline functions (section files, EDLs)
+      const d = resolve(root, '.' + path.slice(5));
+      const ok = (d === root || d.startsWith(root + sep)) && existsSync(d) && statSync(d).isDirectory();
+      res.writeHead(200, { 'Content-Type': 'application/json', 'Cache-Control': 'no-cache' });
+      res.end(JSON.stringify(ok ? readdirSync(d).filter(f => statSync(join(d, f)).isFile()).sort() : []));
       return;
     }
     const p = resolve(root, '.' + path);

@@ -55,7 +55,7 @@ export default {
       layers: [
         { type: 'three', module: 'iso_test', params: { rotate: [[0, 0, 'hold'], ['54:1', 0, 'inOutCubic'], ['54:1+2b', 90]], zoom: 6.5 } },
         { type: 'video', src: M + 'circle.mp4', in: 3.0, freeze: 0, key: { type: 'luma', low: 0.025, high: 0.09 }, keepColor: true, fit: 'height', scale: 0.22, x: 40, y: -365 },
-        { type: 'canvas', module: 'hud', stage: 'post', params: { mode: 'loading', color: '#0b0b0c', tip: 'REWINDING LEAVES RESIDUE.', progress: [[0, 0], [1.5, 1, 'outCubic']] } },
+        { type: 'canvas', module: 'hud', stage: 'post', params: { mode: 'loading', bg: null, title: null, color: '#0b0b0c', tip: 'REWINDING LEAVES RESIDUE.', progress: [[0, 0], [1.5, 1, 'outCubic']] } },
       ],
       fx: [{ type: 'isolate', amount: 1, engrave: 0.35, cell: 5, paper: '#ece7dc' }, { type: 'paper', amount: 0.5 }, { type: 'flash', at: [0], dur: 0.1, amount: 0.6 }],
       background: '#ece7dc',

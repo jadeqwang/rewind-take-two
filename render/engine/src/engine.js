@@ -18,15 +18,17 @@ async function getJSON(paths) {
   for (const p of paths) { try { const r = await fetch(A.url(p), { cache: 'no-store' }); if (r.ok) return { path: p, json: await r.json() }; } catch (e) { /* next */ } }
   return null;
 }
+// every face the kit uses (OFL, vendored in render/fonts/); timelines may add more with `fonts: [{family, src, weight, style}]`
+export const FONT_FILES = [
+  { family: 'IM Fell English', src: 'IMFeENrm28P.ttf' }, { family: 'IM Fell English', src: 'IMFeENit28P.ttf', style: 'italic' },
+  { family: 'Overpass', src: 'Overpass-wght.ttf', weight: '100 900' }, { family: 'Press Start 2P', src: 'PressStart2P-Regular.ttf' },
+  { family: 'IBM Plex Mono', src: 'IBMPlexMono-Regular.ttf', weight: '400' }, { family: 'IBM Plex Mono', src: 'IBMPlexMono-Bold.ttf', weight: '700' },
+  { family: 'Reenie Beanie', src: 'ReenieBeanie.ttf' }, { family: 'Anton', src: 'anton-latin-400-normal.woff2' },
+  { family: 'JetBrains Mono', src: 'jetbrains-mono-latin-400-normal.woff2', weight: '400' }, { family: 'JetBrains Mono', src: 'jetbrains-mono-latin-700-normal.woff2', weight: '700' },
+  { family: 'CMU Serif', src: 'cmu-serif-500-italic.ttf', style: 'italic', weight: '500' },
+];
 async function loadFonts(extra = []) {
-  const F = 'render/engine/fonts/';
-  const list = [
-    { family: 'Anton', src: F + 'anton-latin-400-normal.woff2' },
-    { family: 'JetBrains Mono', src: F + 'jetbrains-mono-latin-400-normal.woff2', weight: '400' },
-    { family: 'JetBrains Mono', src: F + 'jetbrains-mono-latin-700-normal.woff2', weight: '700' },
-    { family: 'CMU Serif', src: F + 'cmu-serif-500-italic.ttf', style: 'italic', weight: '500' },
-    ...extra];
-  for (const f of list) {
+  for (const f of [...FONT_FILES.map(f => ({ ...f, src: 'render/fonts/' + f.src })), ...extra]) {
     const ff = new FontFace(f.family, `url(${A.url(f.src)})`, { weight: f.weight || 'normal', style: f.style || 'normal' });
     document.fonts.add(await ff.load());
   }
@@ -47,6 +49,7 @@ function normLayer(l, shot, i, T, tlDir) {
   l = { ...l };
   if (!l.type) l.type = l.module ? 'canvas' : /\.(mp4|webm|mov|mkv)$/i.test(l.src || '') ? 'video' : l.src ? 'image' : l.color ? 'solid' : l.layers ? 'parallax' : 'solid';
   l.id = l.id || `${shot.id}.${i}`;
+  l._key = `${shot.id}/${l.id}`;                    // unique across shots (texture slots, rng seeds stay per-id)
   l._start = localT(l.start, shot.start, T) ?? 0;
   l._end = localT(l.end, shot.start, T) ?? 1e9;
   if (l.freeze !== undefined) l._freeze = localT(l.freeze, shot.start + l._start, T);
@@ -56,7 +59,8 @@ function normLayer(l, shot, i, T, tlDir) {
     for (const k of ['scale', 'x', 'y', 'rotate']) if (kb.from?.[k] !== undefined || kb.to?.[k] !== undefined) l[k] = [[0, kb.from?.[k] ?? kb.to[k], kb.ease || 'inOutSine'], [d, kb.to?.[k] ?? kb.from[k]]];
   }
   if (l.type === 'comp' && Array.isArray(l.srcTime)) l.srcTime = l.srcTime.map(k => [k[0], typeof k[1] === 'string' ? T.time(k[1]) : k[1], ...k.slice(2)]);
-  if (l.type === 'parallax') l.layers = (l.layers || []).map((c, k) => ({ fit: 'height', repeat: [true, false], ...c, id: `${l.id}.p${k}` }));
+  if (l.type === 'parallax') l.layers = (l.layers || []).map((c, k) => ({ fit: 'height', repeat: [true, false], ...c, id: `${l.id}.p${k}`, _key: `${l._key}.p${k}` }));
+  if (l.type === 'ghosts') l._instances = ghostInstances(l);
   return l;
 }
 function normShots(list, T, tlDir, kind) {
@@ -79,29 +83,49 @@ function normShots(list, T, tlDir, kind) {
   return out.sort((a, b) => a.start - b.start);
 }
 
-async function initModules(layers, shot) {
-  for (const l of layers) {
-    if (l.type !== 'canvas' && l.type !== 'three') continue;
-    const raw = await import(l._modPath);
-    // module forms: plain exports {init?, draw}, or a factory (createScene / create) returning {init?, draw} per layer instance
+// Module instances are created lazily on first draw (so a 228 s timeline with hundreds of text layers costs nothing up
+// front) and share one W×H canvas / one render target per MSAA setting: each layer is drawn and composited before the
+// next one starts. Instances whose module exports dispose() are released after 4 s unused (heavy 3D scenes).
+const MODS = new Map();
+async function loadModule(l) {
+  let raw = MODS.get(l._modPath);
+  if (!raw) { raw = await import(l._modPath); MODS.set(l._modPath, raw); }
+  if (!(raw.createScene || raw.create || typeof raw.draw === 'function')) throw new Error(`module ${l.module} (layer ${l.id}) exports neither draw() nor createScene()/create()`);
+  return raw;
+}
+function sharedCanvas() {
+  if (!E.canvas) { E.canvas = document.createElement('canvas'); E.canvas.width = W; E.canvas.height = H; E.ctx = E.canvas.getContext('2d'); }
+  return E.canvas;
+}
+async function ensureInst(l, shot) {
+  let inst = E.inst.get(l);
+  if (!inst) {
+    const raw = await loadModule(l);
     const factory = raw.createScene || raw.create;
     const mod = factory ? await factory(l.params || {}) : raw;
-    const inst = { mod, state: null };
+    inst = { mod, state: null };
     if (l.linear === undefined && (raw.output === 'srgb' || raw.meta?.output === 'srgb')) l.linear = false;
     const env = { params: l.params || {}, T: E.T, W: DW, H: DH, S, layer: l, shot, rng: (...s) => rng(l.id, ...s), core, assets: A,
       loadImage: p => A.load(A.url(p)), loadJSON: async p => (await fetch(A.url(p))).json() };
-    if (l.type === 'canvas') {
-      inst.canvas = document.createElement('canvas'); inst.canvas.width = W; inst.canvas.height = H;
-      inst.ctx = inst.canvas.getContext('2d');
-      if (mod.init) inst.state = (await mod.init(inst.ctx, l.params || {}, env)) ?? null;
-    } else {
-      inst.rt = E.comp.rt('three:' + l.id, { depth: true, samples: l.samples ?? 4 });
-      if (mod.init) inst.state = (await mod.init(E.comp.renderer, l.params || {}, { ...env, THREE: await import('three') })) ?? null;
-    }
-    if (typeof mod.draw !== 'function') throw new Error(`module ${l.module} (layer ${l.id}) exports no draw()`);
+    if (l.type === 'canvas') { sharedCanvas(); if (mod.init) inst.state = (await mod.init(E.ctx, l.params || {}, env)) ?? null; }
+    else if (mod.init) inst.state = (await mod.init(E.comp.renderer, l.params || {}, { ...env, THREE: await import('three') })) ?? null;
+    if (typeof mod.draw !== 'function') throw new Error(`module ${l.module} (layer ${l.id}) has no draw()`);
     E.inst.set(l, inst);
   }
+  inst.last = E.frame;
+  return inst;
 }
+function sweepModules() {
+  for (const [l, inst] of E.inst) if (inst.mod.dispose && inst.last < E.frame - 96) { try { inst.mod.dispose(); } catch (e) { /* ignore */ } E.inst.delete(l); }
+}
+
+// timeline ctx: helpers a timeline function gets (render.mjs passes Node equivalents)
+const timelineCtx = (T, bust) => ({
+  T, core,
+  list: async dir => { const r = await fetch('/__ls/' + dir, { cache: 'no-store' }); return r.ok ? r.json() : []; },
+  importModule: p => import(A.url(p) + bust),
+  readJSON: async p => { const r = await fetch(A.url(p), { cache: 'no-store' }); if (!r.ok) throw new Error(`${p}: HTTP ${r.status}`); return r.json(); },
+});
 
 export async function boot() {
   const tlPath = Q.get('timeline') || 'render/timeline.js';
@@ -112,7 +136,7 @@ export async function boot() {
   if (E.T.isStub) console.warn(`[timing] using ${tm.path} (stub; analysis/cinematic/timing.json not found)`);
   const mod = await import(A.url(tlPath) + (Q.has('v') ? '?v=' + Q.get('v') : ''));
   let tl = mod.default ?? mod.timeline;
-  if (typeof tl === 'function') tl = await tl({ T: E.T, core });
+  if (typeof tl === 'function') tl = await tl(timelineCtx(E.T, Q.has('v') ? '?v=' + Q.get('v') : ''));
   E.tl = tl;
   await loadFonts(tl.fonts || []);
   E.shots = normShots(asArr(tl.shots), E.T, tlDir, 'shot');
@@ -121,9 +145,10 @@ export async function boot() {
   E.background = tl.background || '#000000';
   const idx = Q.get('cache') ? await getJSON([Q.get('cache') + '/index.json']) : null;
   A.configure({ index: idx ? idx.json : {}, base: Q.get('cache') ? A.url(Q.get('cache')) : '' });
+  if (idx) for (const v of Object.values(idx.json)) if (typeof v.track === 'string') v.track = await (await fetch(A.url(Q.get('cache') + '/' + v.track))).json();
   E.out = document.getElementById('out'); E.out.width = W; E.out.height = H;
   E.comp = new Compositor(E.out, W, H);
-  for (const s of [...E.shots, ...E.overlays]) { await initModules(s.layers, s); for (const l of s.layers) if (l.type === 'parallax') await initModules(l.layers, s); }
+  for (const s of [...E.shots, ...E.overlays]) for (const l of s.layers) if (l._modPath) await loadModule(l);   // fail fast on bad module paths
   E.range = [E.T.time(tl.range?.[0] ?? E.shots[0]?.start ?? 0), E.T.time(tl.range?.[1] ?? E.shots[E.shots.length - 1]?.end ?? 0)];
   window.timingInfo = { timing: tm.path, stub: E.T.isStub, gl: E.comp.info, shots: E.shots.length, overlays: E.overlays.length, range: E.range, W, H };
   E.ready = true; window.ready = true;
@@ -161,11 +186,12 @@ function placement(l, srcW, srcH, env) {
 
 function layerEnv(base, l, clock) {
   const lt = clock - l._start;
-  const env = { ...base, layer: l, params: l.params || {}, origin: base.origin + l._start };
+  const env = { ...base, layer: l, params: l.params || {}, origin: base.origin + l._start, layerEnd: base.origin + Math.min(l._end, base.dur) };
   env.lt = l.time !== undefined ? val(l.time, lt, env) : lt;
   env.val = (x, d) => { const v = val(x, env.lt, env, d); return v === undefined ? d : v; };
   env.rng = (...s) => rng(l.id, ...s);
   env.state = E.inst.get(l)?.state ?? null;
+  env.follow = spec => { const f = followFn(base, l, spec); return tau => f(tau + l._start); };
   return env;
 }
 function opacityOf(l, env, lt, dur) {
@@ -185,6 +211,86 @@ function videoSrcTime(l, env, m) {
   return clamp(st, 0, D - 0.5 / m.fps);
 }
 
+// ---- ghosts: one matted clip drawn many times (hue/colour, opacity, time offset, placement per instance) ----
+// Instances that land on the same source frame share one texture upload, so 100 ghosts with offsets quantised to a
+// dozen frames cost a dozen decodes. Explicit `instances` or a seeded `generate` spec (see README).
+function ghostInstances(l) {
+  if (Array.isArray(l.instances)) return l.instances.map((g, k) => ({ i: k, x: 0, y: 0, scale: 1, opacity: l.opacity ?? 0.55, ...g }));
+  const G = l.generate || {}, n = G.count ?? 13, r = rng(l.id, G.seed ?? 1);
+  const area = G.area || [-700, -220, 700, 220], sc = G.scale || [0.8, 1.05], op = G.opacity || [0.35, 0.6], off = G.offset || [0, 0];
+  const colors = G.colors || core.KANDINSKY, q = G.quantize ?? 1 / 12;
+  const out = [];
+  for (let k = 0; k < n; k++) {
+    const u = r(), v = r(), w = r(), z = r(), f = r(), o = r();
+    out.push({ i: k, x: area[0] + (area[2] - area[0]) * u, y: area[1] + (area[3] - area[1]) * v, scale: sc[0] + (sc[1] - sc[0]) * w,
+      opacity: op[0] + (op[1] - op[0]) * z, flip: G.flip !== false && f < 0.5, offset: Math.round((off[0] + (off[1] - off[0]) * o) / q) * q,
+      color: colors[k % colors.length] });
+  }
+  if (G.sort !== false) out.sort((a, b) => a.y - b.y);       // lower on screen = nearer = drawn last
+  return out;
+}
+function ghostOps(l, env, base) {
+  const m = A.videoMeta(l.src), mm = l.matte ? A.videoMeta(l.matte.src || l.matte) : null, D = m.frames / m.fps;
+  const baseSt = videoSrcTime(l, env, m);
+  // how many are visible: `show` keyframes (fractional = the next one fading in) or one more per event (`on`)
+  const all = l._instances;
+  let show = all.length;
+  if (l.show !== undefined) show = env.val(l.show, all.length);
+  else if (l.on) show = events(env.T, l.on, env.t - env.lt - 1e-6, env.t).length;
+  const pop = l.on ? env.pulse(l.on, 0.12) : 0;
+  const ordered = [...all].sort((a, b) => a.i - b.i).slice(0, Math.ceil(show));
+  const vis = new Set(ordered.map(g => g.i));
+  const ops = [];
+  const lx = env.val(l.x, 0), ly = env.val(l.y, 0), lsRaw = env.val(l.scale, 1), ls = Array.isArray(lsRaw) ? lsRaw[0] : lsRaw;
+  const amt = env.val(l.tint, 0.65);
+  for (const g of all) {
+    if (!vis.has(g.i)) continue;
+    let fade = clamp(show - g.i);                               // the newest one fades in
+    let sT = g.freeze !== undefined ? g.freeze : baseSt + (g.offset || 0);
+    if (l.loop !== false) sT = ((sT % D) + D) % D; else sT = clamp(sT, 0, D - 0.5 / m.fps);
+    const i = Math.max(0, Math.min(m.frames - 1, Math.floor(sT * m.fps + 1e-4)));
+    const bmp = A.get(A.frameUrl(m, i)); if (!bmp) continue;
+    const op = { ...base, blend: g.blend || l.blendMode || base.blend, tex: E.comp.tex(`gh:${l.src}:${i}`, bmp) };
+    if (mm) { const mi = Math.max(0, Math.min(mm.frames - 1, Math.floor(sT * mm.fps + 1e-4))); const mb = A.get(A.frameUrl(mm, mi)); if (!mb) continue; op.matte = E.comp.tex(`ghm:${l.matte.src || l.matte}:${mi}`, mb); op.matteMode = MATTE[l.matte.mode || 'luma']; }
+    else if (l.key) op.key = vals(l.key, env.lt, env);
+    const s = ls * (g.scale ?? 1);
+    Object.assign(op, placement({ ...l, x: lx + (g.x || 0), y: ly + (g.y || 0), scale: [g.flip ? -s : s, s] }, bmp.width, bmp.height, env));
+    op.grade = { ...(base.grade || {}), ...(g.grade || {}), hue: g.hue ?? base.grade?.hue, colorize: g.color, colorizeAmount: g.tint ?? amt };
+    const isNew = g.i === ordered.length - 1 && l.on ? pop : 0;
+    op.opacity = (g.opacity ?? 0.55) * fade * (1 + 0.8 * isNew);
+    ops.push(op);
+  }
+  return ops;
+}
+
+// ---- follow: a design-space point riding a video layer's matte (centroid / top / bottom), smoothed over ±n frames ----
+function findLayer(shot, id) { return shot.layers.find(x => x.id === id || x.id === `${shot.id}.${id}`); }
+const TRACK_PT = { centroid: [0, 1], top: [2, 3], bottom: [4, 5] };
+function followFn(base, self, spec) {
+  if (typeof spec === 'string') spec = { layer: spec };
+  const target = findLayer(base.shot, spec.layer);
+  if (!target || !['video', 'ghosts'].includes(target.type)) throw new Error(`follow: no video layer "${spec.layer}" in shot ${base.shot.id}`);
+  const m = A.videoMeta(target.src);
+  const tsrc = spec.matte || (target.matte && (target.matte.src || target.matte)) || target.src;
+  const tm = A.videoMeta(tsrc);
+  if (!tm.track) throw new Error(`follow: no track data for ${tsrc} (render.mjs computes it for mattes and alpha sources)`);
+  const [ix, iy] = TRACK_PT[spec.point || 'centroid'], sm = spec.smooth ?? 3, off = spec.offset || [0, 0], minA = spec.minArea ?? 0.002;
+  return clock => {
+    const env = layerEnv(base, target, clock);
+    const st = videoSrcTime(target, env, m), fi = Math.round(st * tm.fps);
+    let sx = 0, sy = 0, sw = 0;
+    for (let k = -sm; k <= sm; k++) {
+      const p = tm.track[Math.max(0, Math.min(tm.track.length - 1, fi + k))];
+      if (!p || p[6] < minA) continue;
+      const w = sm + 1 - Math.abs(k); sx += p[ix] * w; sy += p[iy] * w; sw += w;
+    }
+    if (!sw) return null;
+    const pl = placement(target, m.w, m.h, env), [a, b, c, d, e, f] = pl.inv, cr = pl.crop;
+    const u = (sx / sw - cr[0]) / cr[2], v = (sy / sw - cr[1]) / cr[3], det = a * e - b * d;
+    return [(e * (u - c) - b * (v - f)) / det + off[0], (a * (v - f) - d * (u - c)) / det + off[1]];
+  };
+}
+
 // produce draw ops for one layer (may draw nested comps / modules as a side effect)
 async function layerOps(l, env, depth) {
   const comp = E.comp, ops = [];
@@ -192,13 +298,13 @@ async function layerOps(l, env, depth) {
   if (l.type === 'solid') ops.push({ ...base, solid: env.val(l.color, '#000000'), ...placement({ fit: 'stretch', ...l }, DW, DH, env) });
   else if (l.type === 'image') {
     const bmp = A.get(l.src); if (!bmp) return ops;
-    ops.push({ ...base, tex: comp.tex('img:' + l.id, bmp), ...placement(l, bmp.width, bmp.height, env), repeat: l.repeat });
+    ops.push({ ...base, tex: comp.tex('img:' + l._key, bmp), ...placement(l, bmp.width, bmp.height, env), repeat: l.repeat });
   } else if (l.type === 'parallax') {
     const scroll = l.speed !== undefined ? env.val(l.speed, 0) * env.lt : env.val(l.scroll, 0);
     for (const c of l.layers) {
       const bmp = A.get(c.src); if (!bmp) continue;
       const cenv = { ...env, parallaxX: -scroll * (c.depth ?? 1) };
-      ops.push({ ...base, blend: c.blend || 'normal', grade: c.grade ? vals(c.grade, env.lt, env) : base.grade, tex: comp.tex('img:' + c.id, bmp),
+      ops.push({ ...base, blend: c.blend || 'normal', grade: c.grade ? vals(c.grade, env.lt, env) : base.grade, tex: comp.tex('img:' + c._key, bmp),
         ...placement(c, bmp.width, bmp.height, cenv), repeat: c.repeat, opacity: val(c.opacity, env.lt, env, 1) });
     }
   } else if (l.type === 'video') {
@@ -208,13 +314,13 @@ async function layerOps(l, env, depth) {
     const frameOp = (sT, slot) => {
       const x = sT * m.fps, i0 = Math.max(0, Math.min(m.frames - 1, Math.floor(x + 1e-4)));
       const b0 = A.get(A.frameUrl(m, i0)); if (!b0) return null;
-      const op = { ...base, tex: comp.tex(`vid:${l.id}:${slot}`, b0), ...placement(l, b0.width, b0.height, env) };
-      if (l.frameBlend) { const f = x - Math.floor(x); const i1 = Math.min(m.frames - 1, i0 + 1); if (f > 1e-3 && i1 !== i0) { const b1 = A.get(A.frameUrl(m, i1)); if (!b1) return null; op.tex2 = comp.tex(`vid:${l.id}:${slot}b`, b1); op.mix = f; } }
+      const op = { ...base, tex: comp.tex(`vid:${l._key}:${slot}`, b0), ...placement(l, b0.width, b0.height, env) };
+      if (l.frameBlend) { const f = x - Math.floor(x); const i1 = Math.min(m.frames - 1, i0 + 1); if (f > 1e-3 && i1 !== i0) { const b1 = A.get(A.frameUrl(m, i1)); if (!b1) return null; op.tex2 = comp.tex(`vid:${l._key}:${slot}b`, b1); op.mix = f; } }
       if (l.matte) {
         const mm = A.videoMeta(l.matte.src || l.matte);
         const mi = Math.max(0, Math.min(mm.frames - 1, Math.floor((sT + (l.matte.offset || 0)) * mm.fps + 1e-4)));
         const mb = A.get(A.frameUrl(mm, mi)); if (!mb) return null;
-        op.matte = comp.tex(`mat:${l.id}:${slot}`, mb); op.matteMode = MATTE[l.matte.mode || 'luma'];
+        op.matte = comp.tex(`mat:${l._key}:${slot}`, mb); op.matteMode = MATTE[l.matte.mode || 'luma'];
       }
       E.lastVideo.push({ src: l.src, i: i0, dir }); if (l.matte) E.lastVideo.push({ src: l.matte.src || l.matte, i: Math.floor(sT * A.videoMeta(l.matte.src || l.matte).fps), dir });
       return op;
@@ -229,18 +335,22 @@ async function layerOps(l, env, depth) {
     const op = frameOp(st, 'm'); if (op) ops.push(op);
     env._srcT = st;
   } else if (l.type === 'canvas') {
-    const inst = E.inst.get(l), g = inst.ctx;
-    g.setTransform(1, 0, 0, 1, 0, 0); g.globalAlpha = 1; g.globalCompositeOperation = 'source-over'; g.filter = 'none'; g.clearRect(0, 0, W, H);
+    const inst = await ensureInst(l, env.shot), cv = sharedCanvas(), g = E.ctx;
+    env.state = inst.state;
+    g.setTransform(1, 0, 0, 1, 0, 0); g.globalAlpha = 1; g.globalCompositeOperation = 'source-over'; g.filter = 'none'; g.shadowBlur = 0; g.letterSpacing = '0px'; g.clearRect(0, 0, W, H);
     g.setTransform(S, 0, 0, S, 0, 0);
-    g.save(); await inst.mod.draw(env.lt, { ...env, ctx: g, canvas: inst.canvas }); g.restore();
-    ops.push({ ...base, tex: comp.tex('cv:' + l.id, inst.canvas, { mips: false }), ...placement({ fit: 'stretch', ...l }, DW, DH, env) });
+    g.save(); await inst.mod.draw(env.lt, { ...env, ctx: g, canvas: cv }); g.restore();
+    ops.push({ ...base, tex: comp.tex('cv:shared', cv, { mips: false }), ...placement({ fit: 'stretch', ...l }, DW, DH, env) });
   } else if (l.type === 'three') {
-    const inst = E.inst.get(l), r = comp.renderer;
-    comp.clear(inst.rt);
-    r.setRenderTarget(inst.rt);
-    await inst.mod.draw(env.lt, { ...env, renderer: r, target: inst.rt });
+    const inst = await ensureInst(l, env.shot), r = comp.renderer, rt = comp.rt('three:s' + (l.samples ?? 4), { depth: true, samples: l.samples ?? 4 });
+    env.state = inst.state;
+    comp.clear(rt);
+    r.setRenderTarget(rt);
+    await inst.mod.draw(env.lt, { ...env, renderer: r, target: rt });
     r.setRenderTarget(null); r.autoClear = false;
-    ops.push({ ...base, tex: inst.rt.texture, flip: true, premul: true, linear: l.linear ?? true, ...placement({ fit: 'stretch', ...l }, DW, DH, env) });
+    ops.push({ ...base, tex: rt.texture, flip: true, premul: true, linear: l.linear ?? true, ...placement({ fit: 'stretch', ...l }, DW, DH, env) });
+  } else if (l.type === 'ghosts') {
+    ops.push(...ghostOps(l, env, base));
   } else if (l.type === 'comp') {
     if (depth >= 2) throw new Error(`comp layer ${l.id}: nesting deeper than 2`);
     const ech = l.echo ? vals(l.echo, env.lt, env) : null;
@@ -314,7 +424,7 @@ async function drawFrame(i) {
   if (shot) {
     const env = { T: E.T, origin: shot.start };
     P = evalFx(shot, E.globalFx, t - shot.start, t, i, E.T, env);
-    const mask = P.iso > 0 ? comp.rt('mask') : null;
+    const mask = P.iso > 0 || P.neg > 0 ? comp.rt('mask') : null;
     await renderShotLayers(shot, t, rtComp, mask, 0, 'pre');
     for (const o of overlays) await renderShotLayers(o, t, rtComp, mask, 0, 'pre', false);
     comp.post(rtComp, mask, rtPost, P);
@@ -340,6 +450,7 @@ export async function renderFrame(i) {
   }
   if (A.stats.failed.length) throw new Error('assets failed to load: ' + [...new Set(A.stats.failed)].slice(0, 5).join(', '));
   for (const v of E.lastVideo) A.prefetchVideo(v.src, v.i + v.dir, v.dir, 8);     // warms the cache only; never changes pixels
+  E.comp.sweep(); sweepModules();
   return r;
 }
 
@@ -349,6 +460,7 @@ const serial = fn => (chain = chain.then(fn, fn));
 const blob = (type, q) => new Promise(res => E.out.toBlob(res, type, q));
 window.renderFrame = (i, o = {}) => serial(async () => {
   const a = performance.now(); const r = await renderFrame(i); const b = performance.now();
+  if (E.comp.renderer.getContext().isContextLost()) throw new Error('WebGL context lost');   // never save a black frame
   const out = { i, t: i / FPS, shot: r.shot?.id || null, ms: b - a };
   if (o.hash) out.hash = E.comp.hashPixels();
   if (o.upload) { const bl = await blob(o.type || 'image/jpeg', o.q ?? 0.95); const res = await fetch(o.upload, { method: 'PUT', body: bl }); if (!res.ok) throw new Error('upload failed ' + res.status); out.bytes = bl.size; }

@@ -13,6 +13,7 @@
 //   tapeStop  {at (local s), dur .8, toBlack: .25 | false}   content time decelerates to a stop + tape sag visuals
 //   hold      {at, until}                             freeze the content clock (freeze-frame of every layer)
 //   rewind    {amount 1}                              VHS search look (bands, tracking, chroma, warble)
+//   negative  {amount 1 (keyframe 0→1 over .3 s), ink, paper}  woodblock negative: white lines on ink; keepColor layers stay
 //   ripple    {amount 1, speed 6}                     underwater/ripple distortion
 //   warble    {amount}  wobble {amount}  tracking {amount}  zoom {amount (keys)}  spin {deg}
 // Events (`on`): 'beat' | 'downbeat' | 'kick' | 'snare' | 'every:2' (every 2nd beat) | [abs times] | {list, every, offset}
@@ -21,7 +22,7 @@ import { val } from './keys.js';
 
 export function defaults() {
   return { zoom: 1, spin: 0, drop: 0, squash: 0, warble: 0, warbleSeed: 0, wobble: 0, tracking: 0, trackPos: -200, rewindLines: 0, ripple: 0, ripplePhase: 0,
-    chroma: 0, vhs: 0, iso: 0, engrave: 0, engraveCell: 6, engraveAngle: 0.6, sat: 1, contrast: 1, exposure: 1, lift: 0, tint: '#ffffff',
+    chroma: 0, vhs: 0, iso: 0, neg: 0, engrave: 0, engraveCell: 6, engraveAngle: 0.6, sat: 1, contrast: 1, exposure: 1, lift: 0, tint: '#ffffff',
     isoInk: '#0b0b0c', isoPaper: '#ece7dc', bg: '#000000', grain: 0, grainSize: 1.5, grainSeed: 0, paper: 0, paperSeed: 0, scan: 0, vignette: 0,
     shakeX: 0, shakeY: 0, flash: 0, flashC: '#ffffff', fade: 0, letterbox: 0, boxC: '#000000', dither: 1, time: 0 };
 }
@@ -128,6 +129,7 @@ export function evalFx(shot, globalFx, lt, t, frame, T, env) {
         P.rewindLines += a; P.chroma += 3 * a; P.warble += 0.5 * a; P.warbleSeed = frame; P.tracking += 0.6 * a; P.trackPos = ((t * 520) % 1300) - 110;
         P.vhs += 0.55 * a; P.scan = Math.max(P.scan, 0.25 * a); break;
       }
+      case 'negative': P.neg = Math.max(P.neg, V(f.amount, 1)); if (f.ink) P.isoInk = f.ink; if (f.paper) P.isoPaper = f.paper; break;
       case 'ripple': P.ripple += V(f.amount, 1); P.ripplePhase = t * V(f.speed, 6); break;
       case 'hold': break;
       case 'bg': P.bg = f.color; break;

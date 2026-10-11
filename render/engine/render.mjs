@@ -6,9 +6,10 @@
 //   node render/engine/render.mjs --frames 2016 2112                                      frame range by index (end exclusive)
 //   node render/engine/render.mjs --still 84.5            --stills 83,85.2,"17:1"         full-res PNG stills
 //   node render/engine/render.mjs --sheet 82:95:0.5 [--cols 6]                             contact sheet PNG
-//   node render/engine/render.mjs --verify 6                                               render N frames in two browsers, compare pixel hashes
+//   node render/engine/render.mjs --verify 6 | --verify 40.4,119.2                         render frames in two browsers, compare pixel hashes
 //   node render/engine/render.mjs --list                                                   shot table (resolved times)
 //   node render/engine/render.mjs --serve                                                  studio scrubber at a local URL
+//   node render/engine/render.mjs --track media/shots/X/take_1_matte/ [--out track.json]   subject track of a matte (centroid/top/bottom per frame)
 // Options: --preview (960x540 draft) | --w --h | --workers N (≤6) | --gpu nvidia|cpu | --audio file.mp3 | --timing file.json
 //          --out file.mp4 | --crf N | --preset P | --q jpegQuality | --force (re-render existing frames) | --png (lossless frames)
 import { chromium } from 'playwright-core';
@@ -19,7 +20,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 import { createHash } from 'node:crypto';
 import { homedir } from 'node:os';
 import { serve } from './lib/server.mjs';
-import { prepareVideos } from './lib/prepare.mjs';
+import { prepareVideos, computeTrack } from './lib/prepare.mjs';
 import { TimeMap, TIMING_PATHS } from './src/timing.js';
 import * as core from './src/core.js';
 
@@ -57,8 +58,13 @@ const TIMING_PATH = args.timing ? relative(ROOT, resolve(args.timing)) : TIMING_
 if (!TIMING_PATH) throw new Error('no timing JSON (' + TIMING_PATHS.join(', ') + ')');
 const T = new TimeMap(JSON.parse(readFileSync(join(ROOT, TIMING_PATH), 'utf8')), { source: TIMING_PATH });
 if (T.isStub) console.warn(`[timing] ${TIMING_PATH} (STUB: analysis/cinematic/timing.json not there yet; bar:beat uses the stub grid)`);
+// the same ctx helpers the page gives timeline functions (render/timeline.js merges section files with them)
+const nodeCtx = { T, core,
+  list: async dir => { const d = join(ROOT, dir); return existsSync(d) ? readdirSync(d).filter(f => statSync(join(d, f)).isFile()).sort() : []; },
+  importModule: async p => import(pathToFileURL(join(ROOT, p)).href),
+  readJSON: async p => JSON.parse(readFileSync(join(ROOT, p), 'utf8')) };
 let tl = (await import(pathToFileURL(join(ROOT, TL_PATH)).href)).default;
-if (typeof tl === 'function') tl = await tl({ T, core });
+if (typeof tl === 'function') tl = await tl(nodeCtx);
 const NAME = (tl.name || basename(TL_PATH, extname(TL_PATH))).replace(/[^\w-]/g, '_');
 const AUDIO = resolve(ROOT, args.audio || tl.audio || 'inputs/Rewind - cinematic edition (Remastered).mp3');
 const OUTDIR = join(HERE, 'out', NAME);
@@ -87,30 +93,44 @@ function fingerprint() {
 // ---------------------------------------------------------------- browser
 // nvidia: ANGLE on Vulkan (RTX 3090). --disable-vulkan-surface matters: without it headless Chrome loses the WebGL
 // context ~100 ms after creation on this box. egl: ANGLE on NVIDIA's EGL (fallback). cpu: SwiftShader (slow, always works).
-const GPU_FLAGS = {
+const GPU_FLAGS_ALL = {
   cpu: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader'],
   egl: ['--use-gl=angle', '--use-angle=gl-egl', '--ignore-gpu-blocklist', '--enable-gpu'],
   nvidia: ['--use-angle=vulkan', '--enable-features=Vulkan,VulkanFromANGLE,DefaultANGLEVulkan', '--disable-vulkan-surface', '--ignore-gpu-blocklist', '--enable-gpu'],
-}[GPU];
-if (!GPU_FLAGS) throw new Error('--gpu must be nvidia | egl | cpu');
-const GPU_ENV = GPU === 'egl' ? { __EGL_VENDOR_LIBRARY_FILENAMES: '/usr/share/glvnd/egl_vendor.d/10_nvidia.json' } : {};
-const FLAGS = [...GPU_FLAGS, '--disable-renderer-backgrounding', '--disable-background-timer-throttling', '--disable-backgrounding-occluded-windows',
+};
+if (!GPU_FLAGS_ALL[GPU]) throw new Error('--gpu must be nvidia | egl | cpu');
+const EGL_ENV = { __EGL_VENDOR_LIBRARY_FILENAMES: '/usr/share/glvnd/egl_vendor.d/10_nvidia.json' };
+const FLAGS_COMMON = ['--disable-renderer-backgrounding', '--disable-background-timer-throttling', '--disable-backgrounding-occluded-windows',
   '--force-color-profile=srgb', '--js-flags=--max-old-space-size=4096', '--no-sandbox', '--font-render-hinting=none', '--hide-scrollbars'];
 
 let srv, cacheDir = '';
 const browsers = new Set();
-async function openPage(tag = '') {
-  const browser = await chromium.launch({ executablePath: CHROME, headless: true, args: FLAGS, env: { ...process.env, ...GPU_ENV } });
+let gpuMode = GPU;
+const flagsFor = mode => [...{ cpu: GPU_FLAGS_ALL.cpu, egl: GPU_FLAGS_ALL.egl, nvidia: GPU_FLAGS_ALL.nvidia }[mode], ...FLAGS_COMMON];
+async function launchPage(tag, mode) {
+  const browser = await chromium.launch({ executablePath: CHROME, headless: true, args: flagsFor(mode), env: { ...process.env, ...(mode === 'egl' ? EGL_ENV : {}) } });
   browsers.add(browser);
   const page = await browser.newPage({ viewport: { width: 1280, height: 720 } });
-  page.on('console', m => { if ((['error', 'warning'].includes(m.type()) && !/GL Driver Message|GPU stall due to ReadPixels/.test(m.text())) || args.verbose) console.log(`[page${tag}] ${m.text()}`); });
+  page.on('console', m => { if ((['error', 'warning'].includes(m.type()) && !/GL Driver Message|GPU stall due to ReadPixels|CONTEXT_LOST_WEBGL|Context Lost/.test(m.text())) || args.verbose) console.log(`[page${tag}] ${m.text()}`); });
   page.on('pageerror', e => console.log(`[page error${tag}] ${e.message}`));
   const q = new URLSearchParams({ render: '1', timeline: TL_PATH, w: W, h: H, cache: cacheDir, timing: TIMING_PATH, v: Date.now() % 1e9 });
   await page.goto(`${srv.url}/render/engine/page/index.html?${q}`, { waitUntil: 'load' });
   await page.waitForFunction('window.ready === true || window.bootError', null, { timeout: 180000, polling: 100 });
   const err = await page.evaluate('window.bootError'); if (err) throw new Error('page boot failed: ' + err);
-  if (await page.evaluate('window.E.comp.renderer.getContext().isContextLost()')) throw new Error(`WebGL context lost right after boot (gpu=${GPU}); try --gpu egl or --gpu cpu`);
+  await new Promise(r => setTimeout(r, 250));   // a lost context shows up ~100 ms after creation
+  if (await page.evaluate('window.E.comp.renderer.getContext().isContextLost()')) { await browser.close().catch(() => {}); browsers.delete(browser); return null; }
   return { page, browser };
+}
+// GPU contexts can be lost when the card is busy (other agents' CUDA jobs): retry, then fall back egl → cpu.
+// Pixels differ slightly between backends, so a fallback is announced loudly; keep one backend per encode.
+async function openPage(tag = '') {
+  const order = gpuMode === 'nvidia' ? ['nvidia', 'nvidia', 'nvidia', 'egl', 'cpu'] : gpuMode === 'egl' ? ['egl', 'egl', 'cpu'] : ['cpu'];
+  for (const mode of order) {
+    const P = await launchPage(tag, mode);
+    if (P) { if (mode !== gpuMode) { console.warn(`[render] WebGL context kept getting lost on ${gpuMode}; falling back to --gpu ${mode} for the rest of this run`); gpuMode = mode; } return P; }
+    console.warn(`[render] worker${tag}: WebGL context lost after boot on ${mode}; retrying`);
+  }
+  throw new Error('could not get a stable WebGL context on any backend');
 }
 const closeAll = async () => { for (const b of browsers) await b.close().catch(() => {}); browsers.clear(); };
 
@@ -181,6 +201,20 @@ async function encode(i0, i1, dir, out) {
 }
 
 // ---------------------------------------------------------------- main
+if (args.track) {   // standalone: dump a matte's per-frame track (JSON) for use outside the engine
+  const { spawnSync: sp } = await import('node:child_process');
+  let abs = resolve(ROOT, String(args.track).replace(/\/$/, '')), inArgs, fps = +(args.fps || 24);
+  if (statSync(abs).isDirectory()) {
+    if (existsSync(join(abs, 'matte.mp4'))) inArgs = ['-i', join(abs, 'matte.mp4')];
+    else { const f = readdirSync(abs).filter(x => /\.(png|jpe?g)$/i.test(x)).sort(); inArgs = ['-framerate', String(fps), '-pattern_type', 'glob', '-i', join(abs, '*' + extname(f[0]))]; }
+  } else inArgs = ['-i', abs];
+  const pr = sp(FFMPEG, ['-hide_banner', ...inArgs], { encoding: 'utf8' }).stderr || '';
+  fps = +((pr.match(/([\d.]+) fps/) || [])[1] || fps);
+  const tr = computeTrack(FFMPEG, inArgs, fps, !!args.alpha);
+  const json = JSON.stringify({ src: relative(ROOT, abs), fps, fields: ['t', 'cx', 'cy', 'topX', 'topY', 'bottomX', 'bottomY', 'area'], frames: tr.map((p, i) => [+(i / fps).toFixed(4), ...p]) });
+  if (args.out) { writeFileSync(resolve(args.out), json); console.log(`${tr.length} frames → ${args.out}`); } else console.log(json);
+  process.exit(0);
+}
 try {
   if (args.serve) {
     ({ cacheDir } = prepareVideos({ root: ROOT, tl, variant: MODE, maxW: W, maxH: H, ffmpeg: FFMPEG }));
@@ -215,8 +249,9 @@ try {
     writeFileSync(f, Buffer.from(url.slice(url.indexOf(',') + 1), 'base64')); console.log(relative(ROOT, f));
   } else if (args.verify) {
     // determinism: the same frames in two independent browsers (different order) must hash identically
-    const n = +(args.verify === true ? 6 : args.verify);
-    const [a, b] = tlRange; const frames = Array.from({ length: n }, (_, k) => frameOf(a + (b - a) * (k + 0.5) / n));
+    const v = args.verify === true ? '6' : String([].concat(args.verify).join(','));
+    const [a, b] = tlRange;
+    const frames = /^\d+$/.test(v) ? Array.from({ length: +v }, (_, k) => frameOf(a + (b - a) * (k + 0.5) / +v)) : parseTimes(v).map(frameOf);   // N evenly spaced, or explicit times
     const A = await openPage('#A'), B = await openPage('#B');
     const ha = [], hb = [];
     for (const i of frames) ha.push((await A.page.evaluate(i => window.renderFrame(i, { hash: true }), i)).hash);

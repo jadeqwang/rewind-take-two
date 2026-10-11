@@ -1,5 +1,9 @@
 // ribbon.js: "causal residue": a colour ribbon trailing a keyframed or tracked path (Canvas2D module).
 //   params.path   [[t, x, y], ...]  t = layer-local seconds (or absolute time strings); Catmull-Rom between keys
+//   params.follow {layer: 'jade', point: 'centroid'|'top'|'bottom', smooth: 3 (frames), offset: [dx, dy]}  ride a video
+//                 layer's matte in the same shot (the tracker: render.mjs extracts a per-frame track for every matte)
+//   params.bloom  0..1 additive glow (blurred copies added under the band, default .8); params.grain 0..1 coloured-pencil
+//                 tooth on the band (default .5); colors default the residue gradient ['#F08A24', '#8DB8E8']
 //   params.track  'path/to/track.json'  [[t,x,y],...] or [{t,x,y}] (layer-local seconds), used when path is absent
 //   params.trail  seconds of history drawn (default: everything since the path starts: residue stays in the world)
 //   params.drift  [vx, vy] px/s: world motion applied to older points (camera follows her, so residue streams behind)
@@ -9,6 +13,7 @@
 // Deterministic: points are sampled on a fixed 60 Hz grid of path time, so the trail never shimmers between frames;
 // drawn backwards in time (a comp layer replaying it in reverse) the ribbon simply un-spools.
 import { clamp, lerp, hexRgb, hash, hsig, noise1 } from '../src/core.js';
+import { scratch, grainPattern } from './lib/text.js';
 
 export async function init(ctx, params, env) {
   let path = params.path;
@@ -29,18 +34,21 @@ function at(keys, t) {
 }
 
 export function draw(lt, env) {
-  const g = env.ctx, p = env.params, keys = env.state.keys;
-  if (!keys.length) return;
-  const t0 = keys[0][0], tEnd = Math.min(lt, keys[keys.length - 1][0] + (p.extend ?? 1e9));
+  const p = env.params, keys = env.state.keys, out = env.ctx;
+  const fol = p.follow ? env.follow(p.follow) : null;
+  if (!keys.length && !fol) return;
+  const t0 = fol ? (p.from ?? 0) : keys[0][0], tEnd = fol ? lt : Math.min(lt, keys[keys.length - 1][0] + (p.extend ?? 1e9));
+  // draw into a scratch canvas, then composite: bloom (additive blurred copies) + the band with pencil tooth
+  const sc = scratch('ribbon', out.canvas.width, out.canvas.height), g = sc.g; g.setTransform(env.S, 0, 0, env.S, 0, 0);
   if (tEnd <= t0) return;
   const trail = env.val(p.trail, 1e9), from = Math.max(t0, tEnd - trail);
   const drift = p.drift || [0, 0], width = env.val(p.width, 28), twist = env.val(p.twist, 0.6), glow = env.val(p.glow, 0.6);
-  const cols = (p.colors || ['#ff7a1a', '#7ec8ff']).map(hexRgb);
+  const cols = (p.colors || ['#F08A24', '#8DB8E8']).map(hexRgb);
   const seed = p.seed ?? 7;
   // samples on a fixed grid
   const pts = [];
   const k0 = Math.ceil(from * 60 - 1e-6), k1 = Math.floor(tEnd * 60 + 1e-6);
-  const push = tau => { const q = at(keys, tau), age = lt - tau; pts.push({ x: q[0] + drift[0] * age, y: q[1] + drift[1] * age, tau, age }); };
+  const push = tau => { const q = fol ? fol(tau) : at(keys, tau); if (!q) return; const age = lt - tau; pts.push({ x: q[0] + drift[0] * age, y: q[1] + drift[1] * age, tau, age }); };
   for (let k = k0; k <= k1; k++) push(k / 60);
   if (!pts.length || pts[pts.length - 1].tau < tEnd - 1e-6) push(tEnd);
   if (pts.length < 2) return;
@@ -59,7 +67,7 @@ export function draw(lt, env) {
   const colAt = u => { const c = cols.length === 1 ? cols[0] : (() => { const x = (1 - u) * (cols.length - 1), j = Math.min(cols.length - 2, Math.floor(x)); const f = x - j; return cols[j].map((v, q) => lerp(v, cols[j + 1][q], f)); })(); return c.map(v => Math.round(v * 255)); };
   g.save();
   g.lineJoin = 'round'; g.lineCap = 'round';
-  if (glow > 0) {   // soft bloom under the band
+  if (glow > 0 && p.bloom === 0) {   // cheap soft glow (only when bloom is off)
     g.globalCompositeOperation = 'lighter';
     for (let i = 1; i < n; i += 2) {
       const c = colAt(i / (n - 1));
@@ -100,4 +108,16 @@ export function draw(lt, env) {
     g.beginPath(); g.arc(q.x + ox, q.y + oy, 1.5 + 2.5 * hash(seed, kk, 5), 0, 7); g.fill();
   }
   g.restore();
+  const grain = env.val(p.grain, p.pencil ? 0 : 0.5);
+  if (grain > 0) { g.save(); g.setTransform(1, 0, 0, 1, 0, 0); g.globalCompositeOperation = 'destination-out'; g.globalAlpha = grain; g.fillStyle = grainPattern(g); g.fillRect(0, 0, sc.width, sc.height); g.restore(); }
+  out.save(); out.setTransform(1, 0, 0, 1, 0, 0);
+  const bloom = env.val(p.bloom, 0.8);
+  if (bloom > 0) {
+    out.globalCompositeOperation = 'lighter';
+    out.globalAlpha = 0.55 * bloom; out.filter = `blur(${(width * 0.9 * env.S).toFixed(1)}px)`; out.drawImage(sc, 0, 0);
+    out.globalAlpha = 0.45 * bloom; out.filter = `blur(${(width * 2.6 * env.S).toFixed(1)}px)`; out.drawImage(sc, 0, 0);
+    out.filter = 'none';
+  }
+  out.globalCompositeOperation = 'source-over'; out.globalAlpha = env.val(p.opacity, 1); out.drawImage(sc, 0, 0);
+  out.restore();
 }
