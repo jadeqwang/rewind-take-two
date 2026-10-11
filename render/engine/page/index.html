@@ -1,0 +1,32 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>REWIND engine</title><link rel="icon" href="data:,">
+<script type="importmap">{ "imports": { "three": "/render/engine/node_modules/three/build/three.module.js" } }</script>
+<style>
+html,body{margin:0;background:#0b0b0c;color:#aaa;font:12px 'JetBrains Mono',monospace}
+#out{display:block;max-width:100vw;max-height:calc(100vh - 44px);margin:0 auto}
+#ui{position:fixed;left:0;right:0;bottom:0;padding:6px 10px;background:rgba(0,0,0,.75);display:flex;gap:10px;align-items:center}
+#scrub{flex:1} button{background:#222;color:#ddd;border:1px solid #444;font:inherit;padding:2px 8px}
+#err{color:#f66;white-space:pre-wrap;padding:12px}
+</style></head><body>
+<canvas id="out"></canvas>
+<div id="ui" hidden><button id="prev">◀ f</button><button id="next">f ▶</button><input id="scrub" type="range" step="1"><span id="tt"></span></div>
+<pre id="err"></pre>
+<script type="module">
+import { boot } from '../src/engine.js';
+const Q = new URLSearchParams(location.search);
+boot().then(E => {
+  if (Q.has('render')) return;
+  // studio: scrub the timeline frame by frame (?t=seconds to open at a time)
+  const ui = document.getElementById('ui'), scrub = document.getElementById('scrub'), tt = document.getElementById('tt');
+  ui.hidden = false; scrub.min = Math.round(E.range[0] * 24); scrub.max = Math.round(E.range[1] * 24) - 1;
+  scrub.value = Q.has('t') ? Math.round(+Q.get('t') * 24) : scrub.min;
+  let busy = false, want = +scrub.value;
+  const go = async () => { if (busy) return; busy = true; const i = want; const r = await window.renderFrame(i);
+    tt.textContent = `${(i / 24).toFixed(3)} s  f${i}  ${r.shot || '-'}  ${r.ms.toFixed(0)} ms`; busy = false; if (i !== want) go(); };
+  scrub.oninput = () => { want = +scrub.value; go(); };
+  document.getElementById('prev').onclick = () => { scrub.value = want = Math.max(+scrub.min, want - 1); go(); };
+  document.getElementById('next').onclick = () => { scrub.value = want = Math.min(+scrub.max, want + 1); go(); };
+  addEventListener('keydown', e => { if (e.key === 'ArrowLeft') document.getElementById('prev').click(); if (e.key === 'ArrowRight') document.getElementById('next').click(); });
+  go();
+}).catch(e => { console.error(e); document.getElementById('err').textContent = e.stack || e; window.bootError = String(e.stack || e); });
+</script></body></html>

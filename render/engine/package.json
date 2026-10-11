@@ -1,0 +1,13 @@
+{
+  "name": "rewind-engine",
+  "private": true,
+  "type": "module",
+  "description": "Timeline-driven compositing/render engine for the REWIND music video (headless Chrome + three.js + ffmpeg)",
+  "scripts": {
+    "render": "node render.mjs"
+  },
+  "dependencies": {
+    "playwright-core": "1.56.1",
+    "three": "0.186.1"
+  }
+}
