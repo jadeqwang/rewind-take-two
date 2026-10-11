@@ -37,7 +37,7 @@ uniform vec2 uRes; uniform float uS;
 uniform float uOpacity, uLinear, uPremul;
 uniform int uKey;              // 0 none, 1 luma, 2 chroma
 uniform vec3 uKeyColor; uniform float uKeyLo, uKeyHi, uKeySpill, uKeyInvert;
-uniform float uSat, uExposure, uContrast, uGamma, uInvert, uHue; uniform vec3 uTint, uLift; uniform vec4 uColorize;
+uniform float uSat, uExposure, uContrast, uGamma, uInvert, uHue, uRim; uniform vec3 uTint, uLift; uniform vec4 uColorize;
 uniform vec4 uColor;           // solid layers: rgba (uses no texture)
 uniform int uMode;             // 0 colour, 1 coverage (mask write: alpha in all channels)
 uniform float uSolid;
@@ -83,6 +83,10 @@ void main(){
       if (uKeySpill > 0.) { float sp = (1. - k) * uKeySpill; vec3 g = vec3(luma(c.rgb)); c.rgb = mix(c.rgb, g, clamp(sp * 2., 0., 1.)); }
     }
     // grade
+    if (uRim > 0.) {   // residueRim: saturated reds (baked rim lights) → residue orange #F08A24
+      float red = clamp((c.r - max(c.g, c.b)) * 2.5 - .15, 0., 1.) * step(c.b, c.g + .25);
+      c.rgb = mix(c.rgb, vec3(.94, .54, .14) * (c.r * 1.05), red * uRim);
+    }
     c.rgb = c.rgb * uExposure;
     c.rgb = (c.rgb - .5) * uContrast + .5;
     c.rgb = mix(vec3(luma(c.rgb)), c.rgb, uSat);
@@ -157,7 +161,13 @@ void main(){
   // chromatic split: radial + a horizontal misregistration
   vec2 dir = (uv - .5) * 2.;
   vec2 cs = (vec2(chroma) * (dir * .6 + vec2(.8, 0.))) / vec2(1920., 1080.);
-  vec3 col = vec3(fetch(uv + cs).r, fetch(uv).g, fetch(uv - cs).b);
+  // chroma split in the residue palette: fringes lean orange (#F08A24) on one side, pale blue (#8DB8E8) on the other,
+  // never red/cyan (the film has no red). Neutral luminance is preserved.
+  vec3 col = fetch(uv);
+  if (chroma > 0.) {
+    float lc = luma(col), la = luma(fetch(uv + cs)), lb = luma(fetch(uv - cs));
+    col += (la - lc) * vec3(.94, .54, .14) * 1.6 + (lb - lc) * vec3(.55, .72, .91) * 1.6;
+  }
   // VHS: chroma bleeds sideways, luma stays sharper, plus tape noise
   if (vhs > 0.) {
     vec3 acc = vec3(0.); float w = 0.;

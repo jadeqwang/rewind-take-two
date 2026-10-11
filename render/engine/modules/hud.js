@@ -14,7 +14,7 @@
 //                 progress keys, bg ('#0b0b0c'; null = transparent)
 //   'rewind'      ◀◀ ×N (multiplier keys), ring (clock ring sweeping counter-clockwise; sweep keys 0..1 or rate),
 //                 counter (tape counter keys, s), scrub (0..1 keys)
-//   'race'        GHOST: ITERATION n + split (keys, s; negative = ahead), splitColor keys
+//   'race'        GHOST: ITERATION n + split (keys, s; negative = ahead: pale blue; behind: orange), splitColor keys
 import { absT, fontName } from './lib/text.js';
 import { clamp, clock as fmtClock, hash } from '../src/core.js';
 
@@ -170,5 +170,5 @@ function race(g, env, p) {
   const s = (sp >= 0 ? '+' : '-') + Math.abs(sp).toFixed(2), width = Math.max(g.measureText(label).width, g.measureText(s).width);
   const x0 = corner(env, p, width), y = env.val(p.margin, 56) + size;
   g.fillStyle = col; g.fillText(label, x0, y);
-  g.fillStyle = env.val(p.splitColor, sp < 0 ? '#5fd17a' : '#ff5a4a'); g.fillText(s, x0, y + size * 1.75);
+  g.fillStyle = env.val(p.splitColor, sp < 0 ? '#8DB8E8' : '#F08A24'); g.fillText(s, x0, y + size * 1.75);
 }

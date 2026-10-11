@@ -1,9 +1,11 @@
 // Typography / HUD / residue kit demo: each shot sits at the moment of the song the shot list uses it for.
 //   node render/engine/render.mjs --timeline render/engine/demo/kit.js --stills 16.9,88.3,...   (see README "Kit stills")
 const M = 'media/engine_demo/';
-const JADE = { type: 'video', src: M + 'circle.mp4', matte: { src: M + 'circle_matte.mp4', mode: 'luma' }, keepColor: true, fit: 'height' };
+// the placeholder clip has a baked red rim light; residueRim remaps saturated reds to residue orange (no red in this film)
+const JADE = { type: 'video', src: M + 'circle.mp4', matte: { src: M + 'circle_matte.mp4', mode: 'luma' }, keepColor: true, fit: 'height', grade: { residueRim: 1 } };
 // the night plate printed as a negative: reads as an engraving on paper once `isolate` + `engrave` run over it
-const ENGRAVED = { type: 'image', src: M + 'far.jpg', fit: 'cover', scale: 1.15, grade: { exposure: 1.8, contrast: 1.15, invert: true } };
+// (cropped below the skyline strip, which printed as a ragged band along the top edge)
+const ENGRAVED = { type: 'image', src: M + 'far.jpg', fit: 'cover', crop: [0, 0.2, 1, 1], scale: 1.05, grade: { exposure: 1.8, contrast: 1.15, invert: true } };
 const PAPER_FX = [{ type: 'isolate', amount: 1, engrave: 0.6, cell: 5 }, { type: 'paper', amount: 0.6 }, { type: 'grain', amount: 0.04 }];
 const kb = (a, b) => ({ from: { scale: a }, to: { scale: b } });
 
@@ -41,13 +43,15 @@ export default {
     { id: 'continue', start: 111.22, end: 112.96, background: '#0b0b0c', layers: [{ type: 'canvas', module: 'hud', params: { mode: 'continue', from: 9, every: 0.8 } }] },
     { id: 'ghosts', start: 113.89, end: 119.4, layers: [{ ...ENGRAVED },
       { type: 'ghosts', src: M + 'circle.mp4', matte: { src: M + 'circle_matte.mp4' }, fit: 'height', scale: 0.42, y: 120, on: 'vocal_chops',
-        generate: { count: 13, seed: 4, area: [-820, -260, 820, 300], scale: [0.8, 1.15], offset: [0, 5], opacity: [0.55, 0.8] }, tint: 0.7 },
+        generate: { count: 13, seed: 4, area: [-820, -260, 820, 300], scale: [0.8, 1.15], offset: [0, 5], opacity: [0.55, 0.8] } },
       { ...JADE, scale: 0.62, y: 205 },
-      { type: 'canvas', module: 'hud', stage: 'post', params: { mode: 'platformer', side: 'right', iteration: 4097, deaths: { base: 4084, on: 'vocal_chops', from: 113.8 }, timer: { from: 56.54 } } }],
+      { type: 'canvas', module: 'hud', stage: 'post', params: { mode: 'platformer', side: 'right', color: '#0b0b0c', iteration: 4097, deaths: { base: 4084, on: 'vocal_chops', from: 113.8 }, timer: { from: 56.54 } } }],
       fx: [{ type: 'isolate', amount: 1, engrave: 0.55 }, { type: 'paper', amount: 0.5 }] },
     { id: 'swarm', start: 123.0, end: 126.25, layers: [{ ...ENGRAVED },
       { type: 'ghosts', src: M + 'circle.mp4', matte: { src: M + 'circle_matte.mp4' }, fit: 'height', scale: 0.25, y: 60,
-        generate: { count: 100, seed: 9, area: [-900, -330, 900, 380], scale: [0.6, 1.3], offset: [0, 6], quantize: 0.5, opacity: [0.5, 0.85] }, tint: 0.75 }],
+        generate: { count: 100, seed: 9, area: [-900, -330, 900, 380], scale: [0.6, 1.3], offset: [0, 6], quantize: 0.5, opacity: [0.5, 0.85] } },
+      { type: 'ghosts', src: M + 'circle.mp4', matte: { src: M + 'circle_matte.mp4' }, fit: 'height', scale: 0.5, x: 520, y: 200, graphite: true,
+        instances: [{ x: 0, y: 0, offset: -0.4, opacity: 0.6 }] }],   // the V2i speedrun ghost: graphite
       fx: [{ type: 'isolate', amount: 1, engrave: 0.55 }, { type: 'paper', amount: 0.5 }] },
     { id: 'pencil', start: 126.25, end: 130.5, background: '#ece7dc', layers: [{ ...ENGRAVED },
       { type: 'solid', color: '#f3eee2', rect: [560, 330, 820, 380], rotate: -3, keepColor: true },

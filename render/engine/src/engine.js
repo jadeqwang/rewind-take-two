@@ -60,7 +60,7 @@ function normLayer(l, shot, i, T, tlDir) {
   }
   if (l.type === 'comp' && Array.isArray(l.srcTime)) l.srcTime = l.srcTime.map(k => [k[0], typeof k[1] === 'string' ? T.time(k[1]) : k[1], ...k.slice(2)]);
   if (l.type === 'parallax') l.layers = (l.layers || []).map((c, k) => ({ fit: 'height', repeat: [true, false], ...c, id: `${l.id}.p${k}`, _key: `${l._key}.p${k}` }));
-  if (l.type === 'ghosts') l._instances = ghostInstances(l);
+  if (l.type === 'ghosts') { if (l.keepColor === undefined) l.keepColor = !l.graphite; l._instances = ghostInstances(l); }
   return l;
 }
 function normShots(list, T, tlDir, kind) {
@@ -215,10 +215,11 @@ function videoSrcTime(l, env, m) {
 // Instances that land on the same source frame share one texture upload, so 100 ghosts with offsets quantised to a
 // dozen frames cost a dozen decodes. Explicit `instances` or a seeded `generate` spec (see README).
 function ghostInstances(l) {
-  if (Array.isArray(l.instances)) return l.instances.map((g, k) => ({ i: k, x: 0, y: 0, scale: 1, opacity: l.opacity ?? 0.55, ...g }));
+  if (Array.isArray(l.instances)) return l.instances.map((g, k) => ({ i: k, x: 0, y: 0, scale: 1, opacity: l.opacity ?? 0.55,
+    color: l.graphite ? '#5e5b57' : core.KANDINSKY[k % core.KANDINSKY.length], ...g }));
   const G = l.generate || {}, n = G.count ?? 13, r = rng(l.id, G.seed ?? 1);
   const area = G.area || [-700, -220, 700, 220], sc = G.scale || [0.8, 1.05], op = G.opacity || [0.35, 0.6], off = G.offset || [0, 0];
-  const colors = G.colors || core.KANDINSKY, q = G.quantize ?? 1 / 12;
+  const colors = l.graphite ? ['#5e5b57'] : (G.colors || core.KANDINSKY), q = G.quantize ?? 1 / 12;
   const out = [];
   for (let k = 0; k < n; k++) {
     const u = r(), v = r(), w = r(), z = r(), f = r(), o = r();
@@ -242,7 +243,7 @@ function ghostOps(l, env, base) {
   const vis = new Set(ordered.map(g => g.i));
   const ops = [];
   const lx = env.val(l.x, 0), ly = env.val(l.y, 0), lsRaw = env.val(l.scale, 1), ls = Array.isArray(lsRaw) ? lsRaw[0] : lsRaw;
-  const amt = env.val(l.tint, 0.65);
+  const amt = env.val(l.tint, l.graphite ? 0.9 : 0.72);
   for (const g of all) {
     if (!vis.has(g.i)) continue;
     let fade = clamp(show - g.i);                               // the newest one fades in
@@ -255,7 +256,8 @@ function ghostOps(l, env, base) {
     else if (l.key) op.key = vals(l.key, env.lt, env);
     const s = ls * (g.scale ?? 1);
     Object.assign(op, placement({ ...l, x: lx + (g.x || 0), y: ly + (g.y || 0), scale: [g.flip ? -s : s, s] }, bmp.width, bmp.height, env));
-    op.grade = { ...(base.grade || {}), ...(g.grade || {}), hue: g.hue ?? base.grade?.hue, colorize: g.color, colorizeAmount: g.tint ?? amt };
+    op.grade = { residueRim: 1, ...(base.grade || {}), ...(g.grade || {}), hue: g.hue ?? base.grade?.hue, colorize: g.color, colorizeAmount: g.tint ?? amt };
+    if (l.graphite) op.grade.saturation = 0;
     const isNew = g.i === ordered.length - 1 && l.on ? pop : 0;
     op.opacity = (g.opacity ?? 0.55) * fade * (1 + 0.8 * isNew);
     ops.push(op);
