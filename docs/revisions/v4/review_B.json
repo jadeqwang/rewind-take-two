@@ -2,42 +2,79 @@
  {
   "note": "0:09 my name’s not particularly legible",
   "v3_time": "0:09",
-  "shots": ["C3"],
+  "shots": [
+   "C3"
+  ],
   "status": "done",
   "after": "media/reviews/v4/B/0009_name.mp4",
   "still": "media/reviews/v4/B/0009_name.png",
-  "before_range": [6.8, 11.3],
+  "before_range": [
+   6.8,
+   11.3
+  ],
   "what_changed": "The name was 38 px italic sitting on the row of shoreline lights, so it vanished at 540p. It is now 92 px, a little further below REWIND on the water, with a soft ink plate behind it. Same typeface and the same entrance (after the letters flip)."
+ },
+ {
+  "note": "0:26 - maybe the plate on the car can say TVA (and some numbers – what would be some good 4 digit numbers here?)",
+  "v3_time": "0:26",
+  "shots": [
+   "D3"
+  ],
+  "status": "done",
+  "after": "media/reviews/v4/B/0026_plate.mp4",
+  "still": "media/reviews/v4/B/0026_plate_mirror_3x.jpg",
+  "before_range": [
+   24.5,
+   29.2
+  ],
+  "what_changed": "The sedan in her mirror carries the plate TVA 1729 (the Hardy–Ramanujan taxicab number) for the whole shot, drawn in the engraving's hand and tracked to the car. It is 1.5× the width of the blank plate the take drew, because at the original size the letters were 4 px tall. At 540p the plate is 49 px wide and reads, though it is small next to the lyric in the same mirror.",
+  "question": "Big enough? An alternative with a slow push onto the mirror is in media/reviews/v4/B/0026_plate_alt_push.mp4: the plate is larger, but the push crops her bun and both pencils."
  },
  {
   "note": "3:33 - let’s go with “anomaly report”",
   "v3_time": "3:33",
-  "shots": ["O1"],
+  "shots": [
+   "O1"
+  ],
   "status": "done",
   "after": "media/reviews/v4/B/0333_report_stamp_credit.mp4",
   "still": "media/reviews/v4/B/0333_anomaly_report.png",
-  "before_range": [210.34, 219.4],
+  "before_range": [
+   210.34,
+   219.4
+  ],
   "what_changed": "The card's second line reads ANOMALY REPORT. Nothing else on the card changed."
  },
  {
   "note": "3:37 - “timeline now canon”? “timeline marked canon”? which is better?",
   "v3_time": "3:37",
-  "shots": ["O1"],
+  "shots": [
+   "O1"
+  ],
   "status": "question",
   "after": "media/reviews/v4/B/0333_report_stamp_credit.mp4",
   "still": "media/reviews/v4/B/0337_stamp_both.jpg",
-  "before_range": [216.5, 219.4],
+  "before_range": [
+   216.5,
+   219.4
+  ],
   "what_changed": "The cut uses TIMELINE NOW CANON, set 40% larger than the v3 stamp. The still shows both wordings set in the stamp side by side.",
   "question": "NOW or MARKED? NOW is in the cut: the stamp is already the marking, and NOW is the word that pays off a story about rewinding. Switching is a one-word change (STAMP in tools/sectionF/edl.py)."
  },
  {
   "note": "l like ending with the handwritten ‘never stop’ on the whisper. should we display the song title like we usually do? It’s based on my poem, “Reload” from Inference, book 1 of the Spaces Left Blank trilogy. possibly in video game font in a corner, like a credit of a video game?",
   "v3_time": "3:43",
-  "shots": ["O3_black", "O4"],
+  "shots": [
+   "O3_black",
+   "O4"
+  ],
   "status": "question",
   "after": "media/reviews/v4/B/0333_report_stamp_credit.mp4",
   "still": "media/reviews/v4/B/0346_end_credit.png",
-  "before_range": [222.3, 227.96],
+  "before_range": [
+   222.3,
+   227.96
+  ],
   "what_changed": "A four-line credit in the HUD's pixel face types on in the bottom-left corner during the black ring-out, one line per beat (223.23, 223.69, 224.14, 224.59), so it is fully up 1.4 s before the whisper. The handwritten \"never stop.\" and the iteration counter (bottom right) are untouched, and everything fades together.",
   "question": "Is the wording right? REWIND / JADE WANG / FROM THE POEM “RELOAD” / INFERENCE · SPACES LEFT BLANK, BOOK 1. (Moongazing credited \"Words — Jade Wang, from her poem …\"; say if you want a words/music split or a year.)"
  }

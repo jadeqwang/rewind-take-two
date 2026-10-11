@@ -131,6 +131,10 @@ export default ({ T }) => ({
     { id: 'D3', start: 25.34, end: 28.4, background: INK,
       layers: [
         vid('D3'),
+        // v4 (Jade, 0:26): the sedan's front plate reads TVA 1729 (the only place TVA may appear). Drawn over the take's
+        // blank plate, pinned to its track, 1.5x the take's width so it reads at 540p; `light` follows the streetlights
+        { type: 'canvas', module: 'tools/v4B/plate/plate.js', noRewind: true, params: { text: 'TVA 1729', corners: tracks.D3_plate, grow: 1.5, aspect: 2.3, dim: 0.12,
+          light: [[0, 0], [0.42, 0.05], [0.5, 0.19], [0.75, 0.83], [1.0, 0.97], [1.25, 0.4], [1.42, 0.03], [2.4, 0.04], [2.5, 0.16], [2.75, 0.71], [3.0, 1]] } },
         // etch across the top of the mirror glass (dark sky): an ink shadow under paper-white glyphs. The billboard
         // carried "a shadow chasing", the mirror finishes the line.
         { type: 'canvas', module: 'etch', noRewind: true, x: 3, y: 27, opacity: 0.85, params: { text: "me I couldn't\nplace", sync: 'lyric', size: 60, corners: D3_QUAD, color: INK } },

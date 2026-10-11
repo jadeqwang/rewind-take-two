@@ -17,7 +17,7 @@ A fresh session can carry on from this file alone. Last updated: 2026-10-11 17:4
 |---|---|---|---|---|
 | 1 | 0:09 | name not legible | **done** 17:40: 92 px + ink plate; after `media/reviews/v4/B/0009_name.mp4` | `render/timeline/A.js` C3, `render/engine/modules/title.js` |
 | 2 | 0:13 | Bean: start wide, move in | not started (needs plan + v4-A) | `render/timeline/A.js` S1 |
-| 3 | 0:26 | plate `TVA 1729` | not started | `render/timeline/A.js` D3 |
+| 3 | 0:26 | plate `TVA 1729` | **done** 17:50 (sub-agent `v4B-plate`, $0): reads at 540p, small; alt with push in `0026_plate_alt_push.mp4`; write-up `docs/revisions/v4/plans/plate_d3.md`; reusable `tools/v4B/plate/plate.js` | `render/timeline/A.js` D3 |
 | 4 | 1:30 | car: over-the-shoulder, real mirror, TVA plates (Three.js) | not started (plan to Jade first) | `render/timeline/C.js` V2f1/V2f2 |
 | 5 | 1:39 | gunfire: behind the agents, push in past shoulders | not started (plan to Jade first) | `render/timeline/_B_verse2.js` |
 | 6 | 1:41 | one fires, two on earpieces | not started (plan to Jade first) | same |

@@ -12,6 +12,7 @@ TRACKS = {  # name -> (track json, layer-time offset: subtract the clip `in` use
     "D2_top": "media/shots/D2/track_v3_top.json",
     "D2_bot": "media/shots/D2/track_v3_bot.json",
     "D3_etch": "media/shots/D3/track_etch_v3.json",
+    "D3_plate": "media/shots/D3/track_plate_v4.json",   # v4: the sedan's front plate in the mirror (tools/v4B/plate/track_plate.py)
     "D5_lensL": "media/shots/D5/track_lensL.json",
     "D5_lensR": "media/shots/D5/track_lensR.json",
     "D7_card": "media/shots/D7/track_card.json",
