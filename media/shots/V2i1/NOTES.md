@@ -13,7 +13,8 @@
 ## Use in the cut
 
 - 94.06–95.86: take_1 from 0.5 s at rate 1.0
+- 95.86–96.74: take_1 from 2.6 s at rate 1.0
 
 ## Judgement
 
-Good: side-scroll sprint along the L, bun intact. Graphite ghost runner added in the engine.
+Good: side-scroll sprint along the L, bun intact. Used for both race cuts (94.06-96.74) with the graphite ghost runner (her own clip, 5 frames behind, half a body ahead, then falling behind).

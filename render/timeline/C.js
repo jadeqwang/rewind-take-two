@@ -49,9 +49,9 @@ const CUTS = [
   [92.79, 93.00, 'V2g1', 1, 0.72, 1, { scale: 1.3, y: 40, flash: true }],
   // V2h respawn (bar 54), V2i race, V2j field (top-down), V2k too fast, V2l ring, V2m shot
   [93.66, 94.06, 'V2h1', 1, 0.4, 1.2],
-  [94.06, 95.86, 'V2i1', 1, 0.5, 1, { ghost: true }],
-  [95.86, 96.74, 'V2i2', 1, 0.6, 1],
-  [96.74, 97.62, 'V2i3', 1, 0.5, 1],
+  [94.06, 95.86, 'V2i1', 1, 0.5, 1, { ghost: [[0, 230], [0.9, 60, 'inOut'], [1.8, -170, 'inOut']] }],
+  [95.86, 96.74, 'V2i1', 1, 2.6, 1, { ghost: [[0, -190], [0.88, -420, 'inOut']] }],
+  [96.74, 97.62, 'V2i3', 1, 0.5, 1, { ghost: [[0, -160], [0.88, -380, 'inOut']] }],
   [97.62, 98.28, 'V2i4', 1, 0.3, 1.5],
   [98.28, 100.70, 'V2j1', 1, 0.0, 1, { ribbon: 2.4 }],
   [100.70, 102.46, 'V2j2', 1, 0.3, 1.3],
@@ -101,10 +101,10 @@ function shotFor([start, end, clip, take, clipIn, rate, x = {}], i, T) {
     layers.push({ id: 'jade', type: 'video', src: plate(clip, take), in: clipIn, rate, fit: 'cover',
       matte: matte(clip, take), keepColor: true });
   }
-  if (x.ghost) {  // V2i: her previous attempt (iteration 4,096) as the graphite speedrun ghost, falling behind
+  if (x.ghost) {  // V2i: her previous attempt (iteration 4,096), her own clip as a graphite ghost 5 frames behind in time,
+    // drawn under her: half a body ahead at first, then falling behind as she pulls ahead (x keys, design px)
     layers.splice(1, 0, { id: 'ghost', type: 'ghosts', src: plate(clip, take), matte: matte(clip, take).src, fit: 'cover',
-      in: clipIn, rate, graphite: true, instances: [{ offset: -0.22, opacity: 0.55, x: -150 }] });
-    layers[1].x = [[0, 0], [end - start, -260, 'inOut']];
+      in: clipIn, rate, graphite: true, x: x.ghost, instances: [{ offset: -0.21, opacity: 0.62 }] });
   }
   if (x.ribbon) layers.push({ type: 'canvas', module: 'ribbon', keepColor: true,
     params: { follow: { layer: 'jade', point: 'centroid', smooth: 3 }, trail: x.ribbon, width: x.ribbonWidth || 46, drift: x.drift || [0, 0], seed: i } });
@@ -123,11 +123,12 @@ export default function sectionC({ T }) {
   shots.push({ id: 'C_V2g_black', start: 93.00, end: 93.07, layers: [{ type: 'solid', color: '#000000' }] });
   shots.push({ id: 'C_V2h_loading', start: 93.07, end: 93.66, background: INK, layers: [
     { type: 'canvas', module: 'hud', params: { mode: 'loading', title: 'Reload.', titleSize: 64, deaths: 4097, spinner: true,
-      tip: 'TIP: The Time Variance █████████ can only follow what it can trace.', progress: [[0, 0], [0.55, 1, 'outCubic']], bg: INK } }] });
+      tip: 'The Time Variance █████████ can only follow what it can trace.', progress: [[0, 0], [0.55, 1, 'outCubic']], bg: INK } }] });
   // V2n: freeze on the hit, invert (P5 grammar), arcade CONTINUE? 9 … 8; the ◀◀ slam is the V2n1 cut at 112.66
-  shots.push({ id: 'C_V2n_continue', start: 111.22, end: 112.66, background: INK, layers: [
-    { type: 'video', src: plate('V2m1', 1), in: 0.79, rate: 1, freeze: 0, fit: 'cover' },
-    { type: 'video', src: plate('V2m1', 1), in: 0.79, rate: 1, freeze: 0, fit: 'cover', matte: matte('V2m1', 1), keepColor: true },
+  shots.push({ id: 'C_V2n_continue', start: 111.22, end: 112.66, background: PAPER, layers: [
+    { type: 'video', src: plate('V2m1', 1), in: 0.79, rate: 1, freeze: 0, fit: 'cover', x: [[0, 0], [0.3, 330, 'outCubic']] },
+    { type: 'video', src: plate('V2m1', 1), in: 0.79, rate: 1, freeze: 0, fit: 'cover', x: [[0, 0], [0.3, 330, 'outCubic']], matte: matte('V2m1', 1), keepColor: true },
+    { type: 'solid', color: PAPER, rect: [0, 0, 780, 1080], opacity: [[0, 0], [0.3, 0.92]] },  // inverts to ink under `negative`
   ], fx: [{ type: 'negative', amount: [[0, 0], [0.3, 1, 'outCubic']] }, { type: 'wobble', amount: [[0, 0.6], [0.4, 0]] }] });
   shots.sort((a, b) => a.start - b.start);
 
@@ -140,7 +141,7 @@ export default function sectionC({ T }) {
     ov('C_hud_race', 94.06, 98.28, { type: 'canvas', module: 'hud', params: { mode: 'race', side: 'right', color: INK, iteration: 4096,
       split: [[0, 0.42], [1.8, 0.12], [2.6, -0.04], [4.2, -0.31]], splitColor: [[0, '#d2402f', 'hold'], [2.55, '#3f9a4a']] } }),
     ov('C_hud_field', 98.28, 110.78, { type: 'canvas', module: 'hud', params: { mode: 'platformer', side: 'right', color: INK, iteration: 4097, deaths: 4097, timer: { from: '56.54' } } }),
-    ov('C_hud_continue', 111.30, 112.66, { type: 'canvas', module: 'hud', params: { mode: 'continue', from: 9, every: 0.8, start: '111.40', press: 'PRESS ◀◀' } }),
+    ov('C_hud_continue', 111.30, 112.66, { type: 'canvas', module: 'hud', x: -560, params: { mode: 'continue', from: 9, every: 0.8, start: '111.40', press: 'PRESS ◀◀' } }),
 
     // lyrics
     ov('C_lyr_nowim', 83.40, 84.86, { type: 'canvas', module: 'lowerthird', params: { color: PAPER, text: 'And now I’m', sync: 'lyric', size: 76 } }),

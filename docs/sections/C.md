@@ -66,7 +66,7 @@ in-points (jump cuts inside the action). Times are timeline seconds.
 | 35 | V2h | 93.07–93.66 | "Reload." | — | ENG: LOADING screen, spinning pencil glyph, tip line, death counter ×4097. **Reload.** |
 | 36 | V2h | 93.66–94.06 | 1 (bar 54) | V2h1 | Respawn (day level): Jade pops in at a checkpoint flag on the L tracks and is already sprinting. |
 | 37 | V2i | 94.06–95.86 | 4 | V2i1 | Side-scroll sprint on the L tracks, graphite ghost runner beside her (ENG). Race HUD. |
-| 38 | V2i | 95.86–96.74 | 2 | V2i2 | Trap: a signal arm swings down at chest height; she slides under it. |
+| 38 | V2i | 95.86–96.74 | 2 | V2i1 (late) | Still racing: she pulls ahead and the graphite ghost falls behind (V2i2 slide dropped after review). |
 | 39 | V2i | 96.74–97.62 | 2 | V2i3 | Feet close-up pounding the rail ties; the ghost's feet overtaken (ENG). |
 | 40 | V2i | 97.62–98.28 | 1.5 | V2i4 | Dash: she leaps off the end of the L structure, orange/blue dash streak. |
 | 41 | V2j | 98.28–100.70 | 5.5 | V2j1 | **Top-down** over Grant Park's engraved lawn: she zigzags; agents converge from the edges. Lyric laid in the grass. |
@@ -130,6 +130,13 @@ HUD + typography). Contact sheet: `docs/sections/C_contact.jpg`.
   - V2n freeze + woodblock negative with Jade and the motes kept in colour.
   - Beat punches through the action, downbeat punches on the hero shots.
 
+### Review fixes (coordinator, rev 2)
+
+- The LOADING tip no longer reads "TIP: TIP:".
+- The race line shows only the side-on sprint with the graphite ghost: half a body ahead at 94.06, level around 95, then
+  falling behind. The ghost also trails her feet in the V2i3 close-up. The race HUD stays on.
+- CONTINUE?: the frozen plate slides right; CONTINUE? / digit / PRESS ◀◀ sit in a clear ink panel on the left.
+
 ### Chosen takes
 
 All clips use take_1 except **V2b4 take_2** (retake: the lamp actually falls) and **V2d2 take_2** (the hang). The
@@ -148,8 +155,8 @@ hero shots (V2c2, V2d2) got 2 takes each. Per-clip judgement is in each `NOTES.m
   new D3 keyframe (the `V2f2_n2` job in `kf.py`).
 - **V2n1**: she stands *on* a giant arcade panel (surreal scale) instead of an extreme close-up of her hand. It is
   0.3 s and reads as "slam the button".
-- **V2i2**: the "slide under the signal arm" became "lie flat while the arm swings over". The cut stops before she
-  crawls.
+- **V2i2** (slide under the signal arm) came out as her lying flat. The coordinator's review dropped it; the race line
+  (94.06–98.28) is now sprint + ghost throughout.
 - **Night plates** show line moiré in 960×540 previews. That is downscale aliasing; the 1080p stills are clean.
 - Car identity holds well: Seedance kept the white sedan in every take because the keyframes carry it.
 - The master `render/timeline.js` currently fails `--list` on a duplicate shot id "O1" between `media/shots/F_edl.json`
