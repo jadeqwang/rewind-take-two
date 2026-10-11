@@ -108,3 +108,23 @@ ghost constellation, bridge jump). The flash cadence matches the ticks by constr
 - **C2 depends on other sections' timing.** A flash shows whatever shot sits at its source time, so retimed E/F shots change the teaser. Re-check
   `C2_SOURCES` after their final cuts.
 - `render/timeline/_A_test.js` now renders A + R2 + B alone, for when other sections' media are mid-write.
+
+---
+
+# Rough-cut v1 fixes (2026-10-11; spend $1.65: 4 keyframes, 2 Seedance takes)
+
+| Review item | Fix |
+|---|---|
+| #2: C2 colour spoiler + clipped HUD | `C2_SOURCES` now uses nothing after 146.32 except the engraved M diorama (150–166). The hero flashes are now the Möbius diorama, ANOMALY terminal, Banach–Tarski twins, ghost ring, ring of agents and bridge jump. The colour flood is no longer shown before 169.40. The HUD chip is 380 px wide in C1, C2 and R2, so `ITERATION 4,097` reads. |
+| #5: S1 static 7 s | S1 is split as S1 (12.60–16.14), **S1x** (16.14–17.88, one bar on "my dissertation"), then S1b (17.88–19.64) on the same clip clock. S1x is a new engraved Seedance take of the Bean's reflection of Lake Shore Drive with the headlights streaming (`media/shots/S1x/`). The V1-1 lyric moved to an overlay spanning all three, in paper with an ink halo. |
+| S2 after the singer's 1.3× reframe | `S2_her` uses `media/sing/S1/take_1_lips_wide.mp4`, and the push starts at 1.3× so the cut from S1b matches, then goes to 4.5× on the headlights. |
+| #6: P5/P6 | P5 no longer uses `tapeStop`: its sag exposed the background, which the negative turned grey. The deceleration is now a shot time-remap, so there's no grey band. P6's menu sits on an ink panel: unselected items graphite, selected paper-white with the ◀◀ icon. New whisper overlay *…and time stops* (41.04 / 41.32 / 42.06) in the lower right. |
+| #4: shades lyric | D5 keeps the lens reflections and adds the lower third "men in shades and suits". *I dreamt* (D1) also moved to the lower third. |
+| #7: red tail lights | D4 layer `grade.hue: -32` turns them amber. The rest of the plate is grey, so nothing else shifts. |
+| #9: P1 continuity | New lakefront keyframe `P1/kf_nbp2.jpg` (agent, white Acura, lake, skyline) and take `P1/take_2_engraved.mp4`. |
+| B: R3/R4 duplicate lyrics | Every pinned text layer in A.js (sign, etch, pencil note, ID, lenses) is `noRewind`, so the reversed comps show clean plates. |
+| B: R4 lingers | The rewind now stops at about 55.8 instead of 55.3. |
+| A: whisper *shot*, R2 counter | *shot* is paper-coloured, on the dark lower right. The R2 counter has the paper chip. |
+
+**Not done:** R2 `12ice` (headphones on her ears) and `13sedanb` (grille); the C1 "breath"; the larger `DEFENSE 9AM` insert;
+etch contrast in D3. The P5/P6 negative is still mid-grey rather than stark.

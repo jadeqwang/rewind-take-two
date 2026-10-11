@@ -278,6 +278,21 @@ for rid, (scene, night) in R2b.items():
     job(f"R2_{rid}", NBP, scene + " " + DEATH + (STYLE_NIGHT if night else "") + STYLE, [JADE_SHEET, JADE_ACTION])
 
 
+# rough-cut v1 fixes (2026-10-11 06:20): S1 cutaway insert and P1 on the lakefront plate
+S1X = ("Night. Extreme close-up of the polished, curved mirror surface of Cloud Gate (the Bean) in Chicago; the whole "
+       "frame is the convex reflection: the curve of Lake Shore Drive bending around the mirror's curvature with a long "
+       "line of tiny car headlights as crisp white engraved starbursts, the dark lake and the skyline wrapped and "
+       "stretched along the curve, Escher's Hand with Reflecting Sphere geometry. No people, no figure, no hand. ")
+job("S1x_nbp1", NBP, S1X + STYLE_NIGHT + STYLE_NOGIRL, ["media/sing/plates/plate_close_1.jpg"])
+job("S1x_sdr1", SDR, S1X + STYLE_NIGHT + STYLE_NOGIRL, ["media/sing/plates/plate_close_1.jpg"])
+P1b = ("Night on the gravel shoulder of Lake Shore Drive, Chicago: behind the agent, the dark lake with engraved waves "
+       "and the distant skyline across the water, a streetlight starburst, the roof of a white sedan at the left edge. "
+       "Close shot at waist height of an agent standing beside the car: his hand slides inside his black suit jacket, "
+       "the lapel lifting to reveal a shoulder holster strap; his blank face and sunglasses above. " + AGENTS)
+job("P1_nbp2", NBP, P1b + STYLE_NIGHT + STYLE_NOGIRL, [AGENT_SHEET, "media/shots/D4/kf_nbp1.png"])
+job("P1_sdr2", SDR, P1b + STYLE_NIGHT + STYLE_NOGIRL, [AGENT_SHEET, "media/shots/D4/kf_nbp1.png"])
+
+
 if __name__ == "__main__":
     cmd = sys.argv[1] if len(sys.argv) > 1 else "list"
     if cmd == "list":

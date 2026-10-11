@@ -22,7 +22,7 @@ const PLATE = {
   D6: { src: S('D6', 'take_1_engraved.mp4'), in: 0.3, rate: 1 },
   D7: { src: S('D7', 'take_1_engraved.mp4'), in: 0.0, rate: 1 },
   D8: { src: S('D8', 'take_2_engraved.mp4'), in: 0.2, rate: 1 },
-  P1: { src: S('P1', 'take_1_engraved.mp4'), in: 0.0, rate: 1 },
+  P1: { src: S('P1', 'take_2_engraved.mp4'), in: 0.3, rate: 1 },   // take_2 = A_P1b (lakefront)
   P2: { src: S('P2', 'take_1_engraved.mp4'), in: 0.6, rate: 1 },
   P3: { src: S('P3', 'take_1_engraved.mp4'), in: 0.4, rate: 1 },
   P4: { src: S('P4', 'take_1_engraved.mp4'), in: 0.0, rate: 1 },
@@ -33,7 +33,8 @@ const S1_IN = 12.6 - 12.9 + 1.04 + { A: 0.15, B: 0, C: -0.15 }[LIP];   // clip t
 const S1_SRC = 'media/sing/S1/take_1_lips.mp4';
 // S2 push: into the Lake Shore Drive headlights at lower right of the Bean reflection (design px of the S1 frame)
 const HEAD = [1600, 690], PUSH = 4.5;
-const PUSH_KB = { from: { scale: 1, x: 0, y: 0 }, to: { scale: PUSH, x: -(HEAD[0] - 960) * PUSH, y: -(HEAD[1] - 540) * PUSH }, ease: 'inCubic' };
+// S2_her uses the singer's wide (un-pushed) clip; it starts at 1.3x so it matches S1's 1.3x push-in at the cut
+const PUSH_KB = { from: { scale: 1.3, x: 0, y: 0 }, to: { scale: PUSH, x: -(HEAD[0] - 960) * PUSH, y: -(HEAD[1] - 540) * PUSH }, ease: 'inCubic' };
 // keyframes: used instead of the takes while USE_STILLS is true (layout checks before the takes exist)
 const USE_STILLS = false;
 const KF = { C1: 'still_hero_engraved.png', C3: 'kf_sdr2.jpg', C4: 'kf_sdr1f.jpg', S2: 'kf_nbp1.jpg', D1: 'kf_sdr1.jpg', D2: 'kf_sdr1.jpg',
@@ -67,7 +68,7 @@ export default ({ T }) => ({
     { id: 'C1', start: 0.0, end: 1.9, background: PAPER,
       layers: [
         vid('C1', { kenBurns: { from: { scale: 1.0 }, to: { scale: 1.05 }, ease: 'linear' } }),
-        { type: 'solid', stage: 'post', color: PAPER, rect: [36, 40, 352, 54], opacity: 0.92, fadeIn: 0.25, start: 0.4 },
+        { type: 'solid', stage: 'post', color: PAPER, rect: [36, 40, 380, 54], opacity: 0.92, fadeIn: 0.25, start: 0.4 },
         { type: 'canvas', module: 'hud', stage: 'post', fadeIn: 0.25, start: 0.4,
           params: { mode: 'iteration', value: 4096, side: 'left', color: INK, size: 24 } },
       ] },
@@ -81,54 +82,57 @@ export default ({ T }) => ({
     { id: 'C4', start: 10.82, end: 12.6, background: INK,
       layers: [
         vid('C4'),
-        { type: 'canvas', module: 'pencil', params: { text: 'DEFENSE\n9AM', at: 0.15, cps: 16, size: 46, corners: tracks.C4_note, color: '#26241f', point: false, grain: 0.25 } },
+        { type: 'canvas', module: 'pencil', noRewind: true, params: { text: 'DEFENSE\n9AM', at: 0.15, cps: 16, size: 46, corners: tracks.C4_note, color: '#26241f', point: false, grain: 0.25 } },
       ], fx: [LETTERBOX] },
     // ---------------------------------------------------------------- verse 1: the cutscene
-    { id: 'S1', start: 12.6, end: 19.64, background: INK,
-      layers: [
-        { id: 'S1_take', type: 'video', src: S1_SRC, in: S1_IN, rate: 1, fit: 'cover' },
-        { type: 'canvas', module: 'lowerthird', stage: 'post', params: { color: INK, size: 54, y: 1010, halo: 1 } },
-      ] },
+    { id: 'S1', start: 12.6, end: 16.14, background: INK,
+      layers: [{ id: 'S1_take', type: 'video', src: S1_SRC, in: S1_IN, rate: 1, fit: 'cover' }] },
+    // cutaway (bar 10): the Bean's reflection of Lake Shore Drive, headlights streaming (engraved Seedance take)
+    { id: 'S1x', start: 16.14, end: 17.88, background: INK,
+      layers: [{ id: 'S1x_plate', type: 'video', src: S('S1x', 'take_1_engraved.mp4'), in: 0.2, rate: 1, fit: 'cover', scale: 1.04 }] },
+    { id: 'S1b', start: 17.88, end: 19.64, background: INK,
+      layers: [{ id: 'S1b_take', type: 'video', src: S1_SRC, in: S1_IN + (17.88 - 12.6), rate: 1, fit: 'cover' }] },
     { id: 'S2', start: 19.64, end: 21.38, background: INK,
       layers: [
-        { id: 'S2_her', type: 'video', src: S1_SRC, in: S1_IN + 7.04, rate: 1, freeze: 0.24, fit: 'cover', kenBurns: PUSH_KB },
+        { id: 'S2_her', type: 'video', src: 'media/sing/S1/take_1_lips_wide.mp4', in: S1_IN + 7.04, rate: 1, freeze: 0.24, fit: 'cover', kenBurns: PUSH_KB },
         // through the mirror: the engraved road from above, bent by the convex lens and relaxing flat
         { ...vid('S2'), start: 1.0, fadeIn: 0.45 },
       ] },
     { id: 'D1', start: 21.38, end: 23.16, background: INK,
       layers: [
         vid('D1'),
-        { type: 'canvas', module: 'pin', params: { style: 'sign', text: "LAKE SHORE DR\nI'm speeding down Lake Shore", corners: tracks.D1_signL } },
-        { type: 'canvas', module: 'pin', params: { style: 'sign', text: 'SOUTH', corners: tracks.D1_signR } },
-        lower({ text: 'I dreamt', sync: 'lyric', italic: true, y: 860, color: PAPER }),
+        { type: 'canvas', module: 'pin', noRewind: true, params: { style: 'sign', text: "LAKE SHORE DR\nI'm speeding down Lake Shore", corners: tracks.D1_signL } },
+        { type: 'canvas', module: 'pin', noRewind: true, params: { style: 'sign', text: 'SOUTH', corners: tracks.D1_signR } },
+        lower({ text: 'I dreamt', sync: 'lyric' }),
       ], fx: [LETTERBOX] },
     { id: 'D2', start: 23.16, end: 24.9, background: INK,
       layers: [
         vid('D2'),
-        { type: 'canvas', module: 'pin', params: { style: 'plain', text: 'HILBERT', font: 'sign', color: INK, corners: tracks.D2_top } },
-        { type: 'canvas', module: 'pin', params: { style: 'plain', text: 'VACANCY', font: 'sign', color: INK, corners: tracks.D2_bot } },
+        { type: 'canvas', module: 'pin', noRewind: true, params: { style: 'plain', text: 'HILBERT', font: 'sign', color: INK, corners: tracks.D2_top } },
+        { type: 'canvas', module: 'pin', noRewind: true, params: { style: 'plain', text: 'VACANCY', font: 'sign', color: INK, corners: tracks.D2_bot } },
         { ...vid('D2', { matte: { src: S('D2', 'take_1_matte_left/'), mode: 'luma' }, keepColor: true }), id: 'D2_jade' },   // Jade over the sign text (it passes behind her head)
         lower({ text: 'a shadow', sync: 'lyric' }),
       ], fx: [LETTERBOX] },
     { id: 'D3', start: 24.9, end: 28.4, background: INK,
       layers: [
         vid('D3'),
-        { type: 'canvas', module: 'etch', blend: 'screen', params: { text: "chasing me I couldn't place", sync: 'lyric', size: 40, corners: tracks.D3_etch } },
+        { type: 'canvas', module: 'etch', noRewind: true, blend: 'screen', params: { text: "chasing me I couldn't place", sync: 'lyric', size: 40, corners: tracks.D3_etch } },
       ], fx: [LETTERBOX] },
     { id: 'D4', start: 28.4, end: 30.16, background: INK,
-      layers: [vid('D4'), lower({ text: 'I pulled over, and', sync: 'lyric' })], fx: [LETTERBOX] },
+      layers: [vid('D4', { grade: { hue: -32 } }), lower({ text: 'I pulled over, and', sync: 'lyric' })], fx: [LETTERBOX] },
     { id: 'D5', start: 30.16, end: 31.92, background: INK,
       layers: [
         vid('D5', { kenBurns: D5_KB }),
-        { type: 'canvas', module: 'pin', blend: 'screen', kenBurns: D5_KB, params: { style: 'plain', font: 'sign', text: 'men in shades', sync: 'lyric', color: '#ffffff', corners: inset(tracks.D5_lensL, 0.8, 0.75) } },
-        { type: 'canvas', module: 'pin', blend: 'screen', kenBurns: D5_KB, params: { style: 'plain', font: 'sign', text: 'and suits', sync: 'lyric', color: '#ffffff', corners: inset(tracks.D5_lensR, 0.8, 0.75) } },
+        { type: 'canvas', module: 'pin', noRewind: true, blend: 'screen', kenBurns: D5_KB, params: { style: 'plain', font: 'sign', text: 'men in shades', sync: 'lyric', color: '#ffffff', corners: inset(tracks.D5_lensL, 0.8, 0.75) } },
+        lower({ text: 'men in shades and suits', sync: 'lyric' }),
+        { type: 'canvas', module: 'pin', noRewind: true, blend: 'screen', kenBurns: D5_KB, params: { style: 'plain', font: 'sign', text: 'and suits', sync: 'lyric', color: '#ffffff', corners: inset(tracks.D5_lensR, 0.8, 0.75) } },
       ], fx: [LETTERBOX] },
     { id: 'D6', start: 31.92, end: 33.66, background: INK,
       layers: [vid('D6')], fx: [LETTERBOX] },
     { id: 'D7', start: 33.66, end: 36.3, background: INK,
       layers: [
         vid('D7'),
-        { type: 'canvas', module: 'pin', keepColor: true, params: { style: 'plain', text: 'DOCTORAL CANDIDATE\nJADE WANG', font: 'mono', color: '#1d2b3a', corners: tracks.D7_card } },
+        { type: 'canvas', module: 'pin', noRewind: true, keepColor: true, params: { style: 'plain', text: 'DOCTORAL CANDIDATE\nJADE WANG', font: 'mono', color: '#1d2b3a', corners: tracks.D7_card } },
       ], fx: [LETTERBOX] },
     { id: 'D8', start: 36.3, end: 37.96, background: INK,
       layers: [vid('D8')], fx: [LETTERBOX] },
@@ -143,10 +147,13 @@ export default ({ T }) => ({
         { id: 'P4_flash', type: 'image', src: S('P4', 'kf_flash1.png'), fit: 'cover', end: 0.125 },
         { ...vid('P4'), start: 0.125 },
         { type: 'canvas', module: 'motes', keepColor: true, params: { at: 40.37, x: 640, y: 620, count: 140 } },
-        { type: 'canvas', module: 'whisper', stage: 'post', params: { text: 'shot', sync: 'lyric', x: 1560, y: 980 } },
+        { type: 'canvas', module: 'whisper', stage: 'post', params: { text: 'shot', sync: 'lyric', x: 1640, y: 990, color: PAPER } },
       ], fx: [{ type: 'flash', at: 0, dur: 0.12, amount: 0.6, color: PAPER }, { type: 'shake', amp: 8, freq: 14, decay: 0.3 }] },
   ],
   overlays: [
+    { id: 'A_S1_lyric', start: 12.6, end: 19.64, layers: [
+      { type: 'canvas', module: 'lowerthird', stage: 'post', params: { color: PAPER, size: 54, y: 1010, halo: 0.9, haloColor: INK } },
+      ] },
     { id: 'A_dialogue', start: 33.6, end: 37.96, layers: [
       { type: 'canvas', module: 'dialogue', stage: 'post', params: { rect: [150, 800, 1620, 200], size: 46, speaker: 'JADE' } }] },
     { id: 'A_predrop_lyric', start: 37.96, end: 40.24, layers: [lower({ text: 'With no warning I get', sync: 'lyric' })] },

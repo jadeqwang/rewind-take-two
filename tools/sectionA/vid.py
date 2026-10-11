@@ -94,6 +94,14 @@ A = {
     "A_P3": dict(image=KF.format("P3", "kf_sdr1.jpg"), duration=4, camera_fixed=True, prompt=(
         "Night. The agent's pistol rises quickly into frame and levels at the girl's body through the open car window, "
         "aimed low at her torso, then holds steady. The other agents stay still. Static camera. " + LOOK)),
+    "A_S1x": dict(image=KF.format("S1x", "kf_lsd_crop.jpg"), duration=4, camera_fixed=False, prompt=(
+        "Night, inside a curved mirror reflection. A steady stream of car headlights flows along the curving lakeside "
+        "drive, the tiny white starbursts gliding smoothly along the curve; the dark lake ripples gently. Camera: very slow "
+        "smooth drift to the right with a gentle push-in. " + LOOK_W)),
+    "A_P1b": dict(image=KF.format("P1", "kf_nbp2.jpg"), duration=4, camera_fixed=True, prompt=(
+        "Night on the lakeshore. The agent's right hand slides smoothly inside his black suit jacket toward the shoulder "
+        "holster, the lapel lifting; his blank face and sunglasses do not change. The waves roll in the lake behind him. "
+        "Static camera. " + LOOK_W)),
 }
 
 for k, v in A.items():

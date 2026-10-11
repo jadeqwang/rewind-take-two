@@ -17,6 +17,7 @@ export default ({ T }) => {
       layers: [
         { type: 'image', src: `${DIR}kf_${s}_engraved.png`, fit: 'cover', keepColor: true,
           kenBurns: { from: { scale: 1.04, x: -8 * dir }, to: { scale: 1.08, x: 8 * dir }, ease: 'linear' } },
+        { type: 'solid', stage: 'post', color: '#ece7dc', rect: [36, 40, 380, 54], opacity: 0.92 },
         { type: 'canvas', module: 'hud', stage: 'post', params: { mode: 'iteration', value: ITER[k], side: 'left', color: '#0b0b0c', size: 24 } },
       ],
       fx: [{ type: 'vhs', amount: [[0, 0.9], [0.09, 0, 'out']] }, { type: 'tracking', amount: [[0, 1], [0.12, 0, 'out']] },

@@ -24,12 +24,14 @@ const CUT_IDX = [0, ...[2, 3, 4, 5, 6, 7], ...Array.from({ length: 16 }, (_, k) 
 // F → E; pass 3 (32nds): Verse 2 + the deaths; pass 4 (64ths): Section A backward, landing on C3 at 7.24.
 export const C2_SOURCES = [
   1.88,                                                        // C1 itself starts going backward
-  214.5, 170.6, 140.4, 132.6, 118.6, 84.2,                     // Penrose loop, colour flood, ANOMALY terminal, Banach–Tarski twins, ghost constellation, bridge jump
-  220.5, 209.0, 205.0, 201.0, 196.5, 194.0, 186.0, 182.0,      // door, melting clock, F7 leap, Klimt, ghost swarm, Penrose clock, boss, Bean dive
-  178.0, 174.5, 166.0, 160.5, 145.5, 137.0, 125.0, 113.6,      // Relativity, wall-run, M3, M2, pencil out, ribbons, replay, tracks
-  108.8, 101.5, 95.0, 88.0, 80.5, 72.8, 60.0, 47.0,            // ring of agents, field, ghost race, back on the road, sedans, bridge, hands, a death
+  160.5, 140.4, 132.6, 118.6, 108.8, 84.2,                     // Möbius diorama, ANOMALY terminal, Banach–Tarski twins, ghost ring, ring of agents, bridge jump
+  164.0, 152.5, 150.5, 144.0, 141.6, 138.5, 136.0, 133.5,      // M2, M1 diorama, G4, white page, filings, meter, ribbons, split
+  130.0, 126.0, 124.0, 117.5, 116.0, 114.0, 106.5, 103.0,      // slip, replay, replay, ring, field, tracks, too fast, field
+  101.5, 95.0, 88.0, 80.5, 72.8, 67.0, 60.0, 47.0,             // field, ghost race, back on the road, sedans, bridge, kaizo road, hands, a death
   40.5, 39.9, 37.0, 35.0, 31.5, 27.0, 24.0, 22.2, 16.0, 11.5,  // P4 burst, gun, D8, ID, shades, mirror, HILBERT, gantry, S1, C4
 ];
+// Rule (rough cut v1): nothing after 146.32 except the engraved M diorama (150–166) may appear here: the world turning
+// to colour at 169.40 is the film's reveal. 
 const C2_SPEED = [[1.9, 1.5], [2.34, 2], [3.68, 4], [5.48, 8], [6.36, 16]];   // ◀◀ ×N by song time
 const CUTS = CUT_IDX.map((i, k) => [TICKS[i], C2_SOURCES[k]]);
 const speedAt = t => C2_SPEED.filter(s => s[0] <= t + 1e-6).pop()[1];
@@ -62,7 +64,7 @@ export default ({ T }) => ({
       layers: [
         { id: 'C2_comp', type: 'comp', source: 'film', srcTime: (lt) => c2Src(lt) },
         whip(2.34, 0.6, 300, 760, 1), whip(3.68, 0.4, 820, 240, 2), whip(4.6, 0.3, 520, 600, 3), whip(5.48, 0.25, 200, 900, 4), whip(6.36, 0.2, 700, 380, 5),
-        { type: 'solid', stage: 'post', color: PAPER, rect: [36, 40, 352, 54], opacity: 0.92 },
+        { type: 'solid', stage: 'post', color: PAPER, rect: [36, 40, 380, 54], opacity: 0.92 },
         { type: 'canvas', module: 'hud', stage: 'post',
           params: { mode: 'iteration', value: [[0, 4096], [4.85, 4096, 'inOutCubic'], [5.2, 4097]], snap: false, side: 'left', color: INK, size: 24 } },
         { type: 'solid', stage: 'post', color: PAPER, rect: [36, 104, 300, 92], opacity: 0.92 },
@@ -74,10 +76,10 @@ export default ({ T }) => ({
 
     // ---------------------------------------------------------------------------------------------- P5 freeze → negative
     { id: 'P5', start: 40.65, end: 41.4, background: INK,
-      layers: frozen([[0, '#000000'], [0.3, '#6a6a6a']]),
-      fx: [{ type: 'tapeStop', at: 0, dur: 0.35, toBlack: false },
-        { type: 'negative', amount: [[0, 0], [0.3, 1, 'inOut']] },
-        { type: 'warble', amount: [[0, 1], [0.45, 0.15]] }, { type: 'wobble', amount: [[0, 0.8], [0.45, 0]] }] },
+      layers: frozen([[0, '#000000'], [0.17, '#6a6a6a']]),
+      time: (lt) => { const u = Math.min(lt / 0.35, 1); return 0.35 * (u - u * u / 2); },
+      fx: [{ type: 'negative', amount: [[0, 0], [0.3, 1, 'inOut']] },
+        { type: 'warble', amount: [[0, 1], [0.45, 0.15]] }] },
     // P6 menu lives in the overlay below; the shot holds the negative frame
     { id: 'P6', start: 41.4, end: 42.38, background: INK, time: [[0, 0.175], [1, 0.175]],
       layers: frozen('#6a6a6a'), fx: [{ type: 'negative', amount: 1 }, { type: 'warble', amount: 0.12 }] },
@@ -109,7 +111,7 @@ export default ({ T }) => ({
       layers: [
         // S2 → S1 → C4 → C3, decelerating; stops on C3 (7.30) at 55.3, then a slow push onto the tiny white car on LSD
         { id: 'R4_comp', type: 'comp', source: 'film', echo: { n: 1, dt: 0.12, alpha: [[0, 0.3], [2.6, 0]] },
-          srcTime: [[0, 21.36, 'outCubic'], [2.8, 7.3, 'hold'], [4.06, 7.3]],
+          srcTime: [[0, 21.36, 'outCubic'], [3.3, 7.3, 'hold'], [4.06, 7.3]],
           kenBurns: { from: { scale: 1, x: 0, y: 0 }, to: { scale: 2.6, x: -(560 - 960) * 2.6, y: -(860 - 540) * 2.6 }, ease: 'inCubic' } },
         { type: 'canvas', module: 'hud', stage: 'post', end: 2.8,
           params: { mode: 'rewind', x: 40, y: 120, ring: true, rate: 0.4, ringRadius: 420, color: PAPER, accent: ORANGE, multiplier: [[0, 8, 'hold'], [1.2, 4, 'hold'], [2.0, 2, 'hold']] } },
@@ -121,7 +123,10 @@ export default ({ T }) => ({
   ],
   overlays: [
     { id: 'P6_menu', start: 41.4, end: 42.38, layers: [
+      { type: 'solid', stage: 'post', color: INK, rect: [640, 290, 640, 500], opacity: 0.9 },
       { type: 'canvas', module: 'hud', stage: 'post',
-        params: { mode: 'pause', color: PAPER, accent: ORANGE, dim: 0.3, cursor: [[0, 0, 'hold'], [0.22, 0, 'outCubic'], [0.32, 1, 'hold']], blinkAt: 0.66 } }] },
+        params: { mode: 'pause', color: '#8a857c', accent: PAPER, dim: 0.2, cursor: [[0, 0, 'hold'], [0.22, 0, 'outCubic'], [0.32, 1, 'hold']], blinkAt: 0.66 } }] },
+    { id: 'P5_whisper', start: 40.95, end: 42.38, layers: [
+      { type: 'canvas', module: 'whisper', stage: 'post', params: { text: '…and time stops', times: [0.09, 0.37, 1.11], x: 1380, y: 1050, size: 40, color: PAPER } }] },
   ],
 });
