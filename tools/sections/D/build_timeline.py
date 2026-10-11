@@ -107,22 +107,46 @@ def plate(id_, c, src_in, rate, start, end, snap=0.0, **kw):
     return L
 
 
-GHOST = dict(blend=os.environ.get("D_GHOST_BLEND", "normal"), op=float(os.environ.get("D_GHOST_OP", "1.0")),
-             tint=float(os.environ.get("D_GHOST_TINT", "0")))
+sys.path.insert(0, os.path.join(ROOT, "tools/sections/D"))
+import ghostsprite  # noqa: E402
+
+SPR = f"{SH}/_D/sprites"
 
 
-def ghost(id_, c, freeze, color, hit_abs, matte="matte", x=0, y=0, scale=1.0, opacity=0.62, tint=0.82, flip=False):
-    """One frozen iteration: the matted frame at source time `freeze`, colourised, revealed on the chop `hit_abs`."""
-    inst = dict(freeze=r4(freeze), color=color, opacity=r4(min(1.0, opacity * GHOST["op"])), tint=GHOST["tint"] or tint)
-    if GHOST["blend"] != "normal":
-        inst["blend"] = GHOST["blend"]
-    if flip:
-        inst["flip"] = True
-    return dict(id=id_, type="ghosts", src=c["eng"], matte=dict(src=c[matte], mode="luma"), keepColor=True, loop=False,
-                x=r4(x), y=r4(y), scale=r4(scale), on=[hit_abs], instances=[inst])
+def sprite_of(c, freeze, color, matte="matte", scale=1.0):
+    """bake (once) the luminous coloured-pencil afterimage of clip c at `freeze`; returns (path, stats in design px)."""
+    os.makedirs(SPR, exist_ok=True)
+    ol = int(round(min(12, max(4, 3.5 / max(scale, 0.05)))))      # outline/glow survive downscaling for distant ghosts
+    name = f"{os.path.basename(c['stem'])}_{matte}_{freeze:.3f}_{color.lstrip('#')}_o{ol}.png"
+    path = f"{SPR}/{name}"
+    meta = path[:-4] + ".json"
+    if os.path.exists(path) and os.path.exists(meta) and os.path.getmtime(path) > os.path.getmtime(ghostsprite.__file__):
+        return path, json.load(open(meta))
+    st = ghostsprite.sprite(c["eng"], f"{c['stem']}_{matte}", freeze, color, path, outline=ol, glow=18 * ol / 4)
+    json.dump(st, open(meta, "w"))
+    return path, st
+
+
+def ghost(id_, c, freeze, color, hit_local, matte="matte", x=0, y=0, scale=1.0, flip=False, glide=None, born=True):
+    """One frozen iteration as a baked sprite image layer (full-frame RGBA, same framing as the clip).
+    Revealed on its chop (`hit_local`, shot-local s); optional glide [dx, dy] over .35 s so ghosts fan out."""
+    path, st = sprite_of(c, freeze, color, matte, scale)
+    L = dict(id=id_, type="image", src=path, keepColor=True, fit="cover", scale=[r4(-scale), r4(scale)] if flip else r4(scale))
+    if glide:
+        h = hit_local
+        L["x"] = [[r4(h), r4(x), "outCubic"], [r4(h + 0.35), r4(x + glide[0])]]
+        L["y"] = [[r4(h), r4(y), "outCubic"], [r4(h + 0.35), r4(y + glide[1])]]
+    else:
+        L["x"], L["y"] = r4(x), r4(y)
+    if born:
+        L["opacity"] = [[0, 0, "hold"], [r4(hit_local), 1.0]]
+    return L, st
 
 
 def ribbon(id_, path, colors=RES, width=24, **kw):
+    """path keys are centre-origin design px here; the ribbon module wants absolute design px (0..1920, 0..1080)."""
+    if path:
+        path = [[k[0], r4(k[1] + 960), r4(k[2] + 540)] for k in path]
     p = dict(path=path, colors=colors, width=width, twist=0.5, bloom=0.8, grain=0.5, motes=0.25)
     p.update(kw)
     return dict(id=id_, type="canvas", module="ribbon", keepColor=True, params=p)
@@ -157,24 +181,41 @@ def build():
            (wj, WJ["freeze"], WJ["rate"], h[1], h[2], 0.25)]
     layers = [dict(id="plate", type="image", src=f"{SH}/E2/plate_trk.png")]
     ghosts, ribs = [], []
+    E2A_SPREAD = [(-640, None), (-120, -40), (560, -80)]          # frozen where she was, then each drifts aside so the next attempt has room
     for k, (c, frz, rate, a, b, snap) in enumerate(seg):
         play = (b - a) - (0.125 if snap else 0.0)          # forward playback after the 3-frame ◀◀ scrub
         si = frz - rate * play
         layers.append(live(f"live{k + 1}", c, si, rate, a, b, snap=snap))
         pth = seg_path(c["stem"], si, rate, a + (0.125 if snap else 0.0), b)
         ribs.append(ribbon(f"res{k + 1}", pth, colors=[HUE[k], RES[1]], width=26))
-        ghosts.append(ghost(f"g{k + 1}", c, frz, HUE[k], CHOPS[k]))
+        g, st = ghost(f"g{k + 1}", c, frz, HUE[k], b, glide=None)
+        tx, ty = E2A_SPREAD[k]
+        g["x"] = [[r4(b), 0, "outCubic"], [r4(b + 0.35), r4(tx - st["cx"])]]
+        if ty is not None:
+            g["y"] = [[r4(b), 0, "outCubic"], [r4(b + 0.35), r4(ty - st["cy"])]]
+        ghosts.append(g)
         notes[f"g{k + 1}"] = dict(clip=c["eng"], freeze=frz, hue=HUE[k], where="L tracks (as frozen)", hit=CHOPS[k])
     s1 = mstats(sp["stem"], 2.75 - h[0])
+    layers[1:1] = [
+        # a coloured-pencil radial bloom of residue floods outward from her, then clears
+        dict(id="bloom", type="image", src=f"{SH}/_D/e1_bloom.png", keepColor=True, fit="none", end=0.93,
+             x=r4(s1["cx"]), y=r4(s1["cy"]), scale=[[0, 0.1, "outCubic"], [0.85, 1.5]],
+             rotate=[[0, 0], [0.93, 14]], opacity=[[0, 1.0], [0.45, 0.9, "inCubic"], [0.93, 0.0]]),
+        dict(id="bloom_glow", type="image", src=f"{SH}/_D/e1_bloom.png", keepColor=True, fit="none", end=0.6, blend="add",
+             x=r4(s1["cx"]), y=r4(s1["cy"]), scale=[[0, 0.08, "outCubic"], [0.6, 1.1]], opacity=[[0, 0.5], [0.6, 0.0]]),
+    ]
     layers += ribs + ghosts
     # E1 impact: the frame fills with residue colour, then clears; a mote burst from her as she bursts off the mark
     layers += [
-        dict(id="flood", type="solid", keepColor=True, end=0.93, color=RES[0], opacity=[[0, 1.0], [0.07, 1.0], [0.6, 0.0, "outCubic"]]),
-        dict(id="flood2", type="solid", keepColor=True, end=0.93, color=RES[1], blend="multiply",
-             opacity=[[0, 0.0], [0.1, 0.0], [0.22, 0.55], [0.8, 0.0]]),
         dict(id="burst", type="canvas", module="motes", keepColor=True, end=1.6,
-             params=dict(at=0.0, x=r4(s1["cx"] + 960), y=r4(s1["cy"] + 540), count=260, colors=HUE[:5] + RES, speed=3400,
-                         drag=2.4, size=34, life=1.1, ring=True, glow=1.0, seed=65)),
+             params=dict(at=0.0, x=r4(s1["cx"] + 960), y=r4(s1["cy"] + 540), count=220,
+                         colors=[RES[0], RES[0], RES[1], RES[1], "#C9A227"], shape="circle", speed=2600, drag=2.4, size=13,
+                         life=1.2, ring=False, glow=1.0, seed=65)),
+    ] + [ribbon(f"e1_flow{j}", [[r4(0.02 * j), r4(s1["cx"]), r4(s1["cy"])]] +
+                [[r4(0.02 * j + 0.07 * q), r4(s1["cx"] + (210 * q) * math.cos(j * 0.698 + 0.1 * q * (1 if j % 2 else -1))),
+                  r4(s1["cy"] + (170 * q) * math.sin(j * 0.698 + 0.1 * q * (1 if j % 2 else -1)))] for q in range(1, 9)],
+                colors=[RES[0], "#C9A227" if j % 4 == 0 else RES[1]], width=46, trail=0.7, pencil=bool(j % 2), bloom=1.0,
+                grain=0.8, motes=0.4, seed=80 + j) | dict(end=1.0) for j in range(9)] + [
     ]
     shots.append(dict(id="E1_E2a_tracks", start=t0, end=r4(t1), layers=layers,
                       fx=[dict(type="flash", at=[0], dur=0.06, amount=1.0, color="#ffffff"),
@@ -187,6 +228,7 @@ def build():
         ("fld_spin", 0.95, 1.0)]
     ends = CHOPS[3:8]
     layers, ghosts, ribs = [], [], []
+    E2B_SPREAD = [(-780, 250), (-470, -150), (-150, 170), (130, -60)]   # fan out away from the agents (right)
     a = 0.0
     for k, (key, fz, rate) in enumerate(FLD):
         c = C[key]
@@ -196,7 +238,11 @@ def build():
         ribs.append(ribbon(f"res{k + 4}", seg_path(c["stem"], si, rate, a, b, suffix="_jmatte"),
                            colors=[HUE[3 + k], RES[1]], width=24, end=r4(t1 - t0)))
         if k < 4:   # the 5th (spin @0.95 = ghost 8) is born on the cut to the ring shot
-            ghosts.append(ghost(f"g{k + 4}", c, fz, HUE[3 + k], CHOPS[3 + k], matte="jmatte"))
+            g, st = ghost(f"g{k + 4}", c, fz, HUE[3 + k], b, matte="jmatte")
+            tx, ty = E2B_SPREAD[k]
+            g["x"] = [[r4(b), 0, "outCubic"], [r4(b + 0.35), r4(tx - st["cx"])]]
+            g["y"] = [[r4(b), 0, "outCubic"], [r4(b + 0.35), r4(ty - st["cy"])]]
+            ghosts.append(g)
         notes[f"g{k + 4}"] = dict(clip=c["eng"], freeze=fz, hue=HUE[3 + k], where="Grant Park ground level", hit=CHOPS[3 + k])
         a = b
     layers += ribs + ghosts
@@ -215,19 +261,17 @@ def build():
         placed = []
         for gi, (key, fz, matte, tx, ty, th, flip) in enumerate(R["placed"]):
             c = C[key]
-            s = mstats(c["stem"], fz, "_" + matte)
+            _, s = sprite_of(c, fz, HUE[gi], matte, th if th < 3 else 0.3)
             sc = th if th < 3 else th / max(1.0, s["y1"] - s["y0"])   # th < 3: a scale, else a target bbox height (px)
-            cx = -s["cx"] if flip else s["cx"]          # matte centroid lands on (tx, ty)
-            g = ghost(f"g{gi + 1}", c, fz, HUE[gi], CHOPS[7], matte=matte, x=tx - sc * cx, y=ty - sc * s["cy"], scale=sc,
-                      opacity=0.7 if gi < 3 else 0.62, flip=flip)
-            if gi != 7:            # 1-7 are already standing there; 8 pops on the cut (its own chop)
-                g.pop("on")
+            cx = -s["cx"] if flip else s["cx"]          # sprite centroid lands on (tx, ty)
+            g, _ = ghost(f"g{gi + 1}", c, fz, HUE[gi], 0.0, matte=matte, x=tx - sc * cx, y=ty - sc * s["cy"], scale=sc,
+                         flip=flip, born=(gi == 7))       # 1-7 are already standing there; 8 pops on the cut (its chop)
             placed.append(g)
             notes.setdefault(f"g{gi + 1}", {})["ring_pos"] = dict(x=tx, y=ty, height_px=th, scale=round(sc, 3), flip=flip)
         new = []
         for j, k in enumerate(range(8, 13)):
             fz = R["freezes"][j]
-            new.append(ghost(f"g{k + 1}", rc, fz, HUE[k], CHOPS[k], matte="jmatte", opacity=0.7, tint=0.85))
+            new.append(ghost(f"g{k + 1}", rc, fz, HUE[k], CHOPS[k] - t0, matte="jmatte")[0])
             notes[f"g{k + 1}"] = dict(clip=rc["eng"], freeze=fz, hue=HUE[k], where="ring wide (where she was)", hit=CHOPS[k])
         lts = [k / 12 for k in range(int((t1 - t0) * 12) + 1)]
         rp = path_of(rc["stem"], [float(np.interp(x, [k[0] for k in R["srcTime"]], [k[1] for k in R["srcTime"]])) for x in lts],
@@ -235,7 +279,7 @@ def build():
         layers += [ribbon("res_ring", rp, colors=[HUE[8], HUE[12]], width=16)] + placed + new
         shots.append(dict(id="E2c_ring", start=t0, end=t1, layers=layers,
                           fx=[dict(type="flash", at=[0], dur=0.06, amount=0.5, color="#ffffff")] +
-                          chop_fx([c - t0 for c in CHOPS[8:]], extra=[dict(type="zoom", amount=[[0, 1.0], [2.49, 1.06]])])))
+                          chop_fx([c - t0 for c in CHOPS[8:]], extra=[dict(type="zoom", amount=[[0, 1.1, "inOutSine"], [2.49, 1.22]])])))
 
     # ghost counter over E2 (Press Start 2P, top right, ink on paper): one more per chop, odometer roll
     keys = [[0, 0, "hold"]]
@@ -253,7 +297,7 @@ def build():
     inst = []
     for k, off in enumerate([-0.33, 0.33, -0.67, 0.67, -1.0, 1.0]):   # earlier/later attempts on the same route
         inst.append(dict(offset=r4(round(off * FPS) / FPS), x=0, y=r4((-1) ** k * 30),
-                         color=HUE[(k + 1) % 13], opacity=0.72, tint=0.8))
+                         color=HUE[(k + 1) % 13], opacity=0.8, tint=0.75))
     notes["E4"] = dict(clip=c["eng"], in_=E4["in"], rate=E4["rate"], ghosts=inst)
     layers = [dict(id="jade", type="video", src=c["eng"], matte=dict(src=c["jmatte"], mode="luma"), keepColor=True,
                    **{"in": E4["in"], "rate": E4["rate"]}),
@@ -336,7 +380,7 @@ def build():
             n, spread, sc = cut["ghosts"], cut.get("spread", 380), cut.get("gscale", 0.85)
             inst = [dict(offset=r4(-round((0.08 + 0.07 * j) * FPS) / FPS), x=r4(spread * math.sin(j * 2.1 + k)),
                          y=r4(cut.get("gy", -30) + 30 * math.cos(j * 1.3)), scale=r4(sc + 0.08 * math.sin(j * 1.7)),
-                         color=HUE[(j + k) % 13], opacity=0.55, tint=0.8) for j in range(n)]
+                         color=HUE[(j + k) % 13], opacity=0.75, tint=0.75) for j in range(n)]
             # drawn over the plate but under her live layer (a copy of the plate goes underneath)
             L.insert(0, dict(id="bg", type="video", src=c["eng"], **{"in": cut["in"], "rate": cut.get("rate", 1.0)},
                              **({"scale": cut["scale"]} if "scale" in cut else {})))
@@ -361,7 +405,7 @@ def build():
             u = j / 24
             x = -1150 + 2300 * u if k % 2 == 0 else 1150 - 2300 * u
             y = y0 + (120 + 8 * (k % 5)) * math.sin(6.28 * u * (1.1 + 0.12 * (k % 6)) + k)
-            pts.append([r4(st + 0.9 * u), r4(x), r4(y)])
+            pts.append([r4(st + 0.9 * u), r4(x + 960), r4(y + 540)])
         rl.append(dict(type="canvas", module="ribbon", keepColor=True, params=dict(
             path=pts, colors=[HUE[k % 13], HUE[(k + 5) % 13]], width=22 + 9 * (k % 5), twist=0.6, bloom=0.9, grain=0.5,
             motes=0.35, seed=50 + k)))

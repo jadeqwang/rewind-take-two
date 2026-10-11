@@ -30,24 +30,39 @@ All shots are in the engine and render end to end. The merge check against E.js 
 | E8b | 139.68–140.12 | "detected": a row of six agents in profile snaps to camera together, still in negative. | `e8_line_1` |
 | E8c | 140.12–141.00 | The agency terminal fills the screen in alarm, white on ink, IBM Plex Mono 88 px: `TIME VARIANCE █████████` / `ANOMALY DETECTED.` / `TRACE: LOCKED` (typed). It cuts to G1 on 141.00. | ENG |
 
+## Revision 2 (coordinator notes)
+
+1. **E1** is now residue, not confetti. A coloured-pencil radial bloom (`tools/sections/D/bloom.py` → `media/shots/_D/e1_bloom.png`: orange core, pale blue, a little gold at the rim, radial pencil strokes and paper tooth, with an additive glow copy) expands from her as a wave and clears. Nine residue ribbons (orange → blue or gold, pencil grain, bloom) stream outward, and the motes are round orange/blue/gold only. The flat orange solid is gone.
+2. **Ghosts are luminous coloured-pencil afterimages.** Each frozen iteration is baked by `tools/sections/D/ghostsprite.py` into a full-frame RGBA sprite (cached in `media/shots/_D/sprites/`):
+   - lifted pastel interior at about 0.9 alpha, with her own line work kept as darker hue strokes and 45° pencil hatching;
+   - a thin bright outline in the hue;
+   - a soft outer glow in the hue.
+
+   Distant ghosts get a thicker outline and glow so they survive downscaling. They are placed as image layers. In E2a/E2b each ghost freezes where she was, then glides over 0.35 s to its own spot (E2b fans away from the agents). E2c positions were re-spread so nothing stacks on the agents. The moving ghosts in E4/E7 are engine ghost instances, raised to 0.75–0.8 opacity.
+3. **E2c** runs a slow push-in from 1.10 to 1.22, and ghosts 1–3 on the track deck are larger (scale 0.24) and outlined. They now read as small coloured Jades.
+4. **E8** redaction: left as the engine's inverted mode, as directed.
+5. **Wall-kick retake swapped in:** `trk_walljump` take 2, re-prompted "no visual effects". It has no rainbow trail and does a clean column kick into an inverted backflip. Ghost 3 freezes on the inverted flip (3.62 s, played at 1.4×).
+
+**A bug found while doing this:** the ribbon module wants absolute design px, but my paths were centre-origin, so most residue ribbons in revision 1 were half off-screen. `ribbon()` now converts. The E2 trails, E4 follow, E6b split trails and E7 pile-up all show now.
+
 ## Ghost choreography (the 13 chops)
 
 The chop times come from `timing.json → lyrics.vocal_chops`. Ghost k is revealed on chop k (ghosts layer `on: [t]`, with a 0.12 s pop).
 Each chop also gets a pale-blue flash (0.08 s, 0.35), a VHS-rewind blip (0.12 s) and a 3.5 % zoom punch.
-Ghosts are the matted frame at `freeze` (source seconds) of the clip, colourised (`tint` 0.82), at 0.62–0.7 opacity.
+Ghosts are the matted frame at `freeze` (source seconds) of the clip, baked as luminous sprites (see revision 2).
 For hits 1–8, the clip's in-point is solved backwards from the freeze, so the live pose on the chop frame *is* the ghost.
 Hues follow the Kandinsky order (orange, blue, gold, magenta, green), then the in-betweens.
 
 | # | Chop | Clip (engraved) | Freeze s | Hue | Where it lives in E2c (design px from centre; scale) |
 |---|---|---|---|---|---|
-| 1 | 113.89 | `E2/take_trk_sprint_1` | 2.75 | #F08A24 | elevated track deck (0, −485) × 0.12 |
-| 2 | 114.35 | `E2/take_trk_dash_1` | 1.96 | #3E6FD8 | track deck (260, −478) × 0.12 |
-| 3 | 114.78 | `E2/take_trk_walljump_1` | 2.71 | #C9A227 | track deck (520, −488) × 0.12 |
-| 4 | 115.24 | `E2/take_fld_slide_1` (jmatte) | 3.15 | #C23B8E | lawn front (−60, 370) × 0.45 |
-| 5 | 115.67 | `E2/take_fld_cartwheel_1` (jmatte) | 1.83 | #3FA55B | lawn left (−820, 40) × 0.42 |
-| 6 | 116.03 | `E2/take_fld_vault_1` (jmatte) | 3.00 | #E4572E | lawn back-left (−700, −200) × 0.30, flipped |
-| 7 | 116.52 | `E2/take_fld_spin_1` (jmatte) | 2.30 | #8DB8E8 | lawn back (−330, −270) × 0.30 |
-| 8 | 116.95 | `E2/take_fld_spin_1` (jmatte) | 0.95 | #E8D04A | right edge (850, −80) × 0.38, flipped; pops on the cut |
+| 1 | 113.89 | `E2/take_trk_sprint_1` | 2.75 | #F08A24 | elevated track deck (−404, −288) × 0.24 |
+| 2 | 114.35 | `E2/take_trk_dash_1` | 1.96 | #3E6FD8 | track deck (−34, −356) × 0.25 |
+| 3 | 114.78 | `E2/take_trk_walljump_2` | 3.62 | #C9A227 | track deck (370, −288) × 0.24 |
+| 4 | 115.24 | `E2/take_fld_slide_1` (jmatte) | 3.15 | #C23B8E | lawn front-left (−820, 390) × 0.40 |
+| 5 | 115.67 | `E2/take_fld_cartwheel_1` (jmatte) | 1.83 | #3FA55B | lawn left (−654, 81) × 0.40 |
+| 6 | 116.03 | `E2/take_fld_vault_1` (jmatte) | 3.00 | #E4572E | lawn back-right (679, −225) × 0.30, flipped |
+| 7 | 116.52 | `E2/take_fld_spin_1` (jmatte) | 2.30 | #8DB8E8 | lawn front-right (482, 288) × 0.42 |
+| 8 | 116.95 | `E2/take_fld_spin_1` (jmatte) | 0.95 | #E8D04A | back-left (−688, −234) × 0.30, flipped; pops on the cut |
 | 9 | 117.39 | `E2/take_ring_circle_1` (jmatte) | 1.13 | #8E5CC8 | where she is (front right) |
 | 10 | 117.83 | same | 1.71 | #2BA59A | back right |
 | 11 | 118.25 | same | 2.40 | #F28DB2 | back left |
@@ -79,9 +94,9 @@ No model-drawn text anywhere: every keyframe was prompted blank, and the slip wa
 
 ## What's weak
 
-- **E2c is a medium-wide rather than a high wide.** Ghosts 1–3 are tiny on the track deck (scale 0.12), and at 1080p they read as colour flecks rather than poses. The 720p source makes the ghosts soft in the wide.
-- **E2b ghosts pile up on the right** because every field attempt ends near the agents. They overlap at 116.4–116.9 and read as a colourful knot, not separate figures. Spreading them would mean not freezing where she was.
-- **The walljump take** (`trk_walljump_1`) has Seedance's invented rainbow trail behind her flip, and ghost 3 keeps it. It is on-palette, but it is a model invention. Take 2, re-prompted "no VFX", was still queued when I finished. If it lands it can be swapped in `takes.json` (`trk_walljump.take`, check `freeze`).
+- **E2c is still a medium-wide** (push-in 1.10 → 1.22). The ghosts on the track deck are small and only read as poses thanks to the outlines; the 720p source keeps them soft.
+- **E2 ghosts glide** from where she froze to their spread positions (0.35 s). This keeps them legible, but it is not strictly "stays where it was".
+- **E7 ribbons** now cover most of the frame by the last bar (24 ribbons plus the wash). That is the "saturating" intent, but the meter close-ups get busy.
 - **E5a and E5b**: both girls are generated as two copies of Jade, and the "ghost" is a colourised matte region of the left girl, with a box split at x = 0.345 / 0.5. In E5a, if the jumping Jade crosses that line, part of her would tint; that does not happen in 126.25–127.88.
 - **E6a's clean plate** shows a faint blur where her shadow was. It is hidden under the motes and lasts 0.44 s.
 - **E8a**: the ring agents only half-turn (Seedance made a mild move). The unison snap really lands in E8b, the line.
@@ -90,7 +105,7 @@ No model-drawn text anywhere: every keyframe was prompted blank, and the slip wa
 
 ## Cost
 
-Section D spend: **$18.47** list-price estimate (budget $50). This already counts walljump take 2, which was still queued at hand-off.
+Section D spend (unchanged by revision 2): **$18.47** list-price estimate (budget $50). This already counts walljump take 2, which was still queued at hand-off.
 
 | Item | Cost |
 |---|---|

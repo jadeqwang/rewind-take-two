@@ -15,6 +15,84 @@ export default {
      "src": "media/shots/E2/plate_trk.png"
     },
     {
+     "id": "bloom",
+     "type": "image",
+     "src": "media/shots/_D/e1_bloom.png",
+     "keepColor": true,
+     "fit": "none",
+     "end": 0.93,
+     "x": -520.7063,
+     "y": -30.6688,
+     "scale": [
+      [
+       0,
+       0.1,
+       "outCubic"
+      ],
+      [
+       0.85,
+       1.5
+      ]
+     ],
+     "rotate": [
+      [
+       0,
+       0
+      ],
+      [
+       0.93,
+       14
+      ]
+     ],
+     "opacity": [
+      [
+       0,
+       1.0
+      ],
+      [
+       0.45,
+       0.9,
+       "inCubic"
+      ],
+      [
+       0.93,
+       0.0
+      ]
+     ]
+    },
+    {
+     "id": "bloom_glow",
+     "type": "image",
+     "src": "media/shots/_D/e1_bloom.png",
+     "keepColor": true,
+     "fit": "none",
+     "end": 0.6,
+     "blend": "add",
+     "x": -520.7063,
+     "y": -30.6688,
+     "scale": [
+      [
+       0,
+       0.08,
+       "outCubic"
+      ],
+      [
+       0.6,
+       1.1
+      ]
+     ],
+     "opacity": [
+      [
+       0,
+       0.5
+      ],
+      [
+       0.6,
+       0.0
+      ]
+     ]
+    },
+    {
      "id": "live1",
      "type": "video",
      "src": "media/shots/E2/take_trk_sprint_1_engraved.mp4",
@@ -58,9 +136,9 @@ export default {
     {
      "id": "live3",
      "type": "video",
-     "src": "media/shots/E2/take_trk_walljump_1_engraved.mp4",
+     "src": "media/shots/E2/take_trk_walljump_2_engraved.mp4",
      "matte": {
-      "src": "media/shots/E2/take_trk_walljump_1_matte/matte.mp4",
+      "src": "media/shots/E2/take_trk_walljump_2_matte/matte.mp4",
       "mode": "luma"
      },
      "keepColor": true,
@@ -69,16 +147,16 @@ export default {
      "srcTime": [
       [
        0,
-       2.655
+       3.443
       ],
       [
        0.125,
-       2.405,
+       3.193,
        "outCubic"
       ],
       [
        0.43,
-       2.71
+       3.62
       ]
      ]
     },
@@ -91,63 +169,63 @@ export default {
       "path": [
        [
         0.0,
-        -520.7,
-        -152.8
+        439.3,
+        387.2
        ],
        [
         0.0845,
-        -487.6,
-        -200.1
+        472.4,
+        339.9
        ],
        [
         0.1691,
-        -473.8,
-        -213.9
+        486.2,
+        326.1
        ],
        [
         0.2536,
-        -433.0,
-        -220.1
+        527.0,
+        319.9
        ],
        [
         0.3382,
-        -407.7,
-        -226.9
+        552.3,
+        313.1
        ],
        [
         0.4227,
-        -379.9,
-        -237.1
+        580.1,
+        302.9
        ],
        [
         0.5073,
-        -317.6,
-        -256.2
+        642.4,
+        283.8
        ],
        [
         0.5918,
-        -284.2,
-        -259.8
+        675.8,
+        280.2
        ],
        [
         0.6764,
-        -234.6,
-        -276.1
+        725.4,
+        263.9
        ],
        [
         0.7609,
-        -187.4,
-        -290.5
+        772.6,
+        249.5
        ],
        [
         0.8455,
-        -168.1,
-        -298.2
+        791.9,
+        241.8
        ],
        [
         0.93,
-        -102.2,
-        -317.6
+        857.8,
+        222.4
        ]
       ],
       "colors": [
@@ -170,28 +248,28 @@ export default {
       "path": [
        [
         1.055,
-        -260.5,
-        -209.8
+        699.5,
+        330.2
        ],
        [
         1.1388,
-        -133.1,
-        -267.3
+        826.9,
+        272.7
        ],
        [
         1.2225,
-        10.0,
-        -299.5
+        970.0,
+        240.5
        ],
        [
         1.3063,
-        103.2,
-        -287.7
+        1063.2,
+        252.3
        ],
        [
         1.39,
-        139.7,
-        -279.9
+        1099.7,
+        260.1
        ]
       ],
       "colors": [
@@ -214,28 +292,28 @@ export default {
       "path": [
        [
         1.515,
-        577.8,
-        -314.4
+        1413.3,
+        121.1
        ],
        [
         1.5913,
-        563.3,
-        -294.8
+        1415.8,
+        109.7
        ],
        [
         1.6675,
-        510.0,
-        -280.2
+        1382.6,
+        108.3
        ],
        [
         1.7438,
-        388.6,
-        -227.6
+        1412.4,
+        109.1
        ],
        [
         1.82,
-        60.1,
-        -123.3
+        1442.7,
+        108.6
        ]
       ],
       "colors": [
@@ -251,124 +329,114 @@ export default {
     },
     {
      "id": "g1",
-     "type": "ghosts",
-     "src": "media/shots/E2/take_trk_sprint_1_engraved.mp4",
-     "matte": {
-      "src": "media/shots/E2/take_trk_sprint_1_matte/matte.mp4",
-      "mode": "luma"
-     },
+     "type": "image",
+     "src": "media/shots/_D/sprites/take_trk_sprint_1_matte_2.750_F08A24_o4.png",
      "keepColor": true,
-     "loop": false,
-     "x": 0,
-     "y": 0,
+     "fit": "cover",
      "scale": 1.0,
-     "on": [
-      113.89
+     "x": [
+      [
+       0.93,
+       0,
+       "outCubic"
+      ],
+      [
+       1.28,
+       -537.7787
+      ]
      ],
-     "instances": [
-      {
-       "freeze": 2.75,
-       "color": "#F08A24",
-       "opacity": 0.62,
-       "tint": 0.82
-      }
-     ]
-    },
-    {
-     "id": "g2",
-     "type": "ghosts",
-     "src": "media/shots/E2/take_trk_dash_1_engraved.mp4",
-     "matte": {
-      "src": "media/shots/E2/take_trk_dash_1_matte/matte.mp4",
-      "mode": "luma"
-     },
-     "keepColor": true,
-     "loop": false,
-     "x": 0,
      "y": 0,
-     "scale": 1.0,
-     "on": [
-      114.35
-     ],
-     "instances": [
-      {
-       "freeze": 1.96,
-       "color": "#3E6FD8",
-       "opacity": 0.62,
-       "tint": 0.82
-      }
-     ]
-    },
-    {
-     "id": "g3",
-     "type": "ghosts",
-     "src": "media/shots/E2/take_trk_walljump_1_engraved.mp4",
-     "matte": {
-      "src": "media/shots/E2/take_trk_walljump_1_matte/matte.mp4",
-      "mode": "luma"
-     },
-     "keepColor": true,
-     "loop": false,
-     "x": 0,
-     "y": 0,
-     "scale": 1.0,
-     "on": [
-      114.78
-     ],
-     "instances": [
-      {
-       "freeze": 2.71,
-       "color": "#C9A227",
-       "opacity": 0.62,
-       "tint": 0.82
-      }
-     ]
-    },
-    {
-     "id": "flood",
-     "type": "solid",
-     "keepColor": true,
-     "end": 0.93,
-     "color": "#F08A24",
      "opacity": [
       [
        0,
-       1.0
+       0,
+       "hold"
       ],
       [
-       0.07,
+       0.93,
        1.0
-      ],
-      [
-       0.6,
-       0.0,
-       "outCubic"
       ]
      ]
     },
     {
-     "id": "flood2",
-     "type": "solid",
+     "id": "g2",
+     "type": "image",
+     "src": "media/shots/_D/sprites/take_trk_dash_1_matte_1.960_3E6FD8_o4.png",
      "keepColor": true,
-     "end": 0.93,
-     "color": "#8DB8E8",
-     "blend": "multiply",
+     "fit": "cover",
+     "scale": 1.0,
+     "x": [
+      [
+       1.39,
+       0,
+       "outCubic"
+      ],
+      [
+       1.74,
+       -259.7325
+      ]
+     ],
+     "y": [
+      [
+       1.39,
+       0,
+       "outCubic"
+      ],
+      [
+       1.74,
+       188.8042
+      ]
+     ],
      "opacity": [
       [
        0,
-       0.0
+       0,
+       "hold"
       ],
       [
-       0.1,
-       0.0
+       1.39,
+       1.0
+      ]
+     ]
+    },
+    {
+     "id": "g3",
+     "type": "image",
+     "src": "media/shots/_D/sprites/take_trk_walljump_2_matte_3.620_C9A227_o4.png",
+     "keepColor": true,
+     "fit": "cover",
+     "scale": 1.0,
+     "x": [
+      [
+       1.82,
+       0,
+       "outCubic"
       ],
       [
-       0.22,
-       0.55
+       2.17,
+       77.2994
+      ]
+     ],
+     "y": [
+      [
+       1.82,
+       0,
+       "outCubic"
       ],
       [
-       0.8,
-       0.0
+       2.17,
+       270.7237
+      ]
+     ],
+     "opacity": [
+      [
+       0,
+       0,
+       "hold"
+      ],
+      [
+       1.82,
+       1.0
       ]
      ]
     },
@@ -382,24 +450,635 @@ export default {
       "at": 0.0,
       "x": 439.2937,
       "y": 509.3312,
-      "count": 260,
+      "count": 220,
       "colors": [
        "#F08A24",
-       "#3E6FD8",
-       "#C9A227",
-       "#C23B8E",
-       "#3FA55B",
        "#F08A24",
-       "#8DB8E8"
+       "#8DB8E8",
+       "#8DB8E8",
+       "#C9A227"
       ],
-      "speed": 3400,
+      "shape": "circle",
+      "speed": 2600,
       "drag": 2.4,
-      "size": 34,
-      "life": 1.1,
-      "ring": true,
+      "size": 13,
+      "life": 1.2,
+      "ring": false,
       "glow": 1.0,
       "seed": 65
      }
+    },
+    {
+     "id": "e1_flow0",
+     "type": "canvas",
+     "module": "ribbon",
+     "keepColor": true,
+     "params": {
+      "path": [
+       [
+        0.0,
+        439.2937,
+        509.3312
+       ],
+       [
+        0.07,
+        648.2446,
+        492.3596
+       ],
+       [
+        0.14,
+        850.9217,
+        441.7837
+       ],
+       [
+        0.21,
+        1041.1557,
+        358.6159
+       ],
+       [
+        0.28,
+        1212.9849,
+        244.5268
+       ],
+       [
+        0.35,
+        1360.7554,
+        101.8195
+       ],
+       [
+        0.42,
+        1479.2166,
+        -66.6041
+       ],
+       [
+        0.49,
+        1563.6117,
+        -257.2878
+       ],
+       [
+        0.56,
+        1609.761,
+        -466.273
+       ]
+      ],
+      "colors": [
+       "#F08A24",
+       "#C9A227"
+      ],
+      "width": 46,
+      "twist": 0.5,
+      "bloom": 1.0,
+      "grain": 0.8,
+      "motes": 0.4,
+      "trail": 0.7,
+      "pencil": false,
+      "seed": 80
+     },
+     "end": 1.0
+    },
+    {
+     "id": "e1_flow1",
+     "type": "canvas",
+     "module": "ribbon",
+     "keepColor": true,
+     "params": {
+      "path": [
+       [
+        0.02,
+        439.2937,
+        509.3312
+       ],
+       [
+        0.09,
+        585.9031,
+        631.0447
+       ],
+       [
+        0.16,
+        701.0273,
+        775.2392
+       ],
+       [
+        0.23,
+        780.7437,
+        937.9295
+       ],
+       [
+        0.3,
+        821.8109,
+        1114.7342
+       ],
+       [
+        0.37,
+        821.7258,
+        1300.9469
+       ],
+       [
+        0.44,
+        778.7697,
+        1491.6129
+       ],
+       [
+        0.51,
+        692.0421,
+        1681.6096
+       ],
+       [
+        0.58,
+        561.4835,
+        1865.7293
+       ]
+      ],
+      "colors": [
+       "#F08A24",
+       "#8DB8E8"
+      ],
+      "width": 46,
+      "twist": 0.5,
+      "bloom": 1.0,
+      "grain": 0.8,
+      "motes": 0.4,
+      "trail": 0.7,
+      "pencil": true,
+      "seed": 81
+     },
+     "end": 1.0
+    },
+    {
+     "id": "e1_flow2",
+     "type": "canvas",
+     "module": "ribbon",
+     "keepColor": true,
+     "params": {
+      "path": [
+       [
+        0.04,
+        439.2937,
+        509.3312
+       ],
+       [
+        0.11,
+        496.2774,
+        672.9529
+       ],
+       [
+        0.18,
+        593.0485,
+        825.7292
+       ],
+       [
+        0.25,
+        727.3028,
+        962.918
+       ],
+       [
+        0.32,
+        895.9713,
+        1080.0573
+       ],
+       [
+        0.39,
+        1095.2689,
+        1173.0403
+       ],
+       [
+        0.46,
+        1320.7526,
+        1238.1861
+       ],
+       [
+        0.53,
+        1567.3907,
+        1272.3035
+       ],
+       [
+        0.6,
+        1829.6408,
+        1272.7491
+       ]
+      ],
+      "colors": [
+       "#F08A24",
+       "#8DB8E8"
+      ],
+      "width": 46,
+      "twist": 0.5,
+      "bloom": 1.0,
+      "grain": 0.8,
+      "motes": 0.4,
+      "trail": 0.7,
+      "pencil": false,
+      "seed": 82
+     },
+     "end": 1.0
+    },
+    {
+     "id": "e1_flow3",
+     "type": "canvas",
+     "module": "ribbon",
+     "keepColor": true,
+     "params": {
+      "path": [
+       [
+        0.06,
+        439.2937,
+        509.3312
+       ],
+       [
+        0.13,
+        316.7294,
+        647.3734
+       ],
+       [
+        0.2,
+        161.342,
+        764.2257
+       ],
+       [
+        0.27,
+        -22.7028,
+        856.0677
+       ],
+       [
+        0.34,
+        -230.6386,
+        919.5536
+       ],
+       [
+        0.41,
+        -457.1757,
+        951.8696
+       ],
+       [
+        0.48,
+        -696.5857,
+        950.7838
+       ],
+       [
+        0.55,
+        -942.7936,
+        914.6874
+       ],
+       [
+        0.62,
+        -1189.475,
+        842.6275
+       ]
+      ],
+      "colors": [
+       "#F08A24",
+       "#8DB8E8"
+      ],
+      "width": 46,
+      "twist": 0.5,
+      "bloom": 1.0,
+      "grain": 0.8,
+      "motes": 0.4,
+      "trail": 0.7,
+      "pencil": true,
+      "seed": 83
+     },
+     "end": 1.0
+    },
+    {
+     "id": "e1_flow4",
+     "type": "canvas",
+     "module": "ribbon",
+     "keepColor": true,
+     "params": {
+      "path": [
+       [
+        0.08,
+        439.2937,
+        509.3312
+       ],
+       [
+        0.15,
+        250.1626,
+        583.213
+       ],
+       [
+        0.22,
+        81.144,
+        686.9268
+       ],
+       [
+        0.29,
+        -62.3944,
+        817.8109
+       ],
+       [
+        0.36,
+        -175.5581,
+        972.6429
+       ],
+       [
+        0.43,
+        -254.0099,
+        1147.691
+       ],
+       [
+        0.5,
+        -294.0444,
+        1338.7733
+       ],
+       [
+        0.57,
+        -292.6551,
+        1541.3236
+       ],
+       [
+        0.64,
+        -247.5898,
+        1750.4638
+       ]
+      ],
+      "colors": [
+       "#F08A24",
+       "#C9A227"
+      ],
+      "width": 46,
+      "twist": 0.5,
+      "bloom": 1.0,
+      "grain": 0.8,
+      "motes": 0.4,
+      "trail": 0.7,
+      "pencil": false,
+      "seed": 84
+     },
+     "end": 1.0
+    },
+    {
+     "id": "e1_flow5",
+     "type": "canvas",
+     "module": "ribbon",
+     "keepColor": true,
+     "params": {
+      "path": [
+       [
+        0.1,
+        439.2937,
+        509.3312
+       ],
+       [
+        0.17,
+        250.0546,
+        435.631
+       ],
+       [
+        0.24,
+        80.8842,
+        332.0795
+       ],
+       [
+        0.31,
+        -62.8457,
+        201.3332
+       ],
+       [
+        0.38,
+        -176.2361,
+        46.6099
+       ],
+       [
+        0.45,
+        -254.9441,
+        -128.3628
+       ],
+       [
+        0.52,
+        -295.2584,
+        -319.4066
+       ],
+       [
+        0.59,
+        -294.1656,
+        -521.9581
+       ],
+       [
+        0.66,
+        -249.4066,
+        -731.1413
+       ]
+      ],
+      "colors": [
+       "#F08A24",
+       "#8DB8E8"
+      ],
+      "width": 46,
+      "twist": 0.5,
+      "bloom": 1.0,
+      "grain": 0.8,
+      "motes": 0.4,
+      "trail": 0.7,
+      "pencil": true,
+      "seed": 85
+     },
+     "end": 1.0
+    },
+    {
+     "id": "e1_flow6",
+     "type": "canvas",
+     "module": "ribbon",
+     "keepColor": true,
+     "params": {
+      "path": [
+       [
+        0.12,
+        439.2937,
+        509.3312
+       ],
+       [
+        0.19,
+        316.5273,
+        371.4068
+       ],
+       [
+        0.26,
+        160.9689,
+        254.7037
+       ],
+       [
+        0.33,
+        -23.2101,
+        163.0384
+       ],
+       [
+        0.4,
+        -231.2387,
+        99.752
+       ],
+       [
+        0.47,
+        -457.823,
+        67.6534
+       ],
+       [
+        0.54,
+        -697.2313,
+        68.969
+       ],
+       [
+        0.61,
+        -943.3862,
+        105.3015
+       ],
+       [
+        0.68,
+        -1189.9619,
+        177.5981
+       ]
+      ],
+      "colors": [
+       "#F08A24",
+       "#8DB8E8"
+      ],
+      "width": 46,
+      "twist": 0.5,
+      "bloom": 1.0,
+      "grain": 0.8,
+      "motes": 0.4,
+      "trail": 0.7,
+      "pencil": false,
+      "seed": 86
+     },
+     "end": 1.0
+    },
+    {
+     "id": "e1_flow7",
+     "type": "canvas",
+     "module": "ribbon",
+     "keepColor": true,
+     "params": {
+      "path": [
+       [
+        0.14,
+        439.2937,
+        509.3312
+       ],
+       [
+        0.21,
+        496.0378,
+        345.655
+       ],
+       [
+        0.28,
+        592.5852,
+        192.786
+       ],
+       [
+        0.35,
+        726.6384,
+        55.4684
+       ],
+       [
+        0.42,
+        895.1353,
+        -61.8326
+       ],
+       [
+        0.49,
+        1094.2966,
+        -155.0068
+       ],
+       [
+        0.56,
+        1319.6848,
+        -220.3688
+       ],
+       [
+        0.63,
+        1566.2728,
+        -254.7229
+       ],
+       [
+        0.7,
+        1828.522,
+        -255.4201
+       ]
+      ],
+      "colors": [
+       "#F08A24",
+       "#8DB8E8"
+      ],
+      "width": 46,
+      "twist": 0.5,
+      "bloom": 1.0,
+      "grain": 0.8,
+      "motes": 0.4,
+      "trail": 0.7,
+      "pencil": true,
+      "seed": 87
+     },
+     "end": 1.0
+    },
+    {
+     "id": "e1_flow8",
+     "type": "canvas",
+     "module": "ribbon",
+     "keepColor": true,
+     "params": {
+      "path": [
+       [
+        0.16,
+        439.2937,
+        509.3312
+       ],
+       [
+        0.23,
+        585.7248,
+        387.4772
+       ],
+       [
+        0.3,
+        700.6378,
+        243.1724
+       ],
+       [
+        0.37,
+        780.1159,
+        80.4057
+       ],
+       [
+        0.44,
+        820.9242,
+        -96.4383
+       ],
+       [
+        0.51,
+        820.5665,
+        -282.6508
+       ],
+       [
+        0.58,
+        777.3312,
+        -473.2755
+       ],
+       [
+        0.65,
+        690.3255,
+        -663.1888
+       ],
+       [
+        0.72,
+        559.4974,
+        -847.1831
+       ]
+      ],
+      "colors": [
+       "#F08A24",
+       "#C9A227"
+      ],
+      "width": 46,
+      "twist": 0.5,
+      "bloom": 1.0,
+      "grain": 0.8,
+      "motes": 0.4,
+      "trail": 0.7,
+      "pencil": false,
+      "seed": 88
+     },
+     "end": 1.0
     }
    ],
    "fx": [
@@ -543,28 +1222,28 @@ export default {
       "path": [
        [
         0.0,
-        190.1,
-        57.3
+        1150.1,
+        597.3
        ],
        [
         0.0837,
-        273.0,
-        88.9
+        1233.0,
+        628.9
        ],
        [
         0.1675,
-        300.9,
-        94.7
+        1260.9,
+        634.7
        ],
        [
         0.2512,
-        383.7,
-        122.3
+        1343.7,
+        662.3
        ],
        [
         0.335,
-        406.3,
-        125.8
+        1366.3,
+        665.8
        ]
       ],
       "colors": [
@@ -588,33 +1267,33 @@ export default {
       "path": [
        [
         0.335,
-        145.7,
-        -288.0
+        1105.7,
+        252.0
        ],
        [
         0.421,
-        143.3,
-        -309.3
+        1103.3,
+        230.7
        ],
        [
         0.507,
-        144.1,
-        -331.2
+        1104.1,
+        208.8
        ],
        [
         0.593,
-        154.5,
-        -357.8
+        1114.5,
+        182.2
        ],
        [
         0.679,
-        168.2,
-        -361.6
+        1128.2,
+        178.4
        ],
        [
         0.765,
-        173.9,
-        -365.0
+        1133.9,
+        175.0
        ]
       ],
       "colors": [
@@ -638,28 +1317,28 @@ export default {
       "path": [
        [
         0.765,
-        410.8,
-        -353.5
+        1370.8,
+        186.5
        ],
        [
         0.855,
-        422.1,
-        -359.6
+        1382.1,
+        180.4
        ],
        [
         0.945,
-        427.0,
-        -361.1
+        1387.0,
+        178.9
        ],
        [
         1.035,
-        434.3,
-        -361.7
+        1394.3,
+        178.3
        ],
        [
         1.125,
-        438.4,
-        -362.1
+        1398.4,
+        177.9
        ]
       ],
       "colors": [
@@ -683,38 +1362,38 @@ export default {
       "path": [
        [
         1.125,
-        -596.7,
-        19.9
+        363.3,
+        559.9
        ],
        [
         1.2067,
-        -508.9,
-        51.3
+        451.1,
+        591.3
        ],
        [
         1.2883,
-        -300.9,
-        56.3
+        659.1,
+        596.3
        ],
        [
         1.37,
-        -138.1,
-        99.6
+        821.9,
+        639.6
        ],
        [
         1.4517,
-        40.1,
-        149.0
+        1000.1,
+        689.0
        ],
        [
         1.5333,
-        208.1,
-        168.8
+        1168.1,
+        708.8
        ],
        [
         1.615,
-        338.4,
-        157.1
+        1298.4,
+        697.1
        ]
       ],
       "colors": [
@@ -738,33 +1417,33 @@ export default {
       "path": [
        [
         1.615,
-        -155.8,
-        -118.2
+        804.2,
+        421.8
        ],
        [
         1.701,
-        12.6,
-        -117.0
+        972.6,
+        423.0
        ],
        [
         1.787,
-        119.6,
-        -127.4
+        1079.6,
+        412.6
        ],
        [
         1.873,
-        256.4,
-        -127.3
+        1216.4,
+        412.7
        ],
        [
         1.959,
-        397.1,
-        -80.4
+        1357.1,
+        459.6
        ],
        [
         2.045,
-        460.4,
-        -15.0
+        1420.4,
+        525.0
        ]
       ],
       "colors": [
@@ -781,102 +1460,166 @@ export default {
     },
     {
      "id": "g4",
-     "type": "ghosts",
-     "src": "media/shots/E2/take_fld_slide_1_engraved.mp4",
-     "matte": {
-      "src": "media/shots/E2/take_fld_slide_1_jmatte/matte.mp4",
-      "mode": "luma"
-     },
+     "type": "image",
+     "src": "media/shots/_D/sprites/take_fld_slide_1_jmatte_3.150_C23B8E_o4.png",
      "keepColor": true,
-     "loop": false,
-     "x": 0,
-     "y": 0,
+     "fit": "cover",
      "scale": 1.0,
-     "on": [
-      115.24
+     "x": [
+      [
+       0.335,
+       0,
+       "outCubic"
+      ],
+      [
+       0.685,
+       -1186.2844
+      ]
      ],
-     "instances": [
-      {
-       "freeze": 3.15,
-       "color": "#C23B8E",
-       "opacity": 0.62,
-       "tint": 0.82
-      }
+     "y": [
+      [
+       0.335,
+       0,
+       "outCubic"
+      ],
+      [
+       0.685,
+       -8.6127
+      ]
+     ],
+     "opacity": [
+      [
+       0,
+       0,
+       "hold"
+      ],
+      [
+       0.335,
+       1.0
+      ]
      ]
     },
     {
      "id": "g5",
-     "type": "ghosts",
-     "src": "media/shots/E2/take_fld_cartwheel_1_engraved.mp4",
-     "matte": {
-      "src": "media/shots/E2/take_fld_cartwheel_1_jmatte/matte.mp4",
-      "mode": "luma"
-     },
+     "type": "image",
+     "src": "media/shots/_D/sprites/take_fld_cartwheel_1_jmatte_1.830_3FA55B_o4.png",
      "keepColor": true,
-     "loop": false,
-     "x": 0,
-     "y": 0,
+     "fit": "cover",
      "scale": 1.0,
-     "on": [
-      115.67
+     "x": [
+      [
+       0.765,
+       0,
+       "outCubic"
+      ],
+      [
+       1.115,
+       -643.8627
+      ]
      ],
-     "instances": [
-      {
-       "freeze": 1.83,
-       "color": "#3FA55B",
-       "opacity": 0.62,
-       "tint": 0.82
-      }
+     "y": [
+      [
+       0.765,
+       0,
+       "outCubic"
+      ],
+      [
+       1.115,
+       85.0671
+      ]
+     ],
+     "opacity": [
+      [
+       0,
+       0,
+       "hold"
+      ],
+      [
+       0.765,
+       1.0
+      ]
      ]
     },
     {
      "id": "g6",
-     "type": "ghosts",
-     "src": "media/shots/E2/take_fld_vault_1_engraved.mp4",
-     "matte": {
-      "src": "media/shots/E2/take_fld_vault_1_jmatte/matte.mp4",
-      "mode": "luma"
-     },
+     "type": "image",
+     "src": "media/shots/_D/sprites/take_fld_vault_1_jmatte_3.000_E4572E_o4.png",
      "keepColor": true,
-     "loop": false,
-     "x": 0,
-     "y": 0,
+     "fit": "cover",
      "scale": 1.0,
-     "on": [
-      116.03
+     "x": [
+      [
+       1.125,
+       0,
+       "outCubic"
+      ],
+      [
+       1.475,
+       -588.4524
+      ]
      ],
-     "instances": [
-      {
-       "freeze": 3.0,
-       "color": "#E4572E",
-       "opacity": 0.62,
-       "tint": 0.82
-      }
+     "y": [
+      [
+       1.125,
+       0,
+       "outCubic"
+      ],
+      [
+       1.475,
+       475.1887
+      ]
+     ],
+     "opacity": [
+      [
+       0,
+       0,
+       "hold"
+      ],
+      [
+       1.125,
+       1.0
+      ]
      ]
     },
     {
      "id": "g7",
-     "type": "ghosts",
-     "src": "media/shots/E2/take_fld_spin_1_engraved.mp4",
-     "matte": {
-      "src": "media/shots/E2/take_fld_spin_1_jmatte/matte.mp4",
-      "mode": "luma"
-     },
+     "type": "image",
+     "src": "media/shots/_D/sprites/take_fld_spin_1_jmatte_2.300_8DB8E8_o4.png",
      "keepColor": true,
-     "loop": false,
-     "x": 0,
-     "y": 0,
+     "fit": "cover",
      "scale": 1.0,
-     "on": [
-      116.52
+     "x": [
+      [
+       1.615,
+       0,
+       "outCubic"
+      ],
+      [
+       1.965,
+       -208.4088
+      ]
      ],
-     "instances": [
-      {
-       "freeze": 2.3,
-       "color": "#8DB8E8",
-       "opacity": 0.62,
-       "tint": 0.82
-      }
+     "y": [
+      [
+       1.615,
+       0,
+       "outCubic"
+      ],
+      [
+       1.965,
+       -270.1601
+      ]
+     ],
+     "opacity": [
+      [
+       0,
+       0,
+       "hold"
+      ],
+      [
+       1.615,
+       1.0
+      ]
      ]
     }
    ],
@@ -1056,153 +1799,153 @@ export default {
       "path": [
        [
         0.0,
-        20.0,
-        193.2
+        980.0,
+        733.2
        ],
        [
         0.0833,
-        201.0,
-        155.6
+        1161.0,
+        695.6
        ],
        [
         0.1667,
-        388.2,
-        185.2
+        1348.2,
+        725.2
        ],
        [
         0.25,
-        527.4,
-        151.8
+        1487.4,
+        691.8
        ],
        [
         0.3333,
-        619.2,
-        92.5
+        1579.2,
+        632.5
        ],
        [
         0.4167,
-        725.1,
-        77.1
+        1685.1,
+        617.1
        ],
        [
         0.5,
-        779.4,
-        -10.2
+        1739.4,
+        529.8
        ],
        [
         0.5833,
-        802.7,
-        -49.2
+        1762.7,
+        490.8
        ],
        [
         0.6667,
-        781.8,
-        -100.4
+        1741.8,
+        439.6
        ],
        [
         0.75,
-        705.3,
-        -168.3
+        1665.3,
+        371.7
        ],
        [
         0.8333,
-        609.6,
-        -196.2
+        1569.6,
+        343.8
        ],
        [
         0.9167,
-        502.7,
-        -229.0
+        1462.7,
+        311.0
        ],
        [
         1.0,
-        275.2,
-        -245.4
+        1235.2,
+        294.6
        ],
        [
         1.0833,
-        -69.6,
-        -301.1
+        890.4,
+        238.9
        ],
        [
         1.1667,
-        -300.9,
-        -236.8
+        659.1,
+        303.2
        ],
        [
         1.25,
-        -479.8,
-        -253.2
+        480.2,
+        286.8
        ],
        [
         1.3333,
-        -605.9,
-        -215.1
+        354.1,
+        324.9
        ],
        [
         1.4167,
-        -732.6,
-        -132.8
+        227.4,
+        407.2
        ],
        [
         1.5,
-        -789.8,
-        -65.2
+        170.2,
+        474.8
        ],
        [
         1.5833,
-        -769.3,
-        22.9
+        190.7,
+        562.9
        ],
        [
         1.6667,
-        -631.8,
-        113.4
+        328.2,
+        653.4
        ],
        [
         1.75,
-        -378.3,
-        189.6
+        581.7,
+        729.6
        ],
        [
         1.8333,
-        -238.7,
-        175.0
+        721.3,
+        715.0
        ],
        [
         1.9167,
-        -95.4,
-        171.7
+        864.6,
+        711.7
        ],
        [
         2.0,
-        5.0,
-        173.2
+        965.0,
+        713.2
        ],
        [
         2.0833,
-        163.0,
-        181.6
+        1123.0,
+        721.6
        ],
        [
         2.1667,
-        295.0,
-        161.4
+        1255.0,
+        701.4
        ],
        [
         2.25,
-        438.6,
-        150.2
+        1398.6,
+        690.2
        ],
        [
         2.3333,
-        566.4,
-        148.8
+        1526.4,
+        688.8
        ],
        [
         2.4167,
-        655.8,
-        117.1
+        1615.8,
+        657.1
        ]
       ],
       "colors": [
@@ -1218,308 +1961,204 @@ export default {
     },
     {
      "id": "g1",
-     "type": "ghosts",
-     "src": "media/shots/E2/take_trk_sprint_1_engraved.mp4",
-     "matte": {
-      "src": "media/shots/E2/take_trk_sprint_1_matte/matte.mp4",
-      "mode": "luma"
-     },
+     "type": "image",
+     "src": "media/shots/_D/sprites/take_trk_sprint_1_matte_2.750_F08A24_o12.png",
      "keepColor": true,
-     "loop": false,
-     "x": 12.2672,
-     "y": -464.3432,
-     "scale": 0.12,
-     "instances": [
-      {
-       "freeze": 2.75,
-       "color": "#F08A24",
-       "opacity": 0.7,
-       "tint": 0.82
-      }
-     ]
+     "fit": "cover",
+     "scale": 0.24,
+     "x": -379.4669,
+     "y": -246.6856
     },
     {
      "id": "g2",
-     "type": "ghosts",
-     "src": "media/shots/E2/take_trk_dash_1_engraved.mp4",
-     "matte": {
-      "src": "media/shots/E2/take_trk_dash_1_matte/matte.mp4",
-      "mode": "luma"
-     },
+     "type": "image",
+     "src": "media/shots/_D/sprites/take_trk_dash_1_matte_1.960_3E6FD8_o12.png",
      "keepColor": true,
-     "loop": false,
-     "x": 243.2316,
-     "y": -450.5437,
-     "scale": 0.12,
-     "instances": [
-      {
-       "freeze": 1.96,
-       "color": "#3E6FD8",
-       "opacity": 0.7,
-       "tint": 0.82
-      }
-     ]
+     "fit": "cover",
+     "scale": 0.25,
+     "x": -68.9331,
+     "y": -298.799
     },
     {
      "id": "g3",
-     "type": "ghosts",
-     "src": "media/shots/E2/take_trk_walljump_1_engraved.mp4",
-     "matte": {
-      "src": "media/shots/E2/take_trk_walljump_1_matte/matte.mp4",
-      "mode": "luma"
-     },
+     "type": "image",
+     "src": "media/shots/_D/sprites/take_trk_walljump_2_matte_3.620_C9A227_o12.png",
      "keepColor": true,
-     "loop": false,
-     "x": 512.7927,
-     "y": -481.5648,
-     "scale": 0.12,
-     "instances": [
-      {
-       "freeze": 2.71,
-       "color": "#C9A227",
-       "opacity": 0.7,
-       "tint": 0.82
-      }
-     ]
+     "fit": "cover",
+     "scale": 0.24,
+     "x": 254.1519,
+     "y": -203.8263
     },
     {
      "id": "g4",
-     "type": "ghosts",
-     "src": "media/shots/E2/take_fld_slide_1_engraved.mp4",
-     "matte": {
-      "src": "media/shots/E2/take_fld_slide_1_jmatte/matte.mp4",
-      "mode": "luma"
-     },
+     "type": "image",
+     "src": "media/shots/_D/sprites/take_fld_slide_1_jmatte_3.150_C23B8E_o9.png",
      "keepColor": true,
-     "loop": false,
-     "x": -242.8274,
-     "y": 253.6224,
-     "scale": 0.45,
-     "instances": [
-      {
-       "freeze": 3.15,
-       "color": "#C23B8E",
-       "opacity": 0.62,
-       "tint": 0.82
-      }
-     ]
+     "fit": "cover",
+     "scale": 0.4,
+     "x": -982.5138,
+     "y": 286.5549
     },
     {
      "id": "g5",
-     "type": "ghosts",
-     "src": "media/shots/E2/take_fld_cartwheel_1_engraved.mp4",
-     "matte": {
-      "src": "media/shots/E2/take_fld_cartwheel_1_jmatte/matte.mp4",
-      "mode": "luma"
-     },
+     "type": "image",
+     "src": "media/shots/_D/sprites/take_fld_cartwheel_1_jmatte_1.830_3FA55B_o9.png",
      "keepColor": true,
-     "loop": false,
-     "x": -893.0225,
-     "y": 138.7287,
-     "scale": 0.42,
-     "instances": [
-      {
-       "freeze": 1.83,
-       "color": "#3FA55B",
-       "opacity": 0.62,
-       "tint": 0.82
-      }
-     ]
+     "fit": "cover",
+     "scale": 0.4,
+     "x": -723.5451,
+     "y": 175.0268
     },
     {
      "id": "g6",
-     "type": "ghosts",
-     "src": "media/shots/E2/take_fld_vault_1_engraved.mp4",
-     "matte": {
-      "src": "media/shots/E2/take_fld_vault_1_jmatte/matte.mp4",
-      "mode": "luma"
-     },
+     "type": "image",
+     "src": "media/shots/_D/sprites/take_fld_vault_1_jmatte_3.000_E4572E_o12.png",
      "keepColor": true,
-     "loop": false,
-     "x": -568.469,
-     "y": -108.4445,
-     "scale": 0.3,
-     "instances": [
-      {
-       "freeze": 3.0,
-       "color": "#E4572E",
-       "opacity": 0.62,
-       "tint": 0.82,
-       "flip": true
-      }
-     ]
+     "fit": "cover",
+     "scale": [
+      -0.3,
+      0.3
+     ],
+     "x": 810.5357,
+     "y": -133.4434
     },
     {
      "id": "g7",
-     "type": "ghosts",
-     "src": "media/shots/E2/take_fld_spin_1_engraved.mp4",
-     "matte": {
-      "src": "media/shots/E2/take_fld_spin_1_jmatte/matte.mp4",
-      "mode": "luma"
-     },
+     "type": "image",
+     "src": "media/shots/_D/sprites/take_fld_spin_1_jmatte_2.300_8DB8E8_o8.png",
      "keepColor": true,
-     "loop": false,
-     "x": -431.5269,
-     "y": -333.0458,
-     "scale": 0.3,
-     "instances": [
-      {
-       "freeze": 2.3,
-       "color": "#8DB8E8",
-       "opacity": 0.62,
-       "tint": 0.82
-      }
-     ]
+     "fit": "cover",
+     "scale": 0.42,
+     "x": 339.8683,
+     "y": 199.7328
     },
     {
      "id": "g8",
-     "type": "ghosts",
-     "src": "media/shots/E2/take_fld_spin_1_engraved.mp4",
-     "matte": {
-      "src": "media/shots/E2/take_fld_spin_1_jmatte/matte.mp4",
-      "mode": "luma"
-     },
+     "type": "image",
+     "src": "media/shots/_D/sprites/take_fld_spin_1_jmatte_0.950_E8D04A_o12.png",
      "keepColor": true,
-     "loop": false,
-     "x": 1024.9549,
-     "y": -116.8517,
-     "scale": 0.38,
-     "on": [
-      116.95
+     "fit": "cover",
+     "scale": [
+      -0.3,
+      0.3
      ],
-     "instances": [
-      {
-       "freeze": 0.95,
-       "color": "#E8D04A",
-       "opacity": 0.62,
-       "tint": 0.82,
-       "flip": true
-      }
+     "x": -549.878,
+     "y": -263.0879,
+     "opacity": [
+      [
+       0,
+       0,
+       "hold"
+      ],
+      [
+       0.0,
+       1.0
+      ]
      ]
     },
     {
      "id": "g9",
-     "type": "ghosts",
-     "src": "media/shots/E2/take_ring_circle_1_engraved.mp4",
-     "matte": {
-      "src": "media/shots/E2/take_ring_circle_1_jmatte/matte.mp4",
-      "mode": "luma"
-     },
+     "type": "image",
+     "src": "media/shots/_D/sprites/take_ring_circle_1_jmatte_1.130_8E5CC8_o4.png",
      "keepColor": true,
-     "loop": false,
+     "fit": "cover",
+     "scale": 1.0,
      "x": 0,
      "y": 0,
-     "scale": 1.0,
-     "on": [
-      117.39
-     ],
-     "instances": [
-      {
-       "freeze": 1.13,
-       "color": "#8E5CC8",
-       "opacity": 0.7,
-       "tint": 0.85
-      }
+     "opacity": [
+      [
+       0,
+       0,
+       "hold"
+      ],
+      [
+       0.44,
+       1.0
+      ]
      ]
     },
     {
      "id": "g10",
-     "type": "ghosts",
-     "src": "media/shots/E2/take_ring_circle_1_engraved.mp4",
-     "matte": {
-      "src": "media/shots/E2/take_ring_circle_1_jmatte/matte.mp4",
-      "mode": "luma"
-     },
+     "type": "image",
+     "src": "media/shots/_D/sprites/take_ring_circle_1_jmatte_1.710_2BA59A_o4.png",
      "keepColor": true,
-     "loop": false,
+     "fit": "cover",
+     "scale": 1.0,
      "x": 0,
      "y": 0,
-     "scale": 1.0,
-     "on": [
-      117.83
-     ],
-     "instances": [
-      {
-       "freeze": 1.71,
-       "color": "#2BA59A",
-       "opacity": 0.7,
-       "tint": 0.85
-      }
+     "opacity": [
+      [
+       0,
+       0,
+       "hold"
+      ],
+      [
+       0.88,
+       1.0
+      ]
      ]
     },
     {
      "id": "g11",
-     "type": "ghosts",
-     "src": "media/shots/E2/take_ring_circle_1_engraved.mp4",
-     "matte": {
-      "src": "media/shots/E2/take_ring_circle_1_jmatte/matte.mp4",
-      "mode": "luma"
-     },
+     "type": "image",
+     "src": "media/shots/_D/sprites/take_ring_circle_1_jmatte_2.400_F28DB2_o4.png",
      "keepColor": true,
-     "loop": false,
+     "fit": "cover",
+     "scale": 1.0,
      "x": 0,
      "y": 0,
-     "scale": 1.0,
-     "on": [
-      118.25
-     ],
-     "instances": [
-      {
-       "freeze": 2.4,
-       "color": "#F28DB2",
-       "opacity": 0.7,
-       "tint": 0.85
-      }
+     "opacity": [
+      [
+       0,
+       0,
+       "hold"
+      ],
+      [
+       1.3,
+       1.0
+      ]
      ]
     },
     {
      "id": "g12",
-     "type": "ghosts",
-     "src": "media/shots/E2/take_ring_circle_1_engraved.mp4",
-     "matte": {
-      "src": "media/shots/E2/take_ring_circle_1_jmatte/matte.mp4",
-      "mode": "luma"
-     },
+     "type": "image",
+     "src": "media/shots/_D/sprites/take_ring_circle_1_jmatte_3.210_4B4FC4_o4.png",
      "keepColor": true,
-     "loop": false,
+     "fit": "cover",
+     "scale": 1.0,
      "x": 0,
      "y": 0,
-     "scale": 1.0,
-     "on": [
-      118.71
-     ],
-     "instances": [
-      {
-       "freeze": 3.21,
-       "color": "#4B4FC4",
-       "opacity": 0.7,
-       "tint": 0.85
-      }
+     "opacity": [
+      [
+       0,
+       0,
+       "hold"
+      ],
+      [
+       1.76,
+       1.0
+      ]
      ]
     },
     {
      "id": "g13",
-     "type": "ghosts",
-     "src": "media/shots/E2/take_ring_circle_1_engraved.mp4",
-     "matte": {
-      "src": "media/shots/E2/take_ring_circle_1_jmatte/matte.mp4",
-      "mode": "luma"
-     },
+     "type": "image",
+     "src": "media/shots/_D/sprites/take_ring_circle_1_jmatte_3.620_9CCB3B_o4.png",
      "keepColor": true,
-     "loop": false,
+     "fit": "cover",
+     "scale": 1.0,
      "x": 0,
      "y": 0,
-     "scale": 1.0,
-     "on": [
-      119.15
-     ],
-     "instances": [
-      {
-       "freeze": 3.62,
-       "color": "#9CCB3B",
-       "opacity": 0.7,
-       "tint": 0.85
-      }
+     "opacity": [
+      [
+       0,
+       0,
+       "hold"
+      ],
+      [
+       2.2,
+       1.0
+      ]
      ]
     }
    ],
@@ -1626,11 +2265,12 @@ export default {
      "amount": [
       [
        0,
-       1.0
+       1.1,
+       "inOutSine"
       ],
       [
        2.49,
-       1.06
+       1.22
       ]
      ]
     }
@@ -1678,48 +2318,48 @@ export default {
        "x": 0,
        "y": 30,
        "color": "#3E6FD8",
-       "opacity": 0.72,
-       "tint": 0.8
+       "opacity": 0.8,
+       "tint": 0.75
       },
       {
        "offset": 0.3333,
        "x": 0,
        "y": -30,
        "color": "#C9A227",
-       "opacity": 0.72,
-       "tint": 0.8
+       "opacity": 0.8,
+       "tint": 0.75
       },
       {
        "offset": -0.6667,
        "x": 0,
        "y": 30,
        "color": "#C23B8E",
-       "opacity": 0.72,
-       "tint": 0.8
+       "opacity": 0.8,
+       "tint": 0.75
       },
       {
        "offset": 0.6667,
        "x": 0,
        "y": -30,
        "color": "#3FA55B",
-       "opacity": 0.72,
-       "tint": 0.8
+       "opacity": 0.8,
+       "tint": 0.75
       },
       {
        "offset": -1.0,
        "x": 0,
        "y": 30,
        "color": "#E4572E",
-       "opacity": 0.72,
-       "tint": 0.8
+       "opacity": 0.8,
+       "tint": 0.75
       },
       {
        "offset": 1.0,
        "x": 0,
        "y": -30,
        "color": "#8DB8E8",
-       "opacity": 0.72,
-       "tint": 0.8
+       "opacity": 0.8,
+       "tint": 0.75
       }
      ],
      "show": [
@@ -1850,108 +2490,108 @@ export default {
       "path": [
        [
         0.0,
-        134.9,
-        -42.0
+        1094.9,
+        498.0
        ],
        [
         0.0815,
-        65.7,
-        -54.4
+        1025.7,
+        485.6
        ],
        [
         0.163,
-        -13.0,
-        -35.2
+        947.0,
+        504.8
        ],
        [
         0.2445,
-        -71.0,
-        -44.3
+        889.0,
+        495.7
        ],
        [
         0.326,
-        -104.8,
-        -87.4
+        855.2,
+        452.6
        ],
        [
         0.4075,
-        -130.3,
-        -74.8
+        829.7,
+        465.2
        ],
        [
         0.489,
-        -158.6,
-        -39.1
+        801.4,
+        500.9
        ],
        [
         0.5705,
-        -176.2,
-        -95.5
+        783.8,
+        444.5
        ],
        [
         0.652,
-        -193.7,
-        -273.7
+        766.3,
+        266.3
        ],
        [
         0.7335,
-        -197.7,
-        -341.3
+        762.3,
+        198.7
        ],
        [
         0.815,
-        -208.2,
-        -356.3
+        751.8,
+        183.7
        ],
        [
         0.8965,
-        -216.5,
-        -353.7
+        743.5,
+        186.3
        ],
        [
         0.978,
-        -223.0,
-        -328.0
+        737.0,
+        212.0
        ],
        [
         1.0595,
-        -226.0,
-        -310.3
+        734.0,
+        229.7
        ],
        [
         1.141,
-        -225.9,
-        -305.1
+        734.1,
+        234.9
        ],
        [
         1.2225,
-        -219.6,
-        -315.5
+        740.4,
+        224.5
        ],
        [
         1.304,
-        -194.0,
-        -348.6
+        766.0,
+        191.4
        ],
        [
         1.3855,
-        -170.9,
-        -384.0
+        789.1,
+        156.0
        ],
        [
         1.467,
-        -132.7,
-        -413.5
+        827.3,
+        126.5
        ],
        [
         1.5485,
-        -74.6,
-        -431.0
+        885.4,
+        109.0
        ],
        [
         1.63,
-        4.0,
-        -442.9
+        964.0,
+        97.1
        ]
       ],
       "colors": [
@@ -2254,148 +2894,148 @@ export default {
       "path": [
        [
         0.3,
-        -315.2,
-        -132.0
+        644.8,
+        408.0
        ],
        [
         0.3829,
-        -360.7,
-        -129.7
+        599.3,
+        410.3
        ],
        [
         0.4657,
-        -411.2,
-        -123.9
+        548.8,
+        416.1
        ],
        [
         0.5486,
-        -419.1,
-        -122.3
+        540.9,
+        417.7
        ],
        [
         0.6314,
-        -427.1,
-        -120.4
+        532.9,
+        419.6
        ],
        [
         0.7143,
-        -424.3,
-        -119.9
+        535.7,
+        420.1
        ],
        [
         0.7971,
-        -432.0,
-        -118.2
+        528.0,
+        421.8
        ],
        [
         0.88,
-        -280.1,
-        -136.7
+        679.9,
+        403.3
        ],
        [
         0.9629,
-        -252.9,
-        -137.5
+        707.1,
+        402.5
        ],
        [
         1.0457,
-        -256.2,
-        -136.8
+        703.8,
+        403.2
        ],
        [
         1.1286,
-        -263.0,
-        -136.1
+        697.0,
+        403.9
        ],
        [
         1.2114,
-        -260.2,
-        -132.0
+        699.8,
+        408.0
        ],
        [
         1.2943,
-        -277.6,
-        -123.3
+        682.4,
+        416.7
        ],
        [
         1.3771,
-        -322.1,
-        -94.7
+        637.9,
+        445.3
        ],
        [
         1.46,
-        -321.5,
-        -79.4
+        638.5,
+        460.6
        ],
        [
         1.5429,
-        -277.9,
-        -63.6
+        682.1,
+        476.4
        ],
        [
         1.6257,
-        -246.8,
-        -53.3
+        713.2,
+        486.7
        ],
        [
         1.7086,
-        -144.1,
-        -92.6
+        815.9,
+        447.4
        ],
        [
         1.7914,
-        -139.9,
-        -102.3
+        820.1,
+        437.7
        ],
        [
         1.8743,
-        -182.5,
-        -111.5
+        777.5,
+        428.5
        ],
        [
         1.9571,
-        -288.3,
-        -98.7
+        671.7,
+        441.3
        ],
        [
         2.04,
-        -453.7,
-        -97.1
+        506.3,
+        442.9
        ],
        [
         2.1229,
-        -516.0,
-        -102.7
+        444.0,
+        437.3
        ],
        [
         2.2057,
-        -599.8,
-        -86.5
+        360.2,
+        453.5
        ],
        [
         2.2886,
-        -615.7,
-        -76.8
+        344.3,
+        463.2
        ],
        [
         2.3714,
-        -629.7,
-        -32.9
+        330.3,
+        507.1
        ],
        [
         2.4543,
-        -593.6,
-        -21.4
+        366.4,
+        518.6
        ],
        [
         2.5371,
-        -390.0,
-        -6.6
+        570.0,
+        533.4
        ],
        [
         2.62,
-        -368.1,
-        0.9
+        591.9,
+        540.9
        ]
       ],
       "colors": [
@@ -2418,148 +3058,148 @@ export default {
       "path": [
        [
         0.3,
-        232.7,
-        -143.4
+        1192.7,
+        396.6
        ],
        [
         0.3829,
-        235.1,
-        -142.0
+        1195.1,
+        398.0
        ],
        [
         0.4657,
-        240.9,
-        -140.4
+        1200.9,
+        399.6
        ],
        [
         0.5486,
-        248.8,
-        -138.3
+        1208.8,
+        401.7
        ],
        [
         0.6314,
-        258.6,
-        -136.0
+        1218.6,
+        404.0
        ],
        [
         0.7143,
-        270.8,
-        -133.4
+        1230.8,
+        406.6
        ],
        [
         0.7971,
-        279.8,
-        -130.7
+        1239.8,
+        409.3
        ],
        [
         0.88,
-        285.4,
-        -128.4
+        1245.4,
+        411.6
        ],
        [
         0.9629,
-        293.5,
-        -124.7
+        1253.5,
+        415.3
        ],
        [
         1.0457,
-        304.0,
-        -119.7
+        1264.0,
+        420.3
        ],
        [
         1.1286,
-        318.2,
-        -116.0
+        1278.2,
+        424.0
        ],
        [
         1.2114,
-        411.9,
-        -104.5
+        1371.9,
+        435.5
        ],
        [
         1.2943,
-        433.6,
-        -100.3
+        1393.6,
+        439.7
        ],
        [
         1.3771,
-        297.3,
-        -120.1
+        1257.3,
+        419.9
        ],
        [
         1.46,
-        300.6,
-        -100.6
+        1260.6,
+        439.4
        ],
        [
         1.5429,
-        262.5,
-        -68.6
+        1222.5,
+        471.4
        ],
        [
         1.6257,
-        294.9,
-        -65.2
+        1254.9,
+        474.8
        ],
        [
         1.7086,
-        413.1,
-        -64.3
+        1373.1,
+        475.7
        ],
        [
         1.7914,
-        391.6,
-        -78.2
+        1351.6,
+        461.8
        ],
        [
         1.8743,
-        362.1,
-        -90.7
+        1322.1,
+        449.3
        ],
        [
         1.9571,
-        390.3,
-        -72.4
+        1350.3,
+        467.6
        ],
        [
         2.04,
-        436.1,
-        -72.0
+        1396.1,
+        468.0
        ],
        [
         2.1229,
-        449.4,
-        -81.9
+        1409.4,
+        458.1
        ],
        [
         2.2057,
-        542.6,
-        -100.4
+        1502.6,
+        439.6
        ],
        [
         2.2886,
-        587.7,
-        -92.6
+        1547.7,
+        447.4
        ],
        [
         2.3714,
-        640.3,
-        -64.0
+        1600.3,
+        476.0
        ],
        [
         2.4543,
-        663.9,
-        -42.7
+        1623.9,
+        497.3
        ],
        [
         2.5371,
-        581.6,
-        -13.0
+        1541.6,
+        527.0
        ],
        [
         2.62,
-        455.5,
-        -6.6
+        1415.5,
+        533.4
        ]
       ],
       "colors": [
@@ -2613,8 +3253,8 @@ export default {
        "y": -10.0,
        "scale": 0.8,
        "color": "#F08A24",
-       "opacity": 0.55,
-       "tint": 0.8
+       "opacity": 0.75,
+       "tint": 0.75
       },
       {
        "offset": -0.1667,
@@ -2622,8 +3262,8 @@ export default {
        "y": -31.975,
        "scale": 0.8793,
        "color": "#3E6FD8",
-       "opacity": 0.55,
-       "tint": 0.8
+       "opacity": 0.75,
+       "tint": 0.75
       },
       {
        "offset": -0.2083,
@@ -2631,8 +3271,8 @@ export default {
        "y": -65.7067,
        "scale": 0.7796,
        "color": "#C9A227",
-       "opacity": 0.55,
-       "tint": 0.8
+       "opacity": 0.75,
+       "tint": 0.75
       },
       {
        "offset": -0.2917,
@@ -2640,8 +3280,8 @@ export default {
        "y": -61.778,
        "scale": 0.7259,
        "color": "#C23B8E",
-       "opacity": 0.55,
-       "tint": 0.8
+       "opacity": 0.75,
+       "tint": 0.75
       },
       {
        "offset": -0.375,
@@ -2649,8 +3289,8 @@ export default {
        "y": -25.9445,
        "scale": 0.8395,
        "color": "#3FA55B",
-       "opacity": 0.55,
-       "tint": 0.8
+       "opacity": 0.75,
+       "tint": 0.75
       },
       {
        "offset": -0.4167,
@@ -2658,8 +3298,8 @@ export default {
        "y": -10.7024,
        "scale": 0.8639,
        "color": "#E4572E",
-       "opacity": 0.55,
-       "tint": 0.8
+       "opacity": 0.75,
+       "tint": 0.75
       }
      ]
     },
@@ -2800,8 +3440,8 @@ export default {
        "y": 30.0,
        "scale": 0.97,
        "color": "#C23B8E",
-       "opacity": 0.55,
-       "tint": 0.8
+       "opacity": 0.75,
+       "tint": 0.75
       },
       {
        "offset": -0.1667,
@@ -2809,8 +3449,8 @@ export default {
        "y": 8.025,
        "scale": 1.0493,
        "color": "#3FA55B",
-       "opacity": 0.55,
-       "tint": 0.8
+       "opacity": 0.75,
+       "tint": 0.75
       },
       {
        "offset": -0.2083,
@@ -2818,8 +3458,8 @@ export default {
        "y": -25.7067,
        "scale": 0.9496,
        "color": "#E4572E",
-       "opacity": 0.55,
-       "tint": 0.8
+       "opacity": 0.75,
+       "tint": 0.75
       },
       {
        "offset": -0.2917,
@@ -2827,8 +3467,8 @@ export default {
        "y": -21.778,
        "scale": 0.8959,
        "color": "#8DB8E8",
-       "opacity": 0.55,
-       "tint": 0.8
+       "opacity": 0.75,
+       "tint": 0.75
       },
       {
        "offset": -0.375,
@@ -2836,8 +3476,8 @@ export default {
        "y": 14.0555,
        "scale": 1.0095,
        "color": "#E8D04A",
-       "opacity": 0.55,
-       "tint": 0.8
+       "opacity": 0.75,
+       "tint": 0.75
       },
       {
        "offset": -0.4167,
@@ -2845,8 +3485,8 @@ export default {
        "y": 29.2976,
        "scale": 1.0339,
        "color": "#8E5CC8",
-       "opacity": 0.55,
-       "tint": 0.8
+       "opacity": 0.75,
+       "tint": 0.75
       },
       {
        "offset": -0.5,
@@ -2854,8 +3494,8 @@ export default {
        "y": 1.6187,
        "scale": 0.914,
        "color": "#2BA59A",
-       "opacity": 0.55,
-       "tint": 0.8
+       "opacity": 0.75,
+       "tint": 0.75
       },
       {
        "offset": -0.5833,
@@ -2863,8 +3503,8 @@ export default {
        "y": -28.4316,
        "scale": 0.9205,
        "color": "#F28DB2",
-       "opacity": 0.55,
-       "tint": 0.8
+       "opacity": 0.75,
+       "tint": 0.75
       }
      ]
     },
@@ -2931,8 +3571,8 @@ export default {
        "y": 30.0,
        "scale": 1.0,
        "color": "#3FA55B",
-       "opacity": 0.55,
-       "tint": 0.8
+       "opacity": 0.75,
+       "tint": 0.75
       },
       {
        "offset": -0.1667,
@@ -2940,8 +3580,8 @@ export default {
        "y": 8.025,
        "scale": 1.0793,
        "color": "#E4572E",
-       "opacity": 0.55,
-       "tint": 0.8
+       "opacity": 0.75,
+       "tint": 0.75
       },
       {
        "offset": -0.2083,
@@ -2949,8 +3589,8 @@ export default {
        "y": -25.7067,
        "scale": 0.9796,
        "color": "#8DB8E8",
-       "opacity": 0.55,
-       "tint": 0.8
+       "opacity": 0.75,
+       "tint": 0.75
       },
       {
        "offset": -0.2917,
@@ -2958,8 +3598,8 @@ export default {
        "y": -21.778,
        "scale": 0.9259,
        "color": "#E8D04A",
-       "opacity": 0.55,
-       "tint": 0.8
+       "opacity": 0.75,
+       "tint": 0.75
       },
       {
        "offset": -0.375,
@@ -2967,8 +3607,8 @@ export default {
        "y": 14.0555,
        "scale": 1.0395,
        "color": "#8E5CC8",
-       "opacity": 0.55,
-       "tint": 0.8
+       "opacity": 0.75,
+       "tint": 0.75
       },
       {
        "offset": -0.4167,
@@ -2976,8 +3616,8 @@ export default {
        "y": 29.2976,
        "scale": 1.0639,
        "color": "#2BA59A",
-       "opacity": 0.55,
-       "tint": 0.8
+       "opacity": 0.75,
+       "tint": 0.75
       }
      ]
     },
@@ -3162,8 +3802,8 @@ export default {
        "y": -20.0,
        "scale": 0.78,
        "color": "#8E5CC8",
-       "opacity": 0.55,
-       "tint": 0.8
+       "opacity": 0.75,
+       "tint": 0.75
       },
       {
        "offset": -0.1667,
@@ -3171,8 +3811,8 @@ export default {
        "y": -41.975,
        "scale": 0.8593,
        "color": "#2BA59A",
-       "opacity": 0.55,
-       "tint": 0.8
+       "opacity": 0.75,
+       "tint": 0.75
       },
       {
        "offset": -0.2083,
@@ -3180,8 +3820,8 @@ export default {
        "y": -75.7067,
        "scale": 0.7596,
        "color": "#F28DB2",
-       "opacity": 0.55,
-       "tint": 0.8
+       "opacity": 0.75,
+       "tint": 0.75
       },
       {
        "offset": -0.2917,
@@ -3189,8 +3829,8 @@ export default {
        "y": -71.778,
        "scale": 0.7059,
        "color": "#4B4FC4",
-       "opacity": 0.55,
-       "tint": 0.8
+       "opacity": 0.75,
+       "tint": 0.75
       },
       {
        "offset": -0.375,
@@ -3198,8 +3838,8 @@ export default {
        "y": -35.9445,
        "scale": 0.8195,
        "color": "#9CCB3B",
-       "opacity": 0.55,
-       "tint": 0.8
+       "opacity": 0.75,
+       "tint": 0.75
       },
       {
        "offset": -0.4167,
@@ -3207,8 +3847,8 @@ export default {
        "y": -20.7024,
        "scale": 0.8439,
        "color": "#F08A24",
-       "opacity": 0.55,
-       "tint": 0.8
+       "opacity": 0.75,
+       "tint": 0.75
       },
       {
        "offset": -0.5,
@@ -3216,8 +3856,8 @@ export default {
        "y": -48.3813,
        "scale": 0.724,
        "color": "#3E6FD8",
-       "opacity": 0.55,
-       "tint": 0.8
+       "opacity": 0.75,
+       "tint": 0.75
       },
       {
        "offset": -0.5833,
@@ -3225,8 +3865,8 @@ export default {
        "y": -78.4316,
        "scale": 0.7305,
        "color": "#C9A227",
-       "opacity": 0.55,
-       "tint": 0.8
+       "opacity": 0.75,
+       "tint": 0.75
       },
       {
        "offset": -0.625,
@@ -3234,8 +3874,8 @@ export default {
        "y": -66.8295,
        "scale": 0.8487,
        "color": "#C23B8E",
-       "opacity": 0.55,
-       "tint": 0.8
+       "opacity": 0.75,
+       "tint": 0.75
       },
       {
        "offset": -0.7083,
@@ -3243,8 +3883,8 @@ export default {
        "y": -30.5721,
        "scale": 0.8117,
        "color": "#3FA55B",
-       "opacity": 0.55,
-       "tint": 0.8
+       "opacity": 0.75,
+       "tint": 0.75
       }
      ]
     },
@@ -3352,8 +3992,8 @@ export default {
        "y": 30.0,
        "scale": 1.0,
        "color": "#F28DB2",
-       "opacity": 0.55,
-       "tint": 0.8
+       "opacity": 0.75,
+       "tint": 0.75
       },
       {
        "offset": -0.1667,
@@ -3361,8 +4001,8 @@ export default {
        "y": 8.025,
        "scale": 1.0793,
        "color": "#4B4FC4",
-       "opacity": 0.55,
-       "tint": 0.8
+       "opacity": 0.75,
+       "tint": 0.75
       },
       {
        "offset": -0.2083,
@@ -3370,8 +4010,8 @@ export default {
        "y": -25.7067,
        "scale": 0.9796,
        "color": "#9CCB3B",
-       "opacity": 0.55,
-       "tint": 0.8
+       "opacity": 0.75,
+       "tint": 0.75
       },
       {
        "offset": -0.2917,
@@ -3379,8 +4019,8 @@ export default {
        "y": -21.778,
        "scale": 0.9259,
        "color": "#F08A24",
-       "opacity": 0.55,
-       "tint": 0.8
+       "opacity": 0.75,
+       "tint": 0.75
       },
       {
        "offset": -0.375,
@@ -3388,8 +4028,8 @@ export default {
        "y": 14.0555,
        "scale": 1.0395,
        "color": "#3E6FD8",
-       "opacity": 0.55,
-       "tint": 0.8
+       "opacity": 0.75,
+       "tint": 0.75
       },
       {
        "offset": -0.4167,
@@ -3397,8 +4037,8 @@ export default {
        "y": 29.2976,
        "scale": 1.0639,
        "color": "#C9A227",
-       "opacity": 0.55,
-       "tint": 0.8
+       "opacity": 0.75,
+       "tint": 0.75
       },
       {
        "offset": -0.5,
@@ -3406,8 +4046,8 @@ export default {
        "y": 1.6187,
        "scale": 0.944,
        "color": "#C23B8E",
-       "opacity": 0.55,
-       "tint": 0.8
+       "opacity": 0.75,
+       "tint": 0.75
       },
       {
        "offset": -0.5833,
@@ -3415,8 +4055,8 @@ export default {
        "y": -28.4316,
        "scale": 0.9505,
        "color": "#3FA55B",
-       "opacity": 0.55,
-       "tint": 0.8
+       "opacity": 0.75,
+       "tint": 0.75
       }
      ]
     },
@@ -3484,8 +4124,8 @@ export default {
        "y": -30.0,
        "scale": 0.75,
        "color": "#4B4FC4",
-       "opacity": 0.55,
-       "tint": 0.8
+       "opacity": 0.75,
+       "tint": 0.75
       },
       {
        "offset": -0.1667,
@@ -3493,8 +4133,8 @@ export default {
        "y": -51.975,
        "scale": 0.8293,
        "color": "#9CCB3B",
-       "opacity": 0.55,
-       "tint": 0.8
+       "opacity": 0.75,
+       "tint": 0.75
       },
       {
        "offset": -0.2083,
@@ -3502,8 +4142,8 @@ export default {
        "y": -85.7067,
        "scale": 0.7296,
        "color": "#F08A24",
-       "opacity": 0.55,
-       "tint": 0.8
+       "opacity": 0.75,
+       "tint": 0.75
       },
       {
        "offset": -0.2917,
@@ -3511,8 +4151,8 @@ export default {
        "y": -81.778,
        "scale": 0.6759,
        "color": "#3E6FD8",
-       "opacity": 0.55,
-       "tint": 0.8
+       "opacity": 0.75,
+       "tint": 0.75
       },
       {
        "offset": -0.375,
@@ -3520,8 +4160,8 @@ export default {
        "y": -45.9445,
        "scale": 0.7895,
        "color": "#C9A227",
-       "opacity": 0.55,
-       "tint": 0.8
+       "opacity": 0.75,
+       "tint": 0.75
       },
       {
        "offset": -0.4167,
@@ -3529,8 +4169,8 @@ export default {
        "y": -30.7024,
        "scale": 0.8139,
        "color": "#C23B8E",
-       "opacity": 0.55,
-       "tint": 0.8
+       "opacity": 0.75,
+       "tint": 0.75
       },
       {
        "offset": -0.5,
@@ -3538,8 +4178,8 @@ export default {
        "y": -58.3813,
        "scale": 0.694,
        "color": "#3FA55B",
-       "opacity": 0.55,
-       "tint": 0.8
+       "opacity": 0.75,
+       "tint": 0.75
       },
       {
        "offset": -0.5833,
@@ -3547,8 +4187,8 @@ export default {
        "y": -88.4316,
        "scale": 0.7005,
        "color": "#E4572E",
-       "opacity": 0.55,
-       "tint": 0.8
+       "opacity": 0.75,
+       "tint": 0.75
       },
       {
        "offset": -0.625,
@@ -3556,8 +4196,8 @@ export default {
        "y": -76.8295,
        "scale": 0.8187,
        "color": "#8DB8E8",
-       "opacity": 0.55,
-       "tint": 0.8
+       "opacity": 0.75,
+       "tint": 0.75
       },
       {
        "offset": -0.7083,
@@ -3565,8 +4205,8 @@ export default {
        "y": -40.5721,
        "scale": 0.7817,
        "color": "#E8D04A",
-       "opacity": 0.55,
-       "tint": 0.8
+       "opacity": 0.75,
+       "tint": 0.75
       },
       {
        "offset": -0.7917,
@@ -3574,8 +4214,8 @@ export default {
        "y": -32.7766,
        "scale": 0.6731,
        "color": "#8E5CC8",
-       "opacity": 0.55,
-       "tint": 0.8
+       "opacity": 0.75,
+       "tint": 0.75
       },
       {
        "offset": -0.8333,
@@ -3583,8 +4223,8 @@ export default {
        "y": -64.8634,
        "scale": 0.7381,
        "color": "#2BA59A",
-       "opacity": 0.55,
-       "tint": 0.8
+       "opacity": 0.75,
+       "tint": 0.75
       }
      ],
      "scale": 1.25
@@ -3964,128 +4604,128 @@ export default {
       "path": [
        [
         0.0,
-        -1150.0,
-        -440.0
+        -190.0,
+        100.0
        ],
        [
         0.0375,
-        -1054.1667,
-        -405.935
+        -94.1667,
+        134.065
        ],
        [
         0.075,
-        -958.3333,
-        -374.6727
+        1.6667,
+        165.3273
        ],
        [
         0.1125,
-        -862.5,
-        -348.7854
+        97.5,
+        191.2146
        ],
        [
         0.15,
-        -766.6667,
-        -330.4031
+        193.3333,
+        209.5969
        ],
        [
         0.1875,
-        -670.8333,
-        -321.0381
+        289.1667,
+        218.9619
        ],
        [
         0.225,
-        -575.0,
-        -321.461
+        385.0,
+        218.539
        ],
        [
         0.2625,
-        -479.1667,
-        -331.637
+        480.8333,
+        208.363
        ],
        [
         0.3,
-        -383.3333,
-        -350.7289
+        576.6667,
+        189.2711
        ],
        [
         0.3375,
-        -287.5,
-        -377.1658
+        672.5,
+        162.8342
        ],
        [
         0.375,
-        -191.6667,
-        -408.7725
+        768.3333,
+        131.2275
        ],
        [
         0.4125,
-        -95.8333,
-        -442.9486
+        864.1667,
+        97.0514
        ],
        [
         0.45,
-        0.0,
-        -476.882
+        960.0,
+        63.118
        ],
        [
         0.4875,
-        95.8333,
-        -507.7809
+        1055.8333,
+        32.2191
        ],
        [
         0.525,
-        191.6667,
-        -533.103
+        1151.6667,
+        6.897
        ],
        [
         0.5625,
-        287.5,
-        -550.7647
+        1247.5,
+        -10.7647
        ],
        [
         0.6,
-        383.3333,
-        -559.313
+        1343.3333,
+        -19.313
        ],
        [
         0.6375,
-        479.1667,
-        -558.0445
+        1439.1667,
+        -18.0445
        ],
        [
         0.675,
-        575.0,
-        -547.0636
+        1535.0,
+        -7.0636
        ],
        [
         0.7125,
-        670.8333,
-        -527.2737
+        1630.8333,
+        12.7263
        ],
        [
         0.75,
-        766.6667,
-        -500.3032
+        1726.6667,
+        39.6968
        ],
        [
         0.7875,
-        862.5,
-        -468.371
+        1822.5,
+        71.629
        ],
        [
         0.825,
-        958.3333,
-        -434.1046
+        1918.3333,
+        105.8954
        ],
        [
         0.8625,
-        1054.1667,
-        -400.3232
+        2014.1667,
+        139.6768
        ],
        [
         0.9,
-        1150.0,
-        -369.8064
+        2110.0,
+        170.1936
        ]
       ],
       "colors": [
@@ -4108,128 +4748,128 @@ export default {
       "path": [
        [
         0.21,
-        1150.0,
-        211.5483
+        2110.0,
+        751.5483
        ],
        [
         0.2475,
-        1054.1667,
-        227.8111
+        2014.1667,
+        767.8111
        ],
        [
         0.285,
-        958.3333,
-        231.547
+        1918.3333,
+        771.547
        ],
        [
         0.3225,
-        862.5,
-        222.3785
+        1822.5,
+        762.3785
        ],
        [
         0.36,
-        766.6667,
-        201.2319
+        1726.6667,
+        741.2319
        ],
        [
         0.3975,
-        670.8333,
-        170.2441
+        1630.8333,
+        710.2441
        ],
        [
         0.435,
-        575.0,
-        132.5464
+        1535.0,
+        672.5464
        ],
        [
         0.4725,
-        479.1667,
-        91.948
+        1439.1667,
+        631.948
        ],
        [
         0.51,
-        383.3333,
-        52.5512
+        1343.3333,
+        592.5512
        ],
        [
         0.5475,
-        287.5,
-        18.337
+        1247.5,
+        558.337
        ],
        [
         0.585,
-        191.6667,
-        -7.2373
+        1151.6667,
+        532.7627
        ],
        [
         0.6225,
-        95.8333,
-        -21.5876
+        1055.8333,
+        518.4124
        ],
        [
         0.66,
-        0.0,
-        -23.2637
+        960.0,
+        516.7363
        ],
        [
         0.6975,
-        -95.8333,
-        -12.0963
+        864.1667,
+        527.9037
        ],
        [
         0.735,
-        -191.6667,
-        10.7861
+        768.3333,
+        550.7861
        ],
        [
         0.7725,
-        -287.5,
-        43.0714
+        672.5,
+        583.0714
        ],
        [
         0.81,
-        -383.3333,
-        81.4972
+        576.6667,
+        621.4972
        ],
        [
         0.8475,
-        -479.1667,
-        122.1807
+        480.8333,
+        662.1807
        ],
        [
         0.885,
-        -575.0,
-        161.0109
+        385.0,
+        701.0109
        ],
        [
         0.9225,
-        -670.8333,
-        194.0641
+        289.1667,
+        734.0641
        ],
        [
         0.96,
-        -766.6667,
-        218.0004
+        193.3333,
+        758.0004
        ],
        [
         0.9975,
-        -862.5,
-        230.4011
+        97.5,
+        770.4011
        ],
        [
         1.035,
-        -958.3333,
-        230.0132
+        1.6667,
+        770.0132
        ],
        [
         1.0725,
-        -1054.1667,
-        216.8757
+        -94.1667,
+        756.8757
        ],
        [
         1.11,
-        -1150.0,
-        192.3163
+        -190.0,
+        732.3163
        ]
       ],
       "colors": [
@@ -4252,128 +4892,128 @@ export default {
       "path": [
        [
         0.42,
-        -1150.0,
-        -108.6555
+        -190.0,
+        431.3445
        ],
        [
         0.4575,
-        -1054.1667,
-        -135.6202
+        -94.1667,
+        404.3798
        ],
        [
         0.495,
-        -958.3333,
-        -174.3521
+        1.6667,
+        365.6479
        ],
        [
         0.5325,
-        -862.5,
-        -220.1381
+        97.5,
+        319.8619
        ],
        [
         0.57,
-        -766.6667,
-        -267.4066
+        193.3333,
+        272.5934
        ],
        [
         0.6075,
-        -670.8333,
-        -310.4053
+        289.1667,
+        229.5947
        ],
        [
         0.645,
-        -575.0,
-        -343.902
+        385.0,
+        196.098
        ],
        [
         0.6825,
-        -479.1667,
-        -363.8202
+        480.8333,
+        176.1798
        ],
        [
         0.72,
-        -383.3333,
-        -367.7364
+        576.6667,
+        172.2636
        ],
        [
         0.7575,
-        -287.5,
-        -355.1738
+        672.5,
+        184.8262
        ],
        [
         0.795,
-        -191.6667,
-        -327.6612
+        768.3333,
+        212.3388
        ],
        [
         0.8325,
-        -95.8333,
-        -288.5466
+        864.1667,
+        251.4534
        ],
        [
         0.87,
-        0.0,
-        -242.5898
+        960.0,
+        297.4102
        ],
        [
         0.9075,
-        95.8333,
-        -195.3833
+        1055.8333,
+        344.6167
        ],
        [
         0.945,
-        191.6667,
-        -152.6716
+        1151.6667,
+        387.3284
        ],
        [
         0.9825,
-        287.5,
-        -119.6523
+        1247.5,
+        420.3477
        ],
        [
         1.02,
-        383.3333,
-        -100.3434
+        1343.3333,
+        439.6566
        ],
        [
         1.0575,
-        479.1667,
-        -97.0947
+        1439.1667,
+        442.9053
        ],
        [
         1.095,
-        575.0,
-        -110.3014
+        1535.0,
+        429.6986
        ],
        [
         1.1325,
-        670.8333,
-        -138.3565
+        1630.8333,
+        401.6435
        ],
        [
         1.17,
-        766.6667,
-        -177.8459
+        1726.6667,
+        362.1541
        ],
        [
         1.2075,
-        862.5,
-        -223.9643
+        1822.5,
+        316.0357
        ],
        [
         1.245,
-        958.3333,
-        -271.0994
+        1918.3333,
+        268.9006
        ],
        [
         1.2825,
-        1054.1667,
-        -313.5155
+        2014.1667,
+        226.4845
        ],
        [
         1.32,
-        1150.0,
-        -346.051
+        2110.0,
+        193.949
        ]
       ],
       "colors": [
@@ -4396,128 +5036,128 @@ export default {
       "path": [
        [
         0.63,
-        1150.0,
-        331.8413
+        2110.0,
+        871.8413
        ],
        [
         0.6675,
-        1054.1667,
-        277.2292
+        2014.1667,
+        817.2292
        ],
        [
         0.705,
-        958.3333,
-        227.5612
+        1918.3333,
+        767.5612
        ],
        [
         0.7425,
-        862.5,
-        189.9987
+        1822.5,
+        729.9987
        ],
        [
         0.78,
-        766.6667,
-        169.9575
+        1726.6667,
+        709.9575
        ],
        [
         0.8175,
-        670.8333,
-        170.3272
+        1630.8333,
+        710.3272
        ],
        [
         0.855,
-        575.0,
-        191.0545
+        1535.0,
+        731.0545
        ],
        [
         0.8925,
-        479.1667,
-        229.1508
+        1439.1667,
+        769.1508
        ],
        [
         0.93,
-        383.3333,
-        279.1234
+        1343.3333,
+        819.1234
        ],
        [
         0.9675,
-        287.5,
-        333.7671
+        1247.5,
+        873.7671
        ],
        [
         1.005,
-        191.6667,
-        385.203
+        1151.6667,
+        925.203
        ],
        [
         1.0425,
-        95.8333,
-        426.0152
+        1055.8333,
+        966.0152
        ],
        [
         1.08,
-        0.0,
-        450.3191
+        960.0,
+        990.3191
        ],
        [
         1.1175,
-        -95.8333,
-        454.6105
+        864.1667,
+        994.6105
        ],
        [
         1.155,
-        -191.6667,
-        438.2707
+        768.3333,
+        978.2707
        ],
        [
         1.1925,
-        -287.5,
-        403.6556
+        672.5,
+        943.6556
        ],
        [
         1.23,
-        -383.3333,
-        355.7562
+        576.6667,
+        895.7562
        ],
        [
         1.2675,
-        -479.1667,
-        301.4786
+        480.8333,
+        841.4786
        ],
        [
         1.305,
-        -575.0,
-        248.6488
+        385.0,
+        788.6488
        ],
        [
         1.3425,
-        -670.8333,
-        204.884
+        289.1667,
+        744.884
        ],
        [
         1.38,
-        -766.6667,
-        176.4943
+        193.3333,
+        716.4943
        ],
        [
         1.4175,
-        -862.5,
-        167.573
+        97.5,
+        707.573
        ],
        [
         1.455,
-        -958.3333,
-        179.4064
+        1.6667,
+        719.4064
        ],
        [
         1.4925,
-        -1054.1667,
-        210.2883
+        -94.1667,
+        750.2883
        ],
        [
         1.53,
-        -1150.0,
-        255.7661
+        -190.0,
+        795.7661
        ]
       ],
       "colors": [
@@ -4540,128 +5180,128 @@ export default {
       "path": [
        [
         0.84,
-        -1150.0,
-        -139.674
+        -190.0,
+        400.326
        ],
        [
         0.8775,
-        -1054.1667,
-        -169.898
+        -94.1667,
+        370.102
        ],
        [
         0.915,
-        -958.3333,
-        -175.6451
+        1.6667,
+        364.3549
        ],
        [
         0.9525,
-        -862.5,
-        -155.9469
+        97.5,
+        384.0531
        ],
        [
         0.99,
-        -766.6667,
-        -114.1227
+        193.3333,
+        425.8773
        ],
        [
         1.0275,
-        -670.8333,
-        -57.2201
+        289.1667,
+        482.7799
        ],
        [
         1.065,
-        -575.0,
-        5.1725
+        385.0,
+        545.1725
        ],
        [
         1.1025,
-        -479.1667,
-        62.5415
+        480.8333,
+        602.5415
        ],
        [
         1.14,
-        -383.3333,
-        105.2198
+        576.6667,
+        645.2198
        ],
        [
         1.1775,
-        -287.5,
-        126.016
+        672.5,
+        666.016
        ],
        [
         1.215,
-        -191.6667,
-        121.4256
+        768.3333,
+        661.4256
        ],
        [
         1.2525,
-        -95.8333,
-        92.2223
+        864.1667,
+        632.2223
        ],
        [
         1.29,
-        0.0,
-        43.327
+        960.0,
+        583.327
        ],
        [
         1.3275,
-        95.8333,
-        -17.0212
+        1055.8333,
+        522.9788
        ],
        [
         1.365,
-        191.6667,
-        -78.6532
+        1151.6667,
+        461.3468
        ],
        [
         1.4025,
-        287.5,
-        -131.1837
+        1247.5,
+        408.8163
        ],
        [
         1.44,
-        383.3333,
-        -165.7609
+        1343.3333,
+        374.2391
        ],
        [
         1.4775,
-        479.1667,
-        -176.5583
+        1439.1667,
+        363.4417
        ],
        [
         1.515,
-        575.0,
-        -161.7565
+        1535.0,
+        378.2435
        ],
        [
         1.5525,
-        670.8333,
-        -123.8498
+        1630.8333,
+        416.1502
        ],
        [
         1.59,
-        766.6667,
-        -69.2255
+        1726.6667,
+        470.7745
        ],
        [
         1.6275,
-        862.5,
-        -7.0884
+        1822.5,
+        532.9116
        ],
        [
         1.665,
-        958.3333,
-        52.0912
+        1918.3333,
+        592.0912
        ],
        [
         1.7025,
-        1054.1667,
-        98.3411
+        2014.1667,
+        638.3411
        ],
        [
         1.74,
-        1150.0,
-        123.868
+        2110.0,
+        663.868
        ]
       ],
       "colors": [
@@ -4684,128 +5324,128 @@ export default {
       "path": [
        [
         1.05,
-        1150.0,
-        -475.8709
+        2110.0,
+        64.1291
        ],
        [
         1.0875,
-        1054.1667,
-        -450.0251
+        2014.1667,
+        89.9749
        ],
        [
         1.125,
-        958.3333,
-        -406.8129
+        1918.3333,
+        133.1871
        ],
        [
         1.1625,
-        862.5,
-        -354.6449
+        1822.5,
+        185.3551
        ],
        [
         1.2,
-        766.6667,
-        -303.675
+        1726.6667,
+        236.325
        ],
        [
         1.2375,
-        670.8333,
-        -263.8236
+        1630.8333,
+        276.1764
        ],
        [
         1.275,
-        575.0,
-        -242.8472
+        1535.0,
+        297.1528
        ],
        [
         1.3125,
-        479.1667,
-        -244.8286
+        1439.1667,
+        295.1714
        ],
        [
         1.35,
-        383.3333,
-        -269.3821
+        1343.3333,
+        270.6179
        ],
        [
         1.3875,
-        287.5,
-        -311.7288
+        1247.5,
+        228.2712
        ],
        [
         1.425,
-        191.6667,
-        -363.6264
+        1151.6667,
+        176.3736
        ],
        [
         1.4625,
-        95.8333,
-        -414.9739
+        1055.8333,
+        125.0261
        ],
        [
         1.5,
-        0.0,
-        -455.7773
+        960.0,
+        84.2227
        ],
        [
         1.5375,
-        -95.8333,
-        -478.0947
+        864.1667,
+        61.9053
        ],
        [
         1.575,
-        -191.6667,
-        -477.5825
+        768.3333,
+        62.4175
        ],
        [
         1.6125,
-        -287.5,
-        -454.3403
+        672.5,
+        85.6597
        ],
        [
         1.65,
-        -383.3333,
-        -412.8918
+        576.6667,
+        127.1082
        ],
        [
         1.6875,
-        -479.1667,
-        -361.3045
+        480.8333,
+        178.6955
        ],
        [
         1.725,
-        -575.0,
-        -309.6189
+        385.0,
+        230.3811
        ],
        [
         1.7625,
-        -670.8333,
-        -267.895
+        289.1667,
+        272.105
        ],
        [
         1.8,
-        -766.6667,
-        -244.2537
+        193.3333,
+        295.7463
        ],
        [
         1.8375,
-        -862.5,
-        -243.2964
+        97.5,
+        296.7036
        ],
        [
         1.875,
-        -958.3333,
-        -265.2094
+        1.6667,
+        274.7906
        ],
        [
         1.9125,
-        -1054.1667,
-        -305.7278
+        -94.1667,
+        234.2722
        ],
        [
         1.95,
-        -1150.0,
-        -356.9651
+        -190.0,
+        183.0349
        ]
       ],
       "colors": [
@@ -4828,128 +5468,128 @@ export default {
       "path": [
        [
         1.26,
-        -1150.0,
-        147.2748
+        -190.0,
+        687.2748
        ],
        [
         1.2975,
-        -1054.1667,
-        183.6349
+        -94.1667,
+        723.6349
        ],
        [
         1.335,
-        -958.3333,
-        219.9461
+        1.6667,
+        759.9461
        ],
        [
         1.3725,
-        -862.5,
-        253.2208
+        97.5,
+        793.2208
        ],
        [
         1.41,
-        -766.6667,
-        280.7211
+        193.3333,
+        820.7211
        ],
        [
         1.4475,
-        -670.8333,
-        300.1844
+        289.1667,
+        840.1844
        ],
        [
         1.485,
-        -575.0,
-        310.0094
+        385.0,
+        850.0094
        ],
        [
         1.5225,
-        -479.1667,
-        309.3877
+        480.8333,
+        849.3877
        ],
        [
         1.56,
-        -383.3333,
-        298.3703
+        576.6667,
+        838.3703
        ],
        [
         1.5975,
-        -287.5,
-        277.8639
+        672.5,
+        817.8639
        ],
        [
         1.635,
-        -191.6667,
-        249.5556
+        768.3333,
+        789.5556
        ],
        [
         1.6725,
-        -95.8333,
-        215.7745
+        864.1667,
+        755.7745
        ],
        [
         1.71,
-        0.0,
-        179.3001
+        960.0,
+        719.3001
        ],
        [
         1.7475,
-        95.8333,
-        143.1334
+        1055.8333,
+        683.1334
        ],
        [
         1.785,
-        191.6667,
-        110.2502
+        1151.6667,
+        650.2502
        ],
        [
         1.8225,
-        287.5,
-        83.3559
+        1247.5,
+        623.3559
        ],
        [
         1.86,
-        383.3333,
-        64.6634
+        1343.3333,
+        604.6634
        ],
        [
         1.8975,
-        479.1667,
-        55.7106
+        1439.1667,
+        595.7106
        ],
        [
         1.935,
-        575.0,
-        57.2342
+        1535.0,
+        597.2342
        ],
        [
         1.9725,
-        670.8333,
-        69.1088
+        1630.8333,
+        609.1088
        ],
        [
         2.01,
-        766.6667,
-        90.3574
+        1726.6667,
+        630.3574
        ],
        [
         2.0475,
-        862.5,
-        119.2317
+        1822.5,
+        659.2317
        ],
        [
         2.085,
-        958.3333,
-        153.356
+        1918.3333,
+        693.356
        ],
        [
         2.1225,
-        1054.1667,
-        189.9226
+        2014.1667,
+        729.9226
        ],
        [
         2.16,
-        1150.0,
-        225.9229
+        2110.0,
+        765.9229
        ]
       ],
       "colors": [
@@ -4972,128 +5612,128 @@ export default {
       "path": [
        [
         1.47,
-        1150.0,
-        -63.7698
+        2110.0,
+        476.2302
        ],
        [
         1.5075,
-        1054.1667,
-        -36.106
+        2014.1667,
+        503.894
        ],
        [
         1.545,
-        958.3333,
-        -20.2662
+        1918.3333,
+        519.7338
        ],
        [
         1.5825,
-        862.5,
-        -17.8509
+        1822.5,
+        522.1491
        ],
        [
         1.62,
-        766.6667,
-        -29.1041
+        1726.6667,
+        510.8959
        ],
        [
         1.6575,
-        670.8333,
-        -52.8889
+        1630.8333,
+        487.1111
        ],
        [
         1.695,
-        575.0,
-        -86.8017
+        1535.0,
+        453.1983
        ],
        [
         1.7325,
-        479.1667,
-        -127.4159
+        1439.1667,
+        412.5841
        ],
        [
         1.77,
-        383.3333,
-        -170.6273
+        1343.3333,
+        369.3727
        ],
        [
         1.8075,
-        287.5,
-        -212.0697
+        1247.5,
+        327.9303
        ],
        [
         1.845,
-        191.6667,
-        -247.5554
+        1151.6667,
+        292.4446
        ],
        [
         1.8825,
-        95.8333,
-        -273.4987
+        1055.8333,
+        266.5013
        ],
        [
         1.92,
-        0.0,
-        -287.2779
+        960.0,
+        252.7221
        ],
        [
         1.9575,
-        -95.8333,
-        -287.5009
+        864.1667,
+        252.4991
        ],
        [
         1.995,
-        -191.6667,
-        -274.145
+        768.3333,
+        265.855
        ],
        [
         2.0325,
-        -287.5,
-        -248.5599
+        672.5,
+        291.4401
        ],
        [
         2.07,
-        -383.3333,
-        -213.3308
+        576.6667,
+        326.6692
        ],
        [
         2.1075,
-        -479.1667,
-        -172.0176
+        480.8333,
+        367.9824
        ],
        [
         2.145,
-        -575.0,
-        -128.7948
+        385.0,
+        411.2052
        ],
        [
         2.1825,
-        -670.8333,
-        -88.03
+        289.1667,
+        451.97
        ],
        [
         2.22,
-        -766.6667,
-        -53.8424
+        193.3333,
+        486.1576
        ],
        [
         2.2575,
-        -862.5,
-        -29.6865
+        97.5,
+        510.3135
        ],
        [
         2.295,
-        -958.3333,
-        -18.0033
+        1.6667,
+        521.9967
        ],
        [
         2.3325,
-        -1054.1667,
-        -19.9732
+        -94.1667,
+        520.0268
        ],
        [
         2.37,
-        -1150.0,
-        -35.3973
+        -190.0,
+        504.6027
        ]
       ],
       "colors": [
@@ -5116,128 +5756,128 @@ export default {
       "path": [
        [
         1.68,
-        -1150.0,
-        533.1876
+        -190.0,
+        1073.1876
        ],
        [
         1.7175,
-        -1054.1667,
-        517.3223
+        -94.1667,
+        1057.3223
        ],
        [
         1.755,
-        -958.3333,
-        486.0509
+        1.6667,
+        1026.0509
        ],
        [
         1.7925,
-        -862.5,
-        443.1788
+        97.5,
+        983.1788
        ],
        [
         1.83,
-        -766.6667,
-        393.923
+        193.3333,
+        933.923
        ],
        [
         1.8675,
-        -670.8333,
-        344.2774
+        289.1667,
+        884.2774
        ],
        [
         1.905,
-        -575.0,
-        300.2834
+        385.0,
+        840.2834
        ],
        [
         1.9425,
-        -479.1667,
-        267.2945
+        480.8333,
+        807.2945
        ],
        [
         1.98,
-        -383.3333,
-        249.3252
+        576.6667,
+        789.3252
        ],
        [
         2.0175,
-        -287.5,
-        248.5622
+        672.5,
+        788.5622
        ],
        [
         2.055,
-        -191.6667,
-        265.0982
+        768.3333,
+        805.0982
        ],
        [
         2.0925,
-        -95.8333,
-        296.921
+        864.1667,
+        836.921
        ],
        [
         2.13,
-        0.0,
-        340.1582
+        960.0,
+        880.1582
        ],
        [
         2.1675,
-        95.8333,
-        389.5482
+        1055.8333,
+        929.5482
        ],
        [
         2.205,
-        191.6667,
-        439.0808
+        1151.6667,
+        979.0808
        ],
        [
         2.2425,
-        287.5,
-        482.7285
+        1247.5,
+        1022.7285
        ],
        [
         2.28,
-        383.3333,
-        515.1796
+        1343.3333,
+        1055.1796
        ],
        [
         2.3175,
-        479.1667,
-        532.4854
+        1439.1667,
+        1072.4854
        ],
        [
         2.355,
-        575.0,
-        532.5398
+        1535.0,
+        1072.5398
        ],
        [
         2.3925,
-        670.8333,
-        515.3363
+        1630.8333,
+        1055.3363
        ],
        [
         2.43,
-        766.6667,
-        482.9683
+        1726.6667,
+        1022.9683
        ],
        [
         2.4675,
-        862.5,
-        439.3747
+        1822.5,
+        979.3747
        ],
        [
         2.505,
-        958.3333,
-        389.8603
+        1918.3333,
+        929.8603
        ],
        [
         2.5425,
-        1054.1667,
-        340.4506
+        2014.1667,
+        880.4506
        ],
        [
         2.58,
-        1150.0,
-        297.1581
+        2110.0,
+        837.1581
        ]
       ],
       "colors": [
@@ -5260,128 +5900,128 @@ export default {
       "path": [
        [
         1.89,
-        1150.0,
-        117.202
+        2110.0,
+        657.202
        ],
        [
         1.9275,
-        1054.1667,
-        61.0552
+        2014.1667,
+        601.0552
        ],
        [
         1.965,
-        958.3333,
-        3.9719
+        1918.3333,
+        543.9719
        ],
        [
         2.0025,
-        862.5,
-        -45.8175
+        1822.5,
+        494.1825
        ],
        [
         2.04,
-        766.6667,
-        -81.1341
+        1726.6667,
+        458.8659
        ],
        [
         2.0775,
-        670.8333,
-        -96.886
+        1630.8333,
+        443.114
        ],
        [
         2.115,
-        575.0,
-        -90.8019
+        1535.0,
+        449.1981
        ],
        [
         2.1525,
-        479.1667,
-        -63.7591
+        1439.1667,
+        476.2409
        ],
        [
         2.19,
-        383.3333,
-        -19.6567
+        1343.3333,
+        520.3433
        ],
        [
         2.2275,
-        287.5,
-        35.1464
+        1247.5,
+        575.1464
        ],
        [
         2.265,
-        191.6667,
-        92.7487
+        1151.6667,
+        632.7487
        ],
        [
         2.3025,
-        95.8333,
-        144.8448
+        1055.8333,
+        684.8448
        ],
        [
         2.34,
-        0.0,
-        183.9234
+        960.0,
+        723.9234
        ],
        [
         2.3775,
-        -95.8333,
-        204.35
+        864.1667,
+        744.35
        ],
        [
         2.415,
-        -191.6667,
-        203.1794
+        768.3333,
+        743.1794
        ],
        [
         2.4525,
-        -287.5,
-        180.5804
+        672.5,
+        720.5804
        ],
        [
         2.49,
-        -383.3333,
-        139.8114
+        576.6667,
+        679.8114
        ],
        [
         2.5275,
-        -479.1667,
-        86.7507
+        480.8333,
+        626.7507
        ],
        [
         2.565,
-        -575.0,
-        29.0485
+        385.0,
+        569.0485
        ],
        [
         2.6025,
-        -670.8333,
-        -24.9753
+        289.1667,
+        515.0247
        ],
        [
         2.64,
-        -766.6667,
-        -67.5314
+        193.3333,
+        472.4686
        ],
        [
         2.6775,
-        -862.5,
-        -92.4841
+        97.5,
+        447.5159
        ],
        [
         2.715,
-        -958.3333,
-        -96.2355
+        1.6667,
+        443.7645
        ],
        [
         2.7525,
-        -1054.1667,
-        -78.2448
+        -94.1667,
+        461.7552
        ],
        [
         2.79,
-        -1150.0,
-        -41.1059
+        -190.0,
+        498.8941
        ]
       ],
       "colors": [
@@ -5404,128 +6044,128 @@ export default {
       "path": [
        [
         2.1,
-        -1150.0,
-        -346.8825
+        -190.0,
+        193.1175
        ],
        [
         2.1375,
-        -1054.1667,
-        -381.8345
+        -94.1667,
+        158.1655
        ],
        [
         2.175,
-        -958.3333,
-        -399.8963
+        1.6667,
+        140.1037
        ],
        [
         2.2125,
-        -862.5,
-        -398.0245
+        97.5,
+        141.9755
        ],
        [
         2.25,
-        -766.6667,
-        -376.5344
+        193.3333,
+        163.4656
        ],
        [
         2.2875,
-        -670.8333,
-        -339.0472
+        289.1667,
+        200.9528
        ],
        [
         2.325,
-        -575.0,
-        -291.8799
+        385.0,
+        248.1201
        ],
        [
         2.3625,
-        -479.1667,
-        -242.9803
+        480.8333,
+        297.0197
        ],
        [
         2.4,
-        -383.3333,
-        -200.5884
+        576.6667,
+        339.4116
        ],
        [
         2.4375,
-        -287.5,
-        -171.8474
+        672.5,
+        368.1526
        ],
        [
         2.475,
-        -191.6667,
-        -161.6005
+        768.3333,
+        378.3995
        ],
        [
         2.5125,
-        -95.8333,
-        -171.5742
+        864.1667,
+        368.4258
        ],
        [
         2.55,
-        0.0,
-        -200.088
+        960.0,
+        339.912
        ],
        [
         2.5875,
-        95.8333,
-        -242.337
+        1055.8333,
+        297.663
        ],
        [
         2.625,
-        191.6667,
-        -291.2021
+        1151.6667,
+        248.7979
        ],
        [
         2.6625,
-        287.5,
-        -338.4492
+        1247.5,
+        201.5508
        ],
        [
         2.7,
-        383.3333,
-        -376.1169
+        1343.3333,
+        163.8831
        ],
        [
         2.7375,
-        479.1667,
-        -397.8578
+        1439.1667,
+        142.1422
        ],
        [
         2.775,
-        575.0,
-        -400.0086
+        1535.0,
+        139.9914
        ],
        [
         2.8125,
-        670.8333,
-        -382.2068
+        1630.8333,
+        157.7932
        ],
        [
         2.85,
-        766.6667,
-        -347.4521
+        1726.6667,
+        192.5479
        ],
        [
         2.8875,
-        862.5,
-        -301.6009
+        1822.5,
+        238.3991
        ],
        [
         2.925,
-        958.3333,
-        -252.3795
+        1918.3333,
+        287.6205
        ],
        [
         2.9625,
-        1054.1667,
-        -208.0819
+        2014.1667,
+        331.9181
        ],
        [
         3.0,
-        1150.0,
-        -176.1725
+        2110.0,
+        363.8275
        ]
       ],
       "colors": [
@@ -5548,128 +6188,128 @@ export default {
       "path": [
        [
         2.31,
-        1150.0,
-        134.2413
+        2110.0,
+        674.2413
        ],
        [
         2.3475,
-        1054.1667,
-        146.9415
+        2014.1667,
+        686.9415
        ],
        [
         2.385,
-        958.3333,
-        182.083
+        1918.3333,
+        722.083
        ],
        [
         2.4225,
-        862.5,
-        232.8258
+        1822.5,
+        772.8258
        ],
        [
         2.46,
-        766.6667,
-        289.2936
+        1726.6667,
+        829.2936
        ],
        [
         2.4975,
-        670.8333,
-        340.4959
+        1630.8333,
+        880.4959
        ],
        [
         2.535,
-        575.0,
-        376.4668
+        1535.0,
+        916.4668
        ],
        [
         2.5725,
-        479.1667,
-        390.2052
+        1439.1667,
+        930.2052
        ],
        [
         2.61,
-        383.3333,
-        379.037
+        1343.3333,
+        919.037
        ],
        [
         2.6475,
-        287.5,
-        345.136
+        1247.5,
+        885.136
        ],
        [
         2.685,
-        191.6667,
-        295.1005
+        1151.6667,
+        835.1005
        ],
        [
         2.7225,
-        95.8333,
-        238.6693
+        1055.8333,
+        778.6693
        ],
        [
         2.76,
-        0.0,
-        186.8257
+        960.0,
+        726.8257
        ],
        [
         2.7975,
-        -95.8333,
-        149.6604
+        864.1667,
+        689.6604
        ],
        [
         2.835,
-        -191.6667,
-        134.407
+        768.3333,
+        674.407
        ],
        [
         2.8725,
-        -287.5,
-        144.0345
+        672.5,
+        684.0345
        ],
        [
         2.91,
-        -383.3333,
-        176.6689
+        576.6667,
+        716.6689
        ],
        [
         2.9475,
-        -479.1667,
-        225.9585
+        480.8333,
+        765.9585
        ],
        [
         2.985,
-        -575.0,
-        282.3097
+        385.0,
+        822.3097
        ],
        [
         3.0225,
-        -670.8333,
-        334.7546
+        289.1667,
+        874.7546
        ],
        [
         3.06,
-        -766.6667,
-        373.0857
+        193.3333,
+        913.0857
        ],
        [
         3.0975,
-        -862.5,
-        389.8423
+        97.5,
+        929.8423
        ],
        [
         3.135,
-        -958.3333,
-        381.763
+        1.6667,
+        921.763
        ],
        [
         3.1725,
-        -1054.1667,
-        350.4203
+        -94.1667,
+        890.4203
        ],
        [
         3.21,
-        -1150.0,
-        301.9146
+        -190.0,
+        841.9146
        ]
       ],
       "colors": [
@@ -5692,128 +6332,128 @@ export default {
       "path": [
        [
         2.52,
-        -1150.0,
-        -146.8939
+        -190.0,
+        393.1061
        ],
        [
         2.5575,
-        -1054.1667,
-        -111.3131
+        -94.1667,
+        428.6869
        ],
        [
         2.595,
-        -958.3333,
-        -72.6558
+        1.6667,
+        467.3442
        ],
        [
         2.6325,
-        -862.5,
-        -34.1024
+        97.5,
+        505.8976
        ],
        [
         2.67,
-        -766.6667,
-        1.1749
+        193.3333,
+        541.1749
        ],
        [
         2.7075,
-        -670.8333,
-        30.2735
+        289.1667,
+        570.2735
        ],
        [
         2.745,
-        -575.0,
-        50.7994
+        385.0,
+        590.7994
        ],
        [
         2.7825,
-        -479.1667,
-        61.0636
+        480.8333,
+        601.0636
        ],
        [
         2.82,
-        -383.3333,
-        60.2217
+        576.6667,
+        600.2217
        ],
        [
         2.8575,
-        -287.5,
-        48.343
+        672.5,
+        588.343
        ],
        [
         2.895,
-        -191.6667,
-        26.4047
+        768.3333,
+        566.4047
        ],
        [
         2.9325,
-        -95.8333,
-        -3.788
+        864.1667,
+        536.212
        ],
        [
         2.97,
-        0.0,
-        -39.7511
+        960.0,
+        500.2489
        ],
        [
         3.0075,
-        95.8333,
-        -78.5254
+        1055.8333,
+        461.4746
        ],
        [
         3.045,
-        191.6667,
-        -116.9209
+        1151.6667,
+        423.0791
        ],
        [
         3.0825,
-        287.5,
-        -151.7783
+        1247.5,
+        388.2217
        ],
        [
         3.12,
-        383.3333,
-        -180.2298
+        1343.3333,
+        359.7702
        ],
        [
         3.1575,
-        479.1667,
-        -199.9343
+        1439.1667,
+        340.0657
        ],
        [
         3.195,
-        575.0,
-        -209.2706
+        1535.0,
+        330.7294
        ],
        [
         3.2325,
-        670.8333,
-        -207.4707
+        1630.8333,
+        332.5293
        ],
        [
         3.27,
-        766.6667,
-        -194.6825
+        1726.6667,
+        345.3175
        ],
        [
         3.3075,
-        862.5,
-        -171.9582
+        1822.5,
+        368.0418
        ],
        [
         3.345,
-        958.3333,
-        -141.1676
+        1918.3333,
+        398.8324
        ],
        [
         3.3825,
-        1054.1667,
-        -104.8441
+        2014.1667,
+        435.1559
        ],
        [
         3.42,
-        1150.0,
-        -65.9761
+        2110.0,
+        474.0239
        ]
       ],
       "colors": [
@@ -5836,128 +6476,128 @@ export default {
       "path": [
        [
         2.73,
-        1150.0,
-        -349.5759
+        2110.0,
+        190.4241
        ],
        [
         2.7675,
-        1054.1667,
-        -311.6228
+        2014.1667,
+        228.3772
        ],
        [
         2.805,
-        958.3333,
-        -283.6185
+        1918.3333,
+        256.3815
        ],
        [
         2.8425,
-        862.5,
-        -268.3928
+        1822.5,
+        271.6072
        ],
        [
         2.88,
-        766.6667,
-        -267.4842
+        1726.6667,
+        272.5158
        ],
        [
         2.9175,
-        670.8333,
-        -280.9846
+        1630.8333,
+        259.0154
        ],
        [
         2.955,
-        575.0,
-        -307.5297
+        1535.0,
+        232.4703
        ],
        [
         2.9925,
-        479.1667,
-        -344.4372
+        1439.1667,
+        195.5628
        ],
        [
         3.03,
-        383.3333,
-        -387.9778
+        1343.3333,
+        152.0222
        ],
        [
         3.0675,
-        287.5,
-        -433.7518
+        1247.5,
+        106.2482
        ],
        [
         3.105,
-        191.6667,
-        -477.1337
+        1151.6667,
+        62.8663
        ],
        [
         3.1425,
-        95.8333,
-        -513.7401
+        1055.8333,
+        26.2599
        ],
        [
         3.18,
-        0.0,
-        -539.8719
+        960.0,
+        0.1281
        ],
        [
         3.2175,
-        -95.8333,
-        -552.8886
+        864.1667,
+        -12.8886
        ],
        [
         3.255,
-        -191.6667,
-        -551.4748
+        768.3333,
+        -11.4748
        ],
        [
         3.2925,
-        -287.5,
-        -535.7735
+        672.5,
+        4.2265
        ],
        [
         3.33,
-        -383.3333,
-        -507.3711
+        576.6667,
+        32.6289
        ],
        [
         3.3675,
-        -479.1667,
-        -469.1378
+        480.8333,
+        70.8622
        ],
        [
         3.405,
-        -575.0,
-        -424.9368
+        385.0,
+        115.0632
        ],
        [
         3.4425,
-        -670.8333,
-        -379.2345
+        289.1667,
+        160.7655
        ],
        [
         3.48,
-        -766.6667,
-        -336.6492
+        193.3333,
+        203.3508
        ],
        [
         3.5175,
-        -862.5,
-        -301.4838
+        97.5,
+        238.5162
        ],
        [
         3.555,
-        -958.3333,
-        -277.2918
+        1.6667,
+        262.7082
        ],
        [
         3.5925,
-        -1054.1667,
-        -266.5177
+        -94.1667,
+        273.4823
        ],
        [
         3.63,
-        -1150.0,
-        -270.2502
+        -190.0,
+        269.7498
        ]
       ],
       "colors": [
@@ -5980,128 +6620,128 @@ export default {
       "path": [
        [
         2.94,
-        -1150.0,
-        284.3323
+        -190.0,
+        824.3323
        ],
        [
         2.9775,
-        -1054.1667,
-        282.31
+        -94.1667,
+        822.31
        ],
        [
         3.015,
-        -958.3333,
-        262.2107
+        1.6667,
+        802.2107
        ],
        [
         3.0525,
-        -862.5,
-        226.4803
+        97.5,
+        766.4803
        ],
        [
         3.09,
-        -766.6667,
-        179.4669
+        193.3333,
+        719.4669
        ],
        [
         3.1275,
-        -670.8333,
-        126.8914
+        289.1667,
+        666.8914
        ],
        [
         3.165,
-        -575.0,
-        75.1518
+        385.0,
+        615.1518
        ],
        [
         3.2025,
-        -479.1667,
-        30.5441
+        480.8333,
+        570.5441
        ],
        [
         3.24,
-        -383.3333,
-        -1.5032
+        576.6667,
+        538.4968
        ],
        [
         3.2775,
-        -287.5,
-        -17.0905
+        672.5,
+        522.9095
        ],
        [
         3.315,
-        -191.6667,
-        -14.3209
+        768.3333,
+        525.6791
        ],
        [
         3.3525,
-        -95.8333,
-        6.4685
+        864.1667,
+        546.4685
        ],
        [
         3.39,
-        0.0,
-        42.748
+        960.0,
+        582.748
        ],
        [
         3.4275,
-        95.8333,
-        90.1027
+        1055.8333,
+        630.1027
        ],
        [
         3.465,
-        191.6667,
-        142.7699
+        1151.6667,
+        682.7699
        ],
        [
         3.5025,
-        287.5,
-        194.3408
+        1247.5,
+        734.3408
        ],
        [
         3.54,
-        383.3333,
-        238.5397
+        1343.3333,
+        778.5397
        ],
        [
         3.5775,
-        479.1667,
-        269.9879
+        1439.1667,
+        809.9879
        ],
        [
         3.615,
-        575.0,
-        284.8587
+        1535.0,
+        824.8587
        ],
        [
         3.6525,
-        670.8333,
-        281.3424
+        1630.8333,
+        821.3424
        ],
        [
         3.69,
-        766.6667,
-        259.8669
+        1726.6667,
+        799.8669
        ],
        [
         3.7275,
-        862.5,
-        223.0456
+        1822.5,
+        763.0456
        ],
        [
         3.765,
-        958.3333,
-        175.3591
+        1918.3333,
+        715.3591
        ],
        [
         3.8025,
-        1054.1667,
-        122.6105
+        2014.1667,
+        662.6105
        ],
        [
         3.84,
-        1150.0,
-        71.2186
+        2110.0,
+        611.2186
        ]
       ],
       "colors": [
@@ -6124,128 +6764,128 @@ export default {
       "path": [
        [
         3.15,
-        1150.0,
-        -124.3655
+        2110.0,
+        415.6345
        ],
        [
         3.1875,
-        1054.1667,
-        -163.9772
+        2014.1667,
+        376.0228
        ],
        [
         3.225,
-        958.3333,
-        -209.1289
+        1918.3333,
+        330.8711
        ],
        [
         3.2625,
-        862.5,
-        -253.3104
+        1822.5,
+        286.6896
        ],
        [
         3.3,
-        766.6667,
-        -290.1514
+        1726.6667,
+        249.8486
        ],
        [
         3.3375,
-        670.8333,
-        -314.3402
+        1630.8333,
+        225.6598
        ],
        [
         3.375,
-        575.0,
-        -322.3892
+        1535.0,
+        217.6108
        ],
        [
         3.4125,
-        479.1667,
-        -313.1377
+        1439.1667,
+        226.8623
        ],
        [
         3.45,
-        383.3333,
-        -287.9197
+        1343.3333,
+        252.0803
        ],
        [
         3.4875,
-        287.5,
-        -250.3713
+        1247.5,
+        289.6287
        ],
        [
         3.525,
-        191.6667,
-        -205.9062
+        1151.6667,
+        334.0938
        ],
        [
         3.5625,
-        95.8333,
-        -160.9356
+        1055.8333,
+        379.0644
        ],
        [
         3.6,
-        0.0,
-        -121.9434
+        960.0,
+        418.0566
        ],
        [
         3.6375,
-        -95.8333,
-        -94.5517
+        864.1667,
+        445.4483
        ],
        [
         3.675,
-        -191.6667,
-        -82.7099
+        768.3333,
+        457.2901
        ],
        [
         3.7125,
-        -287.5,
-        -88.1254
+        672.5,
+        451.8746
        ],
        [
         3.75,
-        -383.3333,
-        -110.0173
+        576.6667,
+        429.9827
        ],
        [
         3.7875,
-        -479.1667,
-        -145.2292
+        480.8333,
+        394.7708
        ],
        [
         3.825,
-        -575.0,
-        -188.6842
+        385.0,
+        351.3158
        ],
        [
         3.8625,
-        -670.8333,
-        -234.1168
+        289.1667,
+        305.8832
        ],
        [
         3.9,
-        -766.6667,
-        -274.9763
+        193.3333,
+        265.0237
        ],
        [
         3.9375,
-        -862.5,
-        -305.3716
+        97.5,
+        234.6284
        ],
        [
         3.975,
-        -958.3333,
-        -320.9201
+        1.6667,
+        219.0799
        ],
        [
         4.0125,
-        -1054.1667,
-        -319.3801
+        -94.1667,
+        220.6199
        ],
        [
         4.05,
-        -1150.0,
-        -300.9735
+        -190.0,
+        239.0265
        ]
       ],
       "colors": [
@@ -6268,128 +6908,128 @@ export default {
       "path": [
        [
         3.36,
-        -1150.0,
-        304.5884
+        -190.0,
+        844.5884
        ],
        [
         3.3975,
-        -1054.1667,
-        258.4459
+        -94.1667,
+        798.4459
        ],
        [
         3.435,
-        -958.3333,
-        226.2884
+        1.6667,
+        766.2884
        ],
        [
         3.4725,
-        -862.5,
-        213.5347
+        97.5,
+        753.5347
        ],
        [
         3.51,
-        -766.6667,
-        222.3338
+        193.3333,
+        762.3338
        ],
        [
         3.5475,
-        -670.8333,
-        251.2031
+        289.1667,
+        791.2031
        ],
        [
         3.585,
-        -575.0,
-        295.2778
+        385.0,
+        835.2778
        ],
        [
         3.6225,
-        -479.1667,
-        347.1312
+        480.8333,
+        887.1312
        ],
        [
         3.66,
-        -383.3333,
-        398.0256
+        576.6667,
+        938.0256
        ],
        [
         3.6975,
-        -287.5,
-        439.385
+        672.5,
+        979.385
        ],
        [
         3.735,
-        -191.6667,
-        464.24
+        768.3333,
+        1004.24
        ],
        [
         3.7725,
-        -95.8333,
-        468.4024
+        864.1667,
+        1008.4024
        ],
        [
         3.81,
-        0.0,
-        451.1709
+        960.0,
+        991.1709
        ],
        [
         3.8475,
-        95.8333,
-        415.449
+        1055.8333,
+        955.449
        ],
        [
         3.885,
-        191.6667,
-        367.2562
+        1151.6667,
+        907.2562
        ],
        [
         3.9225,
-        287.5,
-        314.7131
+        1247.5,
+        854.7131
        ],
        [
         3.96,
-        383.3333,
-        266.6738
+        1343.3333,
+        806.6738
        ],
        [
         3.9975,
-        479.1667,
-        231.2329
+        1439.1667,
+        771.2329
        ],
        [
         4.035,
-        575.0,
-        214.3627
+        1535.0,
+        754.3627
        ],
        [
         4.0725,
-        670.8333,
-        218.9058
+        1630.8333,
+        758.9058
        ],
        [
         4.11,
-        766.6667,
-        244.0967
+        1726.6667,
+        784.0967
        ],
        [
         4.1475,
-        862.5,
-        285.6905
+        1822.5,
+        825.6905
        ],
        [
         4.185,
-        958.3333,
-        336.6785
+        1918.3333,
+        876.6785
        ],
        [
         4.2225,
-        1054.1667,
-        388.4688
+        2014.1667,
+        928.4688
        ],
        [
         4.26,
-        1150.0,
-        432.3345
+        2110.0,
+        972.3345
        ]
       ],
       "colors": [
@@ -6412,128 +7052,128 @@ export default {
       "path": [
        [
         3.57,
-        1150.0,
-        -125.4701
+        2110.0,
+        414.5299
        ],
        [
         3.6075,
-        1054.1667,
-        -128.8488
+        2014.1667,
+        411.1512
        ],
        [
         3.645,
-        958.3333,
-        -106.1214
+        1918.3333,
+        433.8786
        ],
        [
         3.6825,
-        862.5,
-        -61.7114
+        1822.5,
+        478.2886
        ],
        [
         3.72,
-        766.6667,
-        -4.2624
+        1726.6667,
+        535.7376
        ],
        [
         3.7575,
-        670.8333,
-        55.0438
+        1630.8333,
+        595.0438
        ],
        [
         3.795,
-        575.0,
-        104.6642
+        1535.0,
+        644.6642
        ],
        [
         3.8325,
-        479.1667,
-        134.941
+        1439.1667,
+        674.941
        ],
        [
         3.87,
-        383.3333,
-        139.9812
+        1343.3333,
+        679.9812
        ],
        [
         3.9075,
-        287.5,
-        118.8038
+        1247.5,
+        658.8038
        ],
        [
         3.945,
-        191.6667,
-        75.5306
+        1151.6667,
+        615.5306
        ],
        [
         3.9825,
-        95.8333,
-        18.5842
+        1055.8333,
+        558.5842
        ],
        [
         4.02,
-        0.0,
-        -40.9516
+        960.0,
+        499.0484
        ],
        [
         4.0575,
-        -95.8333,
-        -91.4892
+        864.1667,
+        448.5108
        ],
        [
         4.095,
-        -191.6667,
-        -123.192
+        768.3333,
+        416.808
        ],
        [
         4.1325,
-        -287.5,
-        -129.8897
+        672.5,
+        410.1103
        ],
        [
         4.17,
-        -383.3333,
-        -110.2786
+        576.6667,
+        429.7214
        ],
        [
         4.2075,
-        -479.1667,
-        -68.1757
+        480.8333,
+        471.8243
        ],
        [
         4.245,
-        -575.0,
-        -11.7758
+        385.0,
+        528.2242
        ],
        [
         4.2825,
-        -670.8333,
-        47.9438
+        289.1667,
+        587.9438
        ],
        [
         4.32,
-        -766.6667,
-        99.3596
+        193.3333,
+        639.3596
        ],
        [
         4.3575,
-        -862.5,
-        132.4641
+        97.5,
+        672.4641
        ],
        [
         4.395,
-        -958.3333,
-        140.8141
+        1.6667,
+        680.8141
        ],
        [
         4.4325,
-        -1054.1667,
-        122.7844
+        -94.1667,
+        662.7844
        ],
        [
         4.47,
-        -1150.0,
-        81.8843
+        -190.0,
+        621.8843
        ]
       ],
       "colors": [
@@ -6556,128 +7196,128 @@ export default {
       "path": [
        [
         3.78,
-        -1150.0,
-        -439.0222
+        -190.0,
+        100.9778
        ],
        [
         3.8175,
-        -1054.1667,
-        -407.5809
+        -94.1667,
+        132.4191
        ],
        [
         3.855,
-        -958.3333,
-        -369.8288
+        1.6667,
+        170.1712
        ],
        [
         3.8925,
-        -862.5,
-        -328.8721
+        97.5,
+        211.1279
        ],
        [
         3.93,
-        -766.6667,
-        -288.0806
+        193.3333,
+        251.9194
        ],
        [
         3.9675,
-        -670.8333,
-        -250.8106
+        289.1667,
+        289.1894
        ],
        [
         4.005,
-        -575.0,
-        -220.1285
+        385.0,
+        319.8715
        ],
        [
         4.0425,
-        -479.1667,
-        -198.5587
+        480.8333,
+        341.4413
        ],
        [
         4.08,
-        -383.3333,
-        -187.876
+        576.6667,
+        352.124
        ],
        [
         4.1175,
-        -287.5,
-        -188.9594
+        672.5,
+        351.0406
        ],
        [
         4.155,
-        -191.6667,
-        -201.7196
+        768.3333,
+        338.2804
        ],
        [
         4.1925,
-        -95.8333,
-        -225.1069
+        864.1667,
+        314.8931
        ],
        [
         4.23,
-        0.0,
-        -257.1969
+        960.0,
+        282.8031
        ],
        [
         4.2675,
-        95.8333,
-        -295.3494
+        1055.8333,
+        244.6506
        ],
        [
         4.305,
-        191.6667,
-        -336.4252
+        1151.6667,
+        203.5748
        ],
        [
         4.3425,
-        287.5,
-        -377.0448
+        1247.5,
+        162.9552
        ],
        [
         4.38,
-        383.3333,
-        -413.8661
+        1343.3333,
+        126.1339
        ],
        [
         4.4175,
-        479.1667,
-        -443.8595
+        1439.1667,
+        96.1405
        ],
        [
         4.455,
-        575.0,
-        -464.5572
+        1535.0,
+        75.4428
        ],
        [
         4.4925,
-        670.8333,
-        -474.2562
+        1630.8333,
+        65.7438
        ],
        [
         4.53,
-        766.6667,
-        -472.1586
+        1726.6667,
+        67.8414
        ],
        [
         4.5675,
-        862.5,
-        -458.4369
+        1822.5,
+        81.5631
        ],
        [
         4.605,
-        958.3333,
-        -434.2202
+        1918.3333,
+        105.7798
        ],
        [
         4.6425,
-        1054.1667,
-        -401.5008
+        2014.1667,
+        138.4992
        ],
        [
         4.68,
-        1150.0,
-        -362.971
+        2110.0,
+        177.029
        ]
       ],
       "colors": [
@@ -6700,128 +7340,128 @@ export default {
       "path": [
        [
         3.99,
-        1150.0,
-        235.7413
+        2110.0,
+        775.7413
        ],
        [
         4.0275,
-        1054.1667,
-        281.755
+        2014.1667,
+        821.755
        ],
        [
         4.065,
-        958.3333,
-        320.8171
+        1918.3333,
+        860.8171
        ],
        [
         4.1025,
-        862.5,
-        348.9805
+        1822.5,
+        888.9805
        ],
        [
         4.14,
-        766.6667,
-        363.3994
+        1726.6667,
+        903.3994
        ],
        [
         4.1775,
-        670.8333,
-        362.6168
+        1630.8333,
+        902.6168
        ],
        [
         4.215,
-        575.0,
-        346.7118
+        1535.0,
+        886.7118
        ],
        [
         4.2525,
-        479.1667,
-        317.2915
+        1439.1667,
+        857.2915
        ],
        [
         4.29,
-        383.3333,
-        277.3288
+        1343.3333,
+        817.3288
        ],
        [
         4.3275,
-        287.5,
-        230.8617
+        1247.5,
+        770.8617
        ],
        [
         4.365,
-        191.6667,
-        182.5858
+        1151.6667,
+        722.5858
        ],
        [
         4.4025,
-        95.8333,
-        137.3791
+        1055.8333,
+        677.3791
        ],
        [
         4.44,
-        0.0,
-        99.8096
+        960.0,
+        639.8096
        ],
        [
         4.4775,
-        -95.8333,
-        73.6737
+        864.1667,
+        613.6737
        ],
        [
         4.515,
-        -191.6667,
-        61.6123
+        768.3333,
+        601.6123
        ],
        [
         4.5525,
-        -287.5,
-        64.8442
+        672.5,
+        604.8442
        ],
        [
         4.59,
-        -383.3333,
-        83.0428
+        576.6667,
+        623.0428
        ],
        [
         4.6275,
-        -479.1667,
-        114.3692
+        480.8333,
+        654.3692
        ],
        [
         4.665,
-        -575.0,
-        155.658
+        385.0,
+        695.658
        ],
        [
         4.7025,
-        -670.8333,
-        202.7369
+        289.1667,
+        742.7369
        ],
        [
         4.74,
-        -766.6667,
-        250.8489
+        193.3333,
+        790.8489
        ],
        [
         4.7775,
-        -862.5,
-        295.1323
+        97.5,
+        835.1323
        ],
        [
         4.815,
-        -958.3333,
-        331.1124
+        1.6667,
+        871.1124
        ],
        [
         4.8525,
-        -1054.1667,
-        355.1535
+        -94.1667,
+        895.1535
        ],
        [
         4.89,
-        -1150.0,
-        364.8264
+        -190.0,
+        904.8264
        ]
       ],
       "colors": [
@@ -6844,128 +7484,128 @@ export default {
       "path": [
        [
         4.2,
-        -1150.0,
-        -13.6466
+        -190.0,
+        526.3534
        ],
        [
         4.2375,
-        -1054.1667,
-        -3.4915
+        -94.1667,
+        536.5085
        ],
        [
         4.275,
-        -958.3333,
-        -7.9037
+        1.6667,
+        532.0963
        ],
        [
         4.3125,
-        -862.5,
-        -26.3462
+        97.5,
+        513.6538
        ],
        [
         4.35,
-        -766.6667,
-        -56.5748
+        193.3333,
+        483.4252
        ],
        [
         4.3875,
-        -670.8333,
-        -94.911
+        289.1667,
+        445.089
        ],
        [
         4.425,
-        -575.0,
-        -136.6896
+        385.0,
+        403.3104
        ],
        [
         4.4625,
-        -479.1667,
-        -176.8267
+        480.8333,
+        363.1733
        ],
        [
         4.5,
-        -383.3333,
-        -210.438
+        576.6667,
+        329.562
        ],
        [
         4.5375,
-        -287.5,
-        -233.4333
+        672.5,
+        306.5667
        ],
        [
         4.575,
-        -191.6667,
-        -243.0145
+        768.3333,
+        296.9855
        ],
        [
         4.6125,
-        -95.8333,
-        -238.0155
+        864.1667,
+        301.9845
        ],
        [
         4.65,
-        0.0,
-        -219.0447
+        960.0,
+        320.9553
        ],
        [
         4.6875,
-        95.8333,
-        -188.4106
+        1055.8333,
+        351.5894
        ],
        [
         4.725,
-        191.6667,
-        -149.8411
+        1151.6667,
+        390.1589
        ],
        [
         4.7625,
-        287.5,
-        -108.0296
+        1247.5,
+        431.9704
        ],
        [
         4.8,
-        383.3333,
-        -68.0643
+        1343.3333,
+        471.9357
        ],
        [
         4.8375,
-        479.1667,
-        -34.8083
+        1439.1667,
+        505.1917
        ],
        [
         4.875,
-        575.0,
-        -12.3087
+        1535.0,
+        527.6913
        ],
        [
         4.9125,
-        670.8333,
-        -3.3033
+        1630.8333,
+        536.6967
        ],
        [
         4.95,
-        766.6667,
-        -8.8881
+        1726.6667,
+        531.1119
        ],
        [
         4.9875,
-        862.5,
-        -28.3835
+        1822.5,
+        511.6165
        ],
        [
         5.025,
-        958.3333,
-        -59.4169
+        1918.3333,
+        480.5831
        ],
        [
         5.0625,
-        1054.1667,
-        -98.2121
+        2014.1667,
+        441.7879
        ],
        [
         5.1,
-        1150.0,
-        -140.0481
+        2110.0,
+        399.9519
        ]
       ],
       "colors": [
@@ -6988,128 +7628,128 @@ export default {
       "path": [
        [
         4.41,
-        1150.0,
-        527.7319
+        2110.0,
+        1067.7319
        ],
        [
         4.4475,
-        1054.1667,
-        493.8742
+        2014.1667,
+        1033.8742
        ],
        [
         4.485,
-        958.3333,
-        449.4573
+        1918.3333,
+        989.4573
        ],
        [
         4.5225,
-        862.5,
-        400.8855
+        1822.5,
+        940.8855
        ],
        [
         4.56,
-        766.6667,
-        355.1619
+        1726.6667,
+        895.1619
        ],
        [
         4.5975,
-        670.8333,
-        318.8792
+        1630.8333,
+        858.8792
        ],
        [
         4.635,
-        575.0,
-        297.2686
+        1535.0,
+        837.2686
        ],
        [
         4.6725,
-        479.1667,
-        293.4461
+        1439.1667,
+        833.4461
        ],
        [
         4.71,
-        383.3333,
-        307.9628
+        1343.3333,
+        847.9628
        ],
        [
         4.7475,
-        287.5,
-        338.7256
+        1247.5,
+        878.7256
        ],
        [
         4.785,
-        191.6667,
-        381.2991
+        1151.6667,
+        921.2991
        ],
        [
         4.8225,
-        95.8333,
-        429.5449
+        1055.8333,
+        969.5449
        ],
        [
         4.86,
-        0.0,
-        476.5067
+        960.0,
+        1016.5067
        ],
        [
         4.8975,
-        -95.8333,
-        515.4135
+        864.1667,
+        1055.4135
        ],
        [
         4.935,
-        -191.6667,
-        540.6556
+        768.3333,
+        1080.6556
        ],
        [
         4.9725,
-        -287.5,
-        548.5935
+        672.5,
+        1088.5935
        ],
        [
         5.01,
-        -383.3333,
-        538.0826
+        576.6667,
+        1078.0826
        ],
        [
         5.0475,
-        -479.1667,
-        510.6386
+        480.8333,
+        1050.6386
        ],
        [
         5.085,
-        -575.0,
-        470.2183
+        385.0,
+        1010.2183
        ],
        [
         5.1225,
-        -670.8333,
-        422.6496
+        289.1667,
+        962.6496
        ],
        [
         5.16,
-        -766.6667,
-        374.7912
+        193.3333,
+        914.7912
        ],
        [
         5.1975,
-        -862.5,
-        333.5434
+        97.5,
+        873.5434
        ],
        [
         5.235,
-        -958.3333,
-        304.8534
+        1.6667,
+        844.8534
        ],
        [
         5.2725,
-        -1054.1667,
-        292.8579
+        -94.1667,
+        832.8579
        ],
        [
         5.31,
-        -1150.0,
-        299.2864
+        -190.0,
+        839.2864
        ]
       ],
       "colors": [
@@ -7132,128 +7772,128 @@ export default {
       "path": [
        [
         4.62,
-        -1150.0,
-        83.2762
+        -190.0,
+        623.2762
        ],
        [
         4.6575,
-        -1054.1667,
-        28.741
+        -94.1667,
+        568.741
        ],
        [
         4.695,
-        -958.3333,
-        -16.4018
+        1.6667,
+        523.5982
        ],
        [
         4.7325,
-        -862.5,
-        -44.5455
+        97.5,
+        495.4545
        ],
        [
         4.77,
-        -766.6667,
-        -50.9475
+        193.3333,
+        489.0525
        ],
        [
         4.8075,
-        -670.8333,
-        -34.5291
+        289.1667,
+        505.4709
        ],
        [
         4.845,
-        -575.0,
-        1.943
+        385.0,
+        541.943
        ],
        [
         4.8825,
-        -479.1667,
-        52.3232
+        480.8333,
+        592.3232
        ],
        [
         4.92,
-        -383.3333,
-        108.1219
+        576.6667,
+        648.1219
        ],
        [
         4.9575,
-        -287.5,
-        159.9369
+        672.5,
+        699.9369
        ],
        [
         4.995,
-        -191.6667,
-        199.0369
+        768.3333,
+        739.0369
        ],
        [
         5.0325,
-        -95.8333,
-        218.8333
+        864.1667,
+        758.8333
        ],
        [
         5.07,
-        0.0,
-        215.9904
+        960.0,
+        755.9904
        ],
        [
         5.1075,
-        95.8333,
-        190.9871
+        1055.8333,
+        730.9871
        ],
        [
         5.145,
-        191.6667,
-        148.0368
+        1151.6667,
+        688.0368
        ],
        [
         5.1825,
-        287.5,
-        94.3767
+        1247.5,
+        634.3767
        ],
        [
         5.22,
-        383.3333,
-        39.0489
+        1343.3333,
+        579.0489
        ],
        [
         5.2575,
-        479.1667,
-        -8.6234
+        1439.1667,
+        531.3766
        ],
        [
         5.295,
-        575.0,
-        -40.6072
+        1535.0,
+        499.3928
        ],
        [
         5.3325,
-        670.8333,
-        -51.5131
+        1630.8333,
+        488.4869
        ],
        [
         5.37,
-        766.6667,
-        -39.5032
+        1726.6667,
+        500.4968
        ],
        [
         5.4075,
-        862.5,
-        -6.6014
+        1822.5,
+        533.3986
        ],
        [
         5.445,
-        958.3333,
-        41.6482
+        1918.3333,
+        581.6482
        ],
        [
         5.4825,
-        1054.1667,
-        97.1152
+        2014.1667,
+        637.1152
        ],
        [
         5.52,
-        1150.0,
-        150.4531
+        2110.0,
+        690.4531
        ]
       ],
       "colors": [
@@ -7276,128 +7916,128 @@ export default {
       "path": [
        [
         4.83,
-        1150.0,
-        -373.5357
+        2110.0,
+        166.4643
        ],
        [
         4.8675,
-        1054.1667,
-        -394.6936
+        2014.1667,
+        145.3064
        ],
        [
         4.905,
-        958.3333,
-        -388.0161
+        1918.3333,
+        151.9839
        ],
        [
         4.9425,
-        862.5,
-        -354.8027
+        1822.5,
+        185.1973
        ],
        [
         4.98,
-        766.6667,
-        -301.518
+        1726.6667,
+        238.482
        ],
        [
         5.0175,
-        670.8333,
-        -238.5331
+        1630.8333,
+        301.4669
        ],
        [
         5.055,
-        575.0,
-        -178.107
+        1535.0,
+        361.893
        ],
        [
         5.0925,
-        479.1667,
-        -132.0009
+        1439.1667,
+        407.9991
        ],
        [
         5.13,
-        383.3333,
-        -109.1885
+        1343.3333,
+        430.8115
        ],
        [
         5.1675,
-        287.5,
-        -114.1099
+        1247.5,
+        425.8901
        ],
        [
         5.205,
-        191.6667,
-        -145.8074
+        1151.6667,
+        394.1926
        ],
        [
         5.2425,
-        95.8333,
-        -198.1114
+        1055.8333,
+        341.8886
        ],
        [
         5.28,
-        0.0,
-        -260.8417
+        960.0,
+        279.1583
        ],
        [
         5.3175,
-        -95.8333,
-        -321.7889
+        864.1667,
+        218.2111
        ],
        [
         5.355,
-        -191.6667,
-        -369.0903
+        768.3333,
+        170.9097
        ],
        [
         5.3925,
-        -287.5,
-        -393.5396
+        672.5,
+        146.4604
        ],
        [
         5.43,
-        -383.3333,
-        -390.3781
+        576.6667,
+        149.6219
        ],
        [
         5.4675,
-        -479.1667,
-        -360.2209
+        480.8333,
+        179.7791
        ],
        [
         5.505,
-        -575.0,
-        -308.9379
+        385.0,
+        231.0621
        ],
        [
         5.5425,
-        -670.8333,
-        -246.5105
+        289.1667,
+        293.4895
        ],
        [
         5.58,
-        -766.6667,
-        -185.0893
+        193.3333,
+        354.9107
        ],
        [
         5.6175,
-        -862.5,
-        -136.6289
+        97.5,
+        403.3711
        ],
        [
         5.655,
-        -958.3333,
-        -110.5616
+        1.6667,
+        429.4384
        ],
        [
         5.6925,
-        -1054.1667,
-        -111.9608
+        -94.1667,
+        428.0392
        ],
        [
         5.73,
-        -1150.0,
-        -140.5543
+        -190.0,
+        399.4457
        ]
       ],
       "colors": [
