@@ -146,6 +146,10 @@ Jade, 18:44, verbatim: "the agent animation could just be trying to adjust to ai
 new take for the G1 agents: engine animation of the cut-outs (re-aim tracking her between shots, kickback on each
 shot). Sent to `v4B-gun`.
 
+**18:47, Jade, verbatim:** "0130_car.mp4 would be better if it were animated (even if you could just feel the cars
+moving)". Sent to `v4B-car` (resumed): engine motion first (ride bob, road moving, streetlight sweeps, fleet cut-outs
+swaying and closing, light bars flashing), Seedance only if that still reads as a still; cap = rest of its $8.
+
 ## Execution round
 
 **Correction:** clock times written in this file before 17:55 ran ahead of the real clock (the "19:xx" entries
