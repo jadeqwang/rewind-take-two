@@ -1,0 +1,96 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Three proto harness</title>
+<style>
+  html, body { margin: 0; background: #1b1a18; color: #ddd; font: 13px/1.4 system-ui, sans-serif; }
+  canvas { display: block; }
+  #ui { position: fixed; left: 8px; bottom: 8px; right: 8px; display: flex; gap: 8px; align-items: center; background: #000a; padding: 6px 10px; border-radius: 6px; }
+  #ui input[type=range] { flex: 1; }
+  body.capture #ui { display: none; }
+</style>
+<script type="importmap">{ "imports": { "three": "./vendor/three.module.js" } }</script>
+</head>
+<body>
+<div id="ui"><button id="play">play</button><input id="scrub" type="range" min="0" max="10" step="0.0416667" value="0"><span id="tt">0.00</span></div>
+<script type="module">
+// Standalone harness for render/three scene modules.
+//   harness.html?scene=penrose_loop[&w=1920&h=1080&ss=2][&t=3.2][&p.key=value ...]
+// Capture mode (driven by tools/capture.mjs): &capture=1&from=0&to=10&fps=24&job=0&jobs=1  or  &stills=1.5,4,8
+import * as THREE from 'three';
+const q = new URLSearchParams(location.search);
+const post = (path, body) => fetch(path, { method: 'POST', body });
+const log = (...a) => { if (q.get('capture')) post('/__log', a.map(String).join(' ')); console.log(...a); };
+window.addEventListener('error', (e) => log('[pageerror]', e.message, e.filename, e.lineno));
+window.addEventListener('unhandledrejection', (e) => log('[rejection]', e.reason && (e.reason.stack || e.reason)));
+const origErr = console.error.bind(console), origWarn = console.warn.bind(console);
+console.error = (...a) => { if (q.get('capture')) post('/__log', '[error] ' + a.join(' ')); origErr(...a); };
+console.warn = (...a) => { if (q.get('capture')) post('/__log', '[warn] ' + a.join(' ')); origWarn(...a); };
+
+const name = q.get('scene') || 'penrose_loop';
+const W = +(q.get('w') || 1920), H = +(q.get('h') || 1080);
+const mod = await import(`./scenes/${name}.js`);
+const canvas = document.createElement('canvas');
+canvas.width = W; canvas.height = H;
+if (!q.get('capture')) { canvas.style.width = '100vw'; canvas.style.height = 'auto'; } else document.body.classList.add('capture');
+document.body.prepend(canvas);
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: false, preserveDrawingBuffer: true, powerPreference: 'high-performance' });
+renderer.setPixelRatio(1);
+renderer.setSize(W, H, false);
+const params = { width: W, height: H, ss: +(q.get('ss') || 2) };
+for (const [k, v] of q) if (k.startsWith('p.')) params[k.slice(2)] = v === 'true' ? true : v === 'false' ? false : (isNaN(+v) ? v : +v);
+const meta = mod.init(renderer, params) || mod.meta || {};
+const gl = renderer.getContext();
+window.renderAt = (t) => { mod.draw(t); gl.finish(); };
+window.__meta = meta;
+
+if (q.get('capture')) {
+  // Capture renders into an explicit render target (the same contract the compositing engine uses: draw(t)
+  // renders into whatever target is bound), reads it back synchronously and checks it is not blank.
+  const rt = new THREE.WebGLRenderTarget(W, H, { type: THREE.UnsignedByteType, depthBuffer: false });
+  const buf = new Uint8Array(W * H * 4);
+  const grab = (t) => {
+    for (let attempt = 0; attempt < 4; attempt++) {
+      renderer.setRenderTarget(rt);
+      mod.draw(t);
+      renderer.readRenderTargetPixels(rt, 0, 0, W, H, buf);
+      if (q.get('debug')) { let cs = 0; for (let i = 0; i < buf.length; i += 4001) cs = (cs * 31 + buf[i]) >>> 0; log('[debug] t=' + t + ' calls=' + renderer.info.render.calls + ' tris=' + renderer.info.render.triangles + ' glerr=' + gl.getError() + ' cs=' + cs + ' magic=' + (mod.default?.stage?.magic)); }
+      if (q.get('debug') && mod.anchors) log('[anchors] t=' + t + ' ' + JSON.stringify(mod.anchors(t)));
+      renderer.setRenderTarget(null);
+      let ok = 0;
+      for (let i = 3; i < buf.length; i += 4 * 9973) if (buf[i] === 255) ok++;
+      if (ok > 10) return true;
+      log('[warn] blank frame at t=' + t + ', retrying');
+    }
+    return false;
+  };
+  const jobs = +(q.get('jobs') || 1), job = +(q.get('job') || 0);
+  let frames = [];
+  if (q.get('stills')) frames = q.get('stills').split(',').map((s) => ({ t: +s, name: `still_${(+s).toFixed(3)}.png` }));
+  else {
+    const from = +(q.get('from') || 0), to = +(q.get('to') || meta.duration || 10), fps = +(q.get('fps') || meta.fps || 24);
+    const n = Math.round((to - from) * fps);
+    for (let i = job; i < n; i += jobs) frames.push({ t: from + i / fps, name: `f_${String(i).padStart(5, '0')}.png` });
+  }
+  const t0 = performance.now();
+  for (const f of frames) {
+    if (!grab(f.t)) log('[error] could not render t=' + f.t);
+    await post(`/__frame?name=${encodeURIComponent(f.name)}&w=${W}&h=${H}`, buf);
+  }
+  await post('/__done', `job ${job}: ${frames.length} frames in ${((performance.now() - t0) / 1000).toFixed(1)} s`);
+} else {
+  const scrub = document.getElementById('scrub'), tt = document.getElementById('tt'), play = document.getElementById('play');
+  scrub.max = meta.duration || 10;
+  let t = +(q.get('t') || 0), playing = false, last = 0;
+  const show = () => { window.renderAt(t); scrub.value = t; tt.textContent = t.toFixed(2); };
+  scrub.oninput = () => { t = +scrub.value; show(); };
+  play.onclick = () => { playing = !playing; play.textContent = playing ? 'pause' : 'play'; last = 0; requestAnimationFrame(loop); };
+  // preview playback only: wall clock steps t, the scene itself never reads it
+  function loop(now) { if (!playing) return; if (last) t = (t + (now - last) / 1000) % (meta.duration || 10); last = now; show(); requestAnimationFrame(loop); }
+  show();
+}
+</script>
+</body>
+</html>
