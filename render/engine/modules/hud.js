@@ -131,7 +131,18 @@ function loading(g, env, p, lt) {
   g.font = `24px ${P2}`; g.textAlign = 'left';
   const dots = '.'.repeat(1 + (Math.floor(lt * 4) % 3)); g.fillText('LOADING' + dots, 96, 1000);
   if (p.progress !== undefined) { const u = env.val(p.progress, 0); g.fillStyle = 'rgba(128,124,118,.4)'; g.fillRect(96, 1020, 420, 8); g.fillStyle = acc; g.fillRect(96, 1020, 420 * u, 8); }
-  if (p.tip) { g.fillStyle = col; g.font = `22px ${P2}`; g.textAlign = 'center'; g.fillText('TIP: ' + p.tip, 960, 860); }
+  if (p.tip) {   // Press Start 2P has no █: a fallback glyph came out smaller than the text, so redactions are drawn
+    // as one solid bar on the font's own grid (8×8 cells: caps are 7 cells high, a letter is 7 cells wide + 1 gap)
+    const size = env.val(p.tipSize, 26), s = 'TIP: ' + p.tip, y = env.val(p.tipY, 860);
+    g.fillStyle = col; g.font = `${size}px ${P2}`; g.textAlign = 'left';
+    const cw = g.measureText('M').width, px = size / 8;
+    let x = 960 - (s.length * cw - px) / 2;
+    for (const part of s.split(/(█+)/)) {
+      if (!part) continue;
+      if (part[0] === '█') g.fillRect(x, y - 7 * px, part.length * cw - px, 7 * px); else g.fillText(part, x, y);
+      x += part.length * cw;
+    }
+  }
   if (p.deaths !== undefined) { const d = env.val(p.deaths); g.font = `26px ${P2}`; g.textAlign = 'left'; const s = `×${fmt(d)}`, w = g.measureText(s).width + 40; skull(g, 1920 - 56 - w, 56, 26 / 8, col); g.fillStyle = col; g.fillText(s, 1920 - 56 - w + 40, 82); }
   if (p.spinner !== false) {   // spinning pencil glyph
     g.save(); g.translate(1780, 990); g.rotate(-t * 5);

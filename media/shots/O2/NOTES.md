@@ -39,3 +39,13 @@ Paper margin cropped.
  "matte": "media/shots/O2/take_1_matte/matte.mp4"
 }
 ```
+
+## v3 revision (2026-10-11, stream GO; Jade's 3:40 note)
+
+- **Chosen now: take 2**, `take_2_engraved_dered.mp4` (raw `take_2.mp4` = `media/gen/revA_go_O2/take_1.mp4`), in 0.0, **rate 1.4**, matte `take_2_matte/matte.mp4`. Colour pass (engrave strength 0, 1080p) + `dered.py --matte`.
+- How a bun is held with two sticks (searched): twist the gathered hair into a rope, coil it flat against the head, push the first stick through the edge of the coil, catching the hair at the scalp, and out the other side; the second stick goes through crossing the first. 3.86 s cannot show all of that and the door, so the shot starts with the coil made and both pencils through it: she presses the bun home with both hands, lets go and it holds (source 0-1.5 s).
+- Keyframes: `kf_v3_first3.jpg` (new knees-up framing of the same hall, no paper margin; jacket back = one pale-blue circle + orange sleeve bands; the door has no plaque; knob on its right edge, hinges on its left; two crossed pencils, pink and pale-blue erasers up) and `kf_v3_last.jpg` (door swung inward on its left hinges, she walks through). Four nano-banana-pro calls; the model kept adding a third pencil, removed by an edit and a small paint-out.
+- Take: both hands leave the bun at ~1.3-1.5 s, she turns, takes the knob (2.4-3.6 s), pushes the door inward from ~3.95 s and walks in. At 1.4x the door starts on beat 221.78 and she is in the doorway at the hard cut (222.78).
+- The pinned notice is gone. `tools/sectionF/edl.py` now carries a lower-third line in the lyric face: "Dissertation defense," (beats 219.84 / 220.32) "9:00 AM" (221.28 / 221.78).
+- v2 take 1 and `tools/sectionF/o2_plaque.json` are untouched (the plaque track is no longer referenced).
+- Cost: 4 keyframes + 1 take (6 s) = $1.44.

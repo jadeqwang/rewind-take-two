@@ -41,3 +41,9 @@ Reads. Jade is small by design (the one deliberate wide).
  "matte": "media/shots/F5b/take_2_matte/matte.mp4"
 }
 ```
+
+## v3 revision pass (2026-10-11, stream F)
+
+Desk objects (Jade's idea, the establishing wide of the boss section). Keyframe `kf_v3_F5b.jpg` (nano edit of
+`kf_clean.jpg`: a stack of giant books, leaning books, a mug of pencils, ink bottles and a ruler among the towers).
+**take_3** (5 s) used from 0.05 s. v2 take 2 kept.

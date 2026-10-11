@@ -1,0 +1,73 @@
+[
+  {
+    "key": "intro",
+    "v2_time": "0:00",
+    "shots": [
+      "C1"
+    ],
+    "status": "done",
+    "after": "media/reviews/v3/A/0000_intro_no_bullet.mp4",
+    "before_range": [
+      0.0,
+      4.5
+    ],
+    "what_changed": "The bullet and its ripple wake are gone; the centre agent's pistol fires an engraved white starburst muzzle flare instead (new keyframe edit and take 3, with two crossed pencils and a clean 1420 / MHz roundel). The rewind teaser is unchanged and now rewinds from the new frame. Rendered through the full film timeline so the teaser shows its real flashes; the flashes from 1:34 to 2:21 still show v2 shots until B's restage lands."
+  },
+  {
+    "key": "0:24",
+    "v2_time": "0:24",
+    "shots": [
+      "D2"
+    ],
+    "status": "done",
+    "after": "media/reviews/v3/A/0024_sign_lyric.mp4",
+    "before_range": [
+      22.5,
+      28.4
+    ],
+    "what_changed": "HILBERT / VACANCY is gone. The rooftop billboard is 1.55x larger, its two panels stay dark until each word is sung and then flicker on like bulbs: A SHADOW (24.0–24.2), CHASING (24.8). No lower third for those words; the mirror in the next shot finishes the line."
+  },
+  {
+    "key": "0:25",
+    "v2_time": "0:25",
+    "shots": [
+      "D3"
+    ],
+    "status": "done",
+    "after": "media/reviews/v3/A/0025_pencil.mp4",
+    "before_range": [
+      24.5,
+      28.6
+    ],
+    "what_changed": "Two pencils, as you decided: crossed in an X through the bun, pink and pale-blue erasers up, each one straight line (keyframe edit with the new bun reference sheet, new take). The mirror etch now carries the rest of the line, 'me I couldn't / place', larger, in the dark sky of the mirror. D2 shows the same two pencils."
+  },
+  {
+    "key": "0:29",
+    "v2_time": "0:29",
+    "shots": [
+      "D4"
+    ],
+    "status": "done",
+    "after": "media/reviews/v3/A/0029_pulled_over.mp4",
+    "before_range": [
+      28.0,
+      30.4
+    ],
+    "what_changed": "Restaged: the white Acura is stopped on the shoulder with a plain black four-door sedan pulled up directly behind it, both facing the same way, Jade in the driver's seat; the sedan rolls up the last metre and its headlights burst into a starburst. No limo. Known nit: with both cars facing the camera and the lake on screen-left, a careful viewer could read them as northbound, while the gantry sign in D1 says SOUTH. Follow-up to your review (\"you can still see bits of color when she's in the driver's seat\"): she is now in colour behind the windshield, face, orange headphones and the jacket band at her hands. The engrave pass had greyed her (too small for its matte), so the raw take is laid back inside a soft window round her."
+  },
+  {
+    "key": "0:30",
+    "v2_time": "0:30",
+    "shots": [
+      "D5",
+      "D5cu"
+    ],
+    "status": "done",
+    "after": "media/reviews/v3/A/0030_shades.mp4",
+    "before_range": [
+      29.8,
+      32.4
+    ],
+    "what_changed": "Built as you described: a short wide of the three agents walking toward camera on the same lakeside shoulder, then a cut to a close-up of sunglasses filling the frame, still bobbing with the walk. 'MEN IN / SHADES' and 'AND / SUITS' are cut into the black lenses as white-line woodcut capitals that arrive as outlines and are then cut solid, word by word on the singing. No lower third. The close-up runs one beat into the next shot so 'suits' can be read; the window shot now starts at 32.36."
+  }
+]

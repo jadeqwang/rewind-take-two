@@ -1,0 +1,60 @@
+[
+  {
+    "note": "0:35 - ID - test should not overlay fingers. you can just have redacted bars on the card image itself. also, the entire body is half-missing and weird. maybe you should use Three.js to figure out how to stage this shot",
+    "v2_time": "0:35",
+    "shots": [
+      "D7"
+    ],
+    "status": "done",
+    "after": "media/reviews/v3/A/0035_id_card.mp4",
+    "before_range": [
+      31.92,
+      37.96
+    ],
+    "what_changed": "Staged in a three.js blockout first (tools/sectionA/blockout/, renders in media/shots/D7/blockout_*.png), then regenerated: the camera is now the agent's view through her open driver's window, her whole upper body is in frame, and she reaches into her jacket, draws the card out and holds it up. The photo and four black redaction bars are drawn into the card itself and the engine no longer puts any text on it; the dialogue box is a compact box at lower left that clears the card and both hands. Two of her fingers rest on the card's blue header band, none on the photo or bars."
+  },
+  {
+    "note": "0:37 - he's holding his own id looking at the back of it? you should only see the back of an ID",
+    "v2_time": "0:37",
+    "shots": [
+      "D8"
+    ],
+    "status": "done",
+    "after": "media/reviews/v3/A/0037_id_back.mp4",
+    "before_range": [
+      33.66,
+      40.24
+    ],
+    "what_changed": "Regenerated as the reverse angle of the new 0:35 shot, from her seat: the agent holds her card up and reads its front, so the camera sees only the plain back (pale-blue stripe, magnetic stripe) and no front appears anywhere. The meter is in his own other hand, the needle whips round and pins on \"do\", and orange/blue residue rises off the card. Still weak: the dial is a stopwatch face, so the needle stops dead at the top rather than hitting an end stop, and his head tilt is slight."
+  },
+  {
+    "key": "d6_two_pencils",
+    "note": "Follow-up, not a separate note of Jade's: her two-pencil decision (0:25) and the restaged ID shots (0:35, 0:37) left the shot before them, the agents at her window (D6, 0:32), with one pencil and a muddled layout.",
+    "v2_time": "0:32",
+    "shots": [
+      "D6"
+    ],
+    "status": "done",
+    "after": "media/reviews/v3/A/0032_window_d6.mp4",
+    "before_range": [
+      29.74,
+      36.3
+    ],
+    "what_changed": "Regenerated from the same three.js blockout as the ID shots: the camera is in the passenger seat, she sits at the wheel of the left-hand-drive car with two pencils in her bun, and the agents stand at her driver's window with the residue meter held in. It looks the same way as the 0:37 shot and the 0:35 shot is its reverse, so the three shots read as one place. Weak: seen from the side the two pencils make a narrow V rather than a clear X, and the second eraser reads grey-blue."
+  },
+  {
+    "key": "p2_left_hand_drive",
+    "note": "Follow-up, not a separate note of Jade's: checked against her 1:26 left-hand-drive note and her two-pencil decision (0:25) for the shot where her eyes widen (P2, 0:39).",
+    "v2_time": "0:39",
+    "shots": [
+      "P2"
+    ],
+    "status": "done",
+    "after": "media/reviews/v3/A/0039_eyes_p2.mp4",
+    "before_range": [
+      36.3,
+      42.38
+    ],
+    "what_changed": "On the take at full size the shot was already left-hand drive (the camera is at the driver's-door front quarter, wheel on screen-left, passenger door beyond her), so nothing was flipped. What changed: the keyframe was edited to two crossed pencils (pink and pale-blue erasers) and one new take made, and the shot is framed lower so the pencils are inside the letterbox; the sleeve roundel is now out of frame. The clip also shows the mote burst now firing on the hit at 0:40."
+  }
+]

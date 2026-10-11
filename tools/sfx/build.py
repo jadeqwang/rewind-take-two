@@ -73,6 +73,10 @@ def onset_index(y, frac=0.5):
 # Each returns (stereo array, offset_s): offset is where the array's sample 0 sits relative to the cue's anchor
 # time (negative = starts before the anchor). Arrays are normalized to 0 dBFS peak by the framework.
 CUES = []
+# Cues kept in the file (source, processing, placement) but left out of the mix. They keep their slot in the stem
+# numbering so the other stems' file names do not shift.
+#   continue_vo: Jade, v2 review at 1:52: "don't use 'continue' voiceover" (2026-10-11).
+DISABLED = {"continue_vo"}
 
 
 def cue(id, t, what, src, priority, gain_db, duck_vocal_db=0.0, duck_music_db=0.0):
@@ -538,6 +542,156 @@ def _():
     return reverb(y, room(), -18), 0.0
 
 
+
+# ---------------------------------------------------------------- v3: instance B's restaged chase (94.06-141.00)
+# Cue list from rev-B (2026-10-11). Appended after the v2 cues so the v2 stem numbers do not shift. Agents stand at
+# frame left in every Verse 2 shot, so their sounds pan left.
+def whoosh_rise(dur, f0, f1, seed):
+    """Air whoosh whose band rises f0 -> f1: overlap-added 20 ms grains of band-passed noise."""
+    n, hop = N(dur), N(0.01)
+    y = np.zeros(n + N(0.04))
+    win = np.hanning(N(0.02))
+    for k, i in enumerate(range(0, n, hop)):
+        f = f0 * (f1 / f0) ** (i / n)
+        g = bp(noise(N(0.02), seed + k), f * 0.7, min(f * 1.5, 18000), 2) * win
+        y[i:i + len(g)] += g
+    return y[:n] / (np.max(np.abs(y)) + 1e-9)
+
+
+def pings(dur, count, lo, hi, seed, tau=0.05):
+    """Crystalline sparkle: short random sine pings between lo and hi Hz over dur."""
+    rng = np.random.default_rng(seed)
+    y = np.zeros(N(dur + 0.2))
+    for _ in range(count):
+        f, t0 = rng.uniform(lo, hi), rng.uniform(0, dur)
+        t = tt(0.15)
+        g = np.sin(2 * np.pi * f * t) * np.exp(-t / tau) * rng.uniform(0.3, 1.0)
+        i = N(t0)
+        y[i:i + len(g)] += g[:len(y) - i]
+    return y / (np.max(np.abs(y)) + 1e-9)
+
+
+def turf(seed, p):
+    """A round hitting turf: low 'thup' + a short grass/dirt scuff."""
+    th = thump(90, 0.09, 0.02, seed=seed)
+    sc = bp(noise(N(0.07), seed + 1), 900, 5000, 2) * expdec(N(0.07), 0.015)
+    y = np.zeros(N(0.1))
+    y[:len(th)] += th
+    y[:len(sc)] += 0.5 * sc / np.max(np.abs(sc))
+    return pan(y, p)
+
+
+def miss(seed, turf_p, tail=0.3):
+    """Suppressed distant pop (gunshot_far, quicker and shorter than shot2) from frame left, turf 40 ms later."""
+    y = np.zeros((2, N(max(tail, 0.2) + 0.12)))
+    g = gunshot(1.05, 1700, 0.5, tail, seed, -0.6)
+    y[:, :g.shape[1]] += g
+    add_at(y, db2a(-3) * turf(seed + 5, turf_p), 0.04)
+    return y
+
+
+@cue("b_shadow_crumble", 97.18, "V2i her graphite shadow crumbles at the chasm wall: dry pencil-lead crumble", "procedural",
+     "optional", -33)
+def _():
+    dur = 0.28
+    rng = np.random.default_rng(9718)
+    y = np.zeros(N(dur + 0.03))
+    for t0 in np.sort(rng.uniform(0, dur, 40)):
+        c = click(int(rng.integers(1e6)), dur=0.008, lo=2000, hi=9000, tau=0.0015)
+        add = c * rng.uniform(0.3, 1.0) * (1 - t0 / dur) ** 0.7
+        i = N(t0)
+        y[i:i + len(add)] += add
+    return reverb(y, room(), -20), 0.0
+
+
+@cue("b_dash", 97.92, "V2i Celeste dash on 'race' (after an 80 ms 2-frame freeze): bright rising air whoosh + soft "
+     "glassy ring ping for the white ring", "procedural", "essential", -20, duck_vocal_db=3)   # B: +6 dB (masked at -26)
+def _():
+    w = whoosh_rise(0.26, 900, 9000, 9792) * np.interp(tt(0.26), [0, 0.03, 0.18, 0.26], [0, 1, 0.8, 0])
+    t = tt(0.5)
+    ring = (np.sin(2 * np.pi * 2637 * t) + 0.4 * np.sin(2 * np.pi * 3951 * t)) * np.exp(-t / 0.12)
+    y = np.zeros((2, N(0.55)))
+    add_at(y, pan(w, -0.3), 0.0)
+    add_at(y, 0.35 * stereo(ring), 0.05)
+    return reverb(y, room(), -16), 0.0
+
+
+@cue("b_land_skid", 98.16, "V2j she lands on the lawn and skids to 98.28: soft thud + 0.12 s grass scuff", "procedural",
+     "optional", -31)
+def _():
+    y = np.zeros(N(0.2))
+    th = thump(70, 0.15, 0.04)
+    y[:len(th)] += th
+    sc = bp(noise(N(0.12), 9816), 1200, 6000, 2) * np.interp(tt(0.12), [0, 0.01, 0.12], [0, 1, 0])
+    y[N(0.02):N(0.02) + len(sc)] += 0.5 * sc / np.max(np.abs(sc))
+    return y, 0.0
+
+
+for _k, (_t, _p, _pri, _g) in enumerate([(98.94, 0.25, "essential", -21), (99.38, 0.35, "optional", -27),   # B: miss_1 +6 dB
+                                         (99.82, 0.15, "optional", -27), (100.26, 0.3, "optional", -27)]):
+    def _mk(k=_k, p=_p):
+        return lambda: (miss(9894 + 10 * k, p), 0.0)
+    cue(f"b_miss_{_k + 1}", _t, f"V2j agent's shot #{_k + 1} misses her: suppressed distant pop from frame left + turf "
+        "'thup' 40 ms later at screen centre-right", "music-v2 'gunshot_far' + procedural", _pri, _g,
+        duck_vocal_db=3)(_mk())
+
+
+@cue("b_miss_board", 101.14, "V2j a miss punches through the park notice board: the pop + dry wood crack and splinters",
+     "music-v2 'gunshot_far' + procedural", "optional", -28, duck_vocal_db=3)
+def _():
+    y = np.zeros((2, N(0.45)))
+    g = gunshot(1.05, 1700, 0.5, 0.3, 10114, -0.6)
+    y[:, :g.shape[1]] += g
+    crack = click(10115, dur=0.06, lo=500, hi=6000, tau=0.006, modes=[(620, 8, 0.7), (1240, 10, 0.5), (2300, 14, 0.3)])
+    add_at(y, pan(crack, 0.3), 0.04)
+    rng = np.random.default_rng(10116)
+    for t0 in rng.uniform(0.06, 0.25, 7):
+        add_at(y, pan(0.3 * click(int(rng.integers(1e6)), dur=0.01, lo=2500, hi=9000, tau=0.002), 0.35), t0)
+    return y, 0.0
+
+
+@cue("b_miss_turf", 102.00, "V2j the last miss, into turf behind her", "music-v2 'gunshot_far' + procedural", "optional",
+     -30, duck_vocal_db=3)
+def _():
+    return miss(10200, -0.1), 0.0
+
+
+@cue("b_spawn", 107.75, "V2k an agent flickers into existence at the hotel corner: two tiny 8-bit blips 40 ms apart",
+     "procedural (pulse wave)", "essential", -24)   # B: +6 dB (masked at -30)
+def _():
+    b = pulse(NOTE["C7"], 0.022, duty=0.5) * expdec(N(0.022), 0.008)
+    y = np.zeros(N(0.09))
+    y[:len(b)] += b
+    y[N(0.04):N(0.04) + len(b)] += 0.8 * b
+    return pan(hp(y, 1500, 2), -0.4), 0.0
+
+
+@cue("b_skid", 108.18, "V2k her sneakers skid to a stop on pavement (108.18-108.60), gone before 'With' (108.67)",
+     "procedural", "optional", -32)
+def _():
+    d = 0.42
+    t = tt(d)
+    f = 2300 - 500 * t / d + 60 * np.sin(2 * np.pi * 23 * t)
+    sq = np.sin(2 * np.pi * np.cumsum(f) / SR)
+    scr = bp(noise(len(t), 10818), 800, 5000, 2)
+    y = 0.35 * sq + scr / np.max(np.abs(scr))
+    return fade(y * np.interp(t, [0, 0.03, 0.3, d], [0, 1, 0.6, 0]), 0.0, 0.06), 0.0
+
+
+@cue("b_atomize", 131.38, "E6 freeze, flash, burst into motes mid-air: crystalline shatter sparkle, high-passed above "
+     "the supersaw", "procedural", "optional", -28)
+def _():
+    y = hp(pings(0.4, 70, 3500, 9500, 13138), 3000, 2)
+    return np.stack([y, np.roll(y, N(0.004))]), 0.0
+
+
+@cue("b_implode", 131.82, "E6 the motes implode into two Jades: the sparkle reversed, swelling into the 132.26 downbeat",
+     "procedural", "optional", -30)
+def _():
+    y = hp(pings(0.4, 70, 3500, 9500, 13138), 3000, 2)[::-1][:N(0.44)]
+    y = y * np.linspace(0.3, 1.0, len(y)) ** 2
+    return np.stack([np.roll(y, N(0.004)), y]), 0.0
+
 # ============================================================================= framework
 def vocal_env_db():
     v = VOC.mean(0)
@@ -564,6 +718,8 @@ def render(only=None):
     meta = []
     for k, c in enumerate(CUES):
         if only and c["id"] not in only:
+            continue
+        if c["id"] in DISABLED and not (only and c["id"] in only):
             continue
         y, off = c["fn"]()
         y = stereo(np.asarray(y, dtype=np.float64))

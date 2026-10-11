@@ -157,3 +157,80 @@ $PY tools/sing/takes.py audio; $PY tools/sing/takes.py submit S1 --n=2; $PY tool
 $MPY tools/sing/look.py S1 take_1; $MPY tools/sing/liptint.py take S1 take_1
 $PY tools/sing/variants.py S1 take_1_lips 1.04
 ```
+
+---
+
+# v3 watercolor (2026-10-11, revision pass, stream SING)
+
+Jade's note: "let's use the watercolor version of me for singing, because part of the point … is that the art style
+I'm rendered in mismatches the surroundings". All three shots are rebuilt from `inputs/jade_watercolor_jacket_v6.png`
+by the method of `../moongazing-public-version/work/singer5/` (base sheet, the place put round her, her own face
+pixels put back, Seedance 2.5 avatar takes). Everything is written beside the v2 files with a `v3_` prefix; no v2
+file changed. The Bean plates are the v2 plates, untouched. She is not engraved, traced or tinted, and has **no
+headphones** (the portrait has none; Jade can ask for them).
+
+## Files for the engine
+
+Each `v3_sync_1080.mp4` is already lip-synced: **file time 0 = the shot's in-point, rate 1, no lag to add.**
+1920×1080, 24 fps, no push-in, no baked grain or paper (the engine adds grain).
+
+| Shot | Song in–out | File | Take | Sync baked in | Length |
+|---|---|---|---|---|---|
+| S1 (+S1b, S2_her) | 12.60–19.64 | `media/sing/S1/v3_sync_1080.mp4` | `v3_take_1` | lag +0.58 s to 14.70, +1.00 s from 16.10; the clip runs 1.3× through the silence between (34 cross-faded frames, 14.70–16.10) | 7.33 s |
+| E3 | 119.44–122.95 | `media/sing/E3/v3_sync_1080.mp4` | `v3_take_1` | the open vowel (clip 0.86–3.30) stretched over the whole note (rate 0.74, cross-faded), mouth closes 122.75–122.95 | 3.92 s |
+| V3S | 153.98–159.14 | `media/sing/V3S/v3_sync_1080.mp4` | `v3_take_2` | one lag, +0.16 s; untouched frames | 5.54 s |
+
+- **A.js (S1):** `S1_SRC = 'media/sing/S1/v3_sync_1080.mp4'`, `S1_IN = 0` (S1 in 0, S1b in 5.28). `S2_her` uses the
+  same file (it is the wide framing; there is no pushed-in variant any more): `in: 7.04, freeze: 0.24`, and its push
+  should start at 1.0×, not 1.3×. **Lake Shore headlights for the S2 push: (1615, 702)** in the 1920×1080 frame at the
+  end of the shot (1610, 700 at the start; a second pair sits at about 1605, 950). v2's `HEAD = [1600, 690]` still works.
+- **D.js / `tools/sections/D/build_timeline.py` (E3, B's):** `E3_TAKE = 'media/sing/E3/v3_sync_1080.mp4'`, clip in 0 at
+  119.44 (set `E3_REF_T0 = 119.44` and lag 0). Her matte per frame: `media/sing/E3/v3_sync_1080_matte/`
+  (94 PNGs, 1920×1080, L, `fps.txt` 24; BiRefNet on the synced file, so it follows her). First-frame mask in the
+  first-frame geometry: `media/sing/first/v3_her_mask_first_frame.png` (2576×1449, same as `v3_S1_first.jpg`).
+  The v2 occluder (`media/shots/E3/occluder_mask.*`) and ribbon orbit do not fit: her head is larger and centred at
+  about (960, 380), hair down to the bottom of the frame.
+- **E.js (V3S):** point the V3S layer at `media/sing/V3S/v3_sync_1080.mp4`, in 0 at 153.98, no variant lag. She
+  blinks twice at 157.2–157.5 and 157.7–157.9; the existing cutaway (157.39–157.84) covers most of it.
+- Framing (all three, identical figure and scale): portrait rows −30…1030 fill the frame height, face centred;
+  face about 32 % of the frame height (v2 raw takes: 32 %; v2 after its 1.3× push: 41 %). Not pushed in, because a
+  push cuts off the orange band, the blue dot and the `1420 MHz` patch. A slow engine push of up to 1.08× keeps them.
+
+## How it was made (`tools/sing/wc_*.py`)
+
+1. `wc_base.py` → `first/v3_base16.jpg`: the portrait on a sheet of its own paper in the v2 first-frame geometry.
+2. `wc_paint.py` (nano-banana-pro, 2 calls) → `first/v3_paint_wc_{1,2}.jpg`: the plate put round her. Face
+   landmarks against the portrait: mean 1.1 / 0.7 px. Picked 2 (arms at her sides); 1 spread her arms to the corners
+   like a selfie.
+3. `wc_restore.py` → `first/v3_wc_2_r.jpg`: her own face pixels back inside the face oval, with no light taken from
+   the plate.
+4. `wc_comp.py` → BiRefNet matte of her (`first/v3_her_alpha.png`), refined with a luminance key where the painting
+   left white paper behind her hair, then her figure laid over the **exact v2 plates**: `first/v3_S1_first.jpg`
+   (= E3's first frame) over `plate_close_1`, `first/v3_V3S_first.jpg` over `plate_truth_1`. One figure, one scale.
+5. `wc_takes.py`: Seedance 2.5, 720p, avatar mode, the v2 vocal slices and durations. Takes are
+   `media/sing/<SHOT>/v3_take_N.*`.
+6. `look.py SHOT v3_take_N` for lag, then `wc_post.py sync|review_sync|matte` (the knots are in `SYNC` there).
+
+| Take | Lag (corr / events) | Verdict |
+|---|---|---|
+| S1 `v3_take_1` | +0.54 / +0.67, r .51; closures: 'b' +0.58, 'm' about +0.95 | **pick**. The lag drifts, so the sync is piecewise |
+| E3 `v3_take_1` | +0.58 / +0.62 | **pick**. Vowel open 2.4 s of the 3.5 s note, so it is stretched to the note |
+| E3 `v3_take_2` (prompt: hold, then "Rewind" again) | +0.50 / +0.53 | spare: vowel open only 2.1 s, wider mouth |
+| V3S `v3_take_1` | −0.28 / −0.17, r .24 | reject: barely shapes the words, eyes shut about 1.3 s, jacket shading turned cyan |
+| V3S `v3_take_2` (prompt: lips shape every word, jacket never cyan) | +0.21 / +0.29; closures +0.16 | **pick** |
+
+## What is weak
+
+- She smiles all the way through (the portrait's smile is where every take starts). It reads warm rather than
+  haunted in S1; that is the portrait, not a fault of the take.
+- S1 blinks slowly on the first word (13.10–13.35). E3 has a 0.35 s eye-close mid-note (121.2–121.5). V3S opens on a
+  blink (153.98–154.1).
+- E3's hold is a retime: hair and blink move at 0.74× and those frames are cross-fades. Checked at full size, no
+  ghosting; watch it at speed.
+- Nobody has watched these with sound: lags are measured from lip closures, not judged by ear.
+- The takes soften the engraving a little compared with the first frame (720p model output upscaled to 1080p).
+
+## Cost (tags `revA_sing_*`)
+
+nano-banana-pro 2 × $0.134 = $0.27; Seedance 2.5 720p: S1 8 s $1.85, E3 2 × 5 s $2.31, V3S 2 × 7 s $3.24.
+**Total $7.67** of the $30 cap.

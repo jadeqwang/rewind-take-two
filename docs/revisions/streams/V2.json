@@ -1,0 +1,63 @@
+[
+  {
+    "note": "1:24 - facial expression is too happy for this high in the air, she’s still terrified and hasn’t landed the car safely yet",
+    "v2_time": "1:24",
+    "shots": [
+      "V2d2"
+    ],
+    "status": "done",
+    "after": "media/reviews/v3/A/0124_hang_terrified.mp4",
+    "before_range": [
+      82.22,
+      86.18
+    ],
+    "what_changed": "She is terrified, not happy: eyes wide, teeth clenched in a grimace, both hands clinging to the window sill for the whole hang. After your review the open-mouthed scream is gone (fear held in rather than screaming; new keyframe and take 4). Same low angle, slow motion and push-in."
+  },
+  {
+    "note": "1:26 - Chicago / US is where the steering wheel is always on the left side of the car",
+    "v2_time": "1:26",
+    "shots": [
+      "V2e2",
+      "V2a3",
+      "V2c5",
+      "V2f2"
+    ],
+    "status": "done",
+    "after": "media/reviews/v3/A/0126_left_hand_drive.mp4",
+    "before_range": [
+      84.86,
+      88.38
+    ],
+    "what_changed": "V2e2 regenerated (take_2): seen from the passenger seat of a left-hand-drive car, she sits on the left and faces screen right, with a shaky exhale of relief instead of a laugh. Every other car shot before 1:34 was audited and was already left-hand drive. Three of them had the 1420 MHz roundel on her right sleeve or a mirrored jacket, so V2a3 (0:59, 1:02), V2c5 (1:17) and V2f2 (1:30) were regenerated too, with two crossed pencils. Not fixed: C4 at 0:11 (section A's shot) still has the roundel on her right sleeve, and V2b3 at 1:06 still shows one pencil."
+  },
+  {
+    "note": "1:33 - make the redacted blocks the same typeface (or at least size) as the text around it",
+    "v2_time": "1:33",
+    "shots": [
+      "V2h",
+      "V2h1",
+      "V2f2"
+    ],
+    "status": "done",
+    "after": "media/reviews/v3/A/0133_redaction_blocks.mp4",
+    "before_range": [
+      92.5,
+      95.5
+    ],
+    "what_changed": "The redaction in the LOADING tip is now one solid bar drawn on the pixel font's own grid: exactly as tall as the capitals and as wide as the nine letters it hides. The tip line is also larger (26 px, was 22). The same clip shows two related changes: the mirror shot before it (V2f2) has two straight crossed pencils and the jacket the right way round, and the respawn after it (V2h1) now happens on the L station platform that B's restaged race starts from. The O1 variance report's redactions were checked and already match their text. The clip now runs to 95.5 in the full film, so it shows the hand-off into B's restaged race on the same L platform; the respawn HUD sits lower so it clears the hanging sign board."
+  },
+  {
+    "note": "1:52 - don’t use ‘continue’ voiceover",
+    "v2_time": "1:52",
+    "shots": [
+      "V2n"
+    ],
+    "status": "done",
+    "after": "media/reviews/v3/A/0152_no_continue_vo.mp4",
+    "before_range": [
+      109.5,
+      114.0
+    ],
+    "what_changed": "The announcer's \"Continue?\" is out of the sound mix; the other 27 cues, the loudness (-15.77 LUFS) and the untouched original track under them are unchanged. The clip is the v2 picture with the new mix, because B is restaging the picture here; the on-screen CONTINUE? panel is B's and stays. The v2 mix is kept as media/sfx/Rewind_cinematic_sfx_mix_v2.mp3."
+  }
+]

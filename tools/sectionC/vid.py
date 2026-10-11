@@ -140,6 +140,8 @@ _orig_build = vgen.build_spec
 
 def _build(shot, res, note="", over=None):
     spec = _orig_build(shot, res, note, over)
+    if os.environ.get("C_TAG_PREFIX"):          # v3 pass: spend tags per stream (e.g. revA_v2_)
+        spec["tag"] = os.environ["C_TAG_PREFIX"] + spec["tag"]
     last = vgen.SHOTS[shot].get("last")
     if last:
         spec["input"]["last_frame_image"] = "file:" + os.path.relpath(vgen.gen.ref_image(os.path.join(ROOT, last)), ROOT)

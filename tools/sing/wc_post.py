@@ -1,0 +1,170 @@
+#!/usr/bin/env python3
+"""Watercolor singing Jade (v3), step 7: engine files and review clips from a chosen take. Every frame stays the take's
+own frame (no push-in, no grain, no recolour: she is meant to mismatch the engraved world, and the engine adds grain).
+
+    PY=~/Documents/moongazing/.venv/bin/python      EPY=tools/engrave/.venv/bin/python
+    $PY  tools/sing/wc_post.py up SHOT v3_take_N                 -> media/sing/SHOT/v3_take_N_1080.mp4 (Lanczos, CRF 12)
+    $EPY tools/sing/wc_post.py matte SHOT v3_take_N              -> media/sing/SHOT/v3_take_N_matte/00000.png ... + fps.txt
+                                                                    (her matte per frame, 1920x1080, L; BiRefNet)
+    $PY  tools/sing/wc_post.py sync SHOT                         -> media/sing/SHOT/v3_sync_1080.mp4: the chosen take, lip-
+                                                                    synced by the SYNC knots below; file time 0 = shot in
+    $PY  tools/sing/wc_post.py review_sync SHOT OUT              -> OUT: 960x540 review clip of the same, song under it
+    $PY  tools/sing/wc_post.py review SHOT v3_take_N LAG OUT [--audio=MIX] [--pad=0]
+                                                                 -> OUT: 960x540 H.264 of the shot's song range with the
+                                                                    song under it (clip_time = song_time - ref_t0 + LAG)
+"""
+import os
+import subprocess
+import sys
+
+ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+SING = os.path.join(ROOT, "media/sing")
+FF = os.environ.get("FFMPEG", os.path.expanduser("~/Documents/moongazing/.venv/bin/ffmpeg"))
+MIX = os.path.join(ROOT, "media/sfx/Rewind_cinematic_sfx_mix.mp3")
+SHOTS = {"S1": (12.90, 12.60, 19.64), "E3": (119.14, 119.44, 122.95), "V3S": (153.68, 153.98, 159.14)}   # ref_t0, in, out
+
+
+def up(shot, take):
+    src = os.path.join(SING, shot, take + ".mp4")
+    out = os.path.join(SING, shot, take + "_1080.mp4")
+    subprocess.run([FF, "-v", "error", "-y", "-i", src, "-vf", "scale=1920:1080:flags=lanczos", "-an", "-c:v", "libx264",
+                    "-preset", "slow", "-crf", "12", "-pix_fmt", "yuv420p", "-colorspace", "bt709", "-color_primaries", "bt709",
+                    "-color_trc", "bt709", "-movflags", "+faststart", out], check=True)
+    print(os.path.relpath(out, ROOT), os.path.getsize(out) // 1024, "KB")
+
+
+def matte(shot, take):
+    import av
+    import numpy as np
+    import torch
+    from PIL import Image
+    sys.path.insert(0, os.path.join(ROOT, "tools/engrave"))
+    from gpulock import GpuSlot
+    from matte import get_birefnet
+    src = os.path.join(SING, shot, take + ".mp4")
+    d = os.path.join(SING, shot, take + "_matte")
+    os.makedirs(d, exist_ok=True)
+    slot = GpuSlot(label="wc_post matte")
+    slot.acquire()
+    net = get_birefnet("cuda")
+    n = 0
+    with av.open(src) as c:
+        for f in c.decode(c.streams.video[0]):
+            a = f.to_ndarray(format="rgb24").astype(np.float32) / 255
+            x = torch.from_numpy(a).permute(2, 0, 1)[None].cuda()
+            m = net(x)[0, 0].clamp(0, 1).cpu().numpy()
+            Image.fromarray((m * 255).astype(np.uint8)).resize((1920, 1080), Image.LANCZOS).save(os.path.join(d, f"{n:05d}.png"))
+            n += 1
+    open(os.path.join(d, "fps.txt"), "w").write("24\n")
+    print(os.path.relpath(d, ROOT), n, "frames")
+
+
+def review(shot, take, lag, out, audio=MIX, pad=0.0):
+    t0, a, b = SHOTS[shot]
+    a, b = a - pad, b + pad
+    src = os.path.join(SING, shot, take + ".mp4")
+    cin = a - t0 + lag
+    hold = max(0.0, -cin)                       # the take starts after the shot: its first frame is held (reported)
+    vf = f"tpad=start_mode=clone:start_duration={hold:.3f}," if hold else ""
+    vf += "tpad=stop_mode=clone:stop_duration=2,scale=960:540:flags=lanczos"
+    os.makedirs(os.path.dirname(out), exist_ok=True)
+    subprocess.run([FF, "-v", "error", "-y", "-ss", f"{max(cin, 0):.3f}", "-i", src, "-ss", f"{a:.3f}", "-t", f"{b - a:.3f}",
+                    "-i", audio, "-filter_complex", f"[0:v]{vf}[v]", "-map", "[v]", "-map", "1:a", "-t", f"{b - a:.3f}",
+                    "-r", "24", "-c:v", "libx264", "-preset", "slow", "-crf", "20", "-pix_fmt", "yuv420p", "-c:a", "aac",
+                    "-b:a", "192k", "-movflags", "+faststart", out], check=True)
+    print(os.path.relpath(out, ROOT), os.path.getsize(out) // 1024, "KB; clip", round(cin, 3), "to", round(b - t0 + lag, 3),
+          f"(first frame held {hold:.2f} s)" if hold else "")
+
+
+# Lip sync as knots (song time, clip time), linear between them and rate 1 outside. Where a stretch is not rate 1
+# the neighbouring frames are cross-faded; at rate 1 the nearest frame is used untouched.
+#   S1: the take's lag grows through the phrase (0.58 s at "before", about 1.0 s from "my" on), so the clip runs 1.3x
+#       through the silence between the two halves (14.70-16.10).
+#   E3: Seedance closes the vowel about 1 s before the sung note ends (both takes), so the open vowel (clip 0.86-3.30)
+#       is stretched over the whole note (rate 0.74) and the mouth closes on the note's end.
+#   V3S: one lag, +0.16 s (lip closures on 'b' of before and 'm' of my).
+SYNC = {
+    "S1": ("v3_take_1", [(12.60, 0.28), (14.70, 2.38), (16.10, 4.20), (19.64, 7.74)]),
+    "E3": ("v3_take_1", [(119.44, 0.86), (122.75, 3.30), (122.95, 3.50)]),
+    "V3S": ("v3_take_2", [(153.98, 0.46), (159.14, 5.62)]),
+}
+
+
+def clip_time(keys, t):
+    if t <= keys[0][0]:
+        return keys[0][1] + (t - keys[0][0]), 1.0
+    for (t0, c0), (t1, c1) in zip(keys, keys[1:]):
+        if t <= t1:
+            r = (c1 - c0) / (t1 - t0)
+            return c0 + (t - t0) * r, r
+    return keys[-1][1] + (t - keys[-1][0]), 1.0
+
+
+def synced_frames(shot, a, b):
+    """Frames (uint8 RGB, the take's size) for song times a..b at 24 fps; stops where the take ends."""
+    import av
+    import numpy as np
+    take, keys = SYNC[shot]
+    with av.open(os.path.join(SING, shot, take + ".mp4")) as c:
+        F = [f.to_ndarray(format="rgb24") for f in c.decode(c.streams.video[0])]
+    out, blended = [], 0
+    for k in range(int(round((b - a) * 24))):
+        ct, r = clip_time(keys, a + k / 24)
+        pos = ct * 24
+        if pos > len(F) - 1 + 0.5 or pos < -0.5:
+            break
+        if abs(r - 1) < 0.02:
+            out.append(F[int(min(max(round(pos), 0), len(F) - 1))])
+        else:
+            i = int(min(max(np.floor(pos), 0), len(F) - 2))
+            w = float(min(max(pos - i, 0), 1))
+            out.append((F[i].astype(np.float32) * (1 - w) + F[i + 1].astype(np.float32) * w + 0.5).astype(np.uint8))
+            blended += 1
+    return out, blended
+
+
+def encode(frames, out, size, crf, audio=None, ss=0.0):
+    h, w = frames[0].shape[:2]
+    cmd = [FF, "-v", "error", "-y", "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{w}x{h}", "-r", "24", "-i", "-"]
+    if audio:
+        cmd += ["-ss", f"{ss:.3f}", "-t", f"{len(frames) / 24:.3f}", "-i", audio, "-c:a", "aac", "-b:a", "192k"]
+    cmd += ["-vf", f"scale={size}:flags=lanczos", "-c:v", "libx264", "-preset", "slow", "-crf", str(crf), "-pix_fmt", "yuv420p",
+            "-colorspace", "bt709", "-color_primaries", "bt709", "-color_trc", "bt709", "-movflags", "+faststart", out]
+    p = subprocess.Popen(cmd, stdin=subprocess.PIPE)
+    for f in frames:
+        p.stdin.write(f.tobytes())
+    p.stdin.close()
+    assert p.wait() == 0
+
+
+def sync(shot, tail=0.4):
+    """media/sing/SHOT/v3_sync_1080.mp4: file time 0 = the shot's in-point, lip-synced (clip_time = song_time - in)."""
+    _, a, b = SHOTS[shot]
+    frames, bl = synced_frames(shot, a, b + tail)
+    out = os.path.join(SING, shot, "v3_sync_1080.mp4")
+    encode(frames, out, "1920:1080", 12)
+    print(os.path.relpath(out, ROOT), len(frames), "frames =", round(len(frames) / 24, 3), "s (shot", round(b - a, 3), "s);",
+          bl, "cross-faded frames;", os.path.getsize(out) // 1024, "KB; take", SYNC[shot][0])
+
+
+def review_sync(shot, out, audio=MIX):
+    _, a, b = SHOTS[shot]
+    frames, _ = synced_frames(shot, a, b)
+    os.makedirs(os.path.dirname(out), exist_ok=True)
+    encode(frames, out, "960:540", 20, audio, a)
+    print(os.path.relpath(out, ROOT), os.path.getsize(out) // 1024, "KB,", round(len(frames) / 24, 2), "s")
+
+
+if __name__ == "__main__":
+    a = [x for x in sys.argv[1:] if not x.startswith("--")]
+    o = dict(x[2:].split("=", 1) for x in sys.argv[1:] if x.startswith("--") and "=" in x)
+    if a[0] == "up":
+        up(a[1], a[2])
+    elif a[0] == "matte":
+        matte(a[1], a[2])
+    elif a[0] == "sync":
+        sync(a[1], float(o.get("tail", 0.4)))
+    elif a[0] == "review_sync":
+        review_sync(a[1], a[2], o.get("audio", MIX))
+    elif a[0] == "review":
+        review(a[1], a[2], float(a[3]), a[4], o.get("audio", MIX), float(o.get("pad", 0)))

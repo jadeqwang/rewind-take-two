@@ -79,6 +79,8 @@ def build_spec(shot, res, note="", over=None):
     s = {**vgen.SHOTS[shot], **(over or {})}
     if s.get("last"):
         spec["input"]["last_frame_image"] = "file:" + os.path.relpath(gen.ref_image(os.path.join(ROOT, s["last"])), ROOT)
+    if os.environ.get("F_TAG_PREFIX"):          # v3 pass: spend tags per stream (e.g. revA_f_)
+        spec["tag"] = os.environ["F_TAG_PREFIX"] + spec["tag"]
     return spec
 
 

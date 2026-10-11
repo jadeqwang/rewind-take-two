@@ -1,0 +1,17 @@
+[
+  {
+    "key": "tessellation",
+    "note": "what if the fleet of cars pursuing her car were tesselating (and also transforming) like another Escher artwork?",
+    "v2_time": "1:20",
+    "shots": [
+      "V2c7"
+    ],
+    "status": "done",
+    "after": "media/reviews/v3/A/0120_tessellation.mp4",
+    "before_range": [
+      79.0,
+      83.5
+    ],
+    "what_changed": "The 1:20 high wide (80.44–82.22) is rebuilt: a new empty-road plate of Lake Shore Drive at night with her white car alone, and the pursuing fleet drawn by a new engine module as a true tiling. Far down the road black sedan-shaped tiles interlock with white sedan-shaped tiles; toward camera the black ones rise into solid sedans with strobes, the white ones thin into road hatching, and the far end dissolves into wave lines. The shot opens zoomed into the flat pattern and pulls out to reveal her car as the one white car that is real, while the fleet steps closer on each beat. Geography is kept: she drives south, the camera looks back north, so the lake is on screen-right and the park on screen-left (the plate is not mirrored); the HUD sits on an ink corner chip for this shot because the lake behind it is bright. Weak: the solid sedans are procedural white-line drawings and look flatter than the generated engraving around them; in the wide the far tiles are small enough to read as a checkerboard of car icons (the car shape of the tile reads in the first half second); the HUD chip is a visible black panel in the top-right corner."
+  }
+]

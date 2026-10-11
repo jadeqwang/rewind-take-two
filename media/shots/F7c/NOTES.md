@@ -39,3 +39,7 @@ The colour crescendo image.
  "matte": "media/shots/F7c/take_1_matte/matte.mp4"
 }
 ```
+
+## v3 revision pass (2026-10-11, stream F)
+
+Jade 3:21. Keyframe `kf_v3_F7c_final.png` = nano edits r1-r3 of `kf_2.jpg` (curtain bangs, canon jacket, mock neck, desk objects) plus local touch-ups (`tools/sectionF/v3_local.py`: 1420 / MHz roundel, pale-blue eraser). **take_2** (4 s) used from 0; recap F7_13 uses 1.8 s. v2 take 1 kept.

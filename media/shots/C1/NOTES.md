@@ -8,3 +8,10 @@
 
 Video prompt (take 1):
 > Time is frozen. Nothing moves except a few loose strands of the girl's hair drifting slowly and the small glowing orange and blue motes drifting very slowly in the air, like dust in still light. The girl, the bullet, its wake and the agents stay perfectly still, a paused frame. Camera: very slow smooth push-in toward the girl. Her face stays exactly as in the first frame: forehead smooth, brows relaxed, head keeps the first frame's angle, never a face close-up. Keep the exact drawing style of the first frame throughout: black-and-white wood engraving world, only the anime girl in color. No text, no letters, no subtitles, no logos, no watermark.
+
+## v3 revision (2026-10-11, stream V1A)
+
+Jade's note: "maybe we don't need the bullet, just muzzle flare for shots".
+- **Keyframe:** `kf_v3_c.jpg`. `kf_v3_a` = nano-banana-pro edit of `kf_hero.jpg` (bullet and ripple wake removed, starburst flare at the centre pistol, two crossed pencils); `kf_v3_b` = second edit; `kf_v3_c` = local fix of `kf_v3_b` (the sleeve roundel redrawn as `1420 / MHz`, one eraser recoloured pale blue). Jobs in `tools/sectionA/kf_v3.py`.
+- **Take 3** (`tools/sectionA/vid_v3.py`, job `revA_v1a_C1`): same frozen-moment prompt without the bullet. Chosen, clip in 0.0.
+- v2 take 1 and its keyframe are untouched.

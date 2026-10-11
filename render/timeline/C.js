@@ -6,14 +6,26 @@ const GIRL = new Set(['V2a3', 'V2b3', 'V2c4', 'V2c5', 'V2d2', 'V2e2', 'V2f2', 'V
   'V2j1', 'V2j2', 'V2k1', 'V2k2', 'V2k3', 'V2l1', 'V2l2', 'V2m1', 'V2n1']);
 const PAPER = '#ece7dc', INK = '#0b0b0c', ORANGE = '#F08A24';
 
+// V2c7 (v3): the fleet as an Escher tessellation (module `tessellate`) on the road of V2c7 take 2. The camera is
+// fitted to that plate; the shot opens zoomed into the flat tiling and pulls out to the wide (plate and module
+// share TESS_Z about TESS_PV). She drives south and the camera looks back north: lake on screen-right, park on
+// screen-left, so the HUD gets an ink corner chip over the bright lake for this shot only (TESS_CHIP).
+// v2 row, to switch back: [80.44, 82.22, 'V2c7', 1, 1.0, 1, { hero: true }]
+const TESS_PV = [960, 330], TESS_Z = [[0, 2.8, 'linear'], [0.44, 2.5, 'inOutCubic'], [1.2, 1.27, 'linear'], [1.78, 1.2]];
+const tessK = (f) => TESS_Z.map(([t, z, e]) => [t, f(z), e]);
+const TESS = { type: 'canvas', module: 'tessellate', params: { cam: { f: 1100, pitch: 21, h: 4.6, cx: 960, cy: 540, x0: -0.5 },
+  cols: 8, len: 1.95, front: 13.9, t0: 80.44, advance: 0.42, parity: 1, vol: [12.5, 17], road: [11.5, 16], shape: [30, 46], far: [34, 56],
+  zoom: { z: TESS_Z, px: TESS_PV[0], py: TESS_PV[1] } } };
+const TESS_CHIP = { type: 'solid', stage: 'post', color: INK, rect: [1436, 0, 484, 192], opacity: 0.95 };
+
 const CUTS = [
   // V2a car chase (bar 33): HUD pops in on the first frame
   [56.54, 58.30, 'V2a1', 1, 0.5, 1],
   [58.30, 59.20, 'V2a2', 1, 0.5, 1],
-  [59.20, 60.08, 'V2a3', 2, 0.3, 1],
+  [59.20, 60.08, 'V2a3', 3, 0.3, 1],
   [60.08, 61.40, 'V2a4', 2, 0.5, 1],
   [61.40, 62.30, 'V2a5', 1, 0.3, 1],
-  [62.30, 63.62, 'V2a3', 2, 3.4, 1],
+  [62.30, 63.62, 'V2a3', 3, 3.4, 1],
   // V2b kaizo road (bar 37): a cut every 2 beats, each trap = setup + payoff
   [63.62, 64.50, 'V2b1', 1, 1.0, 1],
   [64.50, 65.40, 'V2b1', 1, 2.4, 1.6],
@@ -30,25 +42,25 @@ const CUTS = [
   [73.34, 75.12, 'V2c2', 1, 1.5, 1, { hero: true }],
   [75.12, 76.02, 'V2c3', 1, 1.4, 1, { scale: 1.3, y: 150 }],
   [76.02, 76.90, 'V2c4', 1, 1.0, 1],
-  [76.90, 78.66, 'V2c5', 1, 0.5, 1.2, { hero: true }],
+  [76.90, 78.66, 'V2c5', 2, 0.3, 1.2, { hero: true }],
   [78.66, 79.56, 'V2c3', 1, 3.0, 1.2, { scale: 1.3, y: 150 }],
   [79.56, 80.44, 'V2c6', 1, 1.5, 1.2],
-  [80.44, 82.22, 'V2c7', 1, 1.0, 1, { hero: true }],
+  [80.44, 82.22, 'V2c7', 2, 1.0, 1, { hero: true, scale: TESS_Z, y: tessK(z => (TESS_PV[1] - 540) * (1 - z)), over: [TESS, TESS_CHIP] }],
   [82.22, 83.10, 'V2c8', 1, 0.0, 1],
   // V2d the jump (bar 48): lift-off on 83.54, hang through the band hole 84.04–84.74
   [83.10, 83.98, 'V2d1', 1, 2.0, 1],
-  [83.98, 84.86, 'V2d2', 2, 1.0, 0.6, { frameBlend: true, hero: true, scale: [[0, 1.3], [0.88, 1.5, 'out']], x: [[0, -130], [0.88, -230, 'out']], y: [[0, 110], [0.88, 190, 'out']] }],
+  [83.98, 84.86, 'V2d2', 4, 2.0, 0.6, { frameBlend: true, hero: true, scale: [[0, 1.3], [0.88, 1.5, 'out']], x: [[0, -130], [0.88, -230, 'out']], y: [[0, 110], [0.88, 190, 'out']] }],
   // V2e "back" slams on the bar-49 downbeat
   [84.86, 86.18, 'V2e1', 1, 0.0, 1, { slam: true }],
-  [86.18, 87.06, 'V2e2', 1, 1.0, 1],
+  [86.18, 87.06, 'V2e2', 2, 0.3, 1, { scale: 1.4, x: -330, y: 200 }],
   [87.06, 88.38, 'V2e3', 1, 0.0, 1.2],
   // V2f sirens in my mirror (bar 51)
   [88.38, 90.14, 'V2f1', 1, 0.0, 1],
-  [90.14, 92.79, 'V2f2', 1, 0.5, 1],
+  [90.14, 92.79, 'V2f2', 2, 0.5, 1],
   // V2g kaizo trap: 5 frames of L train, 2 frames black
   [92.79, 93.00, 'V2g1', 1, 0.72, 1, { scale: 1.3, y: 40, flash: true }],
   // V2h respawn (bar 54), V2i race, V2j field (top-down), V2k too fast, V2l ring, V2m shot
-  [93.66, 94.06, 'V2h1', 1, 0.4, 1.2],
+  [93.66, 94.06, 'V2h1', 2, 0.25, 1.2, { scale: 1.5, x: 480, y: -240 }],
   [94.06, 95.86, 'V2i1', 1, 0.5, 1, { ghost: [[0, 230], [0.9, 60, 'inOut'], [1.8, -170, 'inOut']] }],
   [95.86, 96.74, 'V2i1', 1, 2.6, 1, { ghost: [[0, -190], [0.88, -420, 'inOut']] }],
   [96.74, 97.62, 'V2i3', 1, 0.5, 1, { ghost: [[0, -160], [0.88, -380, 'inOut']] }],
@@ -108,6 +120,7 @@ function shotFor([start, end, clip, take, clipIn, rate, x = {}], i, T) {
   }
   if (x.ribbon) layers.push({ type: 'canvas', module: 'ribbon', keepColor: true,
     params: { follow: { layer: 'jade', point: 'centroid', smooth: 3 }, trail: x.ribbon, width: x.ribbonWidth || 46, drift: x.drift || [0, 0], seed: i } });
+  if (x.over) layers.push(...x.over);   // extra layers above the plate (V2c7 tessellation)
   const fx = [];
   if (x.hero) fx.push({ type: 'punch', amount: 0.025, on: 'downbeat' });
   else fx.push({ type: 'punch', amount: 0.018, on: 'beat' });
@@ -137,7 +150,7 @@ export default function sectionC({ T }) {
     // HUD cluster (top-right, this section only); 4-frame pop on bar 33
     ov('C_hud_car', 56.54, 90.14, { type: 'canvas', module: 'hud', opacity: [[0, 0, 'hold'], [0.042, 1, 'hold'], [0.083, 0.25, 'hold'], [0.125, 1]],
       params: { mode: 'platformer', side: 'right', iteration: 4097, deaths: 4096, timer: { from: '56.54' } } }),
-    ov('C_hud_respawn', 93.66, 94.06, { type: 'canvas', module: 'hud', params: { mode: 'platformer', side: 'right', color: INK, iteration: 4097, deaths: 4097, timer: { from: '56.54' } } }),
+    ov('C_hud_respawn', 93.66, 94.06, { type: 'canvas', module: 'hud', params: { mode: 'platformer', side: 'right', color: INK, margin: 104, iteration: 4097, deaths: 4097, timer: { from: '56.54' } } }),
     // dark chip behind the race readout (it sat over busy brick); no red anywhere
     { id: 'C_race_chip', start: 94.06, end: 98.28, layers: [{ type: 'solid', color: INK, rect: [1300, 36, 600, 112], opacity: 0.95 }] },
     ov('C_hud_race', 94.06, 98.28, { type: 'canvas', module: 'hud', params: { mode: 'race', side: 'right', iteration: 4096,

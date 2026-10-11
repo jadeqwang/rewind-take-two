@@ -1,0 +1,94 @@
+[
+  {
+    "note": "3:05 - idea: what if, we see her swinging a pencil as though a sword but it turns into a drawing/writing motion, and the core of the pencil is rainbow colored?",
+    "v2_time": "3:05",
+    "shots": [
+      "F5a",
+      "F7_11"
+    ],
+    "status": "done",
+    "after": "media/reviews/v3/A/0305_sword_to_drawing.mp4",
+    "before_range": [
+      183.56,
+      187.08
+    ],
+    "what_changed": "New take (F5a take 5): she winds the giant pencil back like a two-handed sword, slashes with a rainbow arc in its wake, and the swing turns into drawing: she guides the point like a pen and it draws a rainbow line up across the clock. The pencil is the rainbow pencil (pale-blue eraser); curtain bangs and mock neck fixed in the same pass. The point itself shows as a sparkle more than a visible rainbow core; the line carries the rainbow. F6a's loop round the clock is now a thin rainbow-cored line so it follows on."
+  },
+  {
+    "note": "3:13 - great colors - good time for all of them to all be traveling clockwise instead of going from down to up, and for it to be an actual infinite staircase, Escher style (do as many web searches as you want for a reference on how to draw one)",
+    "v2_time": "3:13",
+    "shots": [
+      "F6b",
+      "F7_03"
+    ],
+    "status": "done",
+    "after": "media/reviews/v3/A/0313_infinite_staircase.mp4",
+    "before_range": [
+      192.34,
+      195.42
+    ],
+    "what_changed": "The clock face now carries a real Penrose staircase (Escher's Ascending and Descending): a 22-step spiral that rises five treads a lap and only closes from one viewpoint. Its geometry is computed exactly, then redrawn by the image model as carved stone in the shot's coloured-pencil-and-engraving hand (checked tread by tread). Fifteen ink-engraved agents walk it one step per beat, all clockwise, which I measured on the rendered frames by tracking three agents over four beats. The clunk on the beat is a flash, shake and punch-in."
+  },
+  {
+    "note": "3:21 - love the color and change in art style, no hime bangs, curtain bangs like in the other scenes, keep jacket styling consistent even though the world is colorful, shirt is still mock neck",
+    "v2_time": "3:21",
+    "shots": [
+      "F7c (F7_04, F7_13)"
+    ],
+    "status": "done",
+    "after": "media/reviews/v3/A/0321_curtain_bangs.mp4",
+    "before_range": [
+      200.24,
+      202.02
+    ],
+    "what_changed": "New take from an edited keyframe: centre part and curtain bangs, canon jacket (one orange band, pale-blue dot, 1420 / MHz roundel on her left sleeve, no extra patches), black mock-neck top. Sky, pose and colours kept."
+  },
+  {
+    "note": "3:21 - love the color and change in art style, no hime bangs, curtain bangs like in the other scenes, keep jacket styling consistent even though the world is colorful, shirt is still mock neck",
+    "v2_time": "3:18",
+    "shots": [
+      "F7b"
+    ],
+    "status": "done",
+    "after": "media/reviews/v3/A/0318_grin_f7b.mp4",
+    "before_range": [
+      198.48,
+      199.38
+    ],
+    "what_changed": "Her grin (one beat): new take with the centre part and curtain bangs, mock neck, and a clean 1420 / MHz patch on her left sleeve. The clip also shows the staircase's one-beat reprise right after it."
+  },
+  {
+    "note": "3:21 - love the color and change in art style, no hime bangs, curtain bangs like in the other scenes, keep jacket styling consistent even though the world is colorful, shirt is still mock neck",
+    "v2_time": "3:29",
+    "shots": [
+      "F8",
+      "F6a",
+      "F7e",
+      "F7b"
+    ],
+    "status": "done",
+    "after": "media/reviews/v3/A/0323_audit_one_pencil_bangs.mp4",
+    "before_range": [
+      202.88,
+      211.64
+    ],
+    "what_changed": "Audit of every other final-drop cut for the same faults. Fixed with new takes: F8 (blunt fringe, red cuffs and headphones), F6a (blunt fringe), F7b, her grin (no bangs, garbled sleeve patch; see 0318_grin_f7b.mp4), and F7e, where the merged Jade held a pencil in each hand and now holds one. One small slip remains: in the new 3:21 shot the pale-blue dot sits on her right chest instead of her left."
+  },
+  {
+    "note": "an idea: books and other tabletop objects alongside buildings",
+    "v2_time": "",
+    "shots": [
+      "F5b",
+      "F5a",
+      "F6b",
+      "F7c"
+    ],
+    "status": "done",
+    "after": "media/reviews/v3/A/0307_desk_skyline.mp4",
+    "before_range": [
+      187.08,
+      188.84
+    ],
+    "what_changed": "Giant books, a mug of pencils, ink bottles and a ruler now stand among the towers in the boss section's establishing wide (F5b, this clip), and in the sword, staircase and gold-sky shots. The colour-flood skyline (2:49) was left as it was."
+  }
+]

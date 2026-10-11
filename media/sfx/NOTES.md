@@ -124,3 +124,23 @@ Cut entirely: a tick-tock under the 210.90–211.50 band drop-out. It was fully 
 - **Generated sources:** music-v2 has no SFX mode. Its "single impact" prompts returned noise-like single hits (harmonic ratio ≤ 0.26, one onset, clean decay), and these are used only as trimmed layers on top of procedural cores. `train_smash_b` was not used.
 - **Unused announcer takes:** four alternatives sit in `gen/`. Clyde has the deepest voice (f0 ≈ 108 Hz) and is a good swap if Arnold sounds too young.
 - **Cost:** $0.045 in total (music-v2 4 × $0.0075, eleven-v3 5 × ≈$0.003).
+
+## v3 revision (2026-10-11): "Continue?" removed
+
+Jade's v2 note at 1:52: "don't use 'continue' voiceover". `continue_vo` is listed in `DISABLED` in `tools/sfx/build.py`
+(its code and its stem slot 20 are kept, so the other stems keep their numbers) and is no longer in `cues.json` or
+the mix: 27 cues, integrated loudness -15.77 LUFS (delta 0.0), original bit-exact outside the cues. The v2 outputs
+are kept as `Rewind_cinematic_sfx_mix_v2.mp3`, `cues_v2.json`, `sfx_only_v2.wav`, `verify_v2.json`;
+`stems/20_continue_vo.wav` is the stale v2 stem. Everything above that calls "Continue?" essential describes v2.
+
+## v3 rebuild (2026-10-11, rev-A)
+
+- `continue_vo` disabled (Jade, 1:52). Its stem slot 20 is kept so the other stem numbers don't shift.
+- 13 cues from instance B's restaged chase (94.06–141.00), all procedural or reusing `gen/gunshot_far.mp3`, appended
+  after the v2 cues in `tools/sfx/build.py`: `b_shadow_crumble` 97.18, `b_dash` 97.92, `b_land_skid` 98.16,
+  `b_miss_1…4` 98.94/99.38/99.82/100.26, `b_miss_board` 101.14, `b_miss_turf` 102.00, `b_spawn` 107.75, `b_skid` 108.18,
+  `b_atomize` 131.38, `b_implode` 131.82. Levels as B specified.
+- Verify: original bit-exact outside the cues, integrated −15.77 LUFS (delta 0.0), true peak −3.74 dBTP, every lyric
+  transcribes as in the original. At B's levels `b_dash`, `b_miss_1` and `b_spawn` (essential) and `b_shadow_crumble`,
+  `b_miss_board`, `b_implode` measure fully masked (`sfx_energy_masked` 1.0); B decides whether to raise them.
+- Previous mixes kept beside: `*_v2.*` (v2 delivery) and `*_v3a.*` (after the `continue_vo` removal, before B's cues).

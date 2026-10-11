@@ -163,6 +163,22 @@ in V2k.
 - **Mirror etch:** now opaque paper-white on a dark plate, 74 px. The HUD is hidden over the mirror shot (90.14–92.79).
 - **V2c3 lane arrows:** the plate is reframed (scale 1.3, shifted down), so the left-pointing arrows are out of frame.
 
+### Rev 5 (v3 pass, Jade's v2 notes; cuts before 94.06 only)
+
+- **1:24, V2d2:** take_3. She is terrified (screaming, clinging to the window sill), not grinning. Same hang and push-in.
+- **1:26, V2e2:** take_2. Left-hand drive: seen from the passenger seat, she faces screen right; a shaky exhale, not a
+  laugh. Audit of every car shot before 94.06: all were already left-hand drive except V2e2. V2a3 (take_3), V2c5
+  (take_2) and V2f2 (take_2) were regenerated because the 1420 MHz roundel sat on her right sleeve (V2f2's whole jacket
+  was mirrored, and its pencil's two ends did not line up).
+- **Two pencils:** the six regenerated clips (those four, V2d2, V2h1) carry the two crossed pencils. V2b3 still shows one.
+- **1:33, LOADING:** the tip's redaction is drawn on the font's pixel grid in `hud.js` (cap height, nine letters wide);
+  tip size 26 px (`tipSize`).
+- **V2h1:** take_2, the respawn on B's L station platform (set reference `media/shots/B_plat/kf_v1.png`).
+- **1:52:** `continue_vo` is disabled in `tools/sfx/build.py`; see `media/sfx/NOTES.md`.
+- Tool fix: `tools/sectionC/common.py` `ref()` cached resized references by file name only, so every clip's
+  `kf_n2.jpg` resolved to one file. The key now includes the folder. `kf_v3`/`kf_v3b` in V2d2 and V2f2 are the
+  rejects that bug produced.
+
 ### Chosen takes
 
 All clips use take_1 except **V2b4 take_2** (retake: the lamp actually falls), **V2d2 take_2** (the hang), and, after the rough-cut review, **V2a3, V2a4 and V2m1 take_2**. The

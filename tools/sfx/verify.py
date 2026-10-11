@@ -53,9 +53,12 @@ def main():
         res["lyrics"].append(r)
         print(f"{lab:32s} | orig: {r['original']!r:45s} | mix: {r['mix']!r}")
     cues = json.load(open(os.path.join(OUT, "cues.json")))["cues"]
-    c = next(x for x in cues if x["id"] == "continue_vo")
-    st = sf.read(os.path.join(OUT, c["file"]), dtype="float32")[0]
-    res["announcer"]["stem"] = asr(st)
+    c = next((x for x in cues if x["id"] == "continue_vo"), None)   # disabled in build.py since the v3 pass
+    if c:
+        st = sf.read(os.path.join(OUT, c["file"]), dtype="float32")[0]
+        res["announcer"]["stem"] = asr(st)
+    else:
+        res["announcer"]["stem"] = None
     i, j = int(111.1 * SR), int(111.95 * SR)
     res["announcer"]["mix_111.10-111.95"] = asr(mix[i:j])
     res["announcer"]["original_111.10-111.95"] = asr(orig[i:j])

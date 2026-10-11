@@ -1,0 +1,32 @@
+[
+  {
+    "note": "2:21 - arm patch text consistency",
+    "v2_time": "2:21",
+    "shots": [
+      "G1",
+      "G2",
+      "G3"
+    ],
+    "status": "done",
+    "after": "media/reviews/v3/A/0221_arm_patch.mp4",
+    "before_range": [
+      141.0,
+      148.5
+    ],
+    "what_changed": "All three shots are new takes, and the sleeve roundel is re-lettered `1420 / MHz` in every frame of each (tracked on the sleeve; the clip's own ring and shading are kept), so it reads the same from 141.00 to 148.08. The new takes also carry the two-pencil canon: two crossed pencils in the bun in G1; in G2 she pulls the pale-blue-eraser (rainbow) pencil and the pink-eraser one slips out of the falling bun and drifts off frame; in G3 she draws with the rainbow pencil and the stroke is a rainbow-cored band. Not fixed: the roundel on the tiny Jade sprite in M1-M3 (about 9 px across, too small to hold lettering). The clip starts at 141.00 because E8 before it is B's shot and lives in B's timeline. The v2 takes are still on disk; switching back is one line per shot in render/timeline/E.js. You chose the v3 striped rainbow stroke at 2:26."
+  },
+  {
+    "note": "3:40 - jacket consistency, and putting hair in updo with pencil – do as many google searches as you need to to see how that actually works because this is incorrect, and the door opens the wrong way, and the label on the door is weird (may as well have the information in subtitle format)",
+    "v2_time": "3:40",
+    "shots": [
+      "O2"
+    ],
+    "status": "done",
+    "after": "media/reviews/v3/A/0340_defense_door.mp4",
+    "before_range": [
+      216.9,
+      224.0
+    ],
+    "what_changed": "Jacket back is the single pale-blue circle and orange bands (the invented emblem is gone). The updo now shows the securing itself: she holds the coiled bun with one pencil already through it, slides the second pencil through the coil so the two cross, lets go and it holds. Then she takes the knob and pushes the door inward on its left hinges into the lit room, on the beat, and is in the doorway at the hard cut. Nothing is written on the door; 'Dissertation defense, 9:00 AM' is a subtitle-style line in the lyric face. The gather-and-twist before the coil is not shown (there is no time for it without taking from the staircase pull-back before it); the earlier take with the bun already pinned is kept as a fallback."
+  }
+]

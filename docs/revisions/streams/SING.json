@@ -1,0 +1,43 @@
+[
+  {
+    "note": "let’s use the watercolor version of me for singing, because part of the point, I realized, is that the art style I’m rendered in mismatches the surroundings (I’ve added images to /inputs)",
+    "v2_time": "0:12",
+    "shots": [
+      "S1",
+      "E3",
+      "V3S"
+    ],
+    "status": "done",
+    "after": "media/reviews/v3/A/0012_singing_S1.mp4",
+    "after_more": [
+      "media/reviews/v3/A/0159_singing_E3.mp4",
+      "media/reviews/v3/A/0233_singing_V3S.mp4"
+    ],
+    "before_range": [
+      12.6,
+      19.64
+    ],
+    "what_changed": "All three singing shots use the watercolor you from inputs/jade_watercolor_jacket_v6.png, in colour, over the same engraved Bean plates. Framing is wider than v2 so the band, dot and 1420 MHz patch stay in frame, with a slow push. Lip sync is measured and baked into the files but nobody has checked it by ear, (you approved the watercolor without headphones; still worth a listen for sync). She smiles throughout (every take starts from the smiling portrait), there is a slow blink on the first word at 0:12 and a 0.35 s eye-close mid-note at 1:59, and the 1:59 held vowel is a retime. 0:12 and 2:33 are rendered in the film (media/reviews/v3/A/0012_singing_S1.mp4, 0233_singing_V3S.mp4); 1:59 is a plain take (0159_singing_E3.mp4) that B places in its rebuilt Drop 2."
+  },
+  {
+    "key": "env_lyrics",
+    "v2_time": "",
+    "shots": [
+      "S1",
+      "S1x",
+      "S1b",
+      "V3S",
+      "D2",
+      "D3",
+      "D5cu",
+      "O2"
+    ],
+    "status": "done",
+    "after": "media/reviews/v3/A/0012_singing_S1.mp4",
+    "before_range": [
+      11.5,
+      22.5
+    ],
+    "what_changed": "Lyrics moved into the world wherever a surface offered itself, and after your review no word appears in more than one shot: 0:12 'THE NIGHT BEFORE' as white-line woodcut capitals curving inside the Bean's rim behind you; the reflection cutaway carries 'MY DISSERTATION DEFENSE,' on its paving, word by word, and holds to 0:19.6 (she is only holding the note after 'defense', so there is no return to her face); then straight into the road through the convex mirror on 'I'm speeding down', and the gantry sign at 0:21. 2:33 the same arcs in orange pencil: 'THE NIGHT BEFORE MY' before the diorama cutaway, 'DISSERTATION DEFENSE,' after it. 0:24 the rooftop billboard ('A SHADOW' / 'CHASING'); 0:25 the mirror etch ('me I couldn't place'); 0:30 the sunglasses ('MEN IN SHADES' / 'AND SUITS'). The 3:40 door went the other way, from sign to subtitle, as you asked."
+  }
+]

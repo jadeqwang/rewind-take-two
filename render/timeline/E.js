@@ -13,9 +13,14 @@ const three = (module, params = {}) => ({ id: '3d', type: 'three', module, param
 const G_CLIPS = {
   // id: { src, matte, in, rate }  from media/shots/G*/chosen.json (G2 at 1.15x: pencil clears the bun at ~144.64,
   // the shot ends inside the hair fan; G3 at 1.4x fits the whole stroke into the shot)
-  G1: { src: 'media/shots/G1/take_1_engraved.mp4', matte: 'media/shots/G1/take_1_matte/matte.mp4', in: 0.0, rate: 1.0 },
-  G2: { src: 'media/shots/G2/take_4_engraved.mp4', matte: 'media/shots/G2/take_4_matte/matte.mp4', in: 0.46, rate: 1.15, y: 54, scale: 0.95 },  // reframed down: the raised hand clipped the top edge
-  G3: { src: 'media/shots/G3/take_4_engraved_soft.mp4', matte: 'media/shots/G3/take_4_matte/matte_dilated6.mp4', in: 1.2, rate: 1.4 },
+  // v3 (2026-10-11, Jade 2:21 + the two-pencil canon): new takes with the two crossed pencils in the bun (G1), the
+  // pale-blue-eraser rainbow pencil pulled while the pink-eraser one drifts away (G2), and a rainbow-cored stroke (G3).
+  // *_patch = the same take with the sleeve roundel re-lettered `1420 / MHz` in every frame (tools/sectionE/patchfix.py).
+  // v2 picks, kept beside them: G1 take_1_engraved (in 0), G2 take_4_engraved (in 0.46, rate 1.15, y 54, scale 0.95),
+  // G3 take_4_engraved_soft + take_4_matte/matte_dilated6 (in 1.2, rate 1.4).
+  G1: { src: 'media/shots/G1/take_3_engraved_patch.mp4', matte: 'media/shots/G1/take_3_matte/matte.mp4', in: 0.0, rate: 1.0 },
+  G2: { src: 'media/shots/G2/take_5_engraved_patch.mp4', matte: 'media/shots/G2/take_5_matte/matte.mp4', in: 0.68, rate: 1.15 },  // boom 144.54 lands as the pencil comes free
+  G3: { src: 'media/shots/G3/take_5_engraved_soft_patch.mp4', matte: 'media/shots/G3/take_5_matte/matte_dilated9.mp4', in: 1.3, rate: 1.6 },  // stroke starts ~1.3 s, ~85% drawn at the cut
 };
 function gShot(id, start, end, drift, note) {
   const c = G_CLIPS[id];
@@ -31,19 +36,36 @@ function gShot(id, start, end, drift, note) {
 
 // V3S (singing #3, made by the singing director: media/sing/NOTES.md). Lip lag B = -0.12 s; A/B/C = lips 0.15 s
 // earlier / measured / 0.15 s later. clip_time = song_time - 153.68 + lag. Upscaled by the engine, NOT engraved.
+// v3: the watercolor singer (media/sing/NOTES.md, "v3 watercolor"); sync is baked in: file time 0 = song 153.98.
+// v2 (pencil trace): V3S_SRC 'media/sing/V3S/take_2_lips.mp4', V3S_T0 = 153.68, measured lag -0.12.
 const V3S_VARIANT = 'B';
-const V3S_LAG = { A: -0.12 + 0.15, B: -0.12, C: -0.12 - 0.15 }[V3S_VARIANT];
-const V3S_SRC = 'media/sing/V3S/take_2_lips.mp4';
+const V3S_T0 = 153.98;
+const V3S_LAG = { A: 0.15, B: 0, C: -0.15 }[V3S_VARIANT];
+const V3S_SRC = 'media/sing/V3S/v3_sync_1080.mp4';
 const v3s = (id, start, end) => ({ id, start, end, background: '#000000',
-  layers: [{ id: 'sing', type: 'video', src: V3S_SRC, in: start - 153.68 + V3S_LAG, rate: 1, fit: 'cover', keepColor: true }] });
+  layers: [{ id: 'sing', type: 'video', src: V3S_SRC, in: start - V3S_T0 + V3S_LAG, rate: 1, fit: 'cover', keepColor: true }] });
 
 export default ({ T }) => ({
   section: 'E',
   overlays: [
     // V3-1 lyric over the whole singing slot (incl. the cutaway), Section A's lower-third style; paper ink with a soft
     // ink halo because the plate's lower third is her white jacket
-    { id: 'V3S_lyric', start: 153.98, end: 159.14, layers: [{ type: 'canvas', module: 'lowerthird', stage: 'post',
-      params: { color: PAPER, size: 50, y: 1022, halo: 0.85, haloColor: '#0b0b0c' } }] },
+    // v3: the line is in the world, as in S1 (render/timeline/A.js, A_S1_lyric): the same legend on the same arcs inside
+    // the Bean's rim, but here the mirror shows the truth, so it is written in residue-orange coloured pencil instead of
+    // cut in white line. One word per sung onset; behind her (her matte is laid back over it); not over the cutaway.
+    { id: 'V3S_lyric', start: 153.98, end: 159.14, layers: (() => {
+      const ARC = 'render/timeline/_arc_lyric.js', HER = { src: 'media/sing/V3S/v3_sync_1080_matte/', mode: 'luma' };
+      const arc = (text, times, r, at) => ({ text, times, cx: 965, cy: 981, r, ...at, size: 88, style: 'pencil', color: '#F08A24' });
+      const LEGEND = [arc('THE NIGHT', ['word:the@153', 'word:night@153'], 1014, { to: -31 }), arc('BEFORE', ['word:before@154'], 930, { to: -31 }),
+        arc('MY', ['word:my@157'], 1014, { from: 31 }), arc('DISSERTATION', ['word:dissertation@157'], 930, { from: 31 }),
+        arc('DEFENSE,', ['word:defense@158'], 846, { from: 31 })];
+      const cut = (start, end, legend) => [
+        ...legend.map(params => ({ type: 'canvas', module: ARC, stage: 'pre', keepColor: true, start, end, params })),
+        { type: 'video', stage: 'pre', keepColor: true, start, end, src: V3S_SRC, in: start + V3S_LAG, rate: 1, fit: 'cover', matte: HER },
+      ];
+      // no word in more than one shot (Jade, as in S1): V3S carries THE NIGHT BEFORE MY, V3S_b after the cutaway the rest
+      return [...cut(0, 157.39 - 153.98, LEGEND.slice(0, 3)), ...cut(157.84 - 153.98, 159.14 - 153.98, LEGEND.slice(3))];
+    })() },
   ],
   shots: [
     gShot('G1', '81:1', '83:1', { boom: 144.54, cx: 990, cy: 600 }, 'G1 float clip pending'),

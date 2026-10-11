@@ -1,0 +1,6 @@
+[
+  {"key": "0:39_reach", "v2_time": "0:39", "shots": ["P1b", "P4"], "status": "done",
+   "note": "at 0:39, there's a clip at “with no warning I get shot” where the gun is pulled on her and her head is too high so it's impossible for her to fit inside the car. it might be better to show the agent reaching for the gun, and just cut to the colorful pixel burst.",
+   "after": "media/reviews/v3/A/0039_agent_reach.mp4", "before_range": [37.5, 41.5],
+   "what_changed": "The gun pointed into the car is gone. After her eyes widen, the film cuts back to the agent pushing in on his hand at the holster inside his jacket (the same take as the first reach), then a two-frame white hit-flash straight into the colour burst on 'shot'. The three-frame gun-flash still before the burst is gone too."}
+]

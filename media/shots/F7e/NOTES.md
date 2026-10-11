@@ -39,3 +39,7 @@ Works first time.
  "matte": "media/shots/F7e/take_1_matte/matte.mp4"
 }
 ```
+
+## v3 revision pass (2026-10-11, stream F)
+
+Audit: take 1 left the merged Jade with a pencil in each hand. **take_2** (same keyframe `kf_2.jpg`, prompt asks for exactly one pencil after the merge) used from 0.15 s; one pencil from ~1.4 s. Its paper margin is cropped in `tools/sectionF/crops.json`. v2 take 1 kept.

@@ -1,0 +1,382 @@
+[
+  {
+    "note": "strong intro, especially love the fast rewind through the whole thing, maybe we don’t need the bullet, just muzzle flare for shots",
+    "v2_time": "0:00",
+    "shots": [
+      "C1"
+    ],
+    "status": "done",
+    "after": "media/reviews/v3/A/0000_intro_no_bullet.mp4",
+    "before_range": [
+      0.0,
+      4.5
+    ],
+    "what_changed": "The bullet and its ripple wake are gone; the centre agent's pistol fires an engraved white starburst muzzle flare instead (new keyframe edit and take 3, with two crossed pencils and a clean 1420 / MHz roundel). The rewind teaser is unchanged and now rewinds from the new frame. Rendered through the full film timeline so the teaser shows its real flashes; the flashes from 1:34 to 2:21 still show v2 shots until B's restage lands."
+  },
+  {
+    "note": "let’s use the watercolor version of me for singing, because part of the point, I realized, is that the art style I’m rendered in mismatches the surroundings (I’ve added images to /inputs)",
+    "v2_time": "0:12",
+    "shots": [
+      "S1",
+      "E3",
+      "V3S"
+    ],
+    "status": "done",
+    "after": "media/reviews/v3/A/0012_singing_S1.mp4",
+    "before_range": [
+      12.6,
+      19.64
+    ],
+    "what_changed": "All three singing shots use the watercolor you from inputs/jade_watercolor_jacket_v6.png, in colour, over the same engraved Bean plates. Framing is wider than v2 so the band, dot and 1420 MHz patch stay in frame, with a slow push. Lip sync is measured and baked into the files but nobody has checked it by ear, (you approved the watercolor without headphones; still worth a listen for sync). She smiles throughout (every take starts from the smiling portrait), there is a slow blink on the first word at 0:12 and a 0.35 s eye-close mid-note at 1:59, and the 1:59 held vowel is a retime. 0:12 and 2:33 are rendered in the film (media/reviews/v3/A/0012_singing_S1.mp4, 0233_singing_V3S.mp4); 1:59 is a plain take (0159_singing_E3.mp4) that B places in its rebuilt Drop 2.",
+    "after_more": [
+      "media/reviews/v3/A/0159_singing_E3.mp4",
+      "media/reviews/v3/A/0233_singing_V3S.mp4"
+    ]
+  },
+  {
+    "note": "let’s use the environment for some of the words, instead of all subtitles, which is also a good way of creating visual interest and keeping audience attention. I’m thinking of the way that in “Golden” from Kpop Demon Hunters, there’s large text lyrics that fit naturally into the environment (see Downloads/kdh_screenhots)",
+    "v2_time": "",
+    "shots": [
+      "S1",
+      "S1x",
+      "S1b",
+      "V3S",
+      "D2",
+      "D3",
+      "D5cu",
+      "O2"
+    ],
+    "status": "done",
+    "after": "media/reviews/v3/A/0012_singing_S1.mp4",
+    "before_range": [
+      11.5,
+      22.5
+    ],
+    "what_changed": "Lyrics moved into the world wherever a surface offered itself, and after your review no word appears in more than one shot: 0:12 'THE NIGHT BEFORE' as white-line woodcut capitals curving inside the Bean's rim behind you; the reflection cutaway carries 'MY DISSERTATION DEFENSE,' on its paving, word by word, and holds to 0:19.6 (she is only holding the note after 'defense', so there is no return to her face); then straight into the road through the convex mirror on 'I'm speeding down', and the gantry sign at 0:21. 2:33 the same arcs in orange pencil: 'THE NIGHT BEFORE MY' before the diorama cutaway, 'DISSERTATION DEFENSE,' after it. 0:24 the rooftop billboard ('A SHADOW' / 'CHASING'); 0:25 the mirror etch ('me I couldn't place'); 0:30 the sunglasses ('MEN IN SHADES' / 'AND SUITS'). The 3:40 door went the other way, from sign to subtitle, as you asked."
+  },
+  {
+    "note": "0:24 where it currently says “hilbert vacancy” it can display a lyric",
+    "v2_time": "0:24",
+    "shots": [
+      "D2"
+    ],
+    "status": "done",
+    "after": "media/reviews/v3/A/0024_sign_lyric.mp4",
+    "before_range": [
+      22.5,
+      28.4
+    ],
+    "what_changed": "HILBERT / VACANCY is gone. The rooftop billboard is 1.55x larger, its two panels stay dark until each word is sung and then flicker on like bulbs: A SHADOW (24.0–24.2), CHASING (24.8). No lower third for those words; the mirror in the next shot finishes the line."
+  },
+  {
+    "note": "0:25 - pencil is not in a coherent straight line, we should just decide that she has 2 pencils if she’s going to have 2 and just always style it consistently. (maybe",
+    "v2_time": "0:25",
+    "shots": [
+      "D3"
+    ],
+    "status": "done",
+    "after": "media/reviews/v3/A/0025_pencil.mp4",
+    "before_range": [
+      24.5,
+      28.6
+    ],
+    "what_changed": "Two pencils, as you decided: crossed in an X through the bun, pink and pale-blue erasers up, each one straight line (keyframe edit with the new bun reference sheet, new take). The mirror etch now carries the rest of the line, 'me I couldn't / place', larger, in the dark sky of the mirror. D2 shows the same two pencils."
+  },
+  {
+    "note": "0:29 - pulled over - the cars should not be facing each other with the girl in the back, and it should not be a limo. it should be the black car behind the Acura on the right side of the road",
+    "v2_time": "0:29",
+    "shots": [
+      "D4"
+    ],
+    "status": "done",
+    "after": "media/reviews/v3/A/0029_pulled_over.mp4",
+    "before_range": [
+      28.0,
+      30.4
+    ],
+    "what_changed": "Restaged: the white Acura is stopped on the shoulder with a plain black four-door sedan pulled up directly behind it, both facing the same way, Jade in the driver's seat; the sedan rolls up the last metre and its headlights burst into a starburst. No limo. Known nit: with both cars facing the camera and the lake on screen-left, a careful viewer could read them as northbound, while the gantry sign in D1 says SOUTH. Follow-up to your review (\"you can still see bits of color when she's in the driver's seat\"): she is now in colour behind the windshield, face, orange headphones and the jacket band at her hands. The engrave pass had greyed her (too small for its matte), so the raw take is laid back inside a soft window round her."
+  },
+  {
+    "note": "0:30 - I really like the idea of displaying the words on the shades. an idea: you see the 3 men in shades and suits and quickly cut to a closeup of the shades (still walking, but you see the words in the shades, rendered in an Escher woodcut native typeface)",
+    "v2_time": "0:30",
+    "shots": [
+      "D5",
+      "D5cu"
+    ],
+    "status": "done",
+    "after": "media/reviews/v3/A/0030_shades.mp4",
+    "before_range": [
+      29.8,
+      32.4
+    ],
+    "what_changed": "Built as you described: a short wide of the three agents walking toward camera on the same lakeside shoulder, then a cut to a close-up of sunglasses filling the frame, still bobbing with the walk. 'MEN IN / SHADES' and 'AND / SUITS' are cut into the black lenses as white-line woodcut capitals that arrive as outlines and are then cut solid, word by word on the singing. No lower third. The close-up runs one beat into the next shot so 'suits' can be read; the window shot now starts at 32.36."
+  },
+  {
+    "note": "0:35 - ID - test should not overlay fingers. you can just have redacted bars on the card image itself. also, the entire body is half-missing and weird. maybe you should use Three.js to figure out how to stage this shot",
+    "v2_time": "0:35",
+    "shots": [
+      "D7"
+    ],
+    "status": "done",
+    "after": "media/reviews/v3/A/0035_id_card.mp4",
+    "before_range": [
+      31.92,
+      37.96
+    ],
+    "what_changed": "Staged in a three.js blockout first (tools/sectionA/blockout/, renders in media/shots/D7/blockout_*.png), then regenerated: the camera is now the agent's view through her open driver's window, her whole upper body is in frame, and she reaches into her jacket, draws the card out and holds it up. The photo and four black redaction bars are drawn into the card itself and the engine no longer puts any text on it; the dialogue box is a compact box at lower left that clears the card and both hands. Two of her fingers rest on the card's blue header band, none on the photo or bars."
+  },
+  {
+    "note": "0:37 - he’s holding his own id looking at the back of it? you should only see the back of an ID",
+    "v2_time": "0:37",
+    "shots": [
+      "D8"
+    ],
+    "status": "done",
+    "after": "media/reviews/v3/A/0037_id_back.mp4",
+    "before_range": [
+      33.66,
+      40.24
+    ],
+    "what_changed": "Regenerated as the reverse angle of the new 0:35 shot, from her seat: the agent holds her card up and reads its front, so the camera sees only the plain back (pale-blue stripe, magnetic stripe) and no front appears anywhere. The meter is in his own other hand, the needle whips round and pins on \"do\", and orange/blue residue rises off the card. Still weak: the dial is a stopwatch face, so the needle stops dead at the top rather than hitting an end stop, and his head tilt is slight."
+  },
+  {
+    "note": "1:24 - facial expression is too happy for this high in the air, she’s still terrified and hasn’t landed the car safely yet",
+    "v2_time": "1:24",
+    "shots": [
+      "V2d2"
+    ],
+    "status": "done",
+    "after": "media/reviews/v3/A/0124_hang_terrified.mp4",
+    "before_range": [
+      82.22,
+      86.18
+    ],
+    "what_changed": "She is terrified, not happy: eyes wide, teeth clenched in a grimace, both hands clinging to the window sill for the whole hang. After your review the open-mouthed scream is gone (fear held in rather than screaming; new keyframe and take 4). Same low angle, slow motion and push-in."
+  },
+  {
+    "note": "1:26 - Chicago / US is where the steering wheel is always on the left side of the car",
+    "v2_time": "1:26",
+    "shots": [
+      "V2e2",
+      "V2a3",
+      "V2c5",
+      "V2f2"
+    ],
+    "status": "done",
+    "after": "media/reviews/v3/A/0126_left_hand_drive.mp4",
+    "before_range": [
+      84.86,
+      88.38
+    ],
+    "what_changed": "V2e2 regenerated (take_2): seen from the passenger seat of a left-hand-drive car, she sits on the left and faces screen right, with a shaky exhale of relief instead of a laugh. Every other car shot before 1:34 was audited and was already left-hand drive. Three of them had the 1420 MHz roundel on her right sleeve or a mirrored jacket, so V2a3 (0:59, 1:02), V2c5 (1:17) and V2f2 (1:30) were regenerated too, with two crossed pencils. Not fixed: C4 at 0:11 (section A's shot) still has the roundel on her right sleeve, and V2b3 at 1:06 still shows one pencil."
+  },
+  {
+    "note": "1:33 - make the redacted blocks the same typeface (or at least size) as the text around it",
+    "v2_time": "1:33",
+    "shots": [
+      "V2h",
+      "V2h1",
+      "V2f2"
+    ],
+    "status": "done",
+    "after": "media/reviews/v3/A/0133_redaction_blocks.mp4",
+    "before_range": [
+      92.5,
+      95.5
+    ],
+    "what_changed": "The redaction in the LOADING tip is now one solid bar drawn on the pixel font's own grid: exactly as tall as the capitals and as wide as the nine letters it hides. The tip line is also larger (26 px, was 22). The same clip shows two related changes: the mirror shot before it (V2f2) has two straight crossed pencils and the jacket the right way round, and the respawn after it (V2h1) now happens on the L station platform that B's restaged race starts from. The O1 variance report's redactions were checked and already match their text. The clip now runs to 95.5 in the full film, so it shows the hand-off into B's restaged race on the same L platform; the respawn HUD sits lower so it clears the hanging sign board."
+  },
+  {
+    "note": "1:52 - don’t use ‘continue’ voiceover",
+    "v2_time": "1:52",
+    "shots": [
+      "V2n"
+    ],
+    "status": "done",
+    "after": "media/reviews/v3/A/0152_no_continue_vo.mp4",
+    "before_range": [
+      109.5,
+      114.0
+    ],
+    "what_changed": "The announcer's \"Continue?\" is out of the sound mix; the other 27 cues, the loudness (-15.77 LUFS) and the untouched original track under them are unchanged. The clip is the v2 picture with the new mix, because B is restaging the picture here; the on-screen CONTINUE? panel is B's and stays. The v2 mix is kept as media/sfx/Rewind_cinematic_sfx_mix_v2.mp3."
+  },
+  {
+    "note": "2:21 - arm patch text consistency",
+    "v2_time": "2:21",
+    "shots": [
+      "G1",
+      "G2",
+      "G3"
+    ],
+    "status": "done",
+    "after": "media/reviews/v3/A/0221_arm_patch.mp4",
+    "before_range": [
+      141.0,
+      148.5
+    ],
+    "what_changed": "All three shots are new takes, and the sleeve roundel is re-lettered `1420 / MHz` in every frame of each (tracked on the sleeve; the clip's own ring and shading are kept), so it reads the same from 141.00 to 148.08. The new takes also carry the two-pencil canon: two crossed pencils in the bun in G1; in G2 she pulls the pale-blue-eraser (rainbow) pencil and the pink-eraser one slips out of the falling bun and drifts off frame; in G3 she draws with the rainbow pencil and the stroke is a rainbow-cored band. Not fixed: the roundel on the tiny Jade sprite in M1-M3 (about 9 px across, too small to hold lettering). The clip starts at 141.00 because E8 before it is B's shot and lives in B's timeline. The v2 takes are still on disk; switching back is one line per shot in render/timeline/E.js. You chose the v3 striped rainbow stroke at 2:26."
+  },
+  {
+    "note": "3:21 - love the color and change in art style, no hime bangs, curtain bangs like in the other scenes, keep jacket styling consistent even though the world is colorful, shirt is still mock neck",
+    "v2_time": "3:21",
+    "shots": [
+      "F7c (F7_04, F7_13)"
+    ],
+    "status": "done",
+    "after": "media/reviews/v3/A/0321_curtain_bangs.mp4",
+    "before_range": [
+      200.24,
+      202.02
+    ],
+    "what_changed": "New take from an edited keyframe: centre part and curtain bangs, canon jacket (one orange band, pale-blue dot, 1420 / MHz roundel on her left sleeve, no extra patches), black mock-neck top. Sky, pose and colours kept."
+  },
+  {
+    "note": "3:05 - idea: what if, we see her swinging a pencil as though a sword but it turns into a drawing/writing motion, and the core of the pencil is rainbow colored?",
+    "v2_time": "3:05",
+    "shots": [
+      "F5a",
+      "F7_11"
+    ],
+    "status": "done",
+    "after": "media/reviews/v3/A/0305_sword_to_drawing.mp4",
+    "before_range": [
+      183.56,
+      187.08
+    ],
+    "what_changed": "New take (F5a take 5): she winds the giant pencil back like a two-handed sword, slashes with a rainbow arc in its wake, and the swing turns into drawing: she guides the point like a pen and it draws a rainbow line up across the clock. The pencil is the rainbow pencil (pale-blue eraser); curtain bangs and mock neck fixed in the same pass. The point itself shows as a sparkle more than a visible rainbow core; the line carries the rainbow. F6a's loop round the clock is now a thin rainbow-cored line so it follows on."
+  },
+  {
+    "note": "3:13 - great colors - good time for all of them to all be traveling clockwise instead of going from down to up, and for it to be an actual infinite staircase, Escher style (do as many web searches as you want for a reference on how to draw one)",
+    "v2_time": "3:13",
+    "shots": [
+      "F6b",
+      "F7_03"
+    ],
+    "status": "done",
+    "after": "media/reviews/v3/A/0313_infinite_staircase.mp4",
+    "before_range": [
+      192.34,
+      195.42
+    ],
+    "what_changed": "The clock face now carries a real Penrose staircase (Escher's Ascending and Descending): a 22-step spiral that rises five treads a lap and only closes from one viewpoint. Its geometry is computed exactly, then redrawn by the image model as carved stone in the shot's coloured-pencil-and-engraving hand (checked tread by tread). Fifteen ink-engraved agents walk it one step per beat, all clockwise, which I measured on the rendered frames by tracking three agents over four beats. The clunk on the beat is a flash, shake and punch-in."
+  },
+  {
+    "note": "an idea: books and other tabletop objects alongside buildings",
+    "v2_time": "",
+    "shots": [
+      "F5b",
+      "F5a",
+      "F6b",
+      "F7c"
+    ],
+    "status": "done",
+    "after": "media/reviews/v3/A/0307_desk_skyline.mp4",
+    "before_range": [
+      187.08,
+      188.84
+    ],
+    "what_changed": "Giant books, a mug of pencils, ink bottles and a ruler now stand among the towers in the boss section's establishing wide (F5b, this clip), and in the sword, staircase and gold-sky shots. The colour-flood skyline (2:49) was left as it was."
+  },
+  {
+    "note": "3:40 - jacket consistency, and putting hair in updo with pencil – do as many google searches as you need to to see how that actually works because this is incorrect, and the door opens the wrong way, and the label on the door is weird (may as well have the information in subtitle format)",
+    "v2_time": "3:40",
+    "shots": [
+      "O2"
+    ],
+    "status": "done",
+    "after": "media/reviews/v3/A/0340_defense_door.mp4",
+    "before_range": [
+      216.9,
+      224.0
+    ],
+    "what_changed": "Jacket back is the single pale-blue circle and orange bands (the invented emblem is gone). The updo now shows the securing itself: she holds the coiled bun with one pencil already through it, slides the second pencil through the coil so the two cross, lets go and it holds. Then she takes the knob and pushes the door inward on its left hinges into the lit room, on the beat, and is in the doorway at the hard cut. Nothing is written on the door; 'Dissertation defense, 9:00 AM' is a subtitle-style line in the lyric face. The gather-and-twist before the coil is not shown (there is no time for it without taking from the staircase pull-back before it); the earlier take with the bun already pinned is kept as a fallback."
+  },
+  {
+    "note": "3:21 - love the color and change in art style, no hime bangs, curtain bangs like in the other scenes, keep jacket styling consistent even though the world is colorful, shirt is still mock neck",
+    "v2_time": "3:18",
+    "shots": [
+      "F7b"
+    ],
+    "status": "done",
+    "after": "media/reviews/v3/A/0318_grin_f7b.mp4",
+    "before_range": [
+      198.48,
+      199.38
+    ],
+    "what_changed": "Her grin (one beat): new take with the centre part and curtain bangs, mock neck, and a clean 1420 / MHz patch on her left sleeve. The clip also shows the staircase's one-beat reprise right after it."
+  },
+  {
+    "note": "3:21 - love the color and change in art style, no hime bangs, curtain bangs like in the other scenes, keep jacket styling consistent even though the world is colorful, shirt is still mock neck",
+    "v2_time": "3:29",
+    "shots": [
+      "F8",
+      "F6a",
+      "F7e",
+      "F7b"
+    ],
+    "status": "done",
+    "after": "media/reviews/v3/A/0323_audit_one_pencil_bangs.mp4",
+    "before_range": [
+      202.88,
+      211.64
+    ],
+    "what_changed": "Audit of every other final-drop cut for the same faults. Fixed with new takes: F8 (blunt fringe, red cuffs and headphones), F6a (blunt fringe), F7b, her grin (no bangs, garbled sleeve patch; see 0318_grin_f7b.mp4), and F7e, where the merged Jade held a pencil in each hand and now holds one. One small slip remains: in the new 3:21 shot the pale-blue dot sits on her right chest instead of her left."
+  },
+  {
+    "v2_time": "0:39",
+    "shots": [
+      "P1b",
+      "P4"
+    ],
+    "status": "done",
+    "note": "at 0:39, there's a clip at “with no warning I get shot” where the gun is pulled on her and her head is too high so it's impossible for her to fit inside the car. it might be better to show the agent reaching for the gun, and just cut to the colorful pixel burst.",
+    "after": "media/reviews/v3/A/0039_agent_reach.mp4",
+    "before_range": [
+      37.5,
+      41.5
+    ],
+    "what_changed": "The gun pointed into the car is gone. After her eyes widen, the film cuts back to the agent pushing in on his hand at the holster inside his jacket (the same take as the first reach), then a two-frame white hit-flash straight into the colour burst on 'shot'. The three-frame gun-flash still before the burst is gone too."
+  },
+  {
+    "note": "what if the fleet of cars pursuing her car were tesselating (and also transforming) like another Escher artwork?",
+    "v2_time": "1:20",
+    "shots": [
+      "V2c7"
+    ],
+    "status": "done",
+    "after": "media/reviews/v3/A/0120_tessellation.mp4",
+    "before_range": [
+      79.0,
+      83.5
+    ],
+    "what_changed": "The 1:20 high wide (80.44–82.22) is rebuilt: a new empty-road plate of Lake Shore Drive at night with her white car alone, and the pursuing fleet drawn by a new engine module as a true tiling. Far down the road black sedan-shaped tiles interlock with white sedan-shaped tiles; toward camera the black ones rise into solid sedans with strobes, the white ones thin into road hatching, and the far end dissolves into wave lines. The shot opens zoomed into the flat pattern and pulls out to reveal her car as the one white car that is real, while the fleet steps closer on each beat. Geography is kept: she drives south, the camera looks back north, so the lake is on screen-right and the park on screen-left (the plate is not mirrored); the HUD sits on an ink corner chip for this shot because the lake behind it is bright. Weak: the solid sedans are procedural white-line drawings and look flatter than the generated engraving around them; in the wide the far tiles are small enough to read as a checkerboard of car icons (the car shape of the tile reads in the first half second); the HUD chip is a visible black panel in the top-right corner."
+  },
+  {
+    "note": "Follow-up, not a separate note of Jade's: her two-pencil decision (0:25) and the restaged ID shots (0:35, 0:37) left the shot before them, the agents at her window (D6, 0:32), with one pencil and a muddled layout.",
+    "v2_time": "0:32",
+    "shots": [
+      "D6"
+    ],
+    "status": "done",
+    "after": "media/reviews/v3/A/0032_window_d6.mp4",
+    "before_range": [
+      29.74,
+      36.3
+    ],
+    "what_changed": "Regenerated from the same three.js blockout as the ID shots: the camera is in the passenger seat, she sits at the wheel of the left-hand-drive car with two pencils in her bun, and the agents stand at her driver's window with the residue meter held in. It looks the same way as the 0:37 shot and the 0:35 shot is its reverse, so the three shots read as one place. Weak: seen from the side the two pencils make a narrow V rather than a clear X, and the second eraser reads grey-blue."
+  },
+  {
+    "note": "Follow-up, not a separate note of Jade's: checked against her 1:26 left-hand-drive note and her two-pencil decision (0:25) for the shot where her eyes widen (P2, 0:39).",
+    "v2_time": "0:39",
+    "shots": [
+      "P2"
+    ],
+    "status": "done",
+    "after": "media/reviews/v3/A/0039_eyes_p2.mp4",
+    "before_range": [
+      36.3,
+      42.38
+    ],
+    "what_changed": "On the take at full size the shot was already left-hand drive (the camera is at the driver's-door front quarter, wheel on screen-left, passenger door beyond her), so nothing was flipped. What changed: the keyframe was edited to two crossed pencils (pink and pale-blue erasers) and one new take made, and the shot is framed lower so the pencils are inside the letterbox; the sleeve roundel is now out of frame. The clip also shows the mote burst now firing on the hit at 0:40."
+  }
+]

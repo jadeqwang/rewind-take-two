@@ -44,3 +44,7 @@ Paper margin cropped.
  "matte": "media/shots/F8/take_3_matte/matte.mp4"
 }
 ```
+
+## v3 revision pass (2026-10-11, stream F)
+
+Audit after Jade 3:21. Keyframe `kf_v3_F8_final.png` = nano edits r1-r3 of `kf_r2.jpg` plus local touch-ups (head region from r2 because r3 put a second pair of headphones on her ears; red headphones and straps to orange; 1420 / MHz roundel). **take_4** (4 s) used from 0.5 s: the ghosts are absent at the start and fade in over the first second. v2 take 3 kept.

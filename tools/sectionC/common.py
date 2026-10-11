@@ -70,7 +70,9 @@ SIDE = ("Exact side view, the camera perpendicular to the road like a 2D side-sc
 def ref(path, max_side=1536):
     src = os.path.join(ROOT, path)
     os.makedirs(REFDIR, exist_ok=True)
-    out = os.path.join(REFDIR, os.path.splitext(os.path.basename(path))[0] + f"_{max_side}.jpg")
+    # keyed by folder + file name: every clip has a kf_n2.jpg, and a name-only key handed V2c5's keyframe to V2d2/V2f2
+    out = os.path.join(REFDIR, os.path.basename(os.path.dirname(path)) + "__" +
+                       os.path.splitext(os.path.basename(path))[0] + f"_{max_side}.jpg")
     if not os.path.exists(out):
         im = Image.open(src)
         if im.mode in ("RGBA", "LA", "P"):

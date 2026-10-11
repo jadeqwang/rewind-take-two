@@ -46,3 +46,7 @@ The pencil is oversized (anime sword exaggeration); deliberate. Clock face has d
  "matte": "media/shots/F5a/take_4_matte/matte.mp4"
 }
 ```
+
+## v3 revision pass (2026-10-11, stream F)
+
+Jade 3:05. Keyframes `kf_v3_F5a_a_r2.jpg` (wind-up; rainbow pencil with pale-blue eraser and rainbow core, curtain bangs, mock neck, desk objects in the skyline) and `kf_v3_F5a_b.jpg` (the swing has become drawing), nano-banana-pro edits, prompts in `kf_prompt.txt` and `tools/sectionF/v3.py`. **take_5** (Seedance 2.0 720p 5 s, first + last frame): the take opens on the *last* keyframe, then winds back (0.9-1.2 s), slashes (1.4-2.5 s) and draws a rainbow line up across the clock (2.5-4.9 s). Used 1.4-4.92 s at 1.0; recap F7_11 uses 1.6 s. De-red with `--protect-rainbow`. v2 take 4 kept.

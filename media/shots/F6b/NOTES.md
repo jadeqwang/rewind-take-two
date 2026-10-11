@@ -41,3 +41,35 @@ Clear one-idea image.
  "matte": "media/shots/F6b/take_2_matte/matte.mp4"
 }
 ```
+
+## v3 revision pass (2026-10-11, stream F)
+
+Jade 3:13. No video take: still plate `kf_v3_F6b_plate.jpg` (empty clock face, bigger clock, desk objects), cropped to `kf_v3_F6b_plate_crop.png` and de-reddened to `kf_v3_F6b_plate_crop_dered.png`. The Penrose staircase and the agents are drawn by `tools/sectionF/modules/penrose_march.js` (see `penrose()` in `tools/sectionF/edl.py`). v2 take 2 kept.
+
+### v3 follow-up: restyle (rev-A review)
+
+- **Stairs:** `tools/sectionF/penrose_guide.py` draws the engine's exact geometry at the magic angle onto the empty-clock
+  plate (`kf_v3_F6b_guide.png`, step table `kf_v3_F6b_steps.json`). nano-banana-pro redrew it in the plate's hand
+  (`kf_v3_F6b_redraw.png` → `_crop.png` → `_crop_dered.png`, tag `revA_f_kf_F6b_redraw`). Checked tread by tread by
+  overlaying the 22 exact tread outlines on the redraw: every block in place, 7 / landing / 2 / landing / 2 / landing /
+  7 / landing, each flight climbing, the loop closing at the seam (step 21 → step 0). Accepted.
+- **Agents:** ink-engraved sprite sheet (`kf_v3_F6b_agents.jpg`, refs `agent_turnaround_male`, `agent_action`) cut by
+  `tools/sectionF/agent_sprites.py` into `agents/front_0-3.png`, `agents/back_0-2.png` (paper halo, feet on the bottom
+  edge, 280 px tall). `penrose_march.js` places them on the tread centres, front view on flights A/D, back view on B/C,
+  flipped for the flights that run screen-left, two walk drawings per step, one step per beat.
+- **Off-angle opening dropped:** the redraw exists only at the magic angle, so the shot holds it; the 194.10 clunk is the
+  flash + shake + punch.
+- **"All clockwise", measured on the rendered clip** (`media/reviews/v3/A/0313_infinite_staircase.mp4`, frames 0.32 s
+  after four successive beats; `tools/sectionF/penrose_track.py`: dark-blob detection on the clock face, the tread table
+  fitted to the blobs, fit error 4.6–6.1 px at 540p). Screen positions are preview px (960×540).
+
+  | Agent | 192.66 | 193.10 | 193.54 | 193.98 | Screen direction |
+  |---|---|---|---|---|---|
+  | A1 (flight A, near right) | step 4 (521, 279) | 5 (498, 285) | 6 (476, 298) | 7 (450, 308) | down-left: right side → bottom |
+  | B1 (flight B → C, left) | step 10 (369, 273) | 11 (335, 252) | 12 (not detected: overlaps the agent in front; seen by eye on the step) | 13 (383, 199) | up-left then up-right: bottom → left → top |
+  | D1 (flight D, far right) | step 16 (469, 198) | 17 (495, 206) | 18 (520, 212) | 19 (550, 216) | down-right: top → right |
+
+  Whole-frame check: the set of occupied treads maps onto the next beat's best with a shift of +1 tread on all three
+  beat pairs (11, 11, 13 matches vs ≤ 7 for −1 and 0). Right → bottom → left → top on screen is clockwise.
+- Fallbacks kept: `kf_v3_F6b_plate_crop_dered.png` with the engine-drawn stairs (set `stairs: true`, no `sprites`, plate
+  back to that file in `edl.py`), and v2 `take_2_engraved_dered.mp4`.

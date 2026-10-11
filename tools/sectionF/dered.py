@@ -28,6 +28,22 @@ def red_mask(hsv, width=15):
     return w * np.clip((s - 0.30) / 0.1, 0, 1) * (v > 0.15), d, s
 
 
+def rainbow_mask(rgb, win=25, bins_needed=4):
+    """v3: 1 where the picture is a rainbow (the rainbow pencil's point and the line it draws): four or more of the
+    six 60-degree hue bins are present, saturated, inside a small window. Flat colour fields and the Kandinsky rings
+    (one or two hues per window) do not qualify, so they still lose their red."""
+    hsv = cv2.cvtColor(rgb, cv2.COLOR_RGB2HSV)
+    h, s, v = hsv[..., 0].astype(np.int32) * 2, hsv[..., 1] / 255.0, hsv[..., 2] / 255.0
+    sat = (s > 0.38) & (v > 0.45)
+    n = np.zeros(h.shape, np.float32)
+    for b in range(6):
+        m = (sat & (((h + 30) % 360) // 60 == b)).astype(np.float32)
+        n += (cv2.blur(m, (win, win)) > 0.035).astype(np.float32)
+    m = (n >= bins_needed).astype(np.float32)
+    m = cv2.dilate(m, np.ones((15, 15), np.uint8))
+    return cv2.GaussianBlur(m, (0, 0), 4)
+
+
 def fix(rgb, mode, jade=None):
     hsv = cv2.cvtColor(rgb, cv2.COLOR_RGB2HSV_FULL if False else cv2.COLOR_RGB2HSV)
     w, d, s = red_mask(hsv)
@@ -58,7 +74,19 @@ def main():
     ap.add_argument("--mode", default="orange")
     ap.add_argument("--check", action="store_true")
     ap.add_argument("--matte", help="Jade matte video (white = Jade): excluded from the rotation")
+    ap.add_argument("--protect-rainbow", action="store_true",
+                    help="v3: leave the rainbow pencil's point and line alone (canon: the one sanctioned spectrum)")
     a = ap.parse_args()
+    if a.input.lower().endswith((".png", ".jpg", ".jpeg")):          # v3: a still plate
+        rgb = cv2.cvtColor(cv2.imread(a.input), cv2.COLOR_BGR2RGB)
+        if a.check:
+            print(f"{a.input}: red fraction {frac(rgb):.4f}")
+            return
+        o = fix(rgb, a.mode, rainbow_mask(rgb) if a.protect_rainbow else None)
+        out = os.path.splitext(a.input)[0] + "_dered.png"
+        cv2.imwrite(out, cv2.cvtColor(o, cv2.COLOR_RGB2BGR))
+        print(f"wrote {out}  (red fraction {frac(rgb):.4f} -> {frac(o):.4f})")
+        return
     c = av.open(a.input)
     vs = c.streams.video[0]
     W, H, fps = vs.codec_context.width, vs.codec_context.height, vs.average_rate
@@ -83,7 +111,12 @@ def main():
                 jade = np.clip(cv2.dilate(mm, np.ones((9, 9), np.uint8)) * 1.5, 0, 1)
             except StopIteration:
                 pass
-        o = fix(fr.to_ndarray(format="rgb24"), a.mode, jade)
+        rgb = fr.to_ndarray(format="rgb24")
+        keep = jade
+        if a.protect_rainbow:
+            rb = rainbow_mask(rgb)
+            keep = rb if keep is None else np.maximum(keep, rb)
+        o = fix(rgb, a.mode, keep)
         if i % 6 == 0:
             worst = max(worst, frac(o))
         p.stdin.write(o.tobytes())

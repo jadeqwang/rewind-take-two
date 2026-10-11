@@ -159,3 +159,50 @@ That includes the polish pass ($7.93) and round 2 (about $4.7: 5 keyframe edits/
   `o2_plaque.json` (notice track), `crops.json`.
 - Media (gitignored): `media/shots/F*/` and `O2/` (`kf_*`, `take_N.mp4`, `take_N_engraved.mp4`, `take_N_matte/matte.mp4`,
   wipes and twins), `media/shots/F_style/`, raw takes in `media/gen/F*/`.
+
+## v3 revision pass (2026-10-11, stream F of instance A; Jade's notes at 3:05, 3:13, 3:21 and the desk-objects idea)
+
+Spend $4.91 (12 nano-banana-pro edits, 5 Seedance 2.0 takes incl. the F7e retake; tags `revA_f_*`). Tools: `tools/sectionF/v3.py` (keyframe
+edits), `v3_local.py` (free touch-ups: the `1420 / MHz` roundel, eraser colour, a head region pasted from another
+round), `modules/penrose_march.js` (the staircase), `dered.py --protect-rainbow` and still-image support.
+v2 takes are untouched; `edl.py` now points at the new ones.
+
+| Cut | v2 | v3 | What changed |
+|---|---|---|---|
+| F5a 183.56–187.08 (+ recap F7_11) | take 4 | **take 5** (in 1.4) | 3:05. The rainbow pencil (pale-blue eraser, rainbow core). She winds it back like a sword, slashes (a rainbow arc in its wake), and the swing turns into drawing: she guides the point like a pen and it draws a rainbow line up across the clock. Curtain bangs, mock neck. |
+| F6a 190.58–192.34 (+ recap F7_12) | take 3 | **take 4** (0–1.15 s at 0.65×) | Audit fix: blunt fringe → curtain bangs; mock neck; the loop is a thin rainbow-cored line so it follows F5a. |
+| F6b 192.34–195.42, F7_03 199.38–200.24 | take 2 (generated flat walkway) | still plate `kf_v3_F6b_plate_crop_dered.png` + `penrose_march.js` | 3:13. A real Penrose staircase: a 3D spiral of 22 steps (flights of 7, 2, 2, 7 treads plus four landings) that rises 5 units a lap and ends 5·(1,1,1) in front of its own start, so it closes only at the isometric angle. 15 agents march it one step per beat, all clockwise. The shot starts 8° off the magic angle (the top step hangs over the bottom step) and snaps shut on the 194.10 clunk. |
+| F7c: F7_04 200.24–202.02, F7_13 | take 1 | **take 2** | 3:21. Curtain bangs, canon jacket (one band, pale-blue dot, roundel on her left sleeve), mock-neck top, pale-blue eraser. Klimt sky and pose kept. |
+| F8 209.90–211.64 | take 3 | **take 4** (in 0.5) | Audit fix: blunt fringe → curtain bangs; mock neck; white cuffs and hem; orange headphones. The ghosts fade in over the first second. `never stop` moved to clear sky (1765, 84). |
+
+**Desk objects** (Jade's idea): giant books, a mug of pencils, an ink bottle, a ruler and an eraser stand among the
+towers in F5a, F5b, F6b and F7c. F1 is left alone (its wipe pipeline isn't worth rebuilding for this).
+
+**How the first/last-frame take behaved (F5a):** Seedance 2.0 opened on the *last* keyframe and then played its own
+wind-up, slash and drawing. The used range (1.4–4.9 s) is exactly the beat asked for, but do not rely on
+`last_frame_image` ordering.
+
+**Audit of the other F cuts** (hair / jacket / top / in-hand pencil, v2 frames at 1080p):
+- F1, F2, F2b, F3, F4, F5b, F6c, F7a, F7_08: curtain bangs or face not visible, outfit on model, pencil reads as a plain yellow pencil. Fine.
+- F7b (198.48–199.38, her grin): v2 had no bangs (hair blown back) and a garbled roundel. Fixed: take 3.
+- F7e (203.76–205.52): in v2 the merged Jade held a pencil in **each** hand for about 0.9 s. Fixed: **take 2** (same keyframe, prompt asks for one pencil after the merge), and its paper margin is now cropped (`crops.json`, measured by hand: `crops.py`'s flat-strip test misses grainy paper).
+- F5c, F7d: no Jade.
+
+**Weak:** the staircase and agents are drawn by the engine in a cleaner, flatter hand than the generated plate round
+them (it is what makes the geometry exact and the direction certain). F6a goes soft in its last few frames (the take
+orbits behind her). In F5a the pencil's point shows as a sparkle more than a visible rainbow core; the line it leaves
+carries the rainbow.
+
+### v3 follow-ups (rev-A review)
+
+- **F6b restyle:** the engine's exact staircase was redrawn by the image model in the plate's hand (checked tread by
+  tread against the guide) and the pictogram agents were replaced by ink-engraved sprites stepping on the known treads.
+  The off-angle opening is gone (the redraw exists only at the magic angle); the 194.10 clunk is flash + shake + punch.
+  "All clockwise" was measured on the rendered clip (three tracked agents over four beats, `media/shots/F6b/NOTES.md`).
+- **F6a** is frame-blended (`frameBlend`) at its 0.65× rate; before, every third frame repeated.
+- **F7b** take 3: curtain bangs, mock neck, canon roundel. **F5b** take 3: desk objects in the skyline.
+- **Seedance 2.0 frame cadence:** the takes repeat roughly every fourth frame (F7a, F7b v2 and v3, …), i.e. about 18
+  distinct drawings a second. It is a property of the generator, present in v2 as well; the first frame of a take is
+  also repeated, so new cuts start at 0.05 s.
+- **Not fixed:** in F7c take 2 the pale-blue dot sits on her right chest (canon: left).
+- Spend for the whole v3 pass: $6.79.

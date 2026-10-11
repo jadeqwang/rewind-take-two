@@ -332,6 +332,141 @@ jade_day("V2k3_n4", SIDE + "A close tracking shot in a grass field: the anime gi
          "her head snapping toward the far side in shock. " + BUN + "Running neck and neck with her on her far side, an "
          "agent in a black suit and black sunglasses keeps pace effortlessly, blank-faced.", agents=True)
 
+# ------------------------------------------------------------------------------------------- v3 revision pass (rev-A, stream V2)
+# Jade's v2 notes: 1:24 the hang is too happy (terrified), 1:26 the car is left-hand drive. Canon from
+# docs/revisions/A_streams.md: TWO crossed pencils in the bun, patch on her LEFT sleeve only. Tags revA_v2_*.
+PENCILS2 = ("Her hair is up in a loose bun with exactly TWO classic yellow hexagonal wooden pencils pushed through it, "
+            "crossed in an X: both eraser ends point up out of the top of the bun and both sharpened points come out of "
+            "the underside of the bun. Each pencil is ONE perfectly straight rigid stick from eraser to point: the part "
+            "hidden inside the bun lines up exactly with its two visible ends, never bent, never broken into two "
+            "pieces. One pencil has a pink eraser and a dark graphite point; the other has a pale-blue eraser and a "
+            "point whose core is a tiny multicolour swirl. Both have a silver ferrule. Exactly two pencils, no more. ")
+JADE3 = JADE.replace("long black hair worn up in a loose bun with a yellow wooden pencil stuck through the bun; ALL of "
+                     "her long hair is gathered up into the bun, only a few short strands frame her face, no long hair "
+                     "hanging down her back. ",
+                     "long black hair with a centre part and curtain bangs (long face-framing strands swept to both "
+                     "sides, never a straight fringe), ALL of the rest gathered up into a loose bun, no long hair "
+                     "hanging down her back. " + PENCILS2)
+assert JADE3 != JADE
+LHD = ("The car is an American LEFT-HAND-DRIVE car: the steering wheel and the driver's seat are on the car's left "
+       "side. ")
+KEEP_EDIT = ("Redraw the FIRST attached image with exactly the same composition, camera angle, framing, lighting and the "
+             "same black-and-white M.C. Escher wood-engraving rendering of the world, the same full-colour anime girl "
+             "at the same size and place. Change ONLY what is described below. ")
+
+
+def v3(jid, body, refs, girl=True):
+    job(jid, NBP, body + " " + (JADE3 if girl else "") + STYLE, refs)
+    J[jid]["tag"] = "revA_v2_" + jid
+
+
+v3("V2d2_v3", KEEP_EDIT + "The white sedan still hangs high in mid-air between the two raised bridge leaves over the "
+   "black river. Change the girl's acting: she is TERRIFIED, not happy. She is no longer leaning out and grinning: she "
+   "sits inside at the wheel, seen clearly through the open driver's window, both hands clamped white-knuckled on the "
+   "steering wheel, shoulders hunched up, pressed back into her seat; her face is turned toward us in three-quarter "
+   "view with eyes wide open and tiny pupils, eyebrows raised and pinched together, mouth wide open in a scream, a "
+   "sweat drop on her cheek, exactly the 'scared' expression of the second attached sheet but more extreme. Her face "
+   "is at least as large in the frame as in the first image. " + NIGHT,
+   ["media/shots/V2d2/kf_n2.jpg", "media/design/jade_expressions.png", JADE_SHEET])
+E2 = ("She has just landed a huge jump and is shaken: a shaky exhale of relief, lips parted, blowing out a breath, brows "
+      "still raised and worried, eyes wide and glancing up toward the rearview mirror, shoulders dropping, both hands "
+      "still gripping the wheel hard. Not laughing, not grinning. ")
+v3("V2e2_v3a", NIGHT + LHD + "A front three-quarter view of the driver from OUTSIDE, just ahead of the hood on the "
+   "passenger side, looking back through the windshield at night. Screen layout: the anime girl sits behind the "
+   "steering wheel in the RIGHT half of the frame, large, from the waist up, the steering wheel directly in front of "
+   "her chest; the passenger seat in the LEFT half of the frame is empty; the rearview mirror hangs at the top centre. "
+   "She faces forward, which reads as toward the camera and slightly toward screen right. Her left arm (on the "
+   "screen-right side, next to her driver's door and window) shows the round '1420 MHz' roundel; her right arm has no "
+   "patch. " + E2 + "A soft white glow from the dashboard lights her face and hands; through the side windows the "
+   "engraved night city streaks past with white starburst streetlights.", [JADE_SHEET, "media/design/jade_expressions.png"])
+v3("V2e2_v3b", "Use the FIRST attached image as the exact car interior and camera: a side profile view from the "
+   "passenger seat of a left-hand-drive sedan at night, the anime girl driving on the far side, facing screen right, "
+   "the steering wheel in front of her on the right, her driver's window behind her, the bound dissertation on the "
+   "passenger seat in the foreground. Frame her a little closer, from the waist up, her face in three-quarter profile "
+   "turned slightly toward the camera so her expression reads. The sleeve nearest the camera is her RIGHT sleeve: it "
+   "is plain white with the orange band and has NO round patch on it. " + E2 + NIGHT + LHD,
+   ["media/shots/V2a3/kf_c4.jpg", JADE_SHEET, "media/design/jade_expressions.png"])
+v3("V2f2_v3", KEEP_EDIT + "1. Her bun: replace the pencil with the two crossed pencils described below, each one "
+   "straight. 2. Her jacket was drawn mirrored; correct it: the round '1420 MHz' roundel is on her LEFT upper sleeve "
+   "(the arm on the screen-right side, next to the mirror) and her right sleeve (screen left) is plain with only the "
+   "orange band; the small pale-blue dot is on her left chest (screen right of the zipper). 3. The cars in the mirror "
+   "are plain boxy black 1990s sedans with no badge or emblem on the grille. Everything else stays. " + NIGHT,
+   ["media/shots/V2f2/kf_n2.jpg", JADE_SHEET])
+v3("V2c5_v3", KEEP_EDIT + "1. Her bun: replace the pencil with the two crossed pencils described below, each one "
+   "straight, clearly visible from behind. 2. We see her from behind her left shoulder, so the sleeve toward the "
+   "centre of the frame is her RIGHT sleeve: remove the round patch from it, leaving plain white sleeve with the "
+   "orange band. The large pale-blue circle on the back of the jacket stays. Everything else stays: the wheel on the "
+   "left side of the car, the round speedometer, the rising bridge leaf through the windshield. " + NIGHT + LHD,
+   ["media/shots/V2c5/kf_n2.jpg", JADE_SHEET])
+v3("V2a3_v3", KEEP_EDIT + "1. Her bun: replace the pencil with the two crossed pencils described below, each one "
+   "straight. 2. The sleeve nearest the camera is her RIGHT sleeve: remove the round patch from it, leaving plain "
+   "white sleeve with the orange band. 3. Her expression: total focus, jaw set, eyes on the road. Everything else "
+   "stays. " + NIGHT + LHD, ["media/shots/V2a3/kf_c4.jpg", JADE_SHEET])
+
+# v3 round 2: V2d2_v3 / V2f2_v3 (and the first try of these edits, kf_v3b in V2d2/V2f2) came back as V2c5's composition:
+# common.ref() cached resized refs by file name only, so every clip's kf_n2.jpg resolved to one file (fixed in
+# common.py). V2a3_v3 kept the patch. Plain single-reference edits.
+EDIT = ("Edit the attached image. Keep the whole picture exactly as it is: same composition, same framing, same "
+        "black-and-white wood-engraving rendering of the world, same full-colour anime girl in the same place at the "
+        "same size, same outfit and colours. Change ONLY the following. ")
+PENCILS_EDIT = ("Her black hair bun now has exactly two classic yellow wooden pencils pushed through it, crossed in an "
+                "X, erasers up (one pink eraser, one pale-blue eraser), sharpened points coming out below the bun; each "
+                "pencil is a single straight stick whose two visible ends line up exactly. ")
+
+
+def edit(jid, body, ref):
+    job(jid, NBP, EDIT + body + "No text or letters anywhere except the jacket patch. Full bleed, 16:9, no border.", [ref])
+    J[jid]["tag"] = "revA_v2_" + jid
+
+
+edit("V2d2_v3c", "The anime girl in the car's open window no longer grins or leans out happily. She is TERRIFIED: eyes "
+     "wide open with tiny pupils, eyebrows raised and pinched together, mouth wide open in a scream, a sweat drop on "
+     "her cheek, shoulders hunched up, both hands clinging to the window sill. Her face stays turned toward us and "
+     "stays the same size. " + PENCILS_EDIT, "media/shots/V2d2/kf_n2.jpg")
+edit("V2f2_v3c", "1. " + PENCILS_EDIT + "2. Her jacket: the round '1420 MHz' patch on the sleeve at the left edge of the "
+     "picture is removed, leaving that sleeve plain white with its orange band. The small pale-blue dot on her chest "
+     "moves to the other side of the zipper (the side nearer the mirror). 3. The cars in the mirror have plain grilles "
+     "with no badge or emblem. ", "media/shots/V2f2/kf_n2.jpg")
+edit("V2a3_v3b", "Her expression: total focus, jaw set, mouth closed, brows low, eyes on the road ahead; no sweat drop, "
+     "no breath puff. She leans slightly forward over the wheel. The sleeve nearest the camera stays plain white with "
+     "the orange band and no patch. ", "media/shots/V2e2/kf_v3b.jpg")
+
+# v3 round 3: the two shots where the bun is big in frame, matched to rev-A's two-pencil reference sheet.
+BUN_REF = "media/design/jade_bun_two_pencils.png"
+BUN_EDIT = ("Edit the FIRST attached image. Keep the whole picture exactly as it is: same composition, framing, "
+            "black-and-white wood-engraving world, the same full-colour anime girl, pose, outfit and colours. Change "
+            "ONLY the pencils in her hair bun: make them the two crossed pencils of the SECOND attached image (the bun "
+            "reference sheet): two classic yellow hex pencils in a narrow X at the back of the bun, erasers up, one "
+            "with a pink eraser and one with a pale-blue eraser, silver ferrules, points leaving the underside of the "
+            "bun; each pencil one straight stick whose visible ends line up. Do not copy anything else from the "
+            "second image. No text except the jacket patch. Full bleed, 16:9, no border.")
+for _jid, _src in (("V2c5_v3d", "media/shots/V2c5/kf_v3.jpg"), ("V2f2_v3d", "media/shots/V2f2/kf_v3c.jpg")):
+    job(_jid, NBP, BUN_EDIT, [_src, BUN_REF])
+    J[_jid]["tag"] = "revA_v2_" + _jid
+
+# v3: V2h1 respawn restaged on B's L station platform (B's race V2i now starts there; set ref = B's first keyframe).
+job("V2h1_v3", NBP, DAY + "Use the FIRST attached image as the exact set and camera: the same elevated L station platform "
+    "seen exactly side-on like a 2D side-scrolling game, the same wooden plank deck, wooden canopy on cast-iron posts, "
+    "the two blank hanging sign boards (keep them blank), the lake horizon behind, light from the upper left. Remove "
+    "the two men in suits: nobody is on the platform except the girl. Move the camera closer: the anime girl is about "
+    "two thirds of the frame height, left of centre, already sprinting hard from left to right, mid-stride, leaning "
+    "forward, arms pumping, open platform ahead of her on the right. Just behind her at the left, planted between the "
+    "deck planks, a small checkpoint flag on a thin pole (a plain triangular pennant, no markings). She has just "
+    "materialized: a few glowing orange and pale-blue square motes swirl around her. We see her RIGHT side: the sleeve "
+    "nearest the camera is plain white with the orange band and has NO round patch (the roundel is on her far, left "
+    "sleeve, out of sight). Her bun carries the two crossed pencils exactly as in the SECOND attached image (the bun "
+    "reference sheet). " + JADE3 + STYLE,
+    ["media/shots/B_plat/kf_v1.png", BUN_REF, JADE_SHEET])
+J["V2h1_v3"]["tag"] = "revA_v2_V2h1_v3"
+
+# v3 round 4 (rev-A): Jade's review of take_3 at 1:24: "facial expression a little bit too screaming". Fear held in.
+edit("V2d2_v3d", "The anime girl's face only: she is no longer screaming. Her fear is held in: mouth closed in a tight, "
+     "trembling line (or lips barely parted in a sharp gasp), jaw clenched, eyes still wide open with small pupils, "
+     "eyebrows raised and pinched together, one sweat drop on her temple. Her hands still clutch the window sill and "
+     "her shoulders stay hunched. Everything else, including the two crossed pencils in her bun, stays exactly as it "
+     "is. ", "media/shots/V2d2/kf_v3c.jpg")
+J["V2d2_v3d"]["tag"] = "revA_v2_V2d2_v3d"
+
 if __name__ == "__main__":
     cmd = sys.argv[1] if len(sys.argv) > 1 else "list"
     if cmd == "list":

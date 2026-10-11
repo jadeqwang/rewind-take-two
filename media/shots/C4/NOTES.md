@@ -8,3 +8,8 @@
 
 Video prompt (take 2):
 > Night drive. The girl drives calmly, eyes on the road, hands steady on the wheel, one slow blink. Pools of white streetlight sweep across her, the dashboard and the dissertation on the seat, front to back, rhythmically; the car sways very slightly. Camera locked to the car, no camera move. Her face stays exactly as in the first frame: forehead smooth, brows relaxed, head keeps the first frame's angle, never a face close-up. Keep the exact drawing style of the first frame throughout: black-and-white wood engraving world, only the anime girl in color. No text, no letters, no subtitles, no logos, no watermark.
+
+## v3 revision (2026-10-11, stream V1A)
+
+- Two-pencil canon: `kf_v3_a.jpg` (nano-banana-pro edit of `kf_sdr1f.jpg`, two crossed pencils) → take 3; then `kf_v3_b.jpg` (roundel removed from her near/right sleeve: canon puts it on her left sleeve) → **take 4, chosen** (job `revA_v1a_C4b`).
+- Sticky-note track `track_note_v3b.json` (LK, held from frame 43 where it starts to drift; the plate is locked to the car).

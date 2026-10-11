@@ -44,3 +44,7 @@ Good energy; 'a single loop' became several, acceptable.
  "matte": "media/shots/F6a/take_3_matte/matte.mp4"
 }
 ```
+
+## v3 revision pass (2026-10-11, stream F)
+
+Audit after Jade 3:21. Keyframe `kf_v3_F6a_r2.jpg` (curtain bangs, mock neck, pale-blue eraser, thin rainbow-cored loop). **take_4** (4 s): used 0-1.15 s at 0.65x; it orbits behind her and softens after ~1.1 s. v2 take 3 kept.

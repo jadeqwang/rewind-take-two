@@ -27,7 +27,11 @@ for a, b, clip, take, cin, rate in rows:
 # the V2n freeze reuses V2m1
 uses.setdefault("V2m1", []).append(dict(timeline_in=111.22, timeline_out=112.66, take=1, in_sec=0.79, rate=0, note="freeze + negative"))
 
+ONLY = set(sys.argv[1:])   # optional clip filter: `notes.py V2d2 V2e2` rewrites only those clips' files
+
 for clip, us in sorted(uses.items()):
+    if ONLY and clip not in ONLY:
+        continue
     d = os.path.join(ROOT, "media/shots", clip)
     u = us[0]
     dur = (u["timeline_out"] - u["timeline_in"]) * (u["rate"] or 0)

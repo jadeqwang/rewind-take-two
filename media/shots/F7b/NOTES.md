@@ -41,3 +41,10 @@ Video cost for this shot: $1.20 (list-price estimate).
  "matte": "media/shots/F7b/take_2_matte/matte.mp4"
 }
 ```
+
+## v3 revision pass (2026-10-11, stream F)
+
+Audit after Jade 3:21 (v2 had no bangs and a garbled roundel). Keyframe `kf_v3_F7b.jpg` (nano edit of `kf_clean.jpg`:
+centre part and curtain bangs, mock neck, `1420 / MHz` roundel on her left sleeve, pale-blue dot on her left chest).
+**take_3** (4 s) used from 0.05 s (Seedance repeats its first frame). Existing crop still covers the paper margin.
+v2 take 2 kept.
