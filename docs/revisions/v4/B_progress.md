@@ -1,7 +1,7 @@
 # v4-B progress (everything except the singer)
 
 Brief: `docs/revisions/v4/B.md`. Rules: `docs/revisions/README.md`, `docs/revisions/v4/README.md`.
-A fresh session can carry on from this file alone. Last updated: 2026-10-11 18:47.
+A fresh session can carry on from this file alone. Last updated: 2026-10-11 19:02.
 
 ## Setup facts (saves re-discovering them)
 
@@ -19,8 +19,8 @@ A fresh session can carry on from this file alone. Last updated: 2026-10-11 18:4
 | 2 | 0:13 | Bean: start wide, move in | **plan + free previz ready** 18:10 (`docs/revisions/v4/plans/bean.md`, `media/reviews/v4/B/plans/bean/previz.mp4`); shown to Jade 18:12, waiting for her go ($1.44: one 4K wide plate outpainted from `plate_close_1_crop`). Build numbers are in the plan's "For the build" section. v4-A told the four singer details at 18:12. | `render/timeline/A.js` S1 |
 | 3 | 0:26 | plate `TVA 1729` | **done** 17:50 (sub-agent `v4B-plate`, $0): reads at 540p, small; alt with push in `0026_plate_alt_push.mp4`; write-up `docs/revisions/v4/plans/plate_d3.md`; reusable `tools/v4B/plate/plate.js` | `render/timeline/A.js` D3 |
 | 4 | 1:30 | car: over-the-shoulder, real mirror, TVA plates (Three.js) | **plan + Three.js blockout ready** 18:45 (`docs/revisions/v4/plans/car.md`, sheet `media/reviews/v4/B/plans/car/contact_sheet.jpg`, `animatic_A|B|C.mp4`, code `tools/v4B/car/`); shown to Jade 18:47, waiting for her pick (A/B/C) and go (about $1.80-3). v4-B recommends A with the over-shoulder shot starting at 89.26 so it gets 1.76 s instead of 0.88 s. | `render/timeline/C.js` V2f1/V2f2 |
-| 5 | 1:39 | gunfire: behind the agents, push in past shoulders | not started (plan to Jade first) | `render/timeline/_B_verse2.js` |
-| 6 | 1:41 | one fires, two on earpieces | not started (plan to Jade first) | same |
+| 5 | 1:39 | gunfire: behind the agents, push in past shoulders | **plan + blockout ready** 19:00 (`docs/revisions/v4/plans/gunfire.md`, sheet `media/reviews/v4/B/plans/gunfire/contact_sheet.jpg`, tool `tools/v4B/gunfire/blockout.py`, `geometry.json`); shown to Jade 19:02, waiting for her go ($3.70 first round, about $7.50 with retakes, ask at $12). G1 = 98.28-100.70. | `render/timeline/_B_verse2.js` |
+| 6 | 1:41 | one fires, two on earpieces | same plan: G2 = 100.70-104.22, only C fires, A then B go to earpieces; replaces `B2_lawn2` and `B2_ear` | same |
 | 7 | 2:00 | replace E3 with co-op level; Banach–Tarski earlier | **plan ready** 17:58 (`docs/revisions/v4/plans/coop.md`, storyboard `media/reviews/v4/B/plans/coop/storyboard.jpg`), shown to Jade 18:00, waiting for her go on the two generated shots (C1, C2). **Free retime done 18:25 and in the cut**: E3 out, `R1_unclimb`, E4a-E6c 3.50 s earlier, `C1_hold`/`C2_swap` as animatic stills (`media/shots/C_coop/animatic/`), four SFX cues moved and the mix rebuilt (v3 mix kept as `media/sfx/Rewind_cinematic_sfx_mix_v3.mp3`). Check clip `media/reviews/v4/B/0200_coop_retime_animatic.mp4`. Rough: R1's pose jumps (4.4x reverse); E6c's last 0.3 s is the agent heap alone; `docs/sections/D.md` not yet updated. | `tools/sections/D/build_timeline.py` |
 | 8 | 3:33 | "ANOMALY REPORT" | **done** 17:35; after `media/reviews/v4/B/0333_report_stamp_credit.mp4` | `tools/sectionF/edl.py` |
 | 9 | 3:37 | stamp wording | **in the cut as `TIMELINE NOW CANON`**, 1.4x larger; both wordings in `media/reviews/v4/B/0337_stamp_both.jpg`; Jade to pick (`STAMP` in edl.py) | same |
@@ -28,17 +28,7 @@ A fresh session can carry on from this file alone. Last updated: 2026-10-11 18:4
 
 ## Running right now
 
-Five Opus sub-agents, spawned 17:20 by v4-B (background `Agent` calls; they die with this session, so if you are
-resuming and a plan file below is missing or says "in progress", respawn that one with the same task).
-The four planners spend **nothing** and edit **no shared timeline file**; they write a plan for Jade to approve.
-
-| Sub-agent | Note | Task | Writes |
-|---|---|---|---|
-| `v4B-car` | 4 (1:30) | Three.js blockout of the over-the-shoulder car shot, 2-3 camera options as 540p stills, finishing pipeline + cost | `docs/revisions/v4/plans/car.md`, `media/reviews/v4/B/plans/car/`, new files under `tools/v4B/car/` |
-| `v4B-gun` | 5, 6 (1:39, 1:41) | Plan + blockout of the behind-the-agents lawn shots on the beats, tracer geometry, earpieces, cost | `docs/revisions/v4/plans/gunfire.md`, `media/reviews/v4/B/plans/gunfire/`, `tools/v4B/gunfire/` |
-| `v4B-coop` | 7 (2:00) | Beat plan for 119.44-141.00 with E3 removed, Banach-Tarski earlier, co-op level storyboard, cost | `docs/revisions/v4/plans/coop.md`, `media/reviews/v4/B/plans/coop/` |
-| `v4B-bean` | 2 (0:13) | Plan for the wide Bean opening and push-in (plate, composite, lyric arc), cost | `docs/revisions/v4/plans/bean.md`, `media/reviews/v4/B/plans/bean/` |
-| `v4B-plate` | 3 (0:26) | Execute: track the sedan's plate in D3, pin `TVA 1729`, after clip; cap $3, tag `v4B_d3_` | `docs/revisions/v4/plans/plate_d3.md`, `media/reviews/v4/B/0026_plate.mp4`, D3 entry of `render/timeline/A.js` |
+Nothing (see "State at 19:02" below). Sub-agent outputs are listed per note in the table above.
 
 Budget split of B's $90 (estimates for the planners to work inside): car $15, gunfire $25, co-op $30, Bean $10,
 D3 plate $3, reserve $7.
@@ -98,6 +88,14 @@ Note 4 questions put to Jade at 18:47: (1) option A (true mirror: her eyes over 
 eye line and push into the mirror), B (mirror turned to the lens, cut in) or C (B as one take); (2) start the
 over-shoulder shot at 89.26 (trimming V2f1 to two beats) or keep 90.14; (3) lyric split SIRENS on a road sign /
 IN MY MIRROR on the mirror's edge; (4) plates right-reading and 1.5x as at 0:26 (default yes).
+
+Notes 5/6 questions put to Jade at 19:02: (1) G2 as one 3.5 s shot, or keep the 102.46 cut with an earpiece
+close-up (about $2 more); (2) her size, about a fifth of frame height with her back to camera, or nearer; (3) G1
+shooters B, B, C, C with A only aiming, or all three fire.
+
+**State at 19:02: all five sub-agents have finished. Nothing is running. Spend by B so far: $0.** Everything
+left on notes 2, 4, 5, 6, 7 waits for Jade's go; total asked for is about $12-16 of B's $90. When she answers,
+spawn one Opus sub-agent per note with the plan file as its brief (each plan ends with build notes).
 
 ## Jade's decisions (verbatim, with time)
 
