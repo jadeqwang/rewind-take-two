@@ -357,4 +357,11 @@ VID = {
         "upright book at the right, and BOTH girls keep looking at that label the whole time, their heads turning to "
         "follow it as they slide past it. They shoot off the bottom edge of the book onto the table top past the "
         "upright book. The label stays blank and perfectly still.")),
+    "round_corner_b": dict(kf="roundcorner", dur=5, prompt=(
+        "The girl sprints along the pavement and swings round the corner at full speed without slowing, onto the "
+        "pavement beside the side wall, and runs smack into the waiting agent's chest before she can stop. She "
+        "bounces off him, her arms flying up, staggers backward several steps and nearly falls, catching her balance "
+        "with one hand on the stone wall, wide-eyed. The agent rocks back half a step from the bump, then steadies. "
+        "His pistol stays low beside his hip pointing at the ground the whole time. Lively, cartoonish physical comedy "
+        "timing, like a platformer character bumping into an enemy.")),
 }

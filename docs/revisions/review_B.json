@@ -45,7 +45,7 @@
    "V2n",
    "B_skip_b",
    "B_glance",
-   "B_round_corner",
+   "B_round_corner_b",
    "B_roundcornerclean",
    "B_pistol",
    "B_shot"
@@ -56,7 +56,7 @@
    104.22,
    112.96
   ],
-  "what_changed": "She never runs at an agent. Side-scroll to the hotel (new take skip_b) with the beat frame-skip: on every beat the plate jumps ahead while she runs on continuously, so the agents step from far back to a few strides behind her. A glance back at an empty lawn. Then the corner (new take round_corner, high three-quarter view): the agent waiting around the corner is painted out with an engraved clean plate, flickers into existence on the 107.72 downbeat while she is still running along the front wall, and she reaches the corner and nearly runs into him (~108.35) and recoils to a stop. 'With no warning' punches in on the same take; no trace line. Low-angle pistol kept at or below her waist, the hit with the mote burst at the impact point, CONTINUE? freezes on the new hit frame."
+  "what_changed": "She never runs at an agent. Side-scroll to the hotel (take skip_b): the agents close smoothly from far back to a few strides behind her. A glance back at an empty lawn. Then the corner (take round_corner_b, high three-quarter view): the agent waiting around the corner is painted out, flickers into existence on the 107.72 downbeat while she is still running along the front wall, and she swings round the corner into his chest on the 108.16 beat; 'With no warning' punches in as she bounces off, arms flying, staggers back and catches herself on the wall. No trace line. Low-angle pistol kept at or below her waist, the hit with the mote burst at the impact point, CONTINUE? freezes on the new hit frame."
  },
  {
   "note": "yes, HILBERT here makes sense",
@@ -87,23 +87,38 @@
    104.22,
    105.98
   ],
-  "what_changed": "New take skip_b: the agents start far back and gain on her. The beat frame-skip runs the plate 3.3x ahead of her, so on each of the three beats the pack jumps visibly closer, ending a few strides behind her as the hotel comes in."
+  "what_changed": "Take skip_b, now without the beat frame-skip (see the next note): the agents start far back and close continuously until the nearest is a few strides behind her at the cut."
  },
  {
   "note": "a new agent surprises her by being around the corner from her when she rounds the corner",
   "v2_time": "1:47",
   "shots": [
-   "B_round_corner",
+   "B_round_corner_b",
    "B_roundcornerclean"
   ],
-  "status": "question",
+  "status": "done",
   "after": "media/reviews/v3/B/0144_too_fast_no_warning.mp4",
   "before_range": [
    107.28,
    109.92
   ],
-  "what_changed": "New take round_corner, a high three-quarter view of the hotel corner: we see the agent waiting around the corner while she can't. He is absent at first (engraved clean plate), flickers in on the 107.72 downbeat (on, off, on) while she is still running along the front wall, and she arrives at the corner and nearly runs into him (~108.35), then recoils to a stop; 'With no warning' punches in at 108.67. His pistol stays low at his hip. In the take she stops at the corner's edge rather than fully rounding it.",
-  "question": "She reaches the corner and stops beside him rather than swinging round it into him. Keep, or retake with her rounding the corner first (about $0.75)?"
+  "what_changed": "Superseded by the retake in the next note (round_corner_b): same overhead framing, same spawn, now with the collision."
+ },
+ {
+  "note": "retake the corner so she rounds it, actually collides in a more animated way, and the pursuit of the other agents should also be smoothly catching up to her",
+  "v2_time": "1:44",
+  "shots": [
+   "B_skip_b",
+   "B_round_corner_b",
+   "B_roundcornerclean"
+  ],
+  "status": "done",
+  "after": "media/reviews/v3/B/0144_too_fast_no_warning.mp4",
+  "before_range": [
+   104.22,
+   109.92
+  ],
+  "what_changed": "Pursuit: the beat frame-skip is gone; the world plate of skip_b runs on a smooth ease-in clock (about 1x at the cut-in, 4.5x by the cut) while she runs at 1x through her matte, so the agents gain continuously, no jumps. A faint soft paper rim around her legs is the only trace of the layering. Corner: new take round_corner_b. The agent is painted out, flickers in on/off/on at 107.75/107.79/107.83 while she runs along the front wall, she swings round the corner and runs into his chest on the 108.16 beat (small camera shake), and in the 108.67 punch-in she bounces off with her arms flying (~109.0), staggers back (~109.5) and catches herself on the wall (~109.85). He stands his ground; his pistol stays at his hip throughout. QA cut of 107.28–108.92: media/reviews/v3/B/_qa/corner_1m47.mp4."
  },
  {
   "note": "running towards agents doesn’t make sense, the point is to run away from them, and she’s fundamentally a pacifist heroine",
@@ -269,5 +284,48 @@
    128.76
   ],
   "what_changed": "E5 now uses the retake slide_point_b (in 0.9, x1.37): both girls turn their heads to the upright book while the gold ghost points; BANACH– / TARSKI re-pinned on its spine label (locked camera, tracked, no drift). The engrave's black blots on the white cover are covered by the clean cover from a nano plate."
+ },
+ {
+  "note": "the blue one seems to have a normal hand",
+  "v2_time": "2:09-2:11",
+  "shots": [
+   "E6a",
+   "E6b"
+  ],
+  "status": "done",
+  "after": "media/reviews/v3/B/0206_books_hint_split.mp4",
+  "before_range": [
+   129.15,
+   131.38
+  ],
+  "what_changed": "The blue ghost's hands are now blue on every frame. Her pale hands were missing from the engrave matte (the raised hands after the launch) or sat inside the live girl's foot region (the cupped hands under the sneaker), so the real take showed through. tools/sections/D/swarmsplit.py now adds skin-coloured pixels touching the kneeling girl, with their ink outline, to the ghost and takes them out of the live matte; from the launch on only skin above her head line counts, so the agents' faces stay out. Jade's sneaker stays white. Checked by eye on every frame 129.15-131.38 (55 frames) of a forced render, and the 131.38 freeze still."
+ },
+ {
+  "note": "Whole chase, continuous",
+  "v2_time": "1:33-2:21",
+  "shots": [
+   "V2h",
+   "V2i",
+   "V2j",
+   "V2k",
+   "V2l",
+   "V2m",
+   "V2n",
+   "E1",
+   "E2",
+   "E3",
+   "E4",
+   "E5",
+   "E6",
+   "E7",
+   "E8"
+  ],
+  "status": "done",
+  "after": "media/reviews/v3/B/0133_whole_chase.mp4",
+  "before_range": [
+   93.07,
+   141.0
+  ],
+  "what_changed": "The whole restaged chase in one clip, joined from the review clips, with the final sound mix."
  }
 ]

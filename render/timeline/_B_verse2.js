@@ -152,18 +152,20 @@ export default function verse2B({ T }) {
   shots.push({ id: 'B2_ear', start: 102.46, end: 104.22, background: INK, fx: [beatPunch], layers: [
     { id: 'plate', type: 'video', src: plate('ear'), in: 0.2, rate: 1, fit: 'cover' }, ...hilbert(BB.lawn)] });
 
-  // ---- 104.22–105.98 side-scroll to the hotel (take skip_b: the agents start far back and gain on her) with the v2
-  // frame-skip: the plate (agents, world) jumps on every beat, 3.3x ahead of her own clock, so on each beat the agents
-  // are a big step closer (plate src 0.5 → 1.95 → 3.40 → 4.79: far back → a few strides behind); Jade, through her
-  // matte, runs continuously at 1x.
+  // ---- 104.22–105.98 side-scroll to the hotel (take skip_b: the agents start far back and gain on her). The plate
+  // (world, agents) runs on a smooth ease-in clock, src 0.6 → 4.6 (about 1x at the cut-in, 4.5x by the cut), so the
+  // pack closes continuously from far back to a few strides behind her; Jade, through her matte, runs at 1x. Under
+  // the plate, copies a little earlier and later (their own Jade cut out) fill the hole where the plate's own Jade was.
   {
-    const st = 104.22, en = 105.98, in0 = 0.5, rate = 1, k = 3.3;
-    const beats = T.beats.filter(t => t > st + 0.02 && t < en - 0.02);
-    const keys = [[0, in0, 'hold'], ...beats.map(b => [b - st, in0 + (b - st) * rate * k, 'hold']), [en - st, in0 + (en - st) * rate * k]];
+    const st = 104.22, en = 105.98, in0 = 0.6, rate = 1;
+    const D = en - st, world = off => lt => in0 + (4.6 - in0) * Math.min(1, Math.max(0, lt / D)) ** 2 + off;
     const v = { src: plate('skip_b'), fit: 'cover' };
-    shots.push({ id: 'B2_skip', start: st, end: en, background: INK, fx: [beatPunch], layers: [
-      { id: 'live', type: 'video', ...v, in: in0, rate },
-      { id: 'held', type: 'video', ...v, srcTime: keys, matte: { ...matte('skip_b'), mode: 'lumaInv' } },
+    const cut = { ...matte('skip_b', 'd'), mode: 'lumaInv' };   // her matte grown ~8 px (take_1_dmatte): no edge ghosts
+    shots.push({ id: 'B2_skip', start: st, end: en, background: '#d6d0c5', fx: [beatPunch], layers: [
+      // hole fill: the same plate a little earlier / later, each with its own Jade cut out
+      // (offsets chosen off her stride period, so the fills do not all cut out the same leg)
+      ...[0.61, -0.53, 0.37, -0.29, 0.17, -0.11].map((o, k) => ({ id: `fill${k}`, type: 'video', ...v, srcTime: world(o), matte: cut })),
+      { id: 'world', type: 'video', ...v, srcTime: world(0), matte: cut },   // no frameBlend: the cut matte is per frame
       { id: 'jade', type: 'video', ...v, in: in0, rate, matte: matte('skip_b'), keepColor: true },
     ] });
   }
@@ -172,24 +174,27 @@ export default function verse2B({ T }) {
   shots.push({ id: 'B2_glance', start: 105.98, end: 107.28, background: INK, fx: [beatPunch], layers: [
     { id: 'plate', type: 'video', src: plate('glance'), in: 0.35, rate: 1.1, fit: 'cover' }] });
 
-  // ---- 107.28–108.67 round the corner (take round_corner, high three-quarter view, camera locked): she runs along the
-  // front wall toward the corner; the agent waits around it, where we can see him and she can't. He is not there at
-  // first (a feathered patch of the engraved clean still, B_roundcornerclean, covers him); on the 107.72 downbeat he
-  // flickers in over three frames (on, off, on) and stays, while she is still approaching. She reaches the corner and
-  // nearly runs into him at ~108.35 (src 3.3) and recoils into a stop. The take holds its first frame for 2.1 s, so it
-  // starts at src 2.12. His pistol stays low at his hip throughout.
+  // ---- 107.28–108.67 round the corner (take round_corner_b, high three-quarter view, camera locked; same keyframe as
+  // round_corner, so the B_roundcornerclean patch still fits). She runs along the front wall; the agent waits around
+  // the corner, where we can see him and she can't. He is not there at first (feathered patch of the engraved clean
+  // still); on the 107.72 downbeat he flickers in over three frames (on, off, on) and stays, while she is still
+  // approaching. She swings round the corner and runs smack into his chest on the 108.16 beat (src 1.25). His pistol
+  // stays low at his hip for the whole take.
   {
-    const st = 107.28, a = snapF(107.72) - st, r1 = (3.3 - 2.12) / (108.35 - st);
-    const v = { src: plate('round_corner'), fit: 'cover' };
-    shots.push({ id: 'B2_corner', start: st, end: 108.67, background: INK, fx: [beatPunch], layers: [
-      { id: 'plate', type: 'video', ...v, in: 2.12, rate: r1 },
+    const st = 107.28, a = snapF(107.72) - st, bump = 108.16 - st;
+    const v = { src: plate('round_corner_b'), fit: 'cover' };
+    const k1 = [[0, 0.2], [bump, 1.25], [1.39, 1.25 + (1.39 - bump) * 1.3]];
+    shots.push({ id: 'B2_corner', start: st, end: 108.67, background: INK, fx: [beatPunch, { type: 'shake', amp: 14, freq: 16, decay: 0.25, on: [108.16] }], layers: [
+      { id: 'plate', type: 'video', ...v, srcTime: k1 },
       { id: 'clean', type: 'image', src: `${S}B_roundcornerclean/patch_agent.png`, fit: 'cover',
         opacity: [[0, 1, 'hold'], [a - E, 0, 'hold'], [a + F - E, 1, 'hold'], [a + 2 * F - E, 0, 'hold']] },
     ] });
-    // ---- 108.67–109.92 "With no warning": punch in on the same take (1.35x toward the two of them), the recoil
-    // settling into a stop (src 3.65 → 4.65). No trace line.
+    // ---- 108.67–109.92 "With no warning": punch in on the same take (1.35x toward the two of them): she bounces off
+    // him, arms flying (src 2.4, ~108.98), staggers back (src 3.4, ~109.56) and catches herself on the wall (src 4.0,
+    // ~109.87) while he stands his ground. No trace line.
+    const s0 = k1[2][1];
     shots.push({ id: 'B2_corner_in', start: 108.67, end: 109.92, background: INK, fx: [{ type: 'punch', amount: 0.025, on: 'downbeat' }], layers: [
-      { id: 'plate', type: 'video', ...v, in: 2.12 + (108.67 - st) * r1, rate: 0.8, scale: 1.35, x: -54, y: -135 }] });
+      { id: 'plate', type: 'video', ...v, srcTime: [[0, s0], [0.6, 2.85], [1.25, 4.1]], scale: 1.35, x: -30, y: -140 }] });
   }
 
   // ---- 109.92–110.78 low angle: the pistol rises, barrel at or below her waist (source 1.1–2.09).

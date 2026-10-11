@@ -148,6 +148,33 @@ for i in list(L):
     if f is not None:
         L[i] = L[i] | (f & emat(i))
         G[i] = G[i] & ~f
+# her hands (rev 5b, Jade: "the blue one seems to have a normal hand"): pale skin on pale paper is often missing from
+# the engrave matte (the raised hands), and the cupped hands sit inside FOOT. Skin-coloured pixels of the source frame
+# that touch the kneeling girl go to her (with their ink outline); from the launch on (HANDS_TOP = the seed frame) only skin above
+# her head line (fixed, from 1.67) is taken, so the agents' faces stay out. Her own sneaker (white, unsaturated) is never skin.
+import av  # noqa: E402
+SRC = []
+with av.open(stem + "_engraved.mp4") as c_:
+    for f_ in c_.decode(video=0):
+        SRC.append(cv2.resize(f_.to_ndarray(format="bgr24"), (w, h)))
+HANDS_TOP = s0                                  # from the launch on her hands are raised above her head
+HEAD_Y = int(np.nonzero(G[fi(1.67)])[0].min()) + 40   # her head line in her still kneeling pose (hands cupped low)
+for i in sorted(G):
+    hsv = cv2.cvtColor(SRC[min(i, len(SRC) - 1)], cv2.COLOR_BGR2HSV).astype(int)
+    sk = (hsv[..., 0] >= 3) & (hsv[..., 0] <= 22) & (hsv[..., 1] >= 35) & (hsv[..., 1] <= 150) & (hsv[..., 2] >= 140)
+    sk &= cv2.dilate(G[i].astype(np.uint8), ell(70)) > 0
+    if i >= HANDS_TOP:
+        sk[HEAD_Y:] = False
+    sk = comps_touching(sk, G[i] | (cv2.dilate(G[i].astype(np.uint8), ell(8)) > 0), 4)
+    nn, lab, st, _ = cv2.connectedComponentsWithStats(sk.astype(np.uint8))
+    for k in range(1, nn):
+        if st[k, 4] < 60:
+            sk[lab == k] = False
+    sk = cv2.morphologyEx(sk.astype(np.uint8), cv2.MORPH_CLOSE, ell(5)) > 0
+    hand = cv2.dilate(sk.astype(np.uint8), ell(7)) > 0          # with her ink outline
+    G[i] = G[i] | hand
+    if i in L:
+        L[i] = L[i] & ~hand
 for d, S in (("_ghost", G), ("_live", L)):
     os.makedirs(stem + d, exist_ok=True)
     for f in glob.glob(stem + d + "/*.png"):

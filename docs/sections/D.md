@@ -218,6 +218,10 @@ to exactly one girl), `pairfinish.py` closes and hole-fills the live girl (engra
 showed through). Swarm: `swarmsplit.py` tracks the flier as her own component from the frame where she separates
 (1.92) backward and forward; a hand-drawn foot polygon keeps her sneaker hers while it sits in the cupped hands; once
 the agents reach the kneeling girl she keeps her own still pose (legs from 1.67, arms from 1.92) plus her raised hands.
+Her hands (Jade: "the blue one seems to have a normal hand"): pale skin on pale paper was missing from the engrave matte
+or sat inside the foot polygon, so the real take showed through (this shot has no clean plate). Skin-coloured pixels
+touching her, with their ink outline, now go to the ghost and out of the live matte (above her head line only, from the
+launch on, so agents' faces stay out); checked by eye on every frame 129.15–131.38.
 Sweep (every frame 124.38–131.38 at 960×540, 168 frames, `--force` render): 0 px of her real orange/navy inside any
 ghost; no ghost hue inside a live girl except the flier's own pale-blue badge. Note: render.mjs reuses rendered frames
 unless the timeline/engine changed, so after re-baking mattes always render with `--force`.
