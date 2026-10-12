@@ -43,3 +43,7 @@ Works first time.
 ## v3 revision pass (2026-10-11, stream F)
 
 Audit: take 1 left the merged Jade with a pencil in each hand. **take_2** (same keyframe `kf_2.jpg`, prompt asks for exactly one pencil after the merge) used from 0.15 s; one pencil from ~1.4 s. Its paper margin is cropped in `tools/sectionF/crops.json`. v2 take 1 kept.
+
+## v5 (2026-10-12, v5-build)
+
+F7_07 is gone from the cut: F7_06 + F7_07 became **F7_07m** (202.88–205.52), the BLUE + ORANGE reassembly built from take 2 by `tools/v5/merge/bake.py` (assets in `media/shots/F7m/`; the merged girl is take 2 from 1.6667 s). See `docs/revisions/v5/merge.md`.
