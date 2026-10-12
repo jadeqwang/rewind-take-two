@@ -94,6 +94,35 @@ JOBS = {
         "the image at the right edge. A short, natural reach: the hand stays in the right-hand fifth of the image, close "
         "to the plate. Same drawing style as the image (fine engraved hatching with coloured pencil). Change nothing "
         "else at all. " + NOR)),
+    # ---- Round 4 (Jade: "the brass button looks like a doorbell rather than a square plate ... a little bit lower, placed
+    # facing into the entrance the way you'd see an ADA compliant button ... made of brass"; "the doorman physically
+    # offscreen to the right"). Setup-session call: the plate carries the engraved accessibility symbol.
+    "door_plate_r4": dict(aspect="16:9", refs=["media/shots/PC/door.jpg"], prompt=(
+        "Edit this image: mount one large square brass push-plate of an automatic door opener on the narrow, darker "
+        "cross-hatched inner side wall of the entrance at the right, the wall surface between the stained-glass side "
+        "panel and the pale stone pier, which faces INTO the entrance toward the doorway (perpendicular to the door). The "
+        "plate is a flat square of polished brass about six inches across with a thin raised rim and four small screws, "
+        "the international accessibility symbol (the wheelchair pictogram) engraved in its centre, the brass a little "
+        "worn and brighter, more polished in the middle where hands press it. Because that wall faces into the "
+        "entrance, the plate is seen at a steep angle in perspective: a foreshortened square, clearly narrower than it "
+        "is tall, its face angled toward the doorway, following the wall's perspective. It is mounted lower than the "
+        "middle of the door handle. It is SMALL: only about 8% of the image height tall (a hand-sized square, about as "
+        "tall as the width of the door's wooden stile), and its centre is about 87% of the way across the image from "
+        "the left and 84% of the way down from the top, below the horizontal stone ledge on that wall. Drawn in exactly the same style as the rest of the image (fine engraved hatching with "
+        "coloured pencil on warm paper). Change nothing else at all: the door, its glass, the gold HILBERT HOTEL emblem, "
+        "the handle, the bell, the arch, the stained glass and the stone stay exactly as they are. " + NOR)),
+    # door_plate_r4c = door_plate_r4_b's plate re-seated lower on the return (prep_coda2.plate_r4)
+    "door_press_r4": dict(aspect="16:9", refs=[f"{OUT}/door_plate_r4c.jpg"], prompt=(
+        "Edit this image: add a white-gloved hand pressing the small square brass push-plate (the one with the "
+        "wheelchair symbol) that is mounted low on the dark cross-hatched inner side wall at the lower right of the "
+        "image, below the stone ledge. A hotel doorman stands just outside the picture to the right, beside the entrance "
+        "and out of the guest's way; only his hand and the end of his sleeve are seen. His forearm comes in level and "
+        "short from the RIGHT EDGE of the image at the same height as the plate (the lower fifth of the image, below "
+        "the ledge), and the flat fingertips of his white cotton glove press the brass plate. A dark green livery cuff "
+        "with a thin gold braid shows at the wrist; the green sleeve leaves the image at the right edge. The hand does "
+        "NOT touch the door, the glass or the door handle: it stays entirely in the right-hand eighth of the image, "
+        "right of the stained-glass panel, within a short reach of the plate. Same drawing style as the image (fine "
+        "engraved hatching with coloured pencil). Change nothing else at all. " + NOR)),
 }
 
 

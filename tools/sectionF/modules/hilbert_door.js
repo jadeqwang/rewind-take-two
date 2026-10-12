@@ -11,7 +11,8 @@
 //     handIn [t0, t1] (the glove slides in and takes the handle), swing [t0, t1] (0 -> angle deg, ease), angle,
 //     glide [t0, t1], glideScale (frame scale at the end of the glide), focal (px, default 1700)
 //   v5-coda2: auto (the door swings by itself: soft start/stop), hand (press_hand.png) + press {t: [in0, in1, push0,
-//     push1, release, out0, out1], dist, rot, pivot, hover (fraction of dist short of the button
+//     push1, release, out0, out1], dist, rot, pivot, dir (approach unit vector), pushDir (px at full press), scale,
+//     baseRot (deg) and target (where the hand's fingertip geom.press.tip lands), shade/shadeR, hover (fraction of dist short of the button
 //     between the reach and the press)} with geom.press (door_geom_v2.json); omit glove/handIn to drop the
 //     old handle grip
 const ease = x => (x <= 0 ? 0 : x >= 1 ? 1 : x * x * (3 - 2 * x));
@@ -107,15 +108,20 @@ export function draw(lt, env) {
     if (away < 1) {
       const D = (P.dist ?? 520) * away, rot = (P.rot ?? 7) * Math.PI / 180 * away;
       const [pvx, pvy] = P.pivot ?? [1560, 1260];
-      const dx = 0.24 * D + 4 * push, dy = 0.97 * D - 2.6 * push;
-      const [hx0, hy0] = H.xy;
-      // the button cap sinks while it is held
+      // Round 4: the approach direction, the press direction, and the hand's placement (scale and base rotation about
+      // its fingertip, which lands on `target`); the defaults reproduce Round 3
+      const [ux, uy] = P.dir ?? [0.24, 0.97], [qx, qy] = P.pushDir ?? [4, -2.6];
+      const dx = ux * D + qx * push, dy = uy * D + qy * push;
+      const [hx0, hy0] = H.xy, [sx, sy] = H.tip, [tx, ty] = P.target ?? H.tip;
+      const hs = P.scale ?? 1, br = (P.baseRot ?? 0) * Math.PI / 180;
+      // the plate gives a little while it is held (a shade at the fingertips)
       if (push > 0) {
-        const [tx, ty] = H.tip;
-        g.fillStyle = `rgba(60,40,10,${0.22 * push})`; g.beginPath(); g.arc(tx - 12, ty + 4, 15, 0, 2 * Math.PI); g.fill();
+        const [ox, oy] = P.shade ?? [-12, 4], r = P.shadeR ?? 15;
+        g.fillStyle = `rgba(60,40,10,${0.22 * push})`; g.beginPath(); g.arc(tx + ox, ty + oy, r, 0, 2 * Math.PI); g.fill();
       }
       g.save();
       g.translate(pvx + dx, pvy + dy); g.rotate(rot); g.translate(-pvx, -pvy);
+      g.translate(tx, ty); g.rotate(br); g.scale(hs, hs); g.translate(-sx, -sy);
       // a soft contact shadow on the stone, stronger as the hand comes close to the wall
       g.save(); g.globalAlpha = 0.28 * (1 - away) ** 2; g.filter = 'blur(9px) brightness(0)';
       g.drawImage(S.hand, hx0 + 16, hy0 + 12); g.restore();

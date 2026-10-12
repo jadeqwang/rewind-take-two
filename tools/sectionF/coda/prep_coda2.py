@@ -80,6 +80,62 @@ def door():
     print("door v2 done; hand box", bx0, by0, bx1, by1, "tip", tip)
 
 
+# ---- Round 4: the accessible push-plate on the right return of the entry (faces into the entrance), lower
+R4_SRC = [(1685, 670), (1769, 662), (1782, 820), (1695, 814)]     # the plate as gen2/door_plate_r4_b drew it (design px)
+R4_DST = [(1714, 864), (1774, 870), (1777, 977), (1716, 962)]     # ~6 in, below the wall's ledge and the handle's middle,
+                                                                   # its edges sloping like that wall's ledge lines
+S_DES = 1080 / 1536
+
+
+def to_orig(p):
+    return [((x + 8) / S_DES, y / S_DES) for x, y in p]
+
+
+def plate_r4():
+    """gen2/door_plate_r4c.jpg: the original door with the r4_b plate re-seated (scaled, lowered, sheared) on the return"""
+    src = np.asarray(Image.open(os.path.join(G2, "door_plate_r4_b.jpg")).convert("RGB"))
+    base = np.asarray(Image.open(os.path.join(PC, "door.jpg")).convert("RGB")).copy()
+    Hm = cv2.getPerspectiveTransform(np.float32(to_orig(R4_SRC)), np.float32(to_orig(R4_DST)))
+    warped = cv2.warpPerspective(src, Hm, (base.shape[1], base.shape[0]), flags=cv2.INTER_LANCZOS4)
+    m = np.zeros(base.shape[:2], np.float32)
+    cv2.fillPoly(m, [np.int32(np.round(to_orig(R4_DST)))], 1.0)
+    m = cv2.GaussianBlur(m, (0, 0), 1.6)[..., None]
+    out = (base * (1 - m) + warped * m).astype(np.uint8)
+    Image.fromarray(out).save(os.path.join(G2, "door_plate_r4c.jpg"), quality=95)
+    print("plate_r4c written")
+
+
+def door_r4():
+    """door_frame_r4.png (door_frame.png + the r4 plate) and press_hand_r4.png (BiRefNet on gen2/door_press_r4)"""
+    P = design(os.path.join(G2, "door_plate_r4c.jpg"))
+    # the hand: cut from door_press_r4.png. Nano put it on the door handle (and door_press_r4_b brought the arm in from
+    # the lower left), but its pose is the one wanted: flat glove, fingers pointing left, back of the hand to camera, the
+    # forearm from the right. hilbert_door.js scales / rotates it onto the plate (press.scale, press.baseRot, press.target).
+    Q = design(os.path.join(G2, "door_press_r4.png"))
+    fr = np.asarray(Image.open(os.path.join(PC, "door_frame.png")).convert("RGBA")).copy()
+    m = np.zeros(fr.shape[:2], np.float32)
+    cv2.fillPoly(m, [np.int32(R4_DST)], 1.0)
+    m = cv2.GaussianBlur(cv2.dilate(m, np.ones((5, 5), np.uint8)), (0, 0), 2)[..., None]
+    fr[..., :3] = (fr[..., :3] * (1 - m) + P * m).astype(np.uint8)
+    Image.fromarray(fr).save(os.path.join(PC, "door_frame_r4.png"))
+    bx0, by0, bx1, by1 = 1270, 420, 1920, 1000
+    crop = Q[by0:by1, bx0:bx1]
+    al = birefnet_alpha(crop)
+    mm = al > 128
+    lab, k = ndimage.label(mm)
+    if k > 1:
+        big = 1 + int(np.argmax(ndimage.sum(mm, lab, range(1, k + 1))))
+        al = (al * ndimage.binary_dilation(lab == big, iterations=3)).astype(np.uint8)
+    Image.fromarray(np.dstack([crop, al])).save(os.path.join(PC, "press_hand_r4.png"))
+    ys, xs = np.where(al > 128)
+    geom = json.load(open(os.path.join(PC, "door_geom.json")))
+    geom["press"] = {"xy": [bx0, by0], "size": [bx1 - bx0, by1 - by0], "plate": R4_DST,
+                     "tip": [int(xs.min() + bx0), int(np.median(ys[xs <= xs.min() + 2]) + by0)],
+                     "bbox": [int(xs.min() + bx0), int(ys.min() + by0), int(xs.max() + bx0), int(ys.max() + by0)]}
+    json.dump(geom, open(os.path.join(PC, "door_geom_r4.json"), "w"), indent=1)
+    print("door r4 done; hand bbox", geom["press"]["bbox"])
+
+
 def sprites():
     import prep_pc
     SPV = os.path.join(PC, "sprites_v2")

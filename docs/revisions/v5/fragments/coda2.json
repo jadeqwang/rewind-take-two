@@ -2,7 +2,9 @@
  {
   "note": "hilbert hotel opening: the arm stretches awkwardly in front of the camera and also doesn't interact with the actual door handle in a realistic way ... (1) push a button on the side and the door opens automatically",
   "v4_time": "post-credits PC1 (v5 film 232.80-236.36)",
-  "shots": ["PC1_door"],
+  "shots": [
+   "PC1_door"
+  ],
   "status": "done (540p)",
   "after": "media/reviews/v5/coda_hilbert_r3.mp4 (226.0-244.05) + media/reviews/v5/coda_hilbert_r3_sheet.jpg",
   "before_range": "media/reviews/v5/coda_hilbert.mp4 230.0-236.36",
@@ -12,7 +14,9 @@
  {
   "note": "guestbook text should bend naturally with the page",
   "v4_time": "post-credits PC2 opening close-up (236.36-237.7) and the tilt-up (to 239.4)",
-  "shots": ["PC2_lobby"],
+  "shots": [
+   "PC2_lobby"
+  ],
   "status": "done (540p, checked at 1080p on a still)",
   "after": "media/reviews/v5/coda_hilbert_r3.mp4 236.4-239.4",
   "before_range": "media/reviews/v5/coda_hilbert.mp4 236.4-239.4",
@@ -22,7 +26,9 @@
  {
   "note": "all the Jade's should move slightly ... each one a little different and out of sync with the others, not bob up and down like a cardboard cutout",
   "v4_time": "PC2 queue (236.36-244.05)",
-  "shots": ["PC2_lobby"],
+  "shots": [
+   "PC2_lobby"
+  ],
   "status": "done (540p)",
   "after": "media/reviews/v5/coda_hilbert_r3_queue.mp4 (238.8-244.05, camera held close on the queue, no text box)",
   "before_range": "media/reviews/v5/coda_hilbert.mp4 239-244",
@@ -32,7 +38,9 @@
  {
   "note": "give the rectangular-ish glasses to Jade #2 ... rest of her hair a bit fuller ... reduce the volume of the half-up ponytails by about 40% ... Protagonist Jade should look the same as she does in the video, without the glasses.",
   "v4_time": "PC2 queue",
-  "shots": ["PC2_lobby"],
+  "shots": [
+   "PC2_lobby"
+  ],
   "status": "done",
   "after": "media/reviews/v5/coda_hilbert_r3_queue.mp4",
   "before_range": "media/reviews/v5/coda_hilbert.mp4 242-244",
@@ -42,11 +50,25 @@
  {
   "note": "you can have the whole front desk sentence render at once or at least faster, for faster readers",
   "v4_time": "PC2 text box (from 239.86)",
-  "shots": ["PC2_lobby"],
+  "shots": [
+   "PC2_lobby"
+  ],
   "status": "done",
   "after": "media/reviews/v5/coda_hilbert_r3.mp4 239.6-244.05",
   "before_range": "media/reviews/v5/coda_hilbert.mp4 239.6-242",
   "what_changed": "The line types at 110 cps with 0.04 s per word (was 16 cps), so the whole line lands in about 0.3 s, keeping the 0:37 typing feel, then holds with the caret to the cut.",
   "question": ""
+ },
+ {
+  "note": "Round 4: the brass button looks like a doorbell rather than a square plate you'd expect as a mechanism ... a little bit lower, placed facing into the entrance the way you'd see an ADA compliant button ... made of brass; the doorman physically offscreen to the right",
+  "v4_time": "post-credits PC1 (v5 film 232.80-236.36)",
+  "shots": [
+   "PC1_door"
+  ],
+  "status": "done (540p)",
+  "after": "media/reviews/v5/coda_door_r4.mp4 (226-238) + media/reviews/v5/coda_door_r4_sheet.jpg",
+  "before_range": "media/reviews/v5/coda_hilbert_r3.mp4 232.8-236.36",
+  "what_changed": "The round doorbell button is replaced by a square brass accessible push-plate with the engraved wheelchair symbol (the setup session's call), so it reads as a door opener. It is mounted low (about 35 in, below the handle's middle) on the right return of the entry, facing into the entrance and foreshortened toward the doorway. The doorman stays offscreen right: his white glove and green cuff come in level from the right frame edge at plate height, press the plate with flat fingertips just before the bell (the latch click 234.034), and slide back out to the right. The hand's leftmost point over the shot is x 1726 (frame centre 960), and it stays above the ITERATION counter. The last tick (233.642), the bell (234.094) with the door swinging by itself, the glide and the mix are unchanged.",
+  "question": "None needed. The plate is small at 540p (about 30x50 px), though it reads at 1080p. If Jade wants it bigger, it can be scaled up in place for free."
  }
 ]

@@ -96,3 +96,69 @@ Project total after: $252.18 of $400.
   frames), `door_frame_v2.png`, `press_hand.png`, `door_geom_v2.json`, `sprites_v2/`, `idle/<name>/` (120 PNG frames +
   info.json + sheet.jpg each, 153 MB), `media/gen/v5_coda2_idle_<name>/take_1.mp4` (+ .json with the prompt and model),
   the three review files. v5-build's assets are untouched (`sprites/`, `glove.png`, `door_frame.png`, `door_geom.json`).
+
+## Round 4: the push-plate door (Jade, verbatim in README Round 4)
+
+> the brass button looks like a doorbell rather than a square plate you'd expect as a mechanism. I'd naively expect
+> the brass button to be a little bit lower, placed facing into the entrance the way you'd see an ADA compliant
+> button to be, just, made of brass instead of the usual stainless steel square plate button
+>
+> probably makes sense for the doorman to be physically offscreen to the right so as to not be in the way of the guest
+
+**Status: done, 540p checked.** Clip `media/reviews/v5/coda_door_r4.mp4` (226–238, v5 coda mix, 2.2 MB) + sheet
+`media/reviews/v5/coda_door_r4_sheet.jpg`. The full-scene clip `coda_hilbert_r3.mp4` still shows the Round 3 door; the
+lobby in it is unchanged.
+
+### Decisions
+
+- **The engraved accessibility symbol (wheelchair pictogram) on the plate is the setup session's call**, so it reads as
+  an automatic-door opener at a glance.
+- **Plate:** a square brass push-plate (thin rim, four screws, brighter where hands press it), mounted **on the right
+  return of the entry**. That is the hatched inner face of the right pier, between the stained-glass sidelight and the
+  stone front. It faces into the entrance, perpendicular to the door, so it reads as a foreshortened square angled
+  toward the doorway. It is about 6 in (≈100 px tall at that wall's depth), centred at y ≈915 in design px. That is
+  below the stone ledge and below the handle's middle (≈830), about 35 in up by the door's scale.
+  - Nano drew it well but too big and too high (`door_plate_r4.jpg` was ~20 in; `_b` was ~9 in at handle height).
+  - So I cut `_b`'s plate and re-seated it (`prep_coda2.plate_r4`): scaled to ~6 in, lowered below the ledge, and
+    sheared so its edges slope like that wall's ledge lines. It went onto the original plate-free door, giving
+    `gen2/door_plate_r4c.jpg`, and only that quad went into `door_frame_r4.png`.
+  - The Round 3 doorbell plate is gone.
+- **Doorman offscreen right:** his white glove and green cuff come in **level from the right frame edge** at the plate's
+  height (233.2–233.5). The flat fingertips hover by the plate, press it (233.9–234.0; the latch click 234.034), and the
+  hand slides back out to the right (234.14–234.72).
+  - Nano would not give that reach in place: `door_press_r4.png` put the hand on the door handle, and
+    `door_press_r4_b.jpg` brought the arm in from the lower left.
+  - So the hand is cut from `door_press_r4.png` (BiRefNet; its pose is right: a flat glove, fingers to the left, back of
+    the hand to camera, the forearm from the right). The module places it: scale 0.65 (wrist to fingertip ≈140 px,
+    hand-sized next to the plate), rotated 25° so the forearm rises gently to the right edge, its fingertip on the plate.
+  - `hilbert_door.js` gained press `dir`, `pushDir`, `scale`, `baseRot`, `target`, `shade` (the defaults reproduce
+    Round 3).
+- **Kept:**
+  - the last tick 4,113 at 233.642, then the latch (234.034) and the bell (234.094) as the door starts to swing on its
+    own (the soft-start `auto` swing);
+  - the glide;
+  - the mix (unchanged, no rebuild).
+
+### Checks
+
+- I computed the hand's leftmost point over every frame: x **1726** (the right 10% of the frame; centre 960).
+- Its lowest point next to the counter's glyphs (x < 1860) is y ≤ 989. The fingertip target was raised 9 px for this;
+  the counter text starts at ≈998.
+- Frame strip every 0.1 s (233.0–235.3): the plate alone, the glove in from the right edge, the hover, the press, the
+  hand out to the right. 4,112 → 4,113 reads under the glove.
+- The door starts on the bell and swings into the lobby. The plate rides out of frame in the glide.
+- Weak spot: at 540p the plate is about 30×50 px and the glove about 70 px. The symbol reads at 1080p and as a brass
+  square with a pictogram at 540p.
+
+### Spend (Round 4)
+
+| What | $ |
+|---|---|
+| `door_plate_r4` (too big/high) + `door_plate_r4_b` (used, re-seated) | 0.27 |
+| `door_press_r4` (hand cut from it) + `door_press_r4_b` (rejected: arm from the lower left) | 0.27 |
+| **Round 4 total** | **0.54** (coda2 total 5.96 of 15; project $252.72) |
+
+Files: `tools/sectionF/coda/gen_coda2.py` (r4 jobs), `prep_coda2.py` (`plate_r4`, `door_r4`),
+`tools/sectionF/modules/hilbert_door.js` (hand placement params), `tools/sectionF/edl.py` (PC1 press/frame/geom/hand;
+F_edl.json regenerated). New media: `gen2/door_plate_r4*.jpg`, `gen2/door_press_r4*.{png,jpg}` (+ .json),
+`door_frame_r4.png`, `press_hand_r4.png`, `door_geom_r4.json`.

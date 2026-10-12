@@ -245,11 +245,19 @@ def build():
     shots.append({"shot": "PC1_door", "in": CODA_DOOR_IN, "out": CODA_LOBBY, "background": "#000000", "layers": [
         {"type": "canvas", "module": "tools/sectionF/modules/hilbert_door.js", "fadeIn": 0.6, "params": {
             "door": PC + "door.jpg", "doorway": PC + "doorway.jpg", "leaf": PC + "door_leaf.png", "bell": PC + "door_bell.png",
-            "frame": PC + "door_frame_v2.png", "geom": PC + "door_geom_v2.json", "hand": PC + "press_hand.png",
-            # the reach is over before the last tick (233.642), so the white glove never sits under the counter's
-            # digits then; it hovers by the button and presses just before the bell (the latch click 234.034)
+            # Round 4 (Jade: "a square plate you'd expect as a mechanism ... a little bit lower, placed facing into the
+            # entrance the way you'd see an ADA compliant button ... made of brass"; "the doorman physically offscreen to the
+            # right"): a square brass accessible push-plate (wheelchair symbol) low on the right return of the entry, facing
+            # the doorway; the glove comes in level from the right frame edge, presses it with flat fingertips and goes
+            # back out to the right. Round 3 had: door_frame_v2.png / door_geom_v2.json / press_hand.png, a reach up
+            # from the lower-right corner ("dist": 520, "rot": 7, "pivot": [1560, 1260], default dir).
+            "frame": PC + "door_frame_r4.png", "geom": PC + "door_geom_r4.json", "hand": PC + "press_hand_r4.png",
+            # the reach is over before the last tick (233.642) and stays above the counter's line; the glove hovers by
+            # the plate and presses just before the bell (the latch click 234.034)
             "press": {"t": [round(_b - 1.05, 3), round(_b - 0.55, 3), round(_b - 0.30, 3), round(_b - 0.12, 3), round(_b + 0.005, 3),
-                            round(_b + 0.045, 3), round(_b + 0.63, 3)], "dist": 520, "rot": 7, "pivot": [1560, 1260], "hover": 0.035},
+                            round(_b + 0.045, 3), round(_b + 0.63, 3)], "dist": 330, "rot": 0, "pivot": [2200, 860],
+                      "dir": [0.98, -0.18], "pushDir": [-3.0, 0.6], "scale": 0.65, "baseRot": 25, "target": [1731, 905],
+                      "shade": [8, 2], "shadeR": 13, "hover": 0.04},
             "auto": True, "swing": [_b, round(_b + 1.35, 4)],
             "angle": 64, "glide": [1.85, round(CODA_LOBBY - CODA_DOOR_IN, 4)], "glideScale": 2.6}}],
         "fx": [{"type": "grain", "amount": 0.03, "seed": "twos"}]})
