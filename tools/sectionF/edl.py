@@ -25,7 +25,7 @@ CHOSEN = {
     "F6b": dict(take=2, file=S + "F6b/kf_v3_F6b_redraw_crop_dered.png", in_sec=0.0, rate=1.0, reverse=False,
                 notes="v3 (Jade 3:13): still plate kf_v3_F6b_redraw = the engine's exact Penrose staircase (kf_v3_F6b_guide, tools/sectionF/penrose_guide.py) redrawn by nano-banana-pro in the plate's hand; ink-engraved agent sprites (media/shots/F6b/agents) march it clockwise one step per beat (tools/sectionF/modules/penrose_march.js, stairs: false); reused at F7_03. Fallbacks: kf_v3_F6b_plate_crop_dered.png + engine-drawn stairs (first v3 version); v2 take_2_engraved_dered.mp4"),
     "F6c": dict(take=3, in_sec=0.3, rate=1.0, reverse=False, notes="take 2: side-on sprint with the ghost stream drawn in (keyframe kf_ghosts2); take 1 is reused reversed at F7_08 (the rewind that paints)"),
-    "F7a": dict(take=2, in_sec=0.0, rate=1.0, reverse=False, notes="ghost stampede; reused at F7_06"),
+    "F7a": dict(take=2, in_sec=0.0, rate=1.0, reverse=False, notes="ghost stampede; reused at F7_06 until v4"),
     "F7b": dict(take=3, in_sec=0.05, rate=1.0, reverse=False, notes="her grin. v3 (audit after Jade 3:21): take 3 from kf_v3_F7b: centre part and curtain bangs, mock neck, 1420 / MHz roundel on her left sleeve. v2 was take 2"),
     "F7c": dict(take=2, in_sec=0.0, rate=1.0, reverse=False, notes="BIG 1: Klimt gold sky. v3 (Jade 3:21): take 2 from kf_v3_F7c_final: curtain bangs, canon jacket, mock-neck top, pale-blue eraser; desk objects (books, mug of pencils, ruler, ink bottle) among the towers. v2 was take 1"),
     "F7d": dict(take=1, in_sec=0.0, rate=1.4, reverse=False, notes="clock folds into itself; tail (collapse to a gold point) reused at F7_09"),
@@ -127,9 +127,20 @@ CREDIT_R_AT = ["224.82", "224.82", "225.04", "225.20", "225.36", "225.52", "225.
 
 # v5 coda (docs/revisions/v5/coda.md): the film runs on past the song (227.96) for the credits' fade. Keep these in step
 # with tools/sfx/build.py (CODA_END, CODA_T0, CODA_BEAT), which builds the matching sound (--coda).
-CODA_END = 234.00              # end of O4 (the post-credits scene, once signed off, starts after a short black)
 CODA_T0, CODA_BEAT = 226.400, 0.4526   # the counter reads 4,097 at the bar-129 downbeat and ticks +1 every ring-out beat
-CODA_TEXT_FADE = (231.00, 232.80)      # credits and "never stop." fade out; the counter ticks on alone to CODA_END
+CODA_TEXT_FADE = (231.00, 232.80)      # credits and "never stop." fade out; the counter ticks on
+# v5-build (Jade: "the sound fade of the credits can build right into the coda, actually, so the ticking up of the lives
+# is followed by the hotel door ring"; docs/revisions/v5/build.md): no black gap. The Hilbert Hotel door (PC1) fades up
+# under the still-ticking counter as the credits finish fading; the last tick (4,113 at 233.642) is followed one beat
+# later by the door's bell as the gloved hand pushes it open (CODA_BELL); the lobby (PC2) and the end sit on the same grid.
+CODA_BELL = round(CODA_T0 + 17 * CODA_BEAT, 4)     # 234.0942
+CODA_DOOR_IN = CODA_TEXT_FADE[1]                   # 232.80
+CODA_LOBBY = round(CODA_T0 + 22 * CODA_BEAT, 4)    # 236.3572
+CODA_END = round(CODA_T0 + 39 * CODA_BEAT, 2)      # 244.05, the film's last frame (was 234.00 for the credits alone)
+PC = "media/shots/PC/"
+# the ledger (Jade: full; setup session: the artists and mathematicians whose work the film quotes, legible at a glance)
+LEDGER = [[1, "Maurits Escher"], [2, "Roger Penrose"], [3, "Lionel Penrose"], [4, "Wassily Kandinsky"], [5, "Salvador Dal\u00ed"],
+          [6, "Gustav Klimt"], [7, "August M\u00f6bius"], [8, "Stefan Banach"], [9, "Alfred Tarski"], [10, "David Hilbert"]]
 
 
 def build():
@@ -175,8 +186,11 @@ def build():
                 fx=[FLASH(0.4), {"type": "punch", "on": "beat", "amount": 0.02}]),
         cut("F7_04", 200.24, 202.02, "F7c", fx=[FLASH(1.0, "#ffe9a8", 0.16)]),                                               # BIG 1
         cut("F7_05", 202.02, 202.88, "F7d", fx=[FLASH(0.5)]),
-        cut("F7_06", 202.88, 203.76, "F7a", clip_in=2.0, scale=1.12, fx=[FLASH(0.4)]),
-        cut("F7_07", 203.76, 205.52, "F7e", fx=[FLASH(1.0, "#ffffff", 0.16)]),                                               # BIG 2
+        # v5 (Jade 3:23): BLUE + ORANGE reassemble into her, replaces F7_06 (stampede, closer) and F7_07 (sun-burst merge)
+        # (docs/revisions/v5/merge.md option A; assets tools/v5/merge/bake.py -> media/shots/F7m/)
+        # v4: cut("F7_06", 202.88, 203.76, "F7a", clip_in=2.0, scale=1.12, fx=[FLASH(0.4)]),
+        # v4: cut("F7_07", 203.76, 205.52, "F7e", fx=[FLASH(1.0, "#ffffff", 0.16)]),   # BIG 2
+        {k: v for k, v in json.load(open(os.path.join(ROOT, "tools/v5/merge/F7_07m.json"))).items() if k != "_doc"},  # BIG 2
         cut("F7_08", 205.52, 207.28, "F7_08", fx=[FLASH(0.5, "#d6e8ff"), {"type": "rewind", "amount": 0.45}],
             text=[{"style": "rewind", "in": 205.52, "out": 207.28, "multiplier": [[0, 2, "hold"], [0.88, 4]], "color": "#0b0b0c",
                    "side": "left"}]),
@@ -204,17 +218,51 @@ def build():
     # (mechanical snap, 4,098 at 226.853 ... 4,113 at 233.642: the same ticks as tools/sfx/build.py COUNTER_TICKS, whose
     # coda_counter blips fade out with the held chord by 232.6, so the last ticks are silent). v4: O4 ended at 227.96
     # with a 227.0-227.96 fade-out and the counter rolling at 3/s from 226.45.
-    shots.append({"shot": "O4", "in": 226.00, "out": CODA_END, "layers": [
+    # v5-build: O4 now ends where the door fades up; the counter moved to the O_counter overlay so it ticks on over the door
+    shots.append({"shot": "O4", "in": 226.00, "out": CODA_DOOR_IN, "layers": [
         {"type": "solid", "color": "#000000"},
         {"type": "canvas", "module": "pencil", "stage": "post", "start": 0, "end": round(CODA_TEXT_FADE[1] - 226.00, 3),
          "fadeOut": round(CODA_TEXT_FADE[1] - CODA_TEXT_FADE[0], 3),
          "params": {"text": "never stop.", "at": 0, "cps": 13, "x": 960, "y": 610, "size": 216, "color": "#9a958b",
-                    "align": "center", "point": True}},
-        {"type": "canvas", "module": "hud", "stage": "post", "start": 0, "end": round(CODA_END - 226.00, 3), "fadeOut": 0.4,
-         "params": {"mode": "iteration", "side": "right", "margin": 64, "y": 1016, "base": 4097,
-                    "from": round(CODA_T0 - 226.00, 3), "rate": round(1 / CODA_BEAT, 5), "snap": True, "flicker": 0.2,
-                    "size": 28, "color": "#ece7dc"}}]})
-    overlays = [{"id": "O1_variance_report", "start": 211.64, "end": 218.92, "layers": [
+                    "align": "center", "point": True}}]})
+    # ---- v5 post-credits: checking into the Hilbert Hotel (docs/revisions/v5/coda.md plan, build.md as built) ----------
+    # PC1: Jade's POV at the door. The doorman's white glove takes the handle (right edge) and pushes the door open into the
+    # lobby on its left hinges on CODA_BELL; the hand stays on the handle as it swings; the camera glides through.
+    shots.append({"shot": "PC1_door", "in": CODA_DOOR_IN, "out": CODA_LOBBY, "background": "#000000", "layers": [
+        {"type": "canvas", "module": "tools/sectionF/modules/hilbert_door.js", "fadeIn": 0.6, "params": {
+            "door": PC + "door.jpg", "doorway": PC + "doorway.jpg", "leaf": PC + "door_leaf.png", "bell": PC + "door_bell.png",
+            "glove": PC + "glove.png", "geom": PC + "door_geom.json",
+            "handIn": [0.30, 0.95], "swing": [round(CODA_BELL - CODA_DOOR_IN, 4), round(CODA_BELL - CODA_DOOR_IN + 1.05, 4)],
+            "angle": 64, "glide": [1.85, round(CODA_LOBBY - CODA_DOOR_IN, 4)], "glideScale": 2.6}}],
+        "fx": [{"type": "grain", "amount": 0.03, "seed": "twos"}]})
+    # PC2: the receptionist's POV: the full ledger, then the look up to the endless queue; the 0:37 text box, no speech
+    shots.append({"shot": "PC2_lobby", "in": CODA_LOBBY, "out": CODA_END, "background": "#000000", "layers": [
+        {"type": "canvas", "module": "tools/sectionF/modules/hilbert_lobby.js", "params": {
+            "plate": PC + "lobby.jpg", "sprites": PC + "sprites", "vp": [960, 523], "deskY": 869,
+            "front": {"x": 1005, "feet": 1403, "h": 740},
+            "order": ["glasses", "teal", "purple", "braids", "plain", "sleepy", "rainbow", "mint",
+                      "ghost0", "ghost1", "ghost2", "ghost3", "ghost4", "ghost5", "ghost6", "pixel"],
+            "cycle": ["glasses", "teal", "purple", "braids", "plain", "sleepy", "rainbow", "mint", "pixel",
+                      "ghost0", "ghost1", "ghost2", "ghost3", "ghost4", "ghost5", "ghost6"],
+            "depth": {"near": [1.5, 1.95, 2.4, 2.85, 3.3, 3.75, 4.2, 4.65], "step": 0.4}, "lat": 125, "latTaper": 10, "snake": 230, "snakeF": 0.42,
+            "count": 1600,
+            "camScale": [[0, 1.45], [1.3, 1.45, "inOutCubic"], [3.0, 1.25, "inOutSine"], [7.7, 1.55]],
+            "camX": [[0, 972], [1.3, 972, "inOutCubic"], [3.0, 985, "inOutSine"], [7.7, 968]],
+            "camY": [[0, 1060], [1.3, 1060, "inOutCubic"], [3.0, 610, "inOutSine"], [7.7, 572]],
+            "ledger": {"left": [565, 941, 962, 955, 962, 1282, 355, 1276], "right": [970, 955, 1375, 941, 1590, 1276, 970, 1282],
+                       "rows": LEDGER}}},
+        {"type": "canvas", "module": "dialogue", "stage": "post", "start": 3.3,
+         "params": {"rect": [80, 856, 960, 132], "size": 46, "speaker": "FRONT DESK", "text": "Of course we have space for you.", "close": 0,
+                    "at": 0.2, "cps": 16}}],
+        "fx": [{"type": "grain", "amount": 0.03, "seed": "twos"}]})
+    overlays = [
+        # v5-build: the ITERATION counter (was a layer of O4) ticks on over the door's fade-up; it goes as the bell rings
+        {"id": "O_counter", "start": 226.00, "end": round(CODA_BELL + 0.1, 3), "layers": [
+            {"type": "canvas", "module": "hud", "stage": "post", "fadeOut": 0.4,
+             "params": {"mode": "iteration", "side": "right", "margin": 64, "y": 1016, "base": 4097,
+                        "from": round(CODA_T0 - 226.00, 3), "rate": round(1 / CODA_BEAT, 5), "snap": True, "flicker": 0.2,
+                        "size": 28, "color": "#ece7dc"}}]},
+        {"id": "O1_variance_report", "start": 211.64, "end": 218.92, "layers": [
         {"type": "canvas", "module": "tools/sectionF/modules/variance_report.js", "stage": "post", "params": {
             "slideIn": ["211.90", "212.20"], "cps": 50, "size": 28, "rect": [1040, 640, 800, 330],
             "lines": ["TIME VARIANCE █████████", "ANOMALY REPORT", "CASE 4,097", "SUBJECT: ████ NOT FOUND", "RESIDUE: UNTRACEABLE"],
@@ -232,7 +280,7 @@ def build():
                 "side": "left", "margin": 64, "y": 1016, "size": 20, "leading": 1.9, "cps": 70,   # v4 (Jade): models bottom left
                 "color": "#a39e93", "dim": "#a39e93",
                 "lines": [{"text": l, "at": a, **({"color": "#ece7dc"} if i == 2 else {})} for i, (l, a) in enumerate(zip(CREDIT_R, CREDIT_R_AT))]}}]}]
-    return {"section": "F", "overlays": overlays, "note": "Section F: final drop + outro (169.40-227.96). Generated by tools/sectionF/edl.py; see docs/sections/F.md.",
+    return {"section": "F", "overlays": overlays, "note": "Section F: final drop + outro (169.40-227.96), v5 credits and post-credits to CODA_END. Generated by tools/sectionF/edl.py; see docs/sections/F.md.",
             "fx": [{"type": "grain", "amount": 0.03, "seed": "twos"}],
             "shots": shots}
 

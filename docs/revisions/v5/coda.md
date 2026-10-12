@@ -2,7 +2,9 @@
 
 Agent `v5-coda`, 2026-10-12. Cap before sign-off $5, tag `v5_coda_`. **Spent $1.58** (project total $245.82 of $400).
 
-**Status:** the credits fade is **executed** (540p after clip below). The post-credits scene is **planned, with
+**Status (2026-10-12): built by `v5-build`** after Jade's round-2 notes. The credits now run straight into the Hilbert Hotel (no black gap; the bell rings one beat after the last counter tick), in full colour, with an engine-built door and the committee line; the film ends at 244.05. See `docs/revisions/v5/build.md`; clip `media/reviews/v5/coda_hilbert.mp4`. The plan below is kept as written.
+
+Earlier status: the credits fade is **executed** (540p after clip below). The post-credits scene is **planned, with
 candidate stills, a door take and a 540p previz; it is waiting for Jade's sign-off.** It is not in the film yet.
 
 Jade's notes (v4 preview), verbatim:

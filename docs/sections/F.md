@@ -64,8 +64,7 @@ small, in a clear patch of the world (graphite on light, pale pencil on dark), a
 | F7_03 | 199.38–200.24 | agents on the clock's infinite stairs | F6b (2.6 / 1.3) |
 | F7_04 | 200.24–202.02 | **swell 200.25, BIG 1: Klimt gold sky**, she soars | F7c |
 | F7_05 | 202.02–202.88 | the melting clock folds into itself | F7d (0 / 1.4) |
-| F7_06 | 202.88–203.76 | stampede, closer | F7a (2.0, 1.12×) |
-| F7_07 | 203.76–205.52 | **swell 203.78, BIG 2: Banach–Tarski reunion**, two Jades merge into one | F7e (0.15) |
+| F7_07m | 202.88–205.52 | v5: **BIG 2, un-Banach–Tarski**: ORANGE and BLUE leap, freeze and are scored into triangles (203.32), the pieces lift on the 203.78 swell, braid and seat as one canon Jade on bar 117 (204.64). Replaces F7_06 (stampede, closer) and F7_07 (the sun-burst merge) | `tools/v5/merge/F7_07m.json`, `media/shots/F7m/` + F7e take 2 |
 | F7_08 | 205.52–207.28 | ◀◀ ×2 → ×4: **the rewind that paints** | F6c take 3 reversed, `take_3_rewindpaint.mp4` (clean matte) |
 | F7_09 | 207.28–208.14 | (blip 207.31) the folded clock collapses to a gold star | F7d (2.2 / 1.15) |
 | F7_10–13 | 208.14 / 208.58 / 209.02 / 209.46 | one-beat recap strobe: flood, sword, loop, gold | F1, F5a, F6a, F7c |
@@ -206,3 +205,11 @@ carries the rainbow.
   also repeated, so new cuts start at 0.05 s.
 - **Not fixed:** in F7c take 2 the pale-blue dot sits on her right chest (canon: left).
 - Spend for the whole v3 pass: $6.79.
+
+## v5 (2026-10-12)
+
+- **3:23 merge** (Jade: "merge looks good", option A): F7_06 and F7_07 are replaced by **F7_07m** 202.88–205.52, the
+  BLUE + ORANGE reassembly (`docs/revisions/v5/merge.md`, assets by `tools/v5/merge/bake.py`). Sound: `merge_score`
+  203.32, `merge_lift` 203.76, `merge_seat` 204.64 in `tools/sfx/build.py`. After clip `media/reviews/v5/0323_merge.mp4`.
+- **Credits + post-credits** (`docs/revisions/v5/coda.md`, `docs/revisions/v5/build.md`): the film runs past the song
+  into the Hilbert Hotel scene. As built: O4 226.00–232.80 (black, "never stop."), O_counter overlay 226.00–234.19 (ITERATION to 4,113), **PC1_door** 232.80–236.357 (engine door: `tools/sectionF/modules/hilbert_door.js`; the bell on 234.094, one beat after the last tick), **PC2_lobby** 236.357–244.05 (`tools/sectionF/modules/hilbert_lobby.js`, assets `media/shots/PC/`). The film ends at 244.05.

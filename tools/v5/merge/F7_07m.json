@@ -1,9 +1,9 @@
 {
  "shot": "F7_07m", "in": 202.88, "out": 205.52,
- "_doc": "v5 merge (docs/revisions/v5/merge.md): BLUE + ORANGE reassemble into the one original Jade. Replaces F7_06 + F7_07. Assets: tools/v5/merge/bake.py. Crop = F7e take 2's paper margin; motes x,y = layout.json touch through that crop.",
+ "_doc": "v5 merge (docs/revisions/v5/merge.md): BLUE + ORANGE reassemble into the one original Jade. Replaces F7_06 + F7_07. Assets: tools/v5/merge/bake.py. Crop = F7e take 2's paper margin; v5-build: the approach plays at 1.0x (frame 0 held 0.065 s under the cut flash, then frames 1-9 one per output frame, frozen on frame 9 at 0.44) instead of 0.74x with frame blending, which gave the leap a soft double image; motes x,y = layout.json touch through that crop.",
  "layers": [
-  {"id": "approach", "type": "video", "src": "media/shots/F7m/approach_bo.mp4", "in": 0.05, "rate": 0.74, "freeze": 0.44,
-   "frameBlend": true, "start": 0, "end": 0.88, "fit": "cover", "crop": [0.0495, 0.0466, 0.9517, 0.9488]},
+  {"id": "approach", "type": "video", "src": "media/shots/F7m/approach_bo.mp4", "srcTime": [[0, 0.0, "hold"], [0.065, 0.0], [0.44, 0.375]],
+   "start": 0, "end": 0.88, "fit": "cover", "crop": [0.0495, 0.0466, 0.9517, 0.9488]},
   {"id": "plate", "type": "image", "src": "media/shots/F7m/plate.png", "start": 0.88, "end": 1.76,
    "fit": "cover", "crop": [0.0495, 0.0466, 0.9517, 0.9488]},
   {"id": "fig", "type": "video", "src": "media/shots/F7m/fig/", "alpha": true, "start": 0.44, "end": 1.76,

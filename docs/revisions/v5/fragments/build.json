@@ -1,0 +1,22 @@
+[
+ {
+  "note": "3:23 - maybe it makes sense for blue and orange variants to merge here and we just demonstrate that she can un-banach-tarski herself into becoming original her (round 2: \"merge looks good\")",
+  "v4_time": "3:23",
+  "shots": ["F7_06", "F7_07", "F7_07m"],
+  "status": "done",
+  "after": "media/reviews/v5/0323_merge.mp4",
+  "before_range": [200.0, 208.0],
+  "what_changed": "Option A built as previewed: F7_06 + F7_07 are now F7_07m 202.88-205.52 (ORANGE and BLUE leap, freeze, are scored into triangles, the pieces lift on the swell, braid and seat as one canon Jade on bar 117). The leap's soft double image is fixed (1.0x playback instead of 0.74x frame blending). The three cues (pencil score, the split's sparkle, its reverse into a latch click) are in tools/sfx/build.py at the previz levels, in both the v4 mix and the v5 coda mix.",
+  "question": null
+ },
+ {
+  "note": "post credits scene: checking into the Hilbert Hotel (round 2: line of Jades from the committee art, door opens the correct way, ledger full, full colour; credits sound fade builds right into the coda, ticking followed by the door ring)",
+  "v4_time": "after the credits",
+  "shots": ["O4", "O_counter", "PC1_door", "PC2_lobby"],
+  "status": "done",
+  "after": "media/reviews/v5/coda_hilbert.mp4",
+  "before_range": [230.0, 245.2],
+  "what_changed": "One continuous ending, 226.0-244.05. The credits and 'never stop.' fade by 232.8 while the ITERATION counter keeps ticking. The hotel door fades up under it, a white-gloved hand takes the handle, and one beat after the last tick (4,113 at 233.642) the bell rings at 234.094 as the door swings on its left hinges into the lobby. The hand stays on the handle and the camera glides through. Cut to the receptionist's POV: the full guest ledger (Escher, Roger and Lionel Penrose, Kandinsky, Dali, Klimt, Mobius, Banach, Tarski, Hilbert, rooms 1-10), then the look up to an endless queue straight down the carpet in a full-colour lobby. The protagonist is at the desk; behind her are glasses Jade, teal tips, purple, braids, the rest of the committee standing, the colour ghosts and 8-bit Jade, and then the line rises into the vanishing point. The FRONT DESK text box types 'Of course we have space for you.' There is no speech. The film now ends at 244.05; the v5 coda mix matches it. Spend $0.81 (six stills); the door is done in the engine, with no video retake.",
+  "question": "The ghosts and 8-bit Jade sit in the tail behind the eight committee Jades and are small at preview size. Hold longer or push closer to the vanishing point if you want them bigger?"
+ }
+]

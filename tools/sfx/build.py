@@ -44,11 +44,17 @@ BEATS = []
 # v4 ones with the suffix _v5coda (stems_v5coda/, cues_v5coda.json, sfx_only_v5coda.wav, mix_preview_v5coda.wav,
 # Rewind_cinematic_sfx_mix_v5coda.mp3). Without the flag the v4 mix is rebuilt exactly as before.
 CODA = "--coda" in sys.argv[1:] or os.environ.get("REWIND_SFX_CODA") == "1"
-CODA_END = 234.00            # O4 + credits end (tools/sectionF/edl.py O4/O_credit); the post-credits scene raises it
 CODA_BEAT = 0.4526           # the ring-out beat (timing.json beats 224.137 ... 226.400, interpolated)
 CODA_T0 = 226.400            # bar 129 downbeat: the counter reads 4,097 here and ticks +1 every CODA_BEAT
 COUNTER_TICKS = [round(CODA_T0 + k * CODA_BEAT, 4) for k in range(1, 17)]   # 4,098 at 226.853 ... 4,113 at 233.642
-CODA_FADE = (226.90, 232.60)   # the held chord, clock and blips fall from 0 dB (whisper end) to -40 dB, then silence
+# v5-build (Jade: "the sound fade of the credits can build right into the coda, actually, so the ticking up of the
+# lives is followed by the hotel door ring"): no silent black between them. The beat grid runs on: the door's bell
+# rings one beat after the last counter tick, as the door starts to swing (PC1), and the film ends on the grid too.
+# Keep in step with tools/sectionF/edl.py (CODA_* there).
+CODA_BELL = round(CODA_T0 + 17 * CODA_BEAT, 4)     # 234.0942: the bell = the tick after 4,113
+CODA_DOOR_IN = 232.80                              # PC1 fades up from black as the credits finish fading
+CODA_END = round(CODA_T0 + 39 * CODA_BEAT, 2)      # 244.05: PC2 cuts to black (the film ends)
+CODA_FADE = (226.90, CODA_BELL)   # the held chord and clock fall from 0 dB (whisper end) to -40 dB at the bell
 CODA_SUFFIX = "_v5coda"
 
 
@@ -859,7 +865,7 @@ def _():
 # Registered last so the stem numbers of every earlier cue stay as they were.
 # In coda mode outro_clock and counter_roll are replaced by coda_clock and coda_counter (same sounds, longer, fading),
 # and coda_pad holds the ring-out chord so the credits' sound fades out instead of being cut at the whisper (226.0).
-CODA_ONLY = {"coda_pad", "coda_clock", "coda_counter"}
+CODA_ONLY = {"coda_pad", "coda_clock", "coda_counter", "coda_door_latch", "coda_door_bell", "coda_lobby_tone"}
 CODA_REPLACES = {"outro_clock", "counter_roll"}
 
 
@@ -876,7 +882,7 @@ def freeze(x, t0, t1, dur, seed, nfft=8192):
 
 @cue("coda_pad", 225.00, "Credits (v5 coda): the ring-out Ab chord held as a spectral freeze of the instrumental stem "
      "(223.3-224.5), entering as the original decays through -36 dB, under the whisper (ducked), then fading out "
-     "slowly (0 -> -40 dB, 226.9-232.6, slow at first) while its low-pass closes towards 1.2 kHz", "procedural "
+     "slowly (0 -> -40 dB, 226.9 -> the door bell at 234.09, slow at first) while its low-pass closes towards 1.2 kHz", "procedural "
      "(instrumental stem copy)", "essential", -25.5, duck_vocal_db=6)
 def _():
     dur = CODA_FADE[1] + 0.45 - 225.00
@@ -894,10 +900,10 @@ def _():
 
 
 @cue("coda_clock", 223.685, "Credits (v5 coda): the intro's 8th-note clock (outro_clock's ticks) carries on past the "
-     "whisper and fades with the held chord, last tick 232.5", "procedural", "essential", -25, duck_vocal_db=9)
+     "whisper and fades with the held chord, last tick on the last counter tick (233.64)", "procedural", "essential", -25, duck_vocal_db=9)
 def _():
     ticks = [223.685 + 0.226 * k for k in range(60)]
-    ticks = [x for x in ticks if x < CODA_FADE[1] - 0.05]
+    ticks = [x for x in ticks if x < COUNTER_TICKS[-1] + 0.01]      # v5-build: the clock stops on the last counter tick
     y = np.zeros((2, N(ticks[-1] - 223.685 + 0.5)))
     for i, tk in enumerate(ticks):
         g = np.interp(tk, [223.685, 225.0, 226.9], [0.25, 1.0, 0.9]) * db2a(coda_fade_db(tk))
@@ -906,18 +912,95 @@ def _():
 
 
 @cue("coda_counter", COUNTER_TICKS[0], "Credits (v5 coda): one soft 8-bit blip (F6/Bb6) per ITERATION tick, on the "
-     "ring-out beat (4,098 at 226.853 ... ), fading with the chord; the last ticks (after 232.6) are silent: the "
-     "counter keeps going after the sound has gone", "procedural (pulse wave)", "essential", -33)
+     "ring-out beat (4,098 at 226.853 ... 4,113 at 233.642). v5-build: they fade only to -12 dB while the chord fades "
+     "out, so the last tick is still heard and the door bell answers it one beat later (CODA_BELL)",
+     "procedural (pulse wave)", "essential", -33)
 def _():
     t0 = COUNTER_TICKS[0]
     y = np.zeros(N(COUNTER_TICKS[-1] - t0 + 0.2))
     for i, tk in enumerate(COUNTER_TICKS):
-        g = db2a(coda_fade_db(tk))
-        if g < db2a(-60):
-            continue
+        g = db2a(-12.0 * np.clip((tk - CODA_FADE[0]) / (CODA_FADE[1] - CODA_FADE[0]), 0, 1))
         b = blip_seq([("F6" if i % 2 == 0 else "Bb6", 0.022)], duty=0.5, gap=0.0, decay=0.015)
         y[N(tk - t0):N(tk - t0) + len(b)] += b * g
     return reverb(y, room(), -18), 0.0
+
+
+# ---------------------------------------------------------------- v5 merge (3:23, both mixes; docs/revisions/v5/merge.md)
+# BLUE and ORANGE reassemble into her (F7_07m, 202.88-205.52). The split's two sounds (b_atomize 127.88, b_implode
+# 128.32) come back in the same order, so the ear hears the 2:00 split undone. Levels are the previz's (Jade: "merge
+# looks good"), which sit 13-20 dB RMS under the final drop. Registered after the coda cues so no stem number shifts.
+@cue("merge_score", 203.32, "F7_07m the twins freeze and graphite lines score them into triangles: three short pencil "
+     "strokes", "procedural", "optional", -16)
+def _():
+    y = np.zeros(N(0.42))
+    for k, (t0, d) in enumerate(((0.0, 0.12), (0.14, 0.11), (0.27, 0.13))):
+        s = bp(noise(N(d), 32300 + k), 1800, 7000, 2)
+        s *= np.interp(tt(d), [0, 0.02, d * 0.7, d], [0, 1, 0.8, 0]) * (0.6 + 0.4 * np.sign(np.sin(2 * np.pi * 90 * tt(d))))
+        y[N(t0):N(t0) + len(s)] += s
+    return np.stack([y, y]), 0.0
+
+
+@cue("merge_lift", 203.76, "F7_07m the pieces lift off on the swell: b_atomize's sparkle (same synthesis as the split at "
+     "127.88)", "procedural", "optional", -12)
+def _():
+    y = hp(pings(0.4, 70, 3500, 9500, 13138), 3000, 2)
+    return np.stack([y, np.roll(y, N(0.004))]), 0.0
+
+
+@cue("merge_seat", 204.64, "F7_07m the pieces seat into one Jade: b_implode's reversed sparkle swelling from 204.02 into "
+     "a soft wooden latch click on bar 117", "procedural", "optional", -11)
+def _():
+    y = hp(pings(0.6, 90, 3500, 9500, 13139), 3000, 2)[::-1][:N(0.62)]
+    y = y * np.linspace(0.2, 1.0, len(y)) ** 2
+    st = np.stack([np.roll(y, N(0.004)), y]) * db2a(-13)
+    ck = click(32640, dur=0.05, lo=400, hi=4000, tau=0.008, modes=((520, 12, 1.0), (1240, 16, 0.5)))
+    ck = ck / np.max(np.abs(ck)) * db2a(-11)
+    full = np.zeros((2, N(0.62 + 0.3)))
+    full[:, :st.shape[1]] += st
+    add_at(full, ck, 0.62)
+    return reverb(full, ir(0.6, 0.5, 6000, seed=32641), -14), -0.62
+
+
+# ---------------------------------------------------------------- v5 post-credits: the Hilbert Hotel (coda mode only)
+# Ported from tools/sectionF/coda/previz_audio.py (v5-coda). PC1 fades up at CODA_DOOR_IN while the counter is still
+# ticking; the gloved hand pushes the door open on CODA_BELL, the beat after the last tick; PC2 (the lobby) has room tone
+# only (no speech) and cuts to black at CODA_END.
+@cue("coda_door_latch", CODA_BELL - 0.06, "PC1 the door's latch gives as the gloved hand pushes the handle", "procedural",
+     "optional", -30)
+def _():
+    c = click(901, dur=0.03, lo=900, hi=8000, tau=0.004, modes=((1400, 20, 0.6), (3300, 25, 0.4)))
+    return reverb(c / np.max(np.abs(c)), ir(0.6, 0.4, 6000, seed=902), -16), 0.0
+
+
+@cue("coda_door_bell", CODA_BELL, "PC1 the little brass bell on its spring rings as the door starts to swing: 4-5 quick "
+     "uneven strikes (Ab6 / Eb7, the ring-out's key), the counter's next tick", "procedural", "essential", -27)
+def _():
+    rng = np.random.default_rng(5)
+    y = np.zeros(N(2.6))
+    partials = ((1.0, 1.0, 0.55), (2.0, 0.35, 0.3), (2.76, 0.28, 0.22), (4.07, 0.12, 0.12), (5.4, 0.06, 0.08))
+    for k, (dt, a) in enumerate([(0.0, 1.0), (0.11, 0.55), (0.19, 0.35), (0.34, 0.22), (0.52, 0.12)]):
+        f0 = NOTE["Ab6"] * (1 + rng.uniform(-0.004, 0.004)) if k % 2 == 0 else 2489.0 * (1 + rng.uniform(-0.004, 0.004))
+        b = bell(f0, 2.0, partials) * a
+        i = N(dt)
+        y[i:i + len(b)] += b[:len(y) - i]
+    y = hp(y, 900, 2)
+    rattle = bp(noise(N(0.45), 8), 3000, 9000, 2) * np.interp(tt(0.45), [0, 0.02, 0.45], [0, 1, 0]) * 0.05
+    y[:len(rattle)] += rattle
+    return reverb(y / np.max(np.abs(y)), ir(1.4, 0.9, 7000, seed=14, predelay=0.008), -12), 0.0
+
+
+@cue("coda_lobby_tone", CODA_DOOR_IN, "PC1-PC2 warm lobby air: barely there outside, opens with the door, holds under "
+     "the receptionist's POV, cut with the picture at the end", "procedural", "optional", -24)
+def _():
+    dur = CODA_END - CODA_DOOR_IN
+    n = N(dur)
+    x = np.cumsum(noise(n, 950))
+    x = lp(hp(x - np.mean(x), 40, 2), 900, 2)
+    x /= np.max(np.abs(x))
+    t = CODA_DOOR_IN + tt(dur)
+    env = db2a(np.interp(t, [CODA_DOOR_IN, CODA_DOOR_IN + 0.6, CODA_BELL, CODA_BELL + 0.8, CODA_END - 0.1, CODA_END],
+                         [-70, -14, -14, 0, 0, -70]))
+    return np.stack([x, np.roll(x, N(0.013))]) * env, 0.0
 
 
 # ============================================================================= framework

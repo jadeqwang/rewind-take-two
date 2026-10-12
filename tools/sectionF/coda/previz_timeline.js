@@ -1,3 +1,5 @@
+// SUPERSEDED by the built scene (tools/sectionF/edl.py PC1_door / PC2_lobby, docs/revisions/v5/build.md): PC1 now starts
+// at 232.80, so this previz would overlap it. Kept for the record; do not run.
 // v5-coda previz (docs/revisions/v5/coda.md): the film as it stands (render/timeline.js, which already carries the
 // extended credits to 234.00) plus the proposed post-credits scene. Not part of the film until Jade signs it off.
 //   node render/engine/render.mjs --timeline tools/sectionF/coda/previz_timeline.js --range 230 245.2 --preview --encode \

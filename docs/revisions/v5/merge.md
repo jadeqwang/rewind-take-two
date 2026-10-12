@@ -1,6 +1,6 @@
 # 3:23, BLUE and ORANGE merge back into her ("un-Banach–Tarski"): plan for Jade
 
-**Status (2026-10-12, `v5-merge`): plan finished, previz rendered, waiting for Jade's sign-off.** Spent **$0.134**
+**Status: built by `v5-build` (2026-10-12) after Jade's "merge looks good": option A is in the cut and both mixes; after clip `media/reviews/v5/0323_merge.mp4`; details in `docs/revisions/v5/build.md`.** Earlier status (`v5-merge`): plan finished, previz rendered, waiting for Jade's sign-off. Spent **$0.134**
 (one nano-banana-pro clean-plate edit, tag `v5_merge_plate`) of the $3 cap. No timeline file, `F_edl.json`, `edl.py` or
 shared mix touched; nothing committed.
 
