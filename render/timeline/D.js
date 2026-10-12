@@ -4493,15 +4493,6 @@ export default {
    ],
    "fx": [
     {
-     "type": "flash",
-     "at": [
-      0
-     ],
-     "dur": 0.05,
-     "amount": 0.3,
-     "color": "#ffffff"
-    },
-    {
      "type": "punch",
      "at": [
       0.44

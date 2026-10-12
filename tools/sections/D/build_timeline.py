@@ -637,7 +637,9 @@ def build():
         [pencil([[0, 0, "hold"], [0.44, 0, "outCubic"], [0.64, UP]]), *btn("l", 0), *btn("r", held(None, 0.46))],
         [agents_v4(133.56),
          girl("blue", "c2t1", "R", C2BT, 0), girl("orange", "c2t1", "L", C2BT, 0)]),
-        fx=[dict(type="flash", at=[0], dur=0.05, amount=0.3, color="#ffffff"), dict(type="punch", at=[0.44], amount=0.03)])
+        # v4 (coordinator: "a visible double exposure ... make it a hard cut on the beat"): the white flash on the cut
+        # washed both frames together; the cut is now plain. phase 2/3: flash at 0, dur 0.05, amount 0.3
+        fx=[dict(type="punch", at=[0.44], amount=0.03)])
     notes["C_coop"] = dict(takes=["media/shots/C_coop/c1/take_2.mp4", "media/shots/C_coop/c2/take_1.mp4"], hinge=[HX, HY], up=UP,
                            beats=dict(press1=130.50, bridge_down=130.80, cross=130.94, agents=131.38, cut=132.26, orange_off=132.46,
                                       jump_cut=133.56, let_go=134.00, run=134.44))

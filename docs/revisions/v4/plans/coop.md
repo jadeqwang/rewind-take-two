@@ -2,6 +2,8 @@
 
 ## Execution, phase 3: follow-ups and Jade's notes on the co-op clip (done 19:06, $0.88; coop total $4.34)
 
+19:10: C2b's white flash at the 133.56 cut removed (hard cut); geography checked from single frames (girls on the far desk, agents thrown back onto the near desk, the raised pencil between them). Clip re-rendered.
+
 Jade (verbatim, relayed by v4-B): "co-op is really good! just a few fixes" / "before the pencil bridge comes down, their
 feet are missing and part of the pencil bridge mechanism is missing" / "agents look frozen instead of reacting to the
 pencil bridge" / "maybe the pencil bridge can lift the other way up and when they let go of the second button and the
