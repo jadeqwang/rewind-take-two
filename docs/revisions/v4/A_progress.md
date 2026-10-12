@@ -145,6 +145,8 @@ B will re-render its 0:13 clip from the committed swap.
 - ~18:30: told `v4-B` "A done". B hands the 540p whole-film preview to codex (brief
   `docs/revisions/render_v4_preview.md`, output `deliverables/wip/rewind_roughcut_v4_preview.mp4`) after its last fix,
   and will say when the render starts. **Do not edit `render/timeline/*` while that render runs.**
+- Codex's v4 whole-film render has **started** (v4-B, ~18:50). Hands off `render/timeline/`, `media/sing/` and
+  `media/sfx/` until B says codex's report has landed.
 
 ## What B needs (v4-B, 2026-10-11 ~17:25)
 
