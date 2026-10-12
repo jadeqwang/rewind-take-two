@@ -43,8 +43,13 @@ const V3S_T0 = 153.98;
 const V3S_LAG = { A: 0.15, B: 0, C: -0.15 }[V3S_VARIANT];
 // v4 (Jade: glossier hair, no smile; media/sing/NOTES.md, "v4"): same framing, scale and timing as v3. v3: 'media/sing/V3S/v3_sync_1080.mp4'
 const V3S_SRC = 'media/sing/V3S/v4_sync_1080.mp4';
+// v5 (Jade 2:35: "make that rooftop staircase an actual impossible staircase"): a Penrose stair on the near rooftop
+// (lower left) in place of the square stairwell; the plate is baked into the take, so it is a still overlay over the take
+// (she never comes near it; take, in-point and her matte unchanged). docs/revisions/v5/stairs.md. v4: no 'stairs' layer.
+const V3S_STAIRS = 'media/sing/plates/stairs_v5/overlay_V3S.png';
 const v3s = (id, start, end) => ({ id, start, end, background: '#000000',
-  layers: [{ id: 'sing', type: 'video', src: V3S_SRC, in: start - V3S_T0 + V3S_LAG, rate: 1, fit: 'cover', keepColor: true }] });
+  layers: [{ id: 'sing', type: 'video', src: V3S_SRC, in: start - V3S_T0 + V3S_LAG, rate: 1, fit: 'cover', keepColor: true },
+    { id: 'stairs', type: 'image', src: V3S_STAIRS, fit: 'cover', keepColor: true }] });
 
 export default ({ T }) => ({
   section: 'E',
