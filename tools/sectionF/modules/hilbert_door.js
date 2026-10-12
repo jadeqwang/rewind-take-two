@@ -10,20 +10,26 @@
 //   params: door, doorway, leaf, bell, glove (images), geom (door_geom.json from tools/sectionF/coda/prep_pc.py),
 //     handIn [t0, t1] (the glove slides in and takes the handle), swing [t0, t1] (0 -> angle deg, ease), angle,
 //     glide [t0, t1], glideScale (frame scale at the end of the glide), focal (px, default 1700)
+//   v5-coda2: auto (the door swings by itself: soft start/stop), hand (press_hand.png) + press {t: [in0, in1, push0,
+//     push1, release, out0, out1], dist, rot, pivot, hover (fraction of dist short of the button
+//     between the reach and the press)} with geom.press (door_geom_v2.json); omit glove/handIn to drop the
+//     old handle grip
 const ease = x => (x <= 0 ? 0 : x >= 1 ? 1 : x * x * (3 - 2 * x));
 const easeOut = x => (x <= 0 ? 0 : x >= 1 ? 1 : 1 - (1 - x) ** 3);
 
 export async function init(ctx, p, env) {
-  const [frame, doorway, leaf, bell, glove, geom] = await Promise.all([
+  const [frame, doorway, leaf, bell, glove, geom, hand] = await Promise.all([
     env.loadImage(p.frame || p.door.replace('door.jpg', 'door_frame.png')), env.loadImage(p.doorway), env.loadImage(p.leaf),
-    env.loadImage(p.bell), env.loadImage(p.glove), env.loadJSON(p.geom)]);
-  return { frame, doorway, leaf, bell, glove, geom };
+    env.loadImage(p.bell), p.glove ? env.loadImage(p.glove) : null, env.loadJSON(p.geom), p.hand ? env.loadImage(p.hand) : null]);
+  return { frame, doorway, leaf, bell, glove, geom, hand };
 }
 
 function swingAngle(lt, p) {
   const [a, b] = p.swing;
   if (lt <= a) return 0;
   const x = Math.min(1, (lt - a) / (b - a));
+  // v5-coda2: the door opens by itself (the doorman pressed the plate): a motor's soft start, a steady swing, a soft stop
+  if (p.auto) return (p.angle ?? 74) * Math.PI / 180 * (0.6 * x * x * (3 - 2 * x) + 0.4 * (1 - (1 - x) ** 2.2));
   // a push: quick start (the shove), then it coasts to its stop
   return (p.angle ?? 74) * Math.PI / 180 * (1 - (1 - x) ** 2.2);
 }
@@ -82,10 +88,45 @@ export function draw(lt, env) {
   // ---- the fixed frame (arch, jambs, stained-glass sidelights) over the leaf's edges
   g.drawImage(S.frame, 0, 0, 1920, 1080);
   // ---- the glove: slides in from the right, takes the handle, then rides it as the door swings
-  const gm = G.glove, [hx, hy] = G.handle;
+  // ---- v5-coda2 (Jade, Round 3: "the arm stretches awkwardly in front of the camera"): the doorman, just off frame
+  // right, makes a short reach from the lower-right corner to the brass push-plate on the stone pier, presses it and
+  // withdraws; the door then swings by itself. The hand moves only along (0.25, 1) / a small rotation about a pivot
+  // below the frame, so it never comes further left than its pressing pose (x >= ~1290; the frame centre is 960).
+  if (S.hand && p.press) {
+    const P = p.press, H = G.press, [i0, i1, c0, c1, r0, o0, o1] = P.t;
+    const easeIn = x => (x <= 0 ? 0 : x >= 1 ? 1 : x ** 3);
+    // 1 = out of frame, 0 = finger on the button; the reach ends a fingertip short of it (hover), then the press
+    const hov = P.hover ?? 0;
+    let away = 1;
+    if (lt >= i0 && lt < c0) away = hov + (1 - hov) * (1 - easeOut((lt - i0) / (i1 - i0)));
+    else if (lt >= c0 && lt < o0) away = hov * (1 - ease((lt - c0) / (c1 - c0)));
+    else if (lt >= o0) away = easeIn((lt - o0) / (o1 - o0));
+    let push = 0;                                            // the press itself: a few px into the plate
+    if (lt >= c0 && lt < r0) push = lt < c1 ? ease((lt - c0) / (c1 - c0)) : 1;
+    else if (lt >= r0 && lt < r0 + 0.08) push = 1 - (lt - r0) / 0.08;
+    if (away < 1) {
+      const D = (P.dist ?? 520) * away, rot = (P.rot ?? 7) * Math.PI / 180 * away;
+      const [pvx, pvy] = P.pivot ?? [1560, 1260];
+      const dx = 0.24 * D + 4 * push, dy = 0.97 * D - 2.6 * push;
+      const [hx0, hy0] = H.xy;
+      // the button cap sinks while it is held
+      if (push > 0) {
+        const [tx, ty] = H.tip;
+        g.fillStyle = `rgba(60,40,10,${0.22 * push})`; g.beginPath(); g.arc(tx - 12, ty + 4, 15, 0, 2 * Math.PI); g.fill();
+      }
+      g.save();
+      g.translate(pvx + dx, pvy + dy); g.rotate(rot); g.translate(-pvx, -pvy);
+      // a soft contact shadow on the stone, stronger as the hand comes close to the wall
+      g.save(); g.globalAlpha = 0.28 * (1 - away) ** 2; g.filter = 'blur(9px) brightness(0)';
+      g.drawImage(S.hand, hx0 + 16, hy0 + 12); g.restore();
+      g.drawImage(S.hand, hx0, hy0);
+      g.restore();
+    }
+  }
+  const gm = G.glove, [hx, hy] = G.handle || [0, 0];
   const [px, py, pz] = proj(hx, hy);
-  const k = easeOut((lt - p.handIn[0]) / (p.handIn[1] - p.handIn[0]));
-  if (lt > p.handIn[0] - 0.01) {
+  const k = easeOut((lt - p.handIn?.[0]) / (p.handIn?.[1] - p.handIn?.[0]));
+  if (S.glove && p.handIn && lt > p.handIn[0] - 0.01) {
     const press = lt > tb - 0.08 && lt < tb ? -4 * Math.sin(Math.PI * (lt - tb + 0.08) / 0.08) : 0;   // the push before it gives
     const slide = (1 - k) * 760, lift = (1 - k) * 60;
     const sc = 1 / pz, gw = gm.size[0], gh = gm.size[1], split = gm.split;

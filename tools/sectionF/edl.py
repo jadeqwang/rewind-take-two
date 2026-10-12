@@ -138,6 +138,16 @@ CODA_DOOR_IN = CODA_TEXT_FADE[1]                   # 232.80
 CODA_LOBBY = round(CODA_T0 + 22 * CODA_BEAT, 4)    # 236.3572
 CODA_END = round(CODA_T0 + 39 * CODA_BEAT, 2)      # 244.05, the film's last frame (was 234.00 for the credits alone)
 PC = "media/shots/PC/"
+# v5-coda2: the ledger's page edges in lobby.jpg (design px of the 1920-wide plate), each left -> right on screen
+LEDGER_CURVES = {
+    "left": {"top": [[565, 941], [600, 939], [660, 936], [720, 929], [780, 922], [840, 917], [870, 918], [900, 924],
+                     [930, 934], [950, 944], [964, 955]],
+             "bottom": [[358, 1280], [450, 1276], [510, 1272], [570, 1265], [630, 1256], [690, 1248], [750, 1241],
+                        [810, 1240], [840, 1242], [870, 1248], [900, 1256], [930, 1270], [966, 1298]]},
+    "right": {"top": [[970, 955], [990, 945], [1005, 937], [1035, 926], [1065, 921], [1095, 919], [1125, 920],
+                      [1155, 923], [1185, 926], [1215, 930], [1245, 934], [1275, 936], [1305, 939], [1375, 941]],
+              "bottom": [[972, 1298], [990, 1286], [1005, 1276], [1035, 1263], [1065, 1254], [1095, 1249], [1125, 1246],
+                         [1185, 1246], [1245, 1252], [1305, 1259], [1365, 1268], [1425, 1274], [1485, 1278], [1590, 1280]]}}
 # the ledger (Jade: full; setup session: the artists and mathematicians whose work the film quotes, legible at a glance)
 LEDGER = [[1, "Maurits Escher"], [2, "Roger Penrose"], [3, "Lionel Penrose"], [4, "Wassily Kandinsky"], [5, "Salvador Dal\u00ed"],
           [6, "Gustav Klimt"], [7, "August M\u00f6bius"], [8, "Stefan Banach"], [9, "Alfred Tarski"], [10, "David Hilbert"]]
@@ -226,19 +236,32 @@ def build():
          "params": {"text": "never stop.", "at": 0, "cps": 13, "x": 960, "y": 610, "size": 216, "color": "#9a958b",
                     "align": "center", "point": True}}]})
     # ---- v5 post-credits: checking into the Hilbert Hotel (docs/revisions/v5/coda.md plan, build.md as built) ----------
-    # PC1: Jade's POV at the door. The doorman's white glove takes the handle (right edge) and pushes the door open into the
-    # lobby on its left hinges on CODA_BELL; the hand stays on the handle as it swings; the camera glides through.
+    # PC1: Jade's POV at the door. v5-coda2 (Jade, Round 3; docs/revisions/v5/coda2.md): no arm across the lens and no grip
+    # on the handle. The doorman's white glove (green livery cuff) makes a short reach from the lower-right corner to the
+    # brass push-plate on the right stone pier, presses it (the latch clicks), withdraws; the door swings by itself on its
+    # left hinges into the lobby from CODA_BELL (the bell one beat after the counter's last tick); the camera glides through.
+    # v5-build had: "glove": PC + "glove.png", "geom": PC + "door_geom.json", "handIn": [0.30, 0.95], swing 1.05 s (a push)
+    _b = round(CODA_BELL - CODA_DOOR_IN, 4)
     shots.append({"shot": "PC1_door", "in": CODA_DOOR_IN, "out": CODA_LOBBY, "background": "#000000", "layers": [
         {"type": "canvas", "module": "tools/sectionF/modules/hilbert_door.js", "fadeIn": 0.6, "params": {
             "door": PC + "door.jpg", "doorway": PC + "doorway.jpg", "leaf": PC + "door_leaf.png", "bell": PC + "door_bell.png",
-            "glove": PC + "glove.png", "geom": PC + "door_geom.json",
-            "handIn": [0.30, 0.95], "swing": [round(CODA_BELL - CODA_DOOR_IN, 4), round(CODA_BELL - CODA_DOOR_IN + 1.05, 4)],
+            "frame": PC + "door_frame_v2.png", "geom": PC + "door_geom_v2.json", "hand": PC + "press_hand.png",
+            # the reach is over before the last tick (233.642), so the white glove never sits under the counter's
+            # digits then; it hovers by the button and presses just before the bell (the latch click 234.034)
+            "press": {"t": [round(_b - 1.05, 3), round(_b - 0.55, 3), round(_b - 0.30, 3), round(_b - 0.12, 3), round(_b + 0.005, 3),
+                            round(_b + 0.045, 3), round(_b + 0.63, 3)], "dist": 520, "rot": 7, "pivot": [1560, 1260], "hover": 0.035},
+            "auto": True, "swing": [_b, round(_b + 1.35, 4)],
             "angle": 64, "glide": [1.85, round(CODA_LOBBY - CODA_DOOR_IN, 4)], "glideScale": 2.6}}],
         "fx": [{"type": "grain", "amount": 0.03, "seed": "twos"}]})
     # PC2: the receptionist's POV: the full ledger, then the look up to the endless queue; the 0:37 text box, no speech
     shots.append({"shot": "PC2_lobby", "in": CODA_LOBBY, "out": CODA_END, "background": "#000000", "layers": [
         {"type": "canvas", "module": "tools/sectionF/modules/hilbert_lobby.js", "params": {
-            "plate": PC + "lobby.jpg", "sprites": PC + "sprites", "vp": [960, 523], "deskY": 869,
+            "plate": PC + "lobby.jpg", "sprites": PC + "sprites_v2", "vp": [960, 523], "deskY": 869,   # v5-coda2: sprites_v2
+            # v5-coda2: each front Jade plays her own looping idle take (media/shots/PC/idle/<name>/), at her own phase and
+            # rate; the ghosts, the 8-bit Jade and the tail get engine idles (sway / breath / 2-frame sprite), all out of sync
+            "idle": {"dir": PC + "idle", "figs": {
+                "jade": [0.0, 0.94], "glasses": [1.7, 0.9], "teal": [3.1, 0.97], "purple": [0.6, 0.92], "braids": [2.4, 1.0],
+                "plain": [4.0, 0.88], "sleepy": [1.1, 0.86], "rainbow": [3.6, 0.95], "mint": [2.9, 0.9]}},
             "front": {"x": 1005, "feet": 1403, "h": 740},
             "order": ["glasses", "teal", "purple", "braids", "plain", "sleepy", "rainbow", "mint",
                       "ghost0", "ghost1", "ghost2", "ghost3", "ghost4", "ghost5", "ghost6", "pixel"],
@@ -249,11 +272,15 @@ def build():
             "camScale": [[0, 1.45], [1.3, 1.45, "inOutCubic"], [3.0, 1.25, "inOutSine"], [7.7, 1.55]],
             "camX": [[0, 972], [1.3, 972, "inOutCubic"], [3.0, 985, "inOutSine"], [7.7, 968]],
             "camY": [[0, 1060], [1.3, 1060, "inOutCubic"], [3.0, 610, "inOutSine"], [7.7, 572]],
+            # v5-coda2 (Jade: "guestbook text should bend naturally with the page"): curved pages; each page's far (top) and
+            # near (bottom) edge measured off lobby.jpg, left -> right (v5-build's flat quads kept as left/right)
             "ledger": {"left": [565, 941, 962, 955, 962, 1282, 355, 1276], "right": [970, 955, 1375, 941, 1590, 1276, 970, 1282],
+                       "box": [330, 880, 1290, 440], "curves": LEDGER_CURVES,
                        "rows": LEDGER}}},
         {"type": "canvas", "module": "dialogue", "stage": "post", "start": 3.3,
          "params": {"rect": [80, 856, 960, 132], "size": 46, "speaker": "FRONT DESK", "text": "Of course we have space for you.", "close": 0,
-                    "at": 0.2, "cps": 16}}],
+                    "at": 0.2, "cps": 110, "typeTime": 0.04}}],   # v5-coda2 (Jade: "render at once or at least faster"): the
+                                                                    # whole line in ~0.3 s (was cps 16, ~2 s), then held
         "fx": [{"type": "grain", "amount": 0.03, "seed": "twos"}]})
     overlays = [
         # v5-build: the ITERATION counter (was a layer of O4) ticks on over the door's fade-up; it goes as the bell rings

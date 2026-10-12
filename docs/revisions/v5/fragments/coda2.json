@@ -1,0 +1,52 @@
+[
+ {
+  "note": "hilbert hotel opening: the arm stretches awkwardly in front of the camera and also doesn't interact with the actual door handle in a realistic way ... (1) push a button on the side and the door opens automatically",
+  "v4_time": "post-credits PC1 (v5 film 232.80-236.36)",
+  "shots": ["PC1_door"],
+  "status": "done (540p)",
+  "after": "media/reviews/v5/coda_hilbert_r3.mp4 (226.0-244.05) + media/reviews/v5/coda_hilbert_r3_sheet.jpg",
+  "before_range": "media/reviews/v5/coda_hilbert.mp4 230.0-236.36",
+  "what_changed": "The stretched arm and the handle grip are gone. A brass push-plate with an engraved infinity-key (the crest's motif) is on the right stone pier at handle height. The doorman's white glove with the green livery cuff makes a short reach up from the lower-right corner (233.2-233.7), hovers by the button, presses it (233.9-234.0; the existing latch click at 234.034), releases, and withdraws downward (234.14-234.72). The door then swings by itself on its existing left hinge into the lobby, with a motor's soft start and stop, from the bell at 234.094. The bell still rings one beat after the last counter tick (233.642); the mix is unchanged. The leftmost the hand ever gets is design x 1281 (frame centre 960), computed from the hand's alpha over every frame. The reach is timed to finish before the last tick, so the 4,113 reading sits on the sleeve and pier, not on the white glove. I chose the doorman's glove over Jade's own POV hand: her note asked for 'a gloved hand', Jade doesn't wear gloves, and the livery says hotel at once.",
+  "question": "None needed. Option: the doorman's hand could stay in frame holding the button until the door is fully open (it currently lets go as the door starts)."
+ },
+ {
+  "note": "guestbook text should bend naturally with the page",
+  "v4_time": "post-credits PC2 opening close-up (236.36-237.7) and the tilt-up (to 239.4)",
+  "shots": ["PC2_lobby"],
+  "status": "done (540p, checked at 1080p on a still)",
+  "after": "media/reviews/v5/coda_hilbert_r3.mp4 236.4-239.4",
+  "before_range": "media/reviews/v5/coda_hilbert.mp4 236.4-239.4",
+  "what_changed": "The flat strip-homography is replaced by a curved-page mesh. Each page's far and near edge was measured off the plate. The lift (the rise above the edge's chord) drives the surface, which crests about 110 px from the spine, dives into the gutter and rises a little at the outer edge. The handwriting, rules, margin rule and room numbers are laid out by surface arc length, so they foreshorten toward the gutter, and they are drawn as about 4,600 affine triangles, once, at plate resolution, then multiplied onto the paper.",
+  "question": ""
+ },
+ {
+  "note": "all the Jade's should move slightly ... each one a little different and out of sync with the others, not bob up and down like a cardboard cutout",
+  "v4_time": "PC2 queue (236.36-244.05)",
+  "shots": ["PC2_lobby"],
+  "status": "done (540p)",
+  "after": "media/reviews/v5/coda_hilbert_r3_queue.mp4 (238.8-244.05, camera held close on the queue, no text box)",
+  "before_range": "media/reviews/v5/coda_hilbert.mp4 239-244",
+  "what_changed": "Each front figure has her own looping Seedance 2.0 i2v idle take: 5 s, 9:16, locked camera, flat grey ground, first frame = last frame so it loops without a seam. Each was matted with BiRefNet and DIS-flow smoothing and plays at her own phase and rate. Protagonist: shifts her weight and adjusts her jacket collar and headphones. Glasses: pushes up her glasses. Teal: tucks hair behind her ear. Purple: glance, blink and foot taps (the taps are behind the desk). Braids: fiddles with a braid. Plain: scratches her head with the pen. Sleepy: dozes and starts awake. Rainbow: eats a chip. Mint: rocks on her heels while her bubble swells. The ghosts and the endless tail now each sway and breathe with their own period and phase, and 8-bit Jade has a 2-frame sprite idle. The old uniform bob is gone.",
+  "question": "Purple's foot-tap is hidden by the desk; if Jade wants a visible fidget there, a retake costs $0.75."
+ },
+ {
+  "note": "give the rectangular-ish glasses to Jade #2 ... rest of her hair a bit fuller ... reduce the volume of the half-up ponytails by about 40% ... Protagonist Jade should look the same as she does in the video, without the glasses.",
+  "v4_time": "PC2 queue",
+  "shots": ["PC2_lobby"],
+  "status": "done",
+  "after": "media/reviews/v5/coda_hilbert_r3_queue.mp4",
+  "before_range": "media/reviews/v5/coda_hilbert.mp4 242-244",
+  "what_changed": "Jade #2 is a nano-banana-pro edit (media/shots/PC/gen2/glasses_v2.jpg): softly rectangular thin dark frames, a solid curtain of hair with no gaps, and slimmer half-up pigtails, so the purple-haired Jade behind her now shows. The protagonist is rebuilt as the end-of-film Jade from O2 on (gen2/jade_v3.jpg): bun with both pencils crossed (pink-eraser graphite and pale-blue-eraser rainbow), curtain bangs, no glasses, white cropped bomber with the orange band, pale-blue dot and sleeve roundel, black mock-neck, orange headphones, navy cargo with orange straps, white sneakers, and empty hands (canon: exactly two pencils). Her colour ghosts are rebuilt from her new drawing.",
+  "question": ""
+ },
+ {
+  "note": "you can have the whole front desk sentence render at once or at least faster, for faster readers",
+  "v4_time": "PC2 text box (from 239.86)",
+  "shots": ["PC2_lobby"],
+  "status": "done",
+  "after": "media/reviews/v5/coda_hilbert_r3.mp4 239.6-244.05",
+  "before_range": "media/reviews/v5/coda_hilbert.mp4 239.6-242",
+  "what_changed": "The line types at 110 cps with 0.04 s per word (was 16 cps), so the whole line lands in about 0.3 s, keeping the 0:37 typing feel, then holds with the caret to the cut.",
+  "question": ""
+ }
+]

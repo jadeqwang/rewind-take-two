@@ -14,7 +14,8 @@
 //     front {x, feet, h}, order (sprite names after the protagonist, nearest first), cycle (names for the endless tail),
 //     depth: {step, near: [d1, d2, ...]} (explicit depths of the first people, then +step each), lat, latTaper, count,
 //     snake / snakeF: past the eight committee Jades the line snakes +-snake px (at d = 1) with phase step snakeF per person,
-//     camScale / camX / camY (keys, layer-local s: the world point at screen centre), ledger {left, right: [8 numbers,
+//     camScale / camX / camY (keys, layer-local s: the world point at screen centre), idle {dir, figs: {name: [phase s,
+//     rate]}} (v5-coda2: per-figure looping idle frames, dir/<name>/f_0001.png + info.json), ledger {left, right: [8 numbers,
 //     TL TR BR BL], rows: [[room, name], ...] (5 per page)}
 const PIX = new Set(['pixel']);
 
@@ -27,8 +28,9 @@ function quadH(q) {   // homography unit square -> quad (TL, TR, BR, BL)
   return (u, v) => { const w = g * u + h * v + 1; return [(a * u + b * v + x0) / w, (d * u + e * v + y0) / w]; };
 }
 
-function pageTexture(rows, first, W = 1000, H = 660) {
-  const cv = new OffscreenCanvas(W, H), g = cv.getContext('2d');
+function pageTexture(rows, first, W = 1000, H = 660, k = 1) {
+  const cv = new OffscreenCanvas(W * k, H * k), g = cv.getContext('2d');
+  g.scale(k, k);
   const top = 0.17 * H, rh = (0.94 * H - top) / rows.length, mx = 0.17 * W;
   g.strokeStyle = 'rgba(96,118,150,0.55)'; g.lineWidth = 2.2;                         // ruled lines (faded blue)
   for (let i = 0; i <= rows.length; i++) { g.beginPath(); g.moveTo(0.02 * W, top + i * rh); g.lineTo(0.98 * W, top + i * rh); g.stroke(); }
@@ -62,19 +64,100 @@ function drawWarped(g, tex, quad, strips = 48) {
   }
 }
 
+// ---- v5-coda2 (Jade, Round 3: "guestbook text should bend naturally with the page"): each page is a curved surface,
+// not a flat quad. Its far (top) and near (bottom) edges are polylines measured off the plate (left -> right on screen);
+// a point at page fraction u (left -> right) and depth v (far -> near) is T(u) + (B(u) - T(u)) * w(v), w = perspective
+// (the near edge is r times wider than the far one). The page's lift shows as the top edge's rise above its chord; the
+// handwriting is laid out by surface arc length (sqrt(dx^2 + (lift' / cos elev)^2)), so it foreshortens where the paper
+// dives into the gutter and rises at the outer edge. Drawn once, in init, as affine triangles into a world-space canvas.
+function polyAt(P, x) {
+  if (x <= P[0][0]) return P[0][1];
+  for (let i = 1; i < P.length; i++) if (x <= P[i][0]) { const [x0, y0] = P[i - 1], [x1, y1] = P[i]; return y0 + (y1 - y0) * (x - x0) / (x1 - x0); }
+  return P[P.length - 1][1];
+}
+
+function pageMesh(top, bot, NU = 96, NV = 24, cosE = 0.78) {
+  const tx0 = top[0][0], tx1 = top[top.length - 1][0], bx0 = bot[0][0], bx1 = bot[bot.length - 1][0];
+  const r = (bx1 - bx0) / (tx1 - tx0);
+  const T = u => { const x = tx0 + u * (tx1 - tx0); return [x, polyAt(top, x)]; };
+  const B = u => { const x = bx0 + u * (bx1 - bx0); return [x, polyAt(bot, x)]; };
+  const lift = u => { const [x, y] = T(u); const yc = top[0][1] + (top[top.length - 1][1] - top[0][1]) * u; return yc - y; };
+  // texture coordinate = normalised surface arc length across the page
+  const S = [0];
+  for (let i = 1; i <= NU; i++) {
+    const u0 = (i - 1) / NU, u1 = i / NU, dx = (tx1 - tx0) / NU, dz = (lift(u1) - lift(u0)) / cosE;
+    S.push(S[i - 1] + Math.hypot(dx, dz));
+  }
+  const w = v => v * r / (1 + v * (r - 1));
+  const pts = [];
+  for (let j = 0; j <= NV; j++) {
+    const row = [];
+    for (let i = 0; i <= NU; i++) {
+      const u = i / NU, a = T(u), b = B(u), k = w(j / NV);
+      row.push({ x: a[0] + (b[0] - a[0]) * k, y: a[1] + (b[1] - a[1]) * k, s: S[i] / S[NU], v: j / NV });
+    }
+    pts.push(row);
+  }
+  return pts;
+}
+
+function drawTri(g, tex, a, b, c) {
+  const tw = tex.width, th = tex.height;
+  const sx0 = a.s * tw, sy0 = a.v * th, sx1 = b.s * tw, sy1 = b.v * th, sx2 = c.s * tw, sy2 = c.v * th;
+  const den = (sx1 - sx0) * (sy2 - sy0) - (sx2 - sx0) * (sy1 - sy0);
+  if (Math.abs(den) < 1e-9) return;
+  const m11 = ((b.x - a.x) * (sy2 - sy0) - (c.x - a.x) * (sy1 - sy0)) / den;
+  const m12 = ((c.x - a.x) * (sx1 - sx0) - (b.x - a.x) * (sx2 - sx0)) / den;
+  const m21 = ((b.y - a.y) * (sy2 - sy0) - (c.y - a.y) * (sy1 - sy0)) / den;
+  const m22 = ((c.y - a.y) * (sx1 - sx0) - (b.y - a.y) * (sx2 - sx0)) / den;
+  const dx = a.x - m11 * sx0 - m12 * sy0, dy = a.y - m21 * sx0 - m22 * sy0;
+  const cx = (a.x + b.x + c.x) / 3, cy = (a.y + b.y + c.y) / 3, grow = p => [p.x + (p.x - cx) * 0.04 + Math.sign(p.x - cx) * 0.4, p.y + (p.y - cy) * 0.04 + Math.sign(p.y - cy) * 0.4];
+  g.save();
+  g.beginPath(); const A = grow(a), B = grow(b), C = grow(c); g.moveTo(A[0], A[1]); g.lineTo(B[0], B[1]); g.lineTo(C[0], C[1]); g.closePath(); g.clip();
+  g.transform(m11, m21, m12, m22, dx, dy);
+  const x0 = Math.max(0, Math.floor(Math.min(sx0, sx1, sx2)) - 2), y0 = Math.max(0, Math.floor(Math.min(sy0, sy1, sy2)) - 2);
+  const x1 = Math.min(tw, Math.ceil(Math.max(sx0, sx1, sx2)) + 2), y1 = Math.min(th, Math.ceil(Math.max(sy0, sy1, sy2)) + 2);
+  if (x1 > x0 && y1 > y0) g.drawImage(tex, x0, y0, x1 - x0, y1 - y0, x0, y0, x1 - x0, y1 - y0);
+  g.restore();
+}
+
+function curvedLedger(pages, box, k) {
+  const [bx, by, bw, bh] = box, cv = new OffscreenCanvas(Math.round(bw * k), Math.round(bh * k)), g = cv.getContext('2d');
+  g.scale(k, k); g.translate(-bx, -by);
+  for (const [tex, curve] of pages) {
+    const M = pageMesh(curve.top, curve.bottom);
+    for (let j = 0; j < M.length - 1; j++) for (let i = 0; i < M[0].length - 1; i++) {
+      drawTri(g, tex, M[j][i], M[j][i + 1], M[j + 1][i + 1]);
+      drawTri(g, tex, M[j][i], M[j + 1][i + 1], M[j + 1][i]);
+    }
+  }
+  return cv;
+}
+
 export async function init(ctx, p, env) {
   const info = await env.loadJSON(p.sprites + '/info.json');
   const S = {};
   for (const n of Object.keys(info)) S[n] = await env.loadImage(`${p.sprites}/${n}.png`);
   const plate = await env.loadImage(p.plate);
+  const idle = {};       // v5-coda2: name -> info.json of its idle sequence (+ phase, rate)
+  if (p.idle) for (const [n, [phase, rate]] of Object.entries(p.idle.figs)) {
+    try { idle[n] = { ...(await env.loadJSON(`${p.idle.dir}/${n}/info.json`)), phase, rate }; } catch (e) { /* not built yet: sprite + engine idle */ }
+  }
   try { await document.fonts.load('92px "Reenie Beanie"'); await document.fonts.load('italic 40px "IM Fell English"'); } catch (e) { /* fonts are preloaded by the engine */ }
   const L = p.ledger, pages = [];
+  let curved = null;
   if (L) {
     const half = Math.ceil(L.rows.length / 2);
-    pages.push([pageTexture(L.rows.slice(0, half), 0), L.left]);
-    pages.push([pageTexture(L.rows.slice(half), half), L.right]);
+    if (L.curves) {        // v5-coda2: curved pages, pre-rendered once in world px (box) at the plate's resolution
+      const k = L.res ?? 2.5;
+      curved = curvedLedger([[pageTexture(L.rows.slice(0, half), 0, 1000, 660, 2), L.curves.left],
+                             [pageTexture(L.rows.slice(half), half, 1000, 660, 2), L.curves.right]], L.box, k);
+    } else {
+      pages.push([pageTexture(L.rows.slice(0, half), 0), L.left]);
+      pages.push([pageTexture(L.rows.slice(half), half), L.right]);
+    }
   }
-  return { S, plate, pages };
+  return { S, plate, pages, curved, idle };
 }
 
 export function draw(lt, env) {
@@ -100,12 +183,31 @@ export function draw(lt, env) {
     // visible one behind another all the way into the vanishing point instead of stacking into one smear
     const kn = order.length - 8, sn = k > kn ? (p.snake ?? 0) * Math.min(1, (k - kn) / 5) * Math.sin((k - kn) * (p.snakeF ?? 0.45)) : 0;
     const x = vx + (F.x - vx + side * amp * (k > kn ? 0.35 : 1) + sn) / d;
-    const bob = Math.sin(t * 2 * Math.PI * 0.3 + k * 1.7) * 0.004 * F.h;      // breathing
-    const feet = vy + (F.feet - vy) / d, hh = (F.h + bob) / d;
+    const feet = vy + (F.feet - vy) / d, hh = F.h / d;
     if (h < 3) { g.globalAlpha = 0.85; g.fillStyle = name.startsWith('ghost') ? '#c9a227' : '#4a4038'; g.fillRect(x - hh * 0.12, feet - hh, hh * 0.24, hh); g.globalAlpha = 1; continue; }
-    const w = hh * im.width / im.height;
+    // v5-coda2 (Jade: "each one a little different and out of sync ... not bob up and down like a cardboard cutout"):
+    // the protagonist and the eight committee Jades (their first, near appearance) play their own idle takes, each at
+    // her own phase and rate; everyone else idles in the engine with her own period and phase.
+    const iv = k <= order.length ? st.idle[name] : null;
+    if (iv) {
+      const dur = iv.frames / iv.fps, u = ((t * iv.rate + iv.phase) % dur + dur) % dur;
+      const fi = Math.min(iv.frames - 1, Math.floor(u * iv.fps));
+      const bmp = env.assets.get(`${p.idle.dir}/${name}/f_${String(fi + 1).padStart(4, '0')}.png`);
+      if (bmp) { const sc = hh / iv.figH; g.drawImage(bmp, x - iv.cx * sc, feet - iv.footY * sc, iv.w * sc, iv.h * sc); }
+      continue;    // a miss is loaded by the engine, which then draws the frame again
+    }
+    const H = env.core.hash, P1 = 2.6 + 2.2 * H(k, 31), P2 = 3.4 + 2.6 * H(k, 37), ph1 = 6.283 * H(k, 41), ph2 = 6.283 * H(k, 43);
+    const sway = 0.012 * Math.sin(6.283 * t / P1 + ph1) * (0.6 + 0.8 * H(k, 47));            // weight shift, rad about the feet
+    const breath = 1 + 0.007 * Math.sin(6.283 * t / P2 + ph2);                                 // chest rise (height only)
+    const shift = 0.018 * hh * Math.sin(6.283 * t / (P1 * 1.7) + ph2);                         // a slow step side to side
+    let img = im;
+    if (name === 'pixel' && st.S.pixel_b && Math.floor(t * 2.4 + H(k, 53) * 2) % 2) img = st.S.pixel_b;   // 2-frame idle
+    const w = hh * img.width / img.height;
     g.imageSmoothingEnabled = !PIX.has(name);
-    g.drawImage(im, x - w / 2, feet - hh, w, hh);
+    g.save(); g.translate(x + shift, feet);
+    if (!PIX.has(name)) { g.rotate(sway); g.scale(1, breath); }
+    g.drawImage(img, -w / 2, -hh, w, hh);
+    g.restore();
   }
   g.imageSmoothingEnabled = true;
   // ---- the desk in front of their legs: the plate again below the desk's far edge
@@ -114,6 +216,7 @@ export function draw(lt, env) {
   // ---- the ledger, every line filled in ink
   g.globalCompositeOperation = 'multiply';
   for (const [tex, quad] of st.pages) drawWarped(g, tex, quad);
+  if (st.curved) { const [bx, by, bw, bh] = p.ledger.box; g.drawImage(st.curved, bx, by, bw, bh); }
   g.globalCompositeOperation = 'source-over';
   g.restore();
 }
