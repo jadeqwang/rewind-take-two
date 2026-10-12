@@ -255,14 +255,13 @@
    "O3_black",
    "O4"
   ],
-  "status": "question",
+  "status": "done",
   "after": "media/reviews/v4/B/0333_report_stamp_credit.mp4",
   "still": "media/reviews/v4/B/0346_end_credit.png",
   "before_range": [
    222.3,
    227.96
   ],
-  "what_changed": "A four-line credit in the HUD's pixel face types on in the bottom-left corner during the black ring-out, one line per beat (223.23, 223.69, 224.14, 224.59), so it is fully up 1.4 s before the whisper. The handwritten \"never stop.\" and the iteration counter (bottom right) are untouched, and everything fades together.",
-  "question": "Is the wording right? REWIND / JADE WANG / FROM THE POEM “RELOAD” / INFERENCE · SPACES LEFT BLANK, BOOK 1. (Moongazing credited \"Words — Jade Wang, from her poem …\"; say if you want a words/music split or a year.)"
+  "what_changed": "Your wording, in the HUD's pixel face in the bottom-left corner: Rewind / Lyrics & Melody by Jade Wang / Adapted from Jade Wang’s poem “Reload” / Inference (Book 1) · Spaces Left Blank Trilogy, then after a gap, Instruments arranged by Suno. It types on one line per beat over the black ring-out and is fully up before the whisper; the handwritten \"never stop.\" and the iteration counter are untouched."
  }
 ]
