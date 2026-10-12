@@ -24,7 +24,7 @@ A fresh session can carry on from this file alone. Last updated: 2026-10-11 19:2
 | 7 | 2:00 | co-op level + E5 arm | **built** 18:55 ($3.46): C1/C2 generated, twins BLUE/ORANGE from 128.32, B/W pencil drawbridge, stopwatch out (replay from 134.88), E5 arm re-segmented; four procedural button/bridge cues; `docs/sections/D.md` Revision 6. After `media/reviews/v4/B/0200_coop.mp4`, arm strip `0200_e5_arm_before_after.jpg`. Open: BLUE's bun pencils tinted blue (canon: yellow); drawbridge vs slide (Jade). |
 | 8 | 3:33 | "ANOMALY REPORT" | **done** 17:35; after `media/reviews/v4/B/0333_report_stamp_credit.mp4` | `tools/sectionF/edl.py` |
 | 9 | 3:37 | stamp wording | **done**: Jade 19:47 "keep the stamp as NOW" |
-| 10 | end | end credit | **done** 19:55: Jade's wording (CREDIT in `tools/sectionF/edl.py`), six lines incl. a blank before "Instruments arranged by Suno" |
+| 10 | end | end credit | **done** 20:00: Jade's wording bottom left (CREDIT); Suno + "Animated by Opus 5.5 and a supporting cast of models" + the model list top right (CREDIT_R), in `tools/sectionF/edl.py` |
 
 ## Running right now
 
