@@ -181,7 +181,7 @@ break; cap rest of its $8.
 `docs/revisions/render_v4_preview.md` (540p whole film, `--force`, current SFX mix, out
 `deliverables/wip/rewind_roughcut_v4_preview.mp4`, report `docs/revisions/render_v4_preview_report.md`). Codex is in
 tmux `moongazing:0.1`. v4-A reported "A done" at 20:12. Co-op check done 20:20 (geography was right; the 133.56 flash removed, commit 1fb3aee).
-**Render handed to codex at 20:22** (typed into `moongazing:0.1`). No timeline edits while it runs; v4-A told.
+**Render handed to codex at 20:22** (typed into `moongazing:0.1`). Codex FAILED at 19:11 CDT (real clock): its sandbox denies the engine's localhost bind (`listen EPERM 127.0.0.1`); report `docs/revisions/render_v4_preview_report.md`. v4-B is running the same command itself, in the background, log `deliverables/wip/rewind_roughcut_v4_preview_render.log`. For future renders: codex cannot run `render.mjs` in its current sandbox. No timeline edits while it runs; v4-A told.
 Next: when `docs/revisions/render_v4_preview_report.md` says DONE, look at the sheet and spot-check frames, tell Jade and v4-A.
 
 ## Execution round
