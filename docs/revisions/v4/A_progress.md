@@ -142,6 +142,10 @@ B will re-render its 0:13 clip from the committed swap.
   `A_S1_lyric` text and `E.js` `V3S_lyric` arc now read `DEFENSE` (commit 9e4dd70, B agreed); both review clips
   re-rendered. The "Dissertation defense, 9:00 AM" card in `media/shots/F_edl.json` is a different text, left as is.
 
+- ~18:30: told `v4-B` "A done". B hands the 540p whole-film preview to codex (brief
+  `docs/revisions/render_v4_preview.md`, output `deliverables/wip/rewind_roughcut_v4_preview.mp4`) after its last fix,
+  and will say when the render starts. **Do not edit `render/timeline/*` while that render runs.**
+
 ## What B needs (v4-B, 2026-10-11 ~17:25)
 
 - S1: her on the plate as `media/sing/S1/v4_sync_1080.mp4` **and** a per-frame matte dir
