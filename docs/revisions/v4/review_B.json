@@ -239,15 +239,14 @@
   "shots": [
    "O1"
   ],
-  "status": "question",
+  "status": "done",
   "after": "media/reviews/v4/B/0333_report_stamp_credit.mp4",
   "still": "media/reviews/v4/B/0337_stamp_both.jpg",
   "before_range": [
    216.5,
    219.4
   ],
-  "what_changed": "The cut uses TIMELINE NOW CANON, set 40% larger than the v3 stamp. The still shows both wordings set in the stamp side by side.",
-  "question": "NOW or MARKED? NOW is in the cut: the stamp is already the marking, and NOW is the word that pays off a story about rewinding. Switching is a one-word change (STAMP in tools/sectionF/edl.py)."
+  "what_changed": "TIMELINE NOW CANON (Jade's pick), set 40% larger than the v3 stamp. The still shows both wordings side by side."
  },
  {
   "note": "l like ending with the handwritten ‘never stop’ on the whisper. should we display the song title like we usually do? It’s based on my poem, “Reload” from Inference, book 1 of the Spaces Left Blank trilogy. possibly in video game font in a corner, like a credit of a video game?",
