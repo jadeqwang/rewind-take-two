@@ -38,7 +38,9 @@ export default async function timeline(ctx) {
   return {
     name: 'rewind',
     audio: 'inputs/Rewind - cinematic edition (Remastered).mp3',
-    range: [0, T.duration],
+    // v5 coda (docs/revisions/v5/coda.md): the film may run past the song (T.duration = 227.96, timing.json) for the
+    // credits' fade and the post-credits scene, so it ends where its last shot ends
+    range: [0, Math.max(T.duration, ...shots.map(s => s.end))],
     background: '#000000',
     fx: [{ type: 'grain', amount: 0.035 }],
     shots,

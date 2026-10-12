@@ -8,6 +8,7 @@ sfx_only.wav and laid over the untouched original (sample-aligned) for mix_previ
 
     ~/Documents/moongazing/.venv/bin/python tools/sfx/build.py            # render everything + metrics
     ~/Documents/moongazing/.venv/bin/python tools/sfx/build.py --only=shot1,continue_vo   # stems for a subset
+    ~/Documents/moongazing/.venv/bin/python tools/sfx/build.py --coda     # v5: the film extended past the song (*_v5coda)
 
 Outputs (media/sfx/, gitignored): stems/NN_<id>.wav, cues.json, sfx_only.wav, mix_preview.wav,
 Rewind_cinematic_sfx_mix.mp3. Metrics per cue (level vs music, spectral overlap, vocal protection) go into
@@ -36,14 +37,42 @@ INPUT_MP3 = os.path.join(ROOT, "inputs", "Rewind - cinematic edition (Remastered
 SRC = MIX = VOC = INS = None
 BEATS = []
 
+# v5 coda (docs/revisions/v5/coda.md; Jade: "credits sound fades out gradually as the life count ticks up in the
+# corner"). `--coda` (or REWIND_SFX_CODA=1) builds the extended film: the song is padded with silence to CODA_END, the
+# ring-out chord is held (a spectral freeze of the instrumental stem) and fades out slowly under the credits, the 8th
+# clock carries on, and every tick of the ITERATION counter gets a soft blip that fades with it. Outputs go beside the
+# v4 ones with the suffix _v5coda (stems_v5coda/, cues_v5coda.json, sfx_only_v5coda.wav, mix_preview_v5coda.wav,
+# Rewind_cinematic_sfx_mix_v5coda.mp3). Without the flag the v4 mix is rebuilt exactly as before.
+CODA = "--coda" in sys.argv[1:] or os.environ.get("REWIND_SFX_CODA") == "1"
+CODA_END = 234.00            # O4 + credits end (tools/sectionF/edl.py O4/O_credit); the post-credits scene raises it
+CODA_BEAT = 0.4526           # the ring-out beat (timing.json beats 224.137 ... 226.400, interpolated)
+CODA_T0 = 226.400            # bar 129 downbeat: the counter reads 4,097 here and ticks +1 every CODA_BEAT
+COUNTER_TICKS = [round(CODA_T0 + k * CODA_BEAT, 4) for k in range(1, 17)]   # 4,098 at 226.853 ... 4,113 at 233.642
+CODA_FADE = (226.90, 232.60)   # the held chord, clock and blips fall from 0 dB (whisper end) to -40 dB, then silence
+CODA_SUFFIX = "_v5coda"
+
+
+def coda_fade_db(t):
+    """dB gain of the coda tail at time t: 0 until the whisper ends, then -40 * x^1.7 (x = 0..1 over CODA_FADE: slow
+    at first, so the tail is heard fading for several seconds), then a 0.4 s close to silence."""
+    t = np.asarray(t, dtype=np.float64)
+    a, b = CODA_FADE
+    g = -40.0 * np.clip((t - a) / (b - a), 0, 1) ** 1.7
+    return np.where(t > b + 0.4, -200.0, np.where(t > b, -40.0 - 160.0 * (t - b), g))
+
 
 def load():
     global SRC, MIX, VOC, INS, BEATS
     SRC, sr = sf.read(os.path.join(A, "source.wav"), dtype="int16", always_2d=True)
     assert sr == SR
-    MIX = (SRC.astype(np.float64) / 32768.0).T
     VOC = sf.read(os.path.join(A, "vocals_bs_roformer_48k.wav"), dtype="float64", always_2d=True)[0].T
     INS = sf.read(os.path.join(A, "instrumental_bs_roformer_48k.wav"), dtype="float64", always_2d=True)[0].T
+    if CODA:                                   # pad the song (and its stems) with digital silence to the new film end
+        n = N(CODA_END)
+        SRC = np.concatenate([SRC, np.zeros((n - SRC.shape[0], SRC.shape[1]), dtype=SRC.dtype)])
+        VOC = np.concatenate([VOC, np.zeros((2, n - VOC.shape[1]))], axis=1)
+        INS = np.concatenate([INS, np.zeros((2, n - INS.shape[1]))], axis=1)
+    MIX = (SRC.astype(np.float64) / 32768.0).T
     BEATS = [b["t"] for b in json.load(open(os.path.join(A, "timing.json")))["beats"]]
 
 
@@ -542,7 +571,6 @@ def _():
     return reverb(y, room(), -18), 0.0
 
 
-
 # ---------------------------------------------------------------- v3: instance B's restaged chase (94.06-141.00)
 # Cue list from rev-B (2026-10-11). Appended after the v2 cues so the v2 stem numbers do not shift. Agents stand at
 # frame left in every Verse 2 shot, so their sounds pan left.
@@ -827,6 +855,71 @@ def _():
     return reverb(y, room(), -18), 0.0
 
 
+# ---------------------------------------------------------------- v5 coda (only with --coda; see CODA above)
+# Registered last so the stem numbers of every earlier cue stay as they were.
+# In coda mode outro_clock and counter_roll are replaced by coda_clock and coda_counter (same sounds, longer, fading),
+# and coda_pad holds the ring-out chord so the credits' sound fades out instead of being cut at the whisper (226.0).
+CODA_ONLY = {"coda_pad", "coda_clock", "coda_counter"}
+CODA_REPLACES = {"outro_clock", "counter_roll"}
+
+
+def freeze(x, t0, t1, dur, seed, nfft=8192):
+    """Spectral freeze: the mean magnitude spectrum of x[t0:t1] (mono) resynthesized with random phases for dur s."""
+    seg = x[N(t0):N(t1)]
+    mag = np.abs(librosa.stft(seg, n_fft=nfft, hop_length=nfft // 4)).mean(axis=1, keepdims=True)
+    frames = int(np.ceil((N(dur) + 2 * nfft) / (nfft // 4))) + 4
+    ph = np.random.default_rng(seed).uniform(-np.pi, np.pi, (mag.shape[0], frames))
+    y = librosa.istft(mag * np.exp(1j * ph), hop_length=nfft // 4, n_fft=nfft)
+    y = y[nfft:nfft + N(dur)]
+    return y / (np.max(np.abs(y)) + 1e-12)
+
+
+@cue("coda_pad", 225.00, "Credits (v5 coda): the ring-out Ab chord held as a spectral freeze of the instrumental stem "
+     "(223.3-224.5), entering as the original decays through -36 dB, under the whisper (ducked), then fading out "
+     "slowly (0 -> -40 dB, 226.9-232.6, slow at first) while its low-pass closes towards 1.2 kHz", "procedural "
+     "(instrumental stem copy)", "essential", -25.5, duck_vocal_db=6)
+def _():
+    dur = CODA_FADE[1] + 0.45 - 225.00
+    t = 225.00 + tt(dur)
+    lo, hi = INS[0], INS[1]
+    a = np.stack([freeze(lo, 223.3, 223.9, dur, 2251), freeze(hi, 223.3, 223.9, dur, 2252)])
+    b = np.stack([freeze(lo, 223.9, 224.5, dur, 2253), freeze(hi, 223.9, 224.5, dur, 2254)])
+    w = 0.5 + 0.5 * np.sin(2 * np.pi * (t - 225.0) / 7.0)            # slow drift between the two freezes
+    y = a * np.sqrt(1 - w) + b * np.sqrt(w)
+    dark = lp(y, 1200, 2)
+    k = np.clip((t - 226.9) / (CODA_FADE[1] - 226.9), 0, 1)           # brightness closes as it fades
+    y = dark + (y - dark) * (1 - k) ** 1.5
+    env = np.interp(t, [225.0, 225.7], [0.0, 1.0]) * db2a(coda_fade_db(t))
+    return y * env, 0.0
+
+
+@cue("coda_clock", 223.685, "Credits (v5 coda): the intro's 8th-note clock (outro_clock's ticks) carries on past the "
+     "whisper and fades with the held chord, last tick 232.5", "procedural", "essential", -25, duck_vocal_db=9)
+def _():
+    ticks = [223.685 + 0.226 * k for k in range(60)]
+    ticks = [x for x in ticks if x < CODA_FADE[1] - 0.05]
+    y = np.zeros((2, N(ticks[-1] - 223.685 + 0.5)))
+    for i, tk in enumerate(ticks):
+        g = np.interp(tk, [223.685, 225.0, 226.9], [0.25, 1.0, 0.9]) * db2a(coda_fade_db(tk))
+        add_at(y, pan(tick_sound(300 + i, tock=i % 2 == 1) * g, -0.12 if i % 2 else 0.12), tk - 223.685)
+    return reverb(y, room(), -16), 0.0
+
+
+@cue("coda_counter", COUNTER_TICKS[0], "Credits (v5 coda): one soft 8-bit blip (F6/Bb6) per ITERATION tick, on the "
+     "ring-out beat (4,098 at 226.853 ... ), fading with the chord; the last ticks (after 232.6) are silent: the "
+     "counter keeps going after the sound has gone", "procedural (pulse wave)", "essential", -33)
+def _():
+    t0 = COUNTER_TICKS[0]
+    y = np.zeros(N(COUNTER_TICKS[-1] - t0 + 0.2))
+    for i, tk in enumerate(COUNTER_TICKS):
+        g = db2a(coda_fade_db(tk))
+        if g < db2a(-60):
+            continue
+        b = blip_seq([("F6" if i % 2 == 0 else "Bb6", 0.022)], duty=0.5, gap=0.0, decay=0.015)
+        y[N(tk - t0):N(tk - t0) + len(b)] += b * g
+    return reverb(y, room(), -18), 0.0
+
+
 # ============================================================================= framework
 def vocal_env_db():
     v = VOC.mean(0)
@@ -849,12 +942,15 @@ def render(only=None):
     n_total = MIX.shape[1]
     sfx = np.zeros((2, n_total))
     music_gain = np.ones(n_total)
-    os.makedirs(os.path.join(OUT, "stems"), exist_ok=True)
+    stems = "stems" + (CODA_SUFFIX if CODA else "")
+    os.makedirs(os.path.join(OUT, stems), exist_ok=True)
     meta = []
     for k, c in enumerate(CUES):
         if only and c["id"] not in only:
             continue
         if c["id"] in DISABLED and not (only and c["id"] in only):
+            continue
+        if c["id"] in (CODA_REPLACES if CODA else CODA_ONLY):     # v5 coda: one set of ending cues or the other
             continue
         y, off = c["fn"]()
         y = stereo(np.asarray(y, dtype=np.float64))
@@ -878,8 +974,8 @@ def render(only=None):
         y = y[:, :tail[-1] + 1]                                   # drop the sub -90 dBFS reverb tail
         add_at(sfx, y, start)
         fn = f"{k + 1:02d}_{c['id']}.wav"
-        sf.write(os.path.join(OUT, "stems", fn), y.T.astype(np.float32), SR, subtype="FLOAT")
-        meta.append(dict(id=c["id"], file=f"stems/{fn}", start_s=round(start, 6), start_sample=i0,
+        sf.write(os.path.join(OUT, stems, fn), y.T.astype(np.float32), SR, subtype="FLOAT")
+        meta.append(dict(id=c["id"], file=f"{stems}/{fn}", start_s=round(start, 6), start_sample=i0,
                          end_s=round(start + y.shape[1] / SR, 4), anchor_s=c["anchor_s"], what=c["what"],
                          source=c["source"], priority=c["priority"], gain_db=c["gain_db"],
                          duck_vocal_db_max=c["duck_vocal_db"], duck_music_db=c["duck_music_db"], _y=y))
@@ -967,17 +1063,19 @@ def main(argv):
     if only:
         return
     # ---- full renders
-    sf.write(os.path.join(OUT, "sfx_only.wav"), sfx.T, SR, subtype="PCM_24")
+    sx = CODA_SUFFIX if CODA else ""
+    F_SFX, F_MIX, F_MP3, F_CUES = f"sfx_only{sx}.wav", f"mix_preview{sx}.wav", f"Rewind_cinematic_sfx_mix{sx}.mp3", f"cues{sx}.json"
+    sf.write(os.path.join(OUT, F_SFX), sfx.T, SR, subtype="PCM_24")
     peak = float(np.max(np.abs(mix_out)))
     assert peak < db2a(-1.0), f"mix peak {a2db(peak):.2f} dBFS"
-    sf.write(os.path.join(OUT, "mix_preview.wav"), mix_out.T, SR, subtype="PCM_24")
+    sf.write(os.path.join(OUT, F_MIX), mix_out.T, SR, subtype="PCM_24")
     # bit-exactness of the original where there is no SFX and no ducking
-    back, _ = sf.read(os.path.join(OUT, "mix_preview.wav"), dtype="int32", always_2d=True)
+    back, _ = sf.read(os.path.join(OUT, F_MIX), dtype="int32", always_2d=True)
     silent = (np.max(np.abs(sfx), axis=0) == 0) & (mg == 1.0)
     exact = bool(np.all(back[silent] == (SRC[silent].astype(np.int32) << 16)))
     I_src, I_mix = integrated(MIX), integrated(mix_out)
-    mp3 = os.path.join(OUT, "Rewind_cinematic_sfx_mix.mp3")
-    subprocess.run([FFMPEG, "-hide_banner", "-loglevel", "error", "-y", "-i", os.path.join(OUT, "mix_preview.wav"),
+    mp3 = os.path.join(OUT, F_MP3)
+    subprocess.run([FFMPEG, "-hide_banner", "-loglevel", "error", "-y", "-i", os.path.join(OUT, F_MIX),
                     "-c:a", "libmp3lame", "-b:a", "320k", "-metadata", "title=Rewind (cinematic edition) + SFX",
                     "-metadata", "artist=Jade Wang", mp3], check=True)
     dec = librosa.load(mp3, sr=SR, mono=False)[0]
@@ -993,12 +1091,13 @@ def main(argv):
                             mp3_decoded=round(true_peak_db(dec[:, :nn]), 2)),
         mp3_offset_samples_vs_wav=lag, mp3_length_samples=int(dec.shape[1]),
         original_bit_exact_outside_cues=exact, music_ducking_used=bool(np.any(mg < 1.0)),
-        files=dict(sfx_only="sfx_only.wav", mix_preview="mix_preview.wav", mp3="Rewind_cinematic_sfx_mix.mp3"),
+        files=dict(sfx_only=F_SFX, mix_preview=F_MIX, mp3=F_MP3), coda=dict(end_s=CODA_END, counter_ticks=COUNTER_TICKS,
+                                                                             fade=CODA_FADE) if CODA else None,
         notes="start_s/start_sample = where sample 0 of the stem file sits on the song timeline (48 kHz, same "
               "zero as analysis/cinematic/source.wav = the mp3 with encoder delay removed). Stems are float32 at final "
               "gain (vocal ducking baked in): summing them at start_sample reproduces sfx_only.wav. gain_db = stem "
               "peak in dBFS before vocal ducking.")
-    json.dump(dict(summary=summary, cues=meta), open(os.path.join(OUT, "cues.json"), "w"), indent=1, default=float)
+    json.dump(dict(summary=summary, cues=meta), open(os.path.join(OUT, F_CUES), "w"), indent=1, default=float)
     print(json.dumps(summary, indent=1, default=float))
 
 

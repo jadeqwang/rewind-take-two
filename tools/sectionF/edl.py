@@ -125,6 +125,12 @@ CREDIT_R = ["Instruments arranged by Suno", "", "Animated by Opus 5.5", "and a s
             "BiRefNet \u00b7 Real-ESRGAN \u00b7 Whisper", "Beat This! \u00b7 BS-RoFormer \u00b7 Demucs"]
 CREDIT_R_AT = ["224.82", "224.82", "225.04", "225.20", "225.36", "225.52", "225.68", "225.84"]
 
+# v5 coda (docs/revisions/v5/coda.md): the film runs on past the song (227.96) for the credits' fade. Keep these in step
+# with tools/sfx/build.py (CODA_END, CODA_T0, CODA_BEAT), which builds the matching sound (--coda).
+CODA_END = 234.00              # end of O4 (the post-credits scene, once signed off, starts after a short black)
+CODA_T0, CODA_BEAT = 226.400, 0.4526   # the counter reads 4,097 at the bar-129 downbeat and ticks +1 every ring-out beat
+CODA_TEXT_FADE = (231.00, 232.80)      # credits and "never stop." fade out; the counter ticks on alone to CODA_END
+
 
 def build():
     shots = [
@@ -192,12 +198,22 @@ def build():
                             "haloColor": "#0b0b0c", "hold": 9}]))
     # O3: hard cut to black at 222.78; the ring-out sits on black until O4
     shots.append({"shot": "O3_black", "in": 222.78, "out": 226.00, "layers": [{"type": "solid", "color": "#000000"}]})
-    shots.append({"shot": "O4", "in": 226.00, "out": 227.96, "layers": [{"type": "solid", "color": "#000000"}],
-                  "text": [{"style": "pencil", "in": 226.00, "out": 227.96, "text": "never stop.", "at": 0, "cps": 13,
-                            "x": 960, "y": 610, "size": 216, "color": "#9a958b", "align": "center", "point": True},
-                           {"style": "iteration", "in": 226.00, "out": 227.96, "side": "right", "margin": 64, "y": 1016,
-                            "base": 4097, "from": 0.45, "rate": 3.0, "flicker": 0.35, "size": 28, "color": "#ece7dc"}],
-                  "fx": [{"type": "fade", "out": [227.0, 227.96]}]})
+    # v5 coda (Jade: "credits sound fades out gradually as the life count ticks up in the corner";
+    # docs/revisions/v5/coda.md). The film now runs past the song's end (227.96) to CODA_END: the credits and "never
+    # stop." hold, then fade out over CODA_TEXT_FADE while the ITERATION counter ticks +1 on every ring-out beat
+    # (mechanical snap, 4,098 at 226.853 ... 4,113 at 233.642: the same ticks as tools/sfx/build.py COUNTER_TICKS, whose
+    # coda_counter blips fade out with the held chord by 232.6, so the last ticks are silent). v4: O4 ended at 227.96
+    # with a 227.0-227.96 fade-out and the counter rolling at 3/s from 226.45.
+    shots.append({"shot": "O4", "in": 226.00, "out": CODA_END, "layers": [
+        {"type": "solid", "color": "#000000"},
+        {"type": "canvas", "module": "pencil", "stage": "post", "start": 0, "end": round(CODA_TEXT_FADE[1] - 226.00, 3),
+         "fadeOut": round(CODA_TEXT_FADE[1] - CODA_TEXT_FADE[0], 3),
+         "params": {"text": "never stop.", "at": 0, "cps": 13, "x": 960, "y": 610, "size": 216, "color": "#9a958b",
+                    "align": "center", "point": True}},
+        {"type": "canvas", "module": "hud", "stage": "post", "start": 0, "end": round(CODA_END - 226.00, 3), "fadeOut": 0.4,
+         "params": {"mode": "iteration", "side": "right", "margin": 64, "y": 1016, "base": 4097,
+                    "from": round(CODA_T0 - 226.00, 3), "rate": round(1 / CODA_BEAT, 5), "snap": True, "flicker": 0.2,
+                    "size": 28, "color": "#ece7dc"}}]})
     overlays = [{"id": "O1_variance_report", "start": 211.64, "end": 218.92, "layers": [
         {"type": "canvas", "module": "tools/sectionF/modules/variance_report.js", "stage": "post", "params": {
             "slideIn": ["211.90", "212.20"], "cps": 50, "size": 28, "rect": [1040, 640, 800, 330],
@@ -206,11 +222,13 @@ def build():
             "unwrite": ["215.22", "217.04"], "stamp": {"text": STAMP, "at": "217.04", "scale": 1.75}}}]},
         # v4 (Jade, the ending): the song credit, set like a game's end credit in the HUD face, bottom left (the
         # iteration counter is bottom right). One line per beat of the ring-out on black, all up before the whisper.
-        {"id": "O_credit", "start": 223.23, "end": 227.96, "layers": [
-            {"type": "canvas", "module": "tools/sectionF/modules/end_credit.js", "stage": "post", "params": {
+        {"id": "O_credit", "start": 223.23, "end": CODA_TEXT_FADE[1], "layers": [   # v5 coda: held, then faded (was end 227.96)
+            {"type": "canvas", "module": "tools/sectionF/modules/end_credit.js", "stage": "post",
+             "fadeOut": round(CODA_TEXT_FADE[1] - CODA_TEXT_FADE[0], 3), "params": {
                 "side": "right", "margin": 64, "y": 250, "size": 26, "cps": 40, "color": "#ece7dc", "dim": "#a39e93",   # v4 (Jade): song credit top right
                 "lines": [{"text": l, "at": a, **({"size": 38} if i == 0 else {})} for i, (l, a) in enumerate(zip(CREDIT, CREDIT_AT))]}},
-            {"type": "canvas", "module": "tools/sectionF/modules/end_credit.js", "stage": "post", "params": {
+            {"type": "canvas", "module": "tools/sectionF/modules/end_credit.js", "stage": "post",
+             "fadeOut": round(CODA_TEXT_FADE[1] - CODA_TEXT_FADE[0], 3), "params": {
                 "side": "left", "margin": 64, "y": 1016, "size": 20, "leading": 1.9, "cps": 70,   # v4 (Jade): models bottom left
                 "color": "#a39e93", "dim": "#a39e93",
                 "lines": [{"text": l, "at": a, **({"color": "#ece7dc"} if i == 2 else {})} for i, (l, a) in enumerate(zip(CREDIT_R, CREDIT_R_AT))]}}]}]

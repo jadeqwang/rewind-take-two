@@ -1,0 +1,22 @@
+[
+ {
+  "note": "credits sound fades out gradually as the life count ticks up in the corner",
+  "v4_time": "3:43-3:48 (222.78-227.96)",
+  "shots": ["O4", "O_credit", "SFX: coda_pad, coda_clock, coda_counter (replace outro_clock, counter_roll)"],
+  "status": "done (540p after clip); the film now ends at 234.00 (+6.04 s)",
+  "after": "media/reviews/v5/coda_credits_fade_after_540p.mp4",
+  "before_range": [221.0, 227.96],
+  "what_changed": "The ring-out chord is held (spectral freeze of the instrumental stem) and fades slowly after the whisper (0 -> -40 dB, 226.9-232.6); the 8th clock continues and fades. ITERATION ticks +1 on every ring-out beat (4,098 at 226.853 ... 4,113 at 233.642), each with a soft 8-bit blip that fades with the chord; the last three ticks are silent. The credits and 'never stop.' hold, then fade 231.0-232.8; the counter fades out 233.6-234.0. New mix beside the v4 one: media/sfx/Rewind_cinematic_sfx_mix_v5coda.mp3 (tools/sfx/build.py --coda). render/timeline.js range now follows the last shot, so whole-film renders must use the coda mix (--audio).",
+  "question": "Is this the fade you meant (sound gone by ~232.6, counter ticks on silently to 4,113, cut at 234.0; 6 s longer than v4)?"
+ },
+ {
+  "note": "post credits scene: checking into the Hilbert Hotel (door POV, gloved hand, ring; receptionist POV, infinite line of Jades, text box 'Of course we have space for you.')",
+  "v4_time": "new, after the credits (234.00-245.20)",
+  "shots": ["PC0_black 234.00-234.70", "PC1_door 234.70-237.70", "PC2_lobby 237.70-245.20"],
+  "status": "plan + candidates + 540p previz; waiting for Jade's sign-off (not in the film). Spent $1.58 of the $5 cap; about $0-1.0 more to finish",
+  "after": "media/reviews/v5/plans/coda/coda_previz_540p.mp4",
+  "before_range": null,
+  "what_changed": "PC1: Jade's POV at the colour door with the gold HILBERT HOTEL key-infinity emblem; a doorman's white glove (green livery cuff) opens it, and a small spring bell rings as it moves (Seedance take media/gen/v5_coda_door/take_1_dered.mp4). PC2: the receptionist looks up from the ledger at a woodcut-engraved endless hall; protagonist Jade at the desk, the committee (watercolour, graphite, engraved, ghosts) and Kandinsky ghost Jades snake back to the vanishing point (engine module tools/sectionF/coda/hilbert_lobby.js over lobby_empty_engraved.jpg with sprites cut from committee_sheet.png); the 0:37-style text box types 'Of course we have space for you.' No speech; room tone only. Plan and execution steps: docs/revisions/v5/coda.md.",
+  "question": "1) Lobby look: engraved lobby with only the Jades in colour (previz), or all colour like O2 (lobby_line_color.jpg)? 2) Text box tab: FRONT DESK, RECEPTIONIST, HILBERT HOTEL, or none? 3) Optional: should the whole queue shuffle up one place at the end (Hilbert's trick)?"
+ }
+]
