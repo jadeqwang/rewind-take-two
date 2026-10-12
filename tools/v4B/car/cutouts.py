@@ -59,6 +59,11 @@ rgba(w, Image.eval(holes, lambda v: 255 - v), os.path.join(ROOT, "media/shots/V2
 # lower edge never leaves the header and no gap or second header can show)
 import numpy as np  # noqa: E402
 rgba(w, mask(w.size, kw, [SKY], feather=1.0), os.path.join(ROOT, "media/shots/V2f3/wide_gantry.png"))
+# the sky left of the gantry (behind her head, down to the far barrier through the side glass): held to the still so the
+# take's own passing gantry never shows there; she is drawn back over it from the take through its matte
+SKY_LEFT = [(0, 0), (560, 0), (560, 256), (516, 258), (508, 330), (474, 470), (0, 470)]
+SKY_RIGHT = [(1548, 205), (1920, 196), (1920, 488), (1622, 492), (1548, 492)]   # right of the mirror, where the take's gantry post passes
+rgba(w, mask(w.size, kw, [SKY_LEFT, SKY_RIGHT], feather=3.0), os.path.join(ROOT, "media/shots/V2f3/wide_sky_left.png"))
 
 c = Image.open(CLOSE).convert("RGB")
 kc = c.width / 1920

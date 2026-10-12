@@ -95,6 +95,11 @@ export default function carShot(start, end = 92.79) {
       ...[0, 1].map((h) => ({ id: `car_road${h}`, type: 'image', src: WIDE, fit: 'cover', opacity: (lt, env) => roadOpacity(env.t, h), ...layerT((t) => roadCam(t, h)) }))]),
     // the sky band keeps the still's gantry (the take sends gantries past at its own pace; SIRENS stays pinned to this one)
     { id: 'car_gantry', type: 'image', src: GANTRY, fit: 'cover', ...layerT(gantryCam) },
+    // the rest of the sky above the header (left of the gantry, behind her head) held to the still, then she is drawn
+    // back over it from the take through the take's own matte (so the take's passing gantry never pops in the sky)
+    ...(TAKE ? [{ id: 'car_skyleft', type: 'image', src: `${S}V2f3/wide_sky_left.png`, fit: 'cover', ...layerT(wideCam) },
+      { id: 'car_jade', type: 'video', src: TAKE, in: 0, rate: 1, fit: 'cover', keepColor: true,
+        matte: { src: `${S}V2f3/take_1_matte/matte.mp4`, mode: 'luma' }, ...layerT(wideCam) }] : []),
     { id: 'car_sign', type: 'canvas', module: WOODCUT, noRewind: true, params: { text: 'SIRENS', sync: 'lyric', color: '#ece7dc', box: [600, 170], pad: 10,
       hatch: 0.38, flecks: 16, corners: (lt, env) => apply(gantryCam(env.t), SIGN_Q) } },
     ...(TAKE ? [] : [{ id: 'car_cabin', type: 'image', src: CABIN, fit: 'cover', ...layerT(wideCam) }]),
