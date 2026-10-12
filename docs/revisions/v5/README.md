@@ -69,3 +69,29 @@ Spend before this pass: **$243.44 of $400** (`python3 tools/gen/spend.py`).
 - **Hand-over:** a 540p after clip (<10 MB, with its audio slice) in `media/reviews/v5/`, and a fragment
   `docs/revisions/v5/fragments/<name>.json`: a list of `{note, v4_time, shots, status, after, before_range,
   what_changed, question}`.
+
+## Round 2: Jade's answers (2026-10-12), verbatim
+
+> * signs look good, merge looks good
+> * staircase looks bad, because it's not an actual impossible staircase. can you just copy the one from later in
+>   the same video? the one inside the clock at 3:13?
+>
+> coda:
+> * infinite Jades, I just added "committee_v3_long_ponytails_ff.png" to /inputs which is from the previous version
+>   of the Rewind video. I thought it would be fun to have glasses Jade right after protagonist Jade, followed by
+>   teal tips, purple, braids, etc., and then the colorful ghosts and 8bit Jade, etc.
+> * hotel door should open in the correct way
+> * I think the ledger should be full (should it be video game characters? mathematicians? artists whose work are
+>   visually referenced in the video? or kept illegible?)
+> * I kinda like this part in full color
+
+Setup-session calls where Jade left it open: signs stay as built (light-on-dark faces, no extra rewind lettering);
+merge is option A exactly as previewed (F7_06 dropped, hair down, piece count as is); credits fade stays as built;
+text box tab stays FRONT DESK; no queue-shuffle gag. Ledger: **full, legible at a glance, the artists and
+mathematicians whose work the film quotes** (the Hilbert joke: the book is full and there is still room). Video
+game characters are out (public video, other people's IP).
+
+| Name | Work | Cap, tag | File |
+|---|---|---|---|
+| `v5-stairs2` | replace the v5 stair with the 3:13 clock Penrose stair | $3, `v5_stairs2_` | `docs/revisions/v5/stairs.md` (append a Round 2 section) |
+| `v5-build` | build merge option A, then the post-credits scene with Jade's notes | $10, `v5_build_` | `docs/revisions/v5/build.md` |
