@@ -11,6 +11,7 @@ orange (#F08A24). The world is a black-and-white engraving, so colour alone find
                   ORANGE, right becomes BLUE; the default) or "bo" (left becomes BLUE, right stays ORANGE: after the
                   girls swap sides, as in the C2 take from about 3.7 s)
     --splits=out.json  write the per-frame split columns and modes (the matte splitter reads them)
+    --matte=DIR   the take's engrave matte: the bun and pencils at the top of each girl are left uncoloured (canon)
 """
 import json
 import os
@@ -48,13 +49,46 @@ def auto_split(o, b, w, prev):
     return 0.5 * (xs[i] + xs[i + 1])
 
 
-def recolor(frame, split, stats=None, mode="ob"):
+def girls_of(matte, frame):
+    """the girls in an engrave matte: components that hold saturated orange/blue (the agents are colourless)"""
+    o, b, _, _ = masks(cv2.cvtColor(frame, cv2.COLOR_BGR2HSV).astype(np.float32))
+    n, lab = cv2.connectedComponents(matte.astype(np.uint8))
+    m = np.zeros(matte.shape, bool)
+    for k in range(1, n):
+        comp = lab == k
+        if (comp & (o | b)).sum() > 400:
+            m |= comp
+    return m
+
+
+def head_keep(m, split, frac=0.16):
+    """v4 canon: both twins keep two yellow pencils (pink and pale-blue erasers) in the bun. The bun and pencils are the
+    top of each girl's silhouette: the top `frac` of her height (per side of the split) is left untouched."""
+    keep = np.zeros(m.shape, bool)
+    X = np.arange(m.shape[1])[None, :]
+    for side in (X < split, X >= split):
+        g = m & side
+        ys = np.flatnonzero(g.any(1))
+        if len(ys) < 20:
+            continue
+        y0, y1 = ys[0], ys[-1]
+        cut = int(y0 + frac * (y1 - y0))
+        band = np.zeros_like(keep)
+        band[:cut + 1] = True
+        keep |= cv2.dilate((g & band).astype(np.uint8), np.ones((15, 15), np.uint8)).astype(bool) & band & side
+    return keep
+
+
+def recolor(frame, split, stats=None, mode="ob", keep=None):
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV).astype(np.float32)
     o, b, s, v = masks(hsv)
     X = np.arange(frame.shape[1])[None, :]
     blue_side = (X >= split) if mode == "ob" else (X < split)
     to_blue = o & blue_side
     to_orange = b & ~blue_side
+    if keep is not None:
+        to_blue &= ~keep
+        to_orange &= ~keep
     hsv[..., 0][to_blue] = BLUE_H
     hsv[..., 1][to_blue] = np.clip(s[to_blue] * 0.86, 0, 1) * 255
     hsv[..., 2][to_blue] = np.clip(v[to_blue] * 0.93, 0, 1) * 255
@@ -66,7 +100,7 @@ def recolor(frame, split, stats=None, mode="ob"):
     return cv2.cvtColor(np.clip(hsv, 0, 255).astype(np.uint8), cv2.COLOR_HSV2BGR)
 
 
-def main(src, dst, split="960", check=None, plan="", splits_out=None):
+def main(src, dst, split="960", check=None, plan="", splits_out=None, matte=None):
     cap = cv2.VideoCapture(src)
     w, h = int(cap.get(3)), int(cap.get(4))
     fps = cap.get(cv2.CAP_PROP_FPS) or 24
@@ -107,8 +141,13 @@ def main(src, dst, split="960", check=None, plan="", splits_out=None):
                             "-i", "-", "-c:v", "libx264", "-preset", "slow", "-crf", "12", "-pix_fmt", "yuv420p", dst],
                            stdin=subprocess.PIPE)
     stats, outs = [], []
-    for f, x, m_ in zip(frames, sp, modes):
-        g = recolor(f, x, stats, m_)
+    for i, (f, x, m_) in enumerate(zip(frames, sp, modes)):
+        kp = None
+        if matte:
+            mp = os.path.join(matte, f"{i:05d}.png")
+            if os.path.exists(mp):
+                kp = head_keep(girls_of(cv2.imread(mp, 0) > 127, f), x)
+        g = recolor(f, x, stats, m_, kp)
         enc.stdin.write(g.tobytes())
         if check:
             outs.append(g)
@@ -127,4 +166,4 @@ def main(src, dst, split="960", check=None, plan="", splits_out=None):
 if __name__ == "__main__":
     a = [x for x in sys.argv[1:] if not x.startswith("--")]
     o = {x[2:].partition("=")[0]: x[2:].partition("=")[2] for x in sys.argv[1:] if x.startswith("--")}
-    main(a[0], a[1], o.get("split", "960"), o.get("check"), o.get("plan", ""), o.get("splits"))
+    main(a[0], a[1], o.get("split", "960"), o.get("check"), o.get("plan", ""), o.get("splits"), o.get("matte"))

@@ -3754,20 +3754,20 @@ export default {
      "src": "media/shots/C_coop/pencil.png",
      "fit": "cover",
      "anchor": [
-      0.6172,
-      0.5852
+      0.3646,
+      0.587
      ],
-     "x": 225,
-     "y": 92,
+     "x": -260,
+     "y": 94,
      "rotate": [
       [
        0,
-       72,
+       -78,
        "hold"
       ],
       [
        1.32,
-       72,
+       -78,
        "inCubic"
       ],
       [
@@ -3823,53 +3823,105 @@ export default {
      "fit": "cover"
     },
     {
+     "id": "tail",
+     "type": "image",
+     "src": "media/shots/C_coop/patch_tail.png",
+     "fit": "cover"
+    },
+    {
      "id": "hinge",
      "type": "image",
-     "src": "media/shots/C_coop/patch_hinge.png",
+     "src": "media/shots/C_coop/hinge.png",
      "fit": "cover"
     },
     {
      "id": "agents",
      "type": "video",
-     "src": "media/shots/C_coop/c2t1_bo.mp4",
+     "src": "media/shots/C_coop/agents/take_1.mp4",
+     "fit": "cover",
+     "scale": 0.5,
      "srcTime": [
       [
-       0,
-       0.45
+       2.2,
+       0.5
       ],
       [
-       0.22,
+       2.42,
        0.15
       ],
       [
-       0.44,
-       0.45
+       2.64,
+       0.5
       ],
       [
-       0.66,
+       2.86,
        0.15
       ],
       [
-       0.88,
-       0.15
+       3.08,
+       0.0
+      ],
+      [
+       4.82,
+       2.3
+      ],
+      [
+       5.7,
+       4.5
       ]
      ],
-     "matte": {
-      "src": "media/shots/C_coop/c2t1_ag.mp4",
-      "mode": "luma"
-     },
-     "start": 2.2,
      "x": [
       [
-       0,
-       -520,
+       2.2,
+       -1600,
        "outCubic"
       ],
       [
-       0.88,
-       0
+       3.08,
+       -872
+      ],
+      [
+       3.52,
+       -472
+      ],
+      [
+       4.82,
+       -57,
+       "outCubic"
+      ],
+      [
+       5.26,
+       -537
       ]
-     ]
+     ],
+     "y": [
+      [
+       2.2,
+       -121
+      ],
+      [
+       3.52,
+       -121
+      ],
+      [
+       3.67,
+       -161
+      ],
+      [
+       4.82,
+       -161,
+       "inOutCubic"
+      ],
+      [
+       5.26,
+       -111
+      ]
+     ],
+     "matte": {
+      "src": "media/shots/C_coop/agents/take_1_matte.mp4",
+      "mode": "luma"
+     },
+     "start": 2.2
     },
     {
      "id": "blue",
@@ -4003,11 +4055,11 @@ export default {
      "src": "media/shots/C_coop/pencil.png",
      "fit": "cover",
      "anchor": [
-      0.6172,
-      0.5852
+      0.3646,
+      0.587
      ],
-     "x": 225,
-     "y": 92,
+     "x": -260,
+     "y": 94,
      "rotate": 0
     },
     {
@@ -4053,27 +4105,102 @@ export default {
      "fit": "cover"
     },
     {
+     "id": "tail",
+     "type": "image",
+     "src": "media/shots/C_coop/patch_tail.png",
+     "fit": "cover"
+    },
+    {
      "id": "hinge",
      "type": "image",
-     "src": "media/shots/C_coop/patch_hinge.png",
+     "src": "media/shots/C_coop/hinge.png",
      "fit": "cover"
     },
     {
      "id": "agents",
      "type": "video",
-     "src": "media/shots/C_coop/c2t1_bo.mp4",
+     "src": "media/shots/C_coop/agents/take_1.mp4",
+     "fit": "cover",
+     "scale": 0.5,
      "srcTime": [
       [
-       0,
+       -0.88,
+       0.5
+      ],
+      [
+       -0.66,
        0.15
       ],
       [
-       0.75,
-       1.1
+       -0.44,
+       0.5
+      ],
+      [
+       -0.22,
+       0.15
+      ],
+      [
+       0.0,
+       0.0
+      ],
+      [
+       1.74,
+       2.3
+      ],
+      [
+       2.62,
+       4.5
+      ]
+     ],
+     "x": [
+      [
+       -0.88,
+       -1600,
+       "outCubic"
+      ],
+      [
+       0.0,
+       -872
+      ],
+      [
+       0.44,
+       -472
+      ],
+      [
+       1.74,
+       -57,
+       "outCubic"
+      ],
+      [
+       2.18,
+       -537
+      ]
+     ],
+     "y": [
+      [
+       -0.88,
+       -121
+      ],
+      [
+       0.44,
+       -121
+      ],
+      [
+       0.59,
+       -161
+      ],
+      [
+       1.74,
+       -161,
+       "inOutCubic"
+      ],
+      [
+       2.18,
+       -111
       ]
      ],
      "matte": {
-      "src": "media/shots/C_coop/c2t1_ag.mp4",
+      "src": "media/shots/C_coop/agents/take_1_matte.mp4",
       "mode": "luma"
      }
     },
@@ -4163,11 +4290,11 @@ export default {
      "src": "media/shots/C_coop/pencil.png",
      "fit": "cover",
      "anchor": [
-      0.6172,
-      0.5852
+      0.3646,
+      0.587
      ],
-     "x": 225,
-     "y": 92,
+     "x": -260,
+     "y": 94,
      "rotate": [
       [
        0,
@@ -4180,8 +4307,8 @@ export default {
        "outCubic"
       ],
       [
-       0.74,
-       72
+       0.64,
+       -78
       ]
      ]
     },
@@ -4222,27 +4349,102 @@ export default {
      "fit": "cover"
     },
     {
+     "id": "tail",
+     "type": "image",
+     "src": "media/shots/C_coop/patch_tail.png",
+     "fit": "cover"
+    },
+    {
      "id": "hinge",
      "type": "image",
-     "src": "media/shots/C_coop/patch_hinge.png",
+     "src": "media/shots/C_coop/hinge.png",
      "fit": "cover"
     },
     {
      "id": "agents",
      "type": "video",
-     "src": "media/shots/C_coop/c2t1_bo.mp4",
+     "src": "media/shots/C_coop/agents/take_1.mp4",
+     "fit": "cover",
+     "scale": 0.5,
      "srcTime": [
       [
-       0,
-       1.1
+       -2.18,
+       0.5
+      ],
+      [
+       -1.96,
+       0.15
+      ],
+      [
+       -1.74,
+       0.5
+      ],
+      [
+       -1.52,
+       0.15
+      ],
+      [
+       -1.3,
+       0.0
+      ],
+      [
+       0.44,
+       2.3
       ],
       [
        1.32,
-       1.1
+       4.5
+      ]
+     ],
+     "x": [
+      [
+       -2.18,
+       -1600,
+       "outCubic"
+      ],
+      [
+       -1.3,
+       -872
+      ],
+      [
+       -0.86,
+       -472
+      ],
+      [
+       0.44,
+       -57,
+       "outCubic"
+      ],
+      [
+       0.88,
+       -537
+      ]
+     ],
+     "y": [
+      [
+       -2.18,
+       -121
+      ],
+      [
+       -0.86,
+       -121
+      ],
+      [
+       -0.71,
+       -161
+      ],
+      [
+       0.44,
+       -161,
+       "inOutCubic"
+      ],
+      [
+       0.88,
+       -111
       ]
      ],
      "matte": {
-      "src": "media/shots/C_coop/c2t1_ag.mp4",
+      "src": "media/shots/C_coop/agents/take_1_matte.mp4",
       "mode": "luma"
      }
     },
@@ -11087,14 +11289,14 @@ export default {
      "type": "canvas",
      "module": "tools/sectionA/modules/woodcut.js",
      "params": {
-      "text": "HILBERT",
+      "text": "HILBERT\nHOTEL",
       "at": -1,
       "color": "#0b0b0c",
       "flecks": 0,
       "hatch": 0.15,
       "box": [
        420,
-       140
+       230
       ],
       "pad": 8,
       "corners": [
@@ -14596,14 +14798,14 @@ export default {
      "type": "canvas",
      "module": "tools/sectionA/modules/woodcut.js",
      "params": {
-      "text": "HILBERT",
+      "text": "HILBERT\nHOTEL",
       "at": -1,
       "color": "#0b0b0c",
       "flecks": 0,
       "hatch": 0.15,
       "box": [
        420,
-       140
+       230
       ],
       "pad": 8,
       "corners": [
@@ -14655,14 +14857,14 @@ export default {
      "type": "canvas",
      "module": "tools/sectionA/modules/woodcut.js",
      "params": {
-      "text": "HILBERT",
+      "text": "HILBERT\nHOTEL",
       "at": -1,
       "color": "#0b0b0c",
       "flecks": 0,
       "hatch": 0.15,
       "box": [
        420,
-       140
+       230
       ],
       "pad": 8,
       "corners": [

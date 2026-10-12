@@ -554,8 +554,11 @@ def build():
     # buttons as sprites cut from the take (assets.py), so the engine can raise the bridge and sink the buttons.
     # v4 first pass: an animatic of storyboard panels 2-9 here (media/shots/C_coop/animatic/).
     CO = f"{SH}/C_coop"
-    UP = 72                                                # bridge raised (deg, about the hinge at the right lip)
-    HX, HY = 1185, 632                                     # hinge, design px
+    # v4 phase 3 (Jade: "part of the pencil bridge mechanism is missing", "maybe the pencil bridge can lift the other way
+    # up"): the hinge is at the NEAR lip with a drawn iron bracket (tools/v4B/coop/hinge.py); raised = the point end up.
+    # phase 2: UP = 72 about a hinge at the far lip (1185, 632), no bracket
+    UP = -78                                               # bridge raised (deg; negative = counter-clockwise)
+    HX, HY = 700, 634                                      # hinge, design px
     SINK = 18                                              # a held button (and the girl on it) drops this far
 
     def pencil(rot):
@@ -579,10 +582,29 @@ def build():
             L["start"] = start
         return L
 
+    # v4 phase 3 (Jade: "agents look frozen instead of reacting to the pencil bridge", "the agents then get thrown back"):
+    # the agents are one Seedance take of their own on blank paper (media/shots/C_coop/agents/, matte by
+    # tools/v4B/coop/agents.py), one continuous layer across C1-C2b placed by song-time keys: they run in behind ORANGE
+    # (131.38), lunge where she was (132.70), run out onto the bridge after her, and at 134.00, when BLUE lets go and the
+    # far end lifts, the take's springboard throw flings them back over the hinge onto the near desk, where they land
+    # (134.44) and sit up, dazed. Nobody falls into the gap.
+    AG_T = [[131.38, 0.5], [131.60, 0.15], [131.82, 0.5], [132.04, 0.15], [132.26, 0.0], [134.00, 2.3], [134.88, 4.5]]
+    AG_X = [[131.38, -1600, "outCubic"], [132.26, -872], [132.70, -472], [134.00, -57, "outCubic"], [134.44, -537]]
+    AG_Y = [[131.38, -121], [132.70, -121], [132.85, -161], [134.00, -161, "inOutCubic"], [134.44, -111]]
+
+    def agents_v4(t0, start=None):
+        sh = lambda K: [[r4(k[0] - t0), *k[1:]] for k in K]
+        L = dict(id="agents", type="video", src=f"{CO}/agents/take_1.mp4", fit="cover", scale=0.5, srcTime=sh(AG_T),
+                 x=sh(AG_X), y=sh(AG_Y), matte=dict(src=f"{CO}/agents/take_1_matte.mp4", mode="luma"))
+        if start is not None:
+            L["start"] = start
+        return L
+
     def level(id_, a, b, layers, fx):
         shots.append(dict(id=id_, start=a, end=b, layers=[
             dict(id="plate", type="image", src=f"{CO}/plate.png", fit="cover"), *layers[0],
-            dict(id="hinge", type="image", src=f"{CO}/patch_hinge.png", fit="cover"), *layers[1]], fx=fx))
+            dict(id="tail", type="image", src=f"{CO}/patch_tail.png", fit="cover"),
+            dict(id="hinge", type="image", src=f"{CO}/hinge.png", fit="cover"), *layers[1]], fx=fx))
 
     held = lambda t_on, t_off=None: ([[0, 0, "hold"], [r4(t_on), SINK]] if t_on is not None else [[0, SINK, "hold"]]) + \
         ([[r4(t_off), 0]] if t_off is not None else [])
@@ -594,8 +616,7 @@ def build():
         [pencil([[0, UP, "hold"], [1.32, UP, "inCubic"], [1.62, 0]]), *btn("l", held(1.34)), *btn("r", held(2.92))],
         # the agents of C2's first frames run in from the left edge (their legs cycle on a ping-pong of take 0.15-0.45
         # while they slide in), arriving exactly where C2a picks them up
-        [dict(agents("c2t1", [[0, 0.45], [0.22, 0.15], [0.44, 0.45], [0.66, 0.15], [0.88, 0.15]], start=2.20),
-              x=[[0, -520, "outCubic"], [0.88, 0]]),
+        [agents_v4(129.18, start=2.20),
          girl("blue", "c1t2", "R", C1T, held(2.92)), girl("orange", "c1t2", "L", C1T, held(1.34))]),
         fx=[dict(type="flash", at=[0], dur=0.06, amount=0.35, color="#ffffff"), dict(type="punch", at=[1.34, 2.92], amount=0.025),
             dict(type="shake", at=[1.62], amp=6, decay=0.15)])
@@ -605,7 +626,7 @@ def build():
     C2T = [[0, 0.15], [1.30, 1.9]]
     level("C2a_swap", 132.26, 133.56, (
         [pencil(0), *btn("l", held(None, 0.20)), *btn("r", held(None))],
-        [agents("c2t1", [[0, 0.15], [0.75, 1.1]]),
+        [agents_v4(132.26),
          girl("blue", "c2t1", "R", C2T, held(None)), girl("orange", "c2t1", "L", C2T, held(None, 0.20))]),
         fx=[dict(type="punch", at=[0.20], amount=0.02)])
     # C2b 133.56-134.88: take c2/take_1 3.56-4.88 (jump cut over the landing; ORANGE stays the girl on the left).
@@ -613,8 +634,8 @@ def build():
     # both run on, out of frame right; cut to E7 on 134.88.
     C2BT = [[0, 3.56], [1.32, 4.88]]
     level("C2b_letgo", 133.56, 134.88, (
-        [pencil([[0, 0, "hold"], [0.44, 0, "outCubic"], [0.74, UP]]), *btn("l", 0), *btn("r", held(None, 0.46))],
-        [agents("c2t1", [[0, 1.1], [1.32, 1.1]]),
+        [pencil([[0, 0, "hold"], [0.44, 0, "outCubic"], [0.64, UP]]), *btn("l", 0), *btn("r", held(None, 0.46))],
+        [agents_v4(133.56),
          girl("blue", "c2t1", "R", C2BT, 0), girl("orange", "c2t1", "L", C2BT, 0)]),
         fx=[dict(type="flash", at=[0], dur=0.05, amount=0.3, color="#ffffff"), dict(type="punch", at=[0.44], amount=0.03)])
     notes["C_coop"] = dict(takes=["media/shots/C_coop/c1/take_2.mp4", "media/shots/C_coop/c2/take_1.mp4"], hinge=[HX, HY], up=UP,
@@ -660,7 +681,9 @@ def build():
     def hilbert(corners, face=False):
         return ([dict(id="bb_face", type="canvas", module="render/timeline/_B_quad.js", params=dict(corners=corners, color="#efe7da"))]
                 if face else []) + [dict(id="hilbert", type="canvas", module=WOODCUT, params=dict(
-                    text="HILBERT", at=-1, color=INK, flecks=0, hatch=0.15, box=[420, 140], pad=8, corners=corners))]
+                    # v4 (Jade: "HILBERT HOTEL (missing HOTEL on a blank sign above)"): one panel on these plates, so HOTEL
+                    # is a second line (tools/v4B/gunfire/hotel_corners_D.json). v3: text "HILBERT", box [420, 140]
+                    text="HILBERT\nHOTEL", at=-1, color=INK, flecks=0, hatch=0.15, box=[420, 230], pad=8, corners=corners))]
 
     # chasm (rev 5b): the Super Meat Boy replay. Fifteen copies leave the beam stacked on her and fan into separate arcs;
     # most don't make it: six fall short (they lose ground, sag below the far lip, freeze and drop out of frame, fading),

@@ -84,6 +84,17 @@ KF = {
         "girl on the left button, arms reaching, partly cut off by the frame edge. ") + P.JADE + P.AGENTS + STYLE),
 }
 
+# v4 phase 3 (Jade: "agents look frozen ... the agents then get thrown back"): the agents alone on blank paper, matted
+# and placed on the engine's pencil bridge (the bridge itself is an engine sprite).
+KF["agents"] = dict(refs=[P.AGENT], prompt=P.DAY + (
+    "Exact flat side view, camera locked off, like a 2D side-scrolling platformer. A completely blank, plain warm "
+    "off-white paper background with nothing on it: no floor, no ground line, no scenery, no shadows. Two agents run to "
+    "the right in profile, one just behind the other, in a fast sprint, leaning forward, arms reaching ahead as if "
+    "grabbing for someone in front of them. Both full figures, side by side in depth with a small gap, together filling "
+    "the left-centre of the frame, each about 34% of the frame height, their feet on one invisible level line at about "
+    "62% of the frame height. ") + P.AGENTS + (
+    "Drawn as an M.C. Escher wood engraving: crisp black ink line work and dense hatching on warm off-white paper, high "
+    "contrast, no gray wash, no color at all. Full bleed, 16:9, no border. No text, no letters, no numbers."))
 KEEP = ("Keep the first frame's look: the world stays a crisp black-and-white Escher-style wood engraving (tables, "
         "pencil, buttons, books, buildings all black and white), only the two identical anime girls in full color, "
         "both in the same outfit (white cropped bomber with an orange band, navy cargo pants with orange straps, orange "
@@ -105,6 +116,12 @@ VID = {
         "at the crouching girl for a moment; then she sprints along the top of the giant pencil across the gap to the "
         "right table and runs on to the right button, where she crouches down on it too. The two girls never touch and "
         "never cross: the girl ahead is always to the right of the other one. No one else appears.")),
+    "agents": dict(kf="agents:1", dur=5, prompt=(
+        "The two agents sprint to the right, reaching ahead, for about one and a half seconds. Then the ground suddenly "
+        "kicks up under them like a springboard and both are flung high backwards up into the air to the LEFT, arms and "
+        "legs flailing like ragdolls, tumbling head over heels backwards in a big comic arc, and they land on their "
+        "backs far to the left, bounce once and roll over, dazed but unhurt, sitting up. Slapstick cartoon physics. The "
+        "background stays completely blank paper the whole time.")),
     "c2": dict(kf="c2:1", dur=5, prompt=(
         "The girl on the right stays crouched with her hand pressing the right button down, watching. The girl on the "
         "left springs off the left button and sprints to the right as fast as she can, along the top of the giant pencil across the "
@@ -156,8 +173,9 @@ def register(take, kf=None):
     t = VID[take]
     name, _, v = (kf or t["kf"]).partition(":")
     img = os.path.relpath(find_kf(name, int(v) if v else None), ROOT)
+    keep = KEEP if take != "agents" else P.KEEP_NOGIRL
     vgen.SHOTS["C_coop_" + take] = dict(model=SD20, image=img, duration=t.get("dur", 5), camera_fixed=True,
-                                        prompt=P.LOCK + t["prompt"] + " " + KEEP)
+                                        prompt=P.LOCK + t["prompt"] + " " + keep)
 
 
 _orig_build = vgen.build_spec

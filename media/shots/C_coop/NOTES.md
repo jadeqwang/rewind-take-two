@@ -40,3 +40,10 @@ right) is recoloured after the engrave by `tools/v4B/coop/recolor.py`.
 - `layout_c1.png`, `layout_c2.png`: composition sketches given to the image model (`layout.py`).
 
 Cost: $3.46 (3 keyframes, 6 edits, 3 Seedance 720p takes), tag prefix `v4B_coop_`.
+
+## Phase 3 (Jade's notes on the co-op clip)
+
+- `kf_agents_v1.png` (nano, agent ref): two agents sprinting right on blank paper; too large, so `kf_agents_v2.png` is it scaled 0.36 onto paper (free).
+- `agents/take_1.mp4` (Seedance 2.0 720p 5 s from v2): run in place 0–2.3, thrown up-left 2.3–3.3, land 3.5–4.0, sit up 4.25+. Matte `agents/take_1_matte.mp4` (`tools/v4B/coop/agents.py`: ink + small-hole fill; the springboard wedge the model drew is removed).
+- `hinge.png`, `patch_tail.png` (`tools/v4B/coop/hinge.py`): the drawn iron hinge at the near lip.
+- Phase 3 cost $0.88; total $4.34.

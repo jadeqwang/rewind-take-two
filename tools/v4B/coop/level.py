@@ -59,6 +59,9 @@ def main():
         excl[y0 - 6:y1 + 6, x0 - 6:x1 + 6] = 1
     excl = cv2.dilate(excl, np.ones((9, 9), np.uint8)) > 0
     for name, (src, mdir, plan) in JOBS.items():
+        # v4 phase 3 (Jade: "their feet are missing"): the white sneakers sit far from her colour, so a colour test lost
+        # them; c1/take_2 has no agents, so all of its matte is kept
+        has_agents = name != "c1t2"
         cap = cv2.VideoCapture(src)
         out = {k: f"{D}/{name}_{k}" for k in ("L", "R", "ag")}
         for v in out.values():
@@ -84,9 +87,11 @@ def main():
             agm = np.zeros_like(m0)
             for k in range(1, n):
                 comp = lab == k
-                if (comp & col).sum() > 400:
+                if not has_agents:                       # take with no agents: the whole matte is the two girls
+                    m |= comp
+                elif (comp & col).sum() > 400:
                     # an agent touching her joins her component: keep only what is near her colour
-                    near = cv2.dilate(col.astype(np.uint8), cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (161, 161))) > 0
+                    near = cv2.dilate(col.astype(np.uint8), cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (281, 281))) > 0
                     m |= comp & near
                     agm |= comp & ~near
                 elif comp.sum() > 3000:
@@ -94,7 +99,7 @@ def main():
             sx = seam(m, prev)
             prev = sx
             mode = next(md for a, b, md in plan if a <= i <= b)
-            enc_p.stdin.write(recolor.recolor(f, sx, None, mode).tobytes())
+            enc_p.stdin.write(recolor.recolor(f, sx, None, mode, recolor.head_keep(m, sx)).tobytes())
             X = np.arange(w)[None, :]
             cv2.imwrite(f"{out['L']}/{i:05d}.png", ((m & (X < sx)) * 255).astype(np.uint8))
             cv2.imwrite(f"{out['R']}/{i:05d}.png", ((m & (X >= sx)) * 255).astype(np.uint8))

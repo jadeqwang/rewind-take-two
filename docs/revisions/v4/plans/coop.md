@@ -1,5 +1,21 @@
 # 2:00, the co-op level: plan for Jade
 
+## Execution, phase 3: follow-ups and Jade's notes on the co-op clip (done 19:06, $0.88; coop total $4.34)
+
+Jade (verbatim, relayed by v4-B): "co-op is really good! just a few fixes" / "before the pencil bridge comes down, their
+feet are missing and part of the pencil bridge mechanism is missing" / "agents look frozen instead of reacting to the
+pencil bridge" / "maybe the pencil bridge can lift the other way up and when they let go of the second button and the
+agents then get thrown back". Also "HILBERT HOTEL (missing HOTEL on a blank sign above)".
+
+| Step | What | Status |
+|---|---|---|
+| F1 | bun pencils stay yellow (recolor.py `head_keep`) | **done**, checked on the split and level frames |
+| F2 | HILBERT\nHOTEL on E7_04/05/06 | **done**, legible at 540p in all three |
+| F3 | `b_miss_board` → turf-miss sound | **done**, mix rebuilt |
+| J1 | feet | **done**: c1t2 keeps its whole matte, c2t1 colour test widened (281 px); every other frame 129.18–130.94 checked |
+| J2 | drawbridge | **done**: hinge at the near lip (700,634), `hinge.py` bracket + `patch_tail.png`; raised = −78° |
+| J3 | agents thrown back | **done**: `kf_agents_v1` → scaled on paper `kf_agents_v2` → `agents/take_1.mp4`, matte `agents.py`; keys AG_T/AG_X/AG_Y in build_timeline.py; cue `coop_bridge_throw` 134.00 |
+
 ## Execution, phase 2: build the level (ordered by v4-B after Jade's approval; cap $12, tag `v4B_coop_`; no commits)
 
 **Status: done (18:45), $3.46 spent.** Clip `media/reviews/v4/B/0200_coop.mp4`; stills `media/reviews/v4/B/0200_coop_{split,hold,swap,bridge_up}.png`;

@@ -201,8 +201,8 @@
    116.5,
    141.5
   ],
-  "what_changed": "The sung shot is gone. On the held 'Rewind.' (119.44) the failed wall climb runs backwards (R1). The ghost ladder, the haul, the hint slide, the swarm boost and the split each play two bars earlier, so she becomes two at 128.32. From that moment the twins are BLUE and ORANGE by costume (band, straps, dots, headphones); there are no tags. Then a co-op level at 129.18-134.88, before the Super Meat Boy replay. There is a gap with a giant pencil for a drawbridge, which is down only while a floor button is held. ORANGE stamps the near button (130.50): it sinks and the pencil swings down. BLUE crosses and holds the far button. Agents run in; ORANGE springs off as their hands close on air, crosses, and the agents stop at the lip. BLUE lets go (134.00): the bridge swings up out of their reach, and both run on. The world, the pencil and the buttons stay black and white. The stopwatch insert is gone and the replay starts at 134.88; 136.62 on and the 141.00 hand-over are unchanged. Button and bridge sounds are new (procedural). Two Seedance takes plus keyframe edits, $3.46. Stills: 0200_coop_split.png, _hold.png, _swap.png, _bridge_up.png.",
-  "question": "Weak spots for your eye: BLUE's two bun pencils are tinted blue (they should stay yellow); ORANGE's landing beside BLUE is skipped with a jump cut at 133.56; the agents stopped at the lip are a held frame; the agents' entrance at 131.38 is a slide with their legs cycling. Is the drawbridge (raised = no bridge) clear enough, or should it slide?"
+  "what_changed": "The sung shot is gone. On the held 'Rewind.' (119.44) the failed wall climb runs backwards (R1). The ghost ladder, the haul, the hint slide, the swarm boost and the split each play two bars earlier, so she becomes two at 128.32. From that moment the twins are BLUE and ORANGE by costume (band, straps, dots, headphones); there are no tags. Then a co-op level at 129.18-134.88, before the Super Meat Boy replay. There is a gap with a giant pencil for a drawbridge, which is down only while a floor button is held. ORANGE stamps the near button (130.50): it sinks and the pencil swings down. BLUE crosses and holds the far button. Agents run in; ORANGE springs off as their hands close on air, crosses, and the agents stop at the lip. BLUE lets go (134.00): the bridge swings up out of their reach, and both run on. The world, the pencil and the buttons stay black and white. The stopwatch insert is gone and the replay starts at 134.88; 136.62 on and the 141.00 hand-over are unchanged. Button and bridge sounds are new (procedural). Two Seedance takes plus keyframe edits, $3.46. Stills: 0200_coop_split.png, _hold.png, _swap.png, _bridge_up.png. Follow-ups: both twins' bun pencils stay yellow; HILBERT HOTEL on the E7 billboards; the 101.14 miss now has the turf sound.",
+  "question": "Weak spots left: ORANGE's landing beside BLUE is skipped with a jump cut at 133.56, and while the two overlap (about 133.6-134.1) the colour seam can cross one girl, so a little orange shows on BLUE."
  },
  {
   "note": "just noticed that at 2:00, gold ethereal jade's arm pointing to Banach Tarski goes invisible for a moment when we need to see it",
@@ -217,6 +217,23 @@
    125.26
   ],
   "what_changed": "The engrave matte had lost the gold ghost's pointing forearm and hand while it crossed the pale label (take frames 25-86, about 123.1-124.8 in the cut), so the clean patch showed through. The arm was re-segmented with BiRefNet on a crop round it (tools/v4B/coop/armfix.py, with neighbouring frames merged to stop flicker), and the gold ghost was rebaked with the same colour and settings. The arm is now solid from when the spine is in view to the cut. Before/after strip: media/reviews/v4/B/0200_e5_arm_before_after.jpg; it plays in 0200_coop.mp4 at 6.5-8.8 s."
+ },
+ {
+  "note": "co-op is really good! just a few fixes / before the pencil bridge comes down, their feet are missing and part of the pencil bridge mechanism is missing / agents look frozen instead of reacting to the pencil bridge / maybe the pencil bridge can lift the other way up and when they let go of the second button and the agents then get thrown back",
+  "v3_time": "2:09-2:15",
+  "shots": [
+   "C1_hold",
+   "C2a_swap",
+   "C2b_letgo"
+  ],
+  "status": "done",
+  "after": "media/reviews/v4/B/0200_coop.mp4",
+  "before_range": [
+   129.18,
+   134.88
+  ],
+  "what_changed": "Feet: the white sneakers had been dropped from the girls' mattes; they now stand on the desk in every frame. Mechanism: the pencil is one rigid engine sprite on a drawn iron hinge at the near lip, visible from the first frame; it starts raised, swings down at 130.50 and lifts the other way at 134.00. Agents: a new Seedance take of two agents on blank paper, matted and placed. They run in behind ORANGE (131.38), lunge where she was (132.70) and run out onto the bridge after her. When BLUE lets go (134.00), the far end lifts under them and flings them back over the hinge onto the near desk (134.44), where they sit up dazed; nobody falls into the gap. New procedural sound coop_bridge_throw (twang, whoosh, two landing thumps). Stills: 0200_coop_bridge_up.png, 0200_coop_throw.png. Cost $0.88 (one keyframe, one take).",
+  "question": "The throw fits before 134.88 without extra beats. Does it read as slapstick at speed, or should it get one more beat?"
  },
  {
   "note": "3:33 - let’s go with “anomaly report”",

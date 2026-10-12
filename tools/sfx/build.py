@@ -636,18 +636,12 @@ for _k, (_t, _p, _pri, _g) in enumerate([(98.94, 0.25, "essential", -21), (99.38
         duck_vocal_db=3)(_mk())
 
 
-@cue("b_miss_board", 101.14, "V2j a miss punches through the park notice board: the pop + dry wood crack and splinters",
-     "music-v2 'gunshot_far' + procedural", "optional", -28, duck_vocal_db=3)
+# v4: this miss now lands in turf (the gunfire restage), so it gets the turf-miss sound of the 102.00 miss, new seed.
+# v3: "punches through the park notice board": gunshot + dry wood crack and splinters (gain -28)
+@cue("b_miss_board", 101.14, "V2j a miss into the turf behind her (was the notice-board crack in v3)",
+     "music-v2 'gunshot_far' + procedural", "optional", -30, duck_vocal_db=3)
 def _():
-    y = np.zeros((2, N(0.45)))
-    g = gunshot(1.05, 1700, 0.5, 0.3, 10114, -0.6)
-    y[:, :g.shape[1]] += g
-    crack = click(10115, dur=0.06, lo=500, hi=6000, tau=0.006, modes=[(620, 8, 0.7), (1240, 10, 0.5), (2300, 14, 0.3)])
-    add_at(y, pan(crack, 0.3), 0.04)
-    rng = np.random.default_rng(10116)
-    for t0 in rng.uniform(0.06, 0.25, 7):
-        add_at(y, pan(0.3 * click(int(rng.integers(1e6)), dur=0.01, lo=2500, hi=9000, tau=0.002), 0.35), t0)
-    return y, 0.0
+    return miss(10114, 0.2), 0.0
 
 
 @cue("b_miss_turf", 102.00, "V2j the last miss, into turf behind her", "music-v2 'gunshot_far' + procedural", "optional",
@@ -813,6 +807,24 @@ def _():
     kn = click(13402, dur=0.05, lo=300, hi=3000, tau=0.01, modes=((300, 10, 1.0),))
     add_at(y, 0.6 * kn / np.max(np.abs(kn)), 0.3)
     return reverb(y, room(), -16), 0.0
+
+
+@cue("coop_bridge_throw", 134.00, "C2b the far end of the pencil kicks up under the two agents and flings them back onto the "
+     "near desk: a springboard twang, a cloth whoosh, two soft landing thumps (134.44, 134.52); slapstick, nobody hurt",
+     "procedural", "optional", -26)
+def _():
+    y = np.zeros((2, N(0.75)))
+    t = tt(0.35)
+    tw = np.sin(2 * np.pi * np.cumsum(np.interp(t, [0, 0.35], [180, 120])) / SR) * np.exp(-t / 0.12) * (1 + 0.5 * np.sin(2 * np.pi * 14 * t))
+    add_at(y, 0.8 * tw, 0.0)
+    w = whoosh_rise(0.3, 600, 4000, 13410) * np.interp(tt(0.3), [0, 0.1, 0.3], [0, 1.0, 0])
+    add_at(y, pan(0.5 * w / np.max(np.abs(w)), -0.4), 0.05)
+    for k, (dt, f0) in enumerate(((0.44, 75), (0.52, 90))):
+        th = thump(f0, 0.18, 0.05, seed=13420 + k)
+        cl = lp(noise(N(0.12), 13430 + k), 900, 2) * expdec(N(0.12), 0.03)
+        add_at(y, pan(0.7 * th, -0.5), dt)
+        add_at(y, pan(0.3 * cl / np.max(np.abs(cl)), -0.5), dt)
+    return reverb(y, room(), -18), 0.0
 
 
 # ============================================================================= framework
