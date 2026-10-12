@@ -19,6 +19,10 @@ const S = 'media/shots/';
 const WIDE = `${S}V2f3/kf_wide_b_fix_engraved.png`, CABIN = `${S}V2f3/wide_cabin.png`, GANTRY = `${S}V2f3/wide_gantry.png`;
 const BODY = `${S}V2f4/kf_close_b2_engraved_body.png`, PADDED = `${S}V2f4/close_pad.png`, PAD = 2.2;   // close on a black margin
 const WOODCUT = 'tools/sectionA/modules/woodcut.js', FX = 'tools/v4B/car/fx_car.js';
+// v4c (Jade: "the main weakness is actually that she's completely still ..."): the wide is now a Seedance 2.0 take of
+// the wide still (tools/v4B/car/vid.py, engraved), so she breathes, blinks and glances, and the road streams for real.
+// Set TAKE = null to go back to the still with the engine's endless road zoom under the cabin cut-out.
+const TAKE = `${S}V2f3/take_1_engraved.mp4`;
 const C0 = [960, 540];
 const MW = [1335.8, 436.5];          // mirror centre in the wide, design px (tools/v4B/car/fix_wide.py -> kf_wide_b_fix.json)
 const MC = [961.0, 585.3];           // mirror centre in the close, design px (kf.py MIRROR_SRC)
@@ -86,15 +90,18 @@ const BEZEL_Q = [610, 826, 1310, 826, 1310, 910, 610, 910];        // the mirror
 export default function carShot(start, end = 92.79) {
   const layers = [
     // the wide: base, the streaming road, the approaching gantry, then the cabin over them
-    { id: 'car_wide', type: 'image', src: WIDE, fit: 'cover', ...layerT(wideCam) },
-    ...[0, 1].map((h) => ({ id: `car_road${h}`, type: 'image', src: WIDE, fit: 'cover', opacity: (lt, env) => roadOpacity(env.t, h), ...layerT((t) => roadCam(t, h)) })),
+    ...(TAKE ? [{ id: 'car_take', type: 'video', src: TAKE, in: 0, rate: 1, fit: 'cover', ...layerT(wideCam) }] : [
+      { id: 'car_wide', type: 'image', src: WIDE, fit: 'cover', ...layerT(wideCam) },
+      ...[0, 1].map((h) => ({ id: `car_road${h}`, type: 'image', src: WIDE, fit: 'cover', opacity: (lt, env) => roadOpacity(env.t, h), ...layerT((t) => roadCam(t, h)) }))]),
+    // the sky band keeps the still's gantry (the take sends gantries past at its own pace; SIRENS stays pinned to this one)
     { id: 'car_gantry', type: 'image', src: GANTRY, fit: 'cover', ...layerT(gantryCam) },
     { id: 'car_sign', type: 'canvas', module: WOODCUT, noRewind: true, params: { text: 'SIRENS', sync: 'lyric', color: '#ece7dc', box: [600, 170], pad: 10,
       hatch: 0.38, flecks: 16, corners: (lt, env) => apply(gantryCam(env.t), SIGN_Q) } },
-    { id: 'car_cabin', type: 'image', src: CABIN, fit: 'cover', ...layerT(wideCam) },
+    ...(TAKE ? [] : [{ id: 'car_cabin', type: 'image', src: CABIN, fit: 'cover', ...layerT(wideCam) }]),
     { id: 'car_sweep', type: 'canvas', module: FX, blend: 'screen', params: { kind: 'sweep', every: 2, amount: (lt, env) => 0.2 * (1 - closeOpacity(env.t)) } },
     // the mirror: body, then the whole close still on its margin, then the sedans, their bars and plates, the words
-    { id: 'car_body', type: 'image', src: BODY, fit: 'cover', opacity: (lt, env) => bodyOpacity(env.t), ...layerT(closeCam) },
+    // over the take the still's mirror is laid in from the first frame, so the engine's fleet stays in register
+    { id: 'car_body', type: 'image', src: BODY, fit: 'cover', opacity: (lt, env) => (TAKE ? 1 : bodyOpacity(env.t)), ...layerT(closeCam) },
     { id: 'car_close', type: 'image', src: PADDED, fit: 'cover', opacity: (lt, env) => closeOpacity(env.t), ...layerT(padCam) },
     ...CARS.flatMap((c, i) => [
       { id: `car_${c.id}`, type: 'image', src: c.src, fit: 'cover', ...layerT(carCam(c)) },
