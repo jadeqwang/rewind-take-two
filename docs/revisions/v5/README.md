@@ -99,3 +99,24 @@ game characters are out (public video, other people's IP).
 **Later, Jade, verbatim:** "i think the sound fade of the credits can build right into the coda, actually, so the
 ticking up of the lives is followed by the hotel door ring". Sent to `v5-build`: no black gap between credits and
 the door; the last counter tick is followed by the bell, on the same beat grid.
+
+## Round 3: Jade on the v5 whole-film preview (2026-10-12), verbatim
+
+> * almost the entire video looks great!
+> * hilbert hotel opening: the arm stretches awkwardly in front of the camera and also doesn't interact with the
+>   actual door handle in a realistic way. I'll leave you a choice here about which way you are confident we can do
+>   better: (1) push a button on the side and the door opens automatically (2) a fullsized doorman in uniform behind
+>   the door we can't quite see clearly because he's behind the door which obscures him somewhat
+> * guestbook text should bend naturally with the page
+> * all the Jade's should move slightly, whether that's a fidget, foot-tapping, breathing, adjusting jacket slightly,
+>   head scratch, tucking hair behind ear, each one a little different and out of sync with the others, not bob up
+>   and down like a cardboard cutout
+> * give the rectangular-ish glasses to Jade #2 (the one currently with round glasses, and have the rest of her hair
+>   be a bit fuller (you shouldn't see carpet through the gaps), but you can reduce the volume of the half-up
+>   ponytails by about 40%, which is what it looks like in real life, and then you'd be able to see the purple-haired
+>   Jade behind her a bit better. Protagonist Jade should look the same as she does in the video, without the
+>   glasses.
+> * you can have the whole front desk sentence render at once or at least faster, for faster readers.
+
+Setup-session call on the door: **option 1** (button; the door swings itself on its existing correct hinge).
+Only the post-credits scene changes. Work: `v5-coda2`, cap $15, tag `v5_coda2_`, log `docs/revisions/v5/coda2.md`.
