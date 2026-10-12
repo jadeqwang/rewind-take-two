@@ -120,3 +120,14 @@ the door; the last counter tick is followed by the bell, on the same beat grid.
 
 Setup-session call on the door: **option 1** (button; the door swings itself on its existing correct hinge).
 Only the post-credits scene changes. Work: `v5-coda2`, cap $15, tag `v5_coda2_`, log `docs/revisions/v5/coda2.md`.
+
+## Round 4: Jade on the push-plate door (2026-10-12), verbatim
+
+> * the brass button looks like a doorbell rather than a square plate you'd expect as a mechanism. I'd naively expect
+>   the brass button to be a little bit lower, placed facing into the entrance the way you'd see an ADA compliant
+>   button to be, just, made of brass instead of the usual stainless steel square plate button
+> * probably makes sense for the doorman to be physically offscreen to the right so as to not be in the way of the
+>   guest
+
+Sent to `v5-coda2` (resumed). Setup-session call: the plate carries the engraved accessibility symbol, so it reads
+as an automatic-door opener at a glance.
