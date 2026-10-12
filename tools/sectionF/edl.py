@@ -251,12 +251,16 @@ def build():
             # the doorway; the glove comes in level from the right frame edge, presses it with flat fingertips and goes
             # back out to the right. Round 3 had: door_frame_v2.png / door_geom_v2.json / press_hand.png, a reach up
             # from the lower-right corner ("dist": 520, "rot": 7, "pivot": [1560, 1260], default dir).
-            "frame": PC + "door_frame_r4.png", "geom": PC + "door_geom_r4.json", "hand": PC + "press_hand_r4.png",
+            # Round 5 (Jade: "the top of the button is not parallel to the groove in the wall it's on"): the plate is
+            # pinned into the plane of the pier's inner face (its edges on the face's vanishing points, prep_coda2.plate_r5);
+            # the fingertip re-aimed at its new centre (+(-14, -17) px). Round 4: door_frame_r4.png / door_geom_r4.json,
+            # target [1731, 905].
+            "frame": PC + "door_frame_r5.png", "geom": PC + "door_geom_r5.json", "hand": PC + "press_hand_r4.png",
             # the reach is over before the last tick (233.642) and stays above the counter's line; the glove hovers by
             # the plate and presses just before the bell (the latch click 234.034)
             "press": {"t": [round(_b - 1.05, 3), round(_b - 0.55, 3), round(_b - 0.30, 3), round(_b - 0.12, 3), round(_b + 0.005, 3),
                             round(_b + 0.045, 3), round(_b + 0.63, 3)], "dist": 330, "rot": 0, "pivot": [2200, 860],
-                      "dir": [0.98, -0.18], "pushDir": [-3.0, 0.6], "scale": 0.65, "baseRot": 25, "target": [1731, 905],
+                      "dir": [0.98, -0.18], "pushDir": [-3.0, 0.6], "scale": 0.65, "baseRot": 25, "target": [1735, 905],
                       "shade": [8, 2], "shadeR": 13, "hover": 0.04},
             "auto": True, "swing": [_b, round(_b + 1.35, 4)],
             "angle": 64, "glide": [1.85, round(CODA_LOBBY - CODA_DOOR_IN, 4)], "glideScale": 2.6}}],
@@ -293,6 +297,11 @@ def build():
     overlays = [
         # v5-build: the ITERATION counter (was a layer of O4) ticks on over the door's fade-up; it goes as the bell rings
         {"id": "O_counter", "start": 226.00, "end": round(CODA_BELL + 0.1, 3), "layers": [
+            # v5-coda2 Round 5: a faint soft dark backing under the counter while it sits over the door's hatched stone
+            # (from the door's fade-up to the counter's own fade), so 4,112 -> 4,113 reads during the press
+            {"type": "canvas", "module": "tools/sectionF/modules/hud_backing.js", "stage": "post",
+             "start": round(CODA_DOOR_IN - 226.00, 3), "fadeIn": 0.5, "fadeOut": 0.4,
+             "params": {"rect": [1414, 975, 464, 54], "alpha": 0.4, "blur": 10, "radius": 14}},
             {"type": "canvas", "module": "hud", "stage": "post", "fadeOut": 0.4,
              "params": {"mode": "iteration", "side": "right", "margin": 64, "y": 1016, "base": 4097,
                         "from": round(CODA_T0 - 226.00, 3), "rate": round(1 / CODA_BEAT, 5), "snap": True, "flicker": 0.2,

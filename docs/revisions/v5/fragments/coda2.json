@@ -70,5 +70,19 @@
   "before_range": "media/reviews/v5/coda_hilbert_r3.mp4 232.8-236.36",
   "what_changed": "The round doorbell button is replaced by a square brass accessible push-plate with the engraved wheelchair symbol (the setup session's call), so it reads as a door opener. It is mounted low (about 35 in, below the handle's middle) on the right return of the entry, facing into the entrance and foreshortened toward the doorway. The doorman stays offscreen right: his white glove and green cuff come in level from the right frame edge at plate height, press the plate with flat fingertips just before the bell (the latch click 234.034), and slide back out to the right. The hand's leftmost point over the shot is x 1726 (frame centre 960), and it stays above the ITERATION counter. The last tick (233.642), the bell (234.094) with the door swinging by itself, the glide and the mix are unchanged.",
   "question": "None needed. The plate is small at 540p (about 30x50 px), though it reads at 1080p. If Jade wants it bigger, it can be scaled up in place for free."
+ },
+ {
+  "note": "Round 5: brass button styling is correct, but is sitting jankily on the door ... the top of the button is not parallel to the groove in the wall it's on; can you show me the full coda with this correction up to the end of the video?",
+  "v4_time": "post-credits, the whole coda (v5 film 226.0-244.05)",
+  "shots": [
+   "PC1_door",
+   "O_counter",
+   "PC2_lobby"
+  ],
+  "status": "done (540p full coda; plate checked with overlays at 1080p and 540p)",
+  "after": "media/reviews/v5/coda_full_r5.mp4 (226.0-244.05, credits to the end of the film) + media/reviews/v5/coda_full_r5_sheet.jpg",
+  "before_range": "media/reviews/v5/coda_door_r4.mp4 232.8-236.36",
+  "what_changed": "The brass push-plate is pinned into the true plane of the pier's inner face. I measured that face's horizontals (the groove right above the plate and the hatch rows) and its vertical edges on the plate-free door, rectified the plate, and corner-pinned it so its top and bottom edges run through the face's vanishing point and its sides through the vertical one. Its top is now parallel to the groove; overlays are in media/shots/PC/gen2/plate_r5_check.png (1080p) and plate_r5_check_540.png. Style, size and height are kept. The glove's fingertip is re-aimed at the plate's new centre (the hand still stays in the right 10% of the frame). A faint soft dark backing under the ITERATION counter while it sits over the door keeps 4,112 -> 4,113 readable. The hand-off, the swing, the glide, the lobby and the mix are unchanged.",
+  "question": ""
  }
 ]

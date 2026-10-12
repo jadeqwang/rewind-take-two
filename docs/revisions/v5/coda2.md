@@ -162,3 +162,68 @@ Files: `tools/sectionF/coda/gen_coda2.py` (r4 jobs), `prep_coda2.py` (`plate_r4`
 `tools/sectionF/modules/hilbert_door.js` (hand placement params), `tools/sectionF/edl.py` (PC1 press/frame/geom/hand;
 F_edl.json regenerated). New media: `gen2/door_plate_r4*.jpg`, `gen2/door_press_r4*.{png,jpg}` (+ .json),
 `door_frame_r4.png`, `press_hand_r4.png`, `door_geom_r4.json`.
+
+## Round 5: the plate sits flat on the wall; the full coda (Jade, verbatim in README / coordinator)
+
+> brass button styling is correct, but is sitting jankily on the door. you can tell because the top of the button is
+> not parallel to the groove in the wall it's on.
+>
+> can you show me the full coda with this correction up to the end of the video?
+
+**Status: done, $0.** Full coda at 540p, 226.0–244.05 (credits fade → door → lobby → queue → FRONT DESK → end of
+film, v5 coda mix): `media/reviews/v5/coda_full_r5.mp4` (7.3 MB) + `media/reviews/v5/coda_full_r5_sheet.jpg`.
+This replaces `coda_hilbert_r3.mp4` and `coda_door_r4.mp4` as the current whole-scene review.
+
+### What changed
+
+- **The plate is pinned into the plane of the pier's inner face** (`prep_coda2.plate_r5`).
+  - Why Round 4 looked off: I had warped the plate with rough corners, so its rim's top edge came out at slope 0.035
+    while the groove above it runs ≈0.12.
+  - The wall was measured on the plate-free door:
+    - The groove right above the plate and the hatch rows on that face (structure-tensor slopes per 20 px band:
+      0.133 at the groove, 0.12 → 0.24 from y 860 to 980) were fitted by least squares to the face's horizontal
+      vanishing point, **VP_H (760, 735)**.
+    - The face's two vertical edges (the stile boundary and the pier corner) meet at **VP_V (1508, −3312)**.
+  - The source plate (`gen2/door_plate_r4_b.jpg`) is rectified first:
+    - its brass face is found with an HSV key (nano re-drew the hatching, so a difference key fails);
+    - the four sides are line-fitted on the convex hull;
+    - it is unwarped to a flat 240×400 texture with a 9 px rim, `gen2/plate_r5_flat.png`.
+  - Then that texture is corner-pinned to the plane:
+    - TL (1716, 866) as before; TR on the line TL→VP_H; the sides on lines to VP_V; the bottom on a line to VP_H.
+    - Result: (1716, 866) (1775, 874.1) (1781.8, 980.6) (1721, 966).
+    - Same style, size (~6 in) and height (top 14 px under the groove, below the handle's middle).
+  - Written to `gen2/door_plate_r5.jpg` → `door_frame_r5.png`, with geometry in `door_geom_r5.json`.
+- **Check overlays:** the groove extended (cyan), the plate's top edge (magenta) and bottom edge (orange) aimed at
+  VP_H, and the sides aimed at VP_V (green).
+  - 1080p ×4: `gen2/plate_r5_check.png`. 540p, from the clip at 233.1: `gen2/plate_r5_check_540.png`.
+  - The top edge runs parallel to the groove (both through VP_H; local slopes 0.118 and 0.137 a few px apart, as
+    perspective gives). The bottom edge follows the hatch rows, and the sides follow the face's edges.
+- **The glove's fingertip is re-aimed** at the new centre (1748.5, 921.7) + (−14, −17) = **(1735, 905)**. The fingertips
+  sit on the upper half with the palm over the middle, as before. Its lowest point next to the counter stays at
+  y ≤ 989, and its leftmost point is still x ≈1726. The hand is not moved toward the centre.
+- **Counter contrast:** a faint, soft dark backing sits under the ITERATION line while it is over the door. It is a new
+  module, `tools/sectionF/modules/hud_backing.js`, a blurred rounded shade (alpha 0.4, blur 10 px), rect
+  [1414, 975, 464, 54]. It fades in with the door (232.8, 0.5 s) and out with the counter (to 234.19). It is the first
+  layer of `O_counter` in `edl.py`, and the counter itself is untouched. 4,112 → 4,113 now reads clearly over the
+  hatching at 1080p and 540p. Over the black credits it is invisible.
+
+### Checks (frame by frame on the 540p clip; 1080p stills at 233.2 / 233.7 / 233.95 / 234.5)
+
+- **Credits fade:** 226–232.8 as signed off; the counter reads 4,097 … 4,111.
+- **Door:**
+  - The door fades up at 232.8 with the plate alone.
+  - The glove comes in level from the right edge at 233.2–233.5 and hovers.
+  - 4,112 → 4,113 ticks at 233.642 and reads over the backing.
+  - The press is at 233.9–234.0. The latch (234.034) and bell (234.094) land as the door starts to swing by itself.
+  - The hand goes out to the right by 234.7. The glide runs to 236.36.
+- **Lobby:** the ledger close-up (curved ink), the look up, nine idle Jades out of sync, and the FRONT DESK line full
+  by 240.2, held to the cut at 244.05.
+- **Audio, unchanged mix:** last tick onset 233.597 (−41.6 dBFS), latch/bell peak −28.0 dBFS. The clip is 18.04 s.
+- **Red:** `dered.py --check` max 1.87%, the same as before (brown ink lines and the orange headphones).
+
+### Spend (Round 5): $0 (no generation). coda2 total $5.96 of 15; project $252.72.
+
+Files: `tools/sectionF/coda/prep_coda2.py` (`wall_vps`, `r5_quad`, `plate_rim`, `plate_r5`), new
+`tools/sectionF/modules/hud_backing.js`, `tools/sectionF/edl.py` (PC1 frame/geom/target, O_counter backing;
+F_edl.json regenerated). New media: `gen2/plate_r5_flat.png`, `gen2/door_plate_r5.jpg`, `gen2/plate_r5_check*.png`,
+`door_frame_r5.png`, `door_geom_r5.json`, the two review files.

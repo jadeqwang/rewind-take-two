@@ -105,6 +105,164 @@ def plate_r4():
     print("plate_r4c written")
 
 
+def _cx(a, b):
+    return float(a[0] * b[1] - a[1] * b[0])
+
+
+# ---- Round 5 (Jade: "the top of the button is not parallel to the groove in the wall it's on"): the plate is pinned
+# into the plane of the pier's inner face. That face's horizontals (the groove right above the plate and the hatch lines
+# around it, measured on the plate-free door) meet at VP_H; its two vertical edges meet at VP_V. A rectangle in that
+# plane maps to a quad whose top/bottom edges run through VP_H and whose sides run through VP_V.
+def _orig_gray():
+    return np.asarray(Image.open(os.path.join(PC, "door.jpg")).convert("L")).astype(np.float32)
+
+
+def wall_vps(verbose=True):
+    im = _orig_gray()
+
+    def band_slope(x0, x1, y0, y1):
+        X0, Y0 = (x0 + 8) / S_DES, y0 / S_DES
+        X1, Y1 = (x1 + 8) / S_DES, y1 / S_DES
+        c = cv2.GaussianBlur(im[int(Y0):int(Y1), int(X0):int(X1)], (0, 0), 1.2)
+        gx = cv2.Sobel(c, cv2.CV_32F, 1, 0, ksize=3)
+        gy = cv2.Sobel(c, cv2.CV_32F, 0, 1, ksize=3)
+        m = (np.abs(gy) > 2 * np.abs(gx)) & (np.hypot(gx, gy) > 20)
+        Jxx, Jyy, Jxy = (gx * gx)[m].sum(), (gy * gy)[m].sum(), (gx * gy)[m].sum()
+        return float(np.tan(0.5 * np.arctan2(2 * Jxy, Jxx - Jyy) + np.pi / 2))
+    lines = [((1747.0, 852.0), band_slope(1695, 1795, 842, 862))]          # the groove right above the plate
+    lines += [((1747.0, y + 10.0), band_slope(1700, 1795, y, y + 20)) for y in range(860, 1000, 20)]   # hatch rows
+    A, b = [], []
+    for (px, py), m in lines:
+        n = np.array([-m, 1.0]) / np.hypot(m, 1.0)
+        A.append(n)
+        b.append(n @ np.array([px, py]))
+    vph = np.linalg.lstsq(np.array(A), np.array(b), rcond=None)[0]
+    # the face's vertical edges (left: the wood stile / hatch boundary; right: the pier's corner), measured on the plate
+    # -free door: left x 1665 @ y 450 -> 1690 @ y 1050; right x 1801 @ 870, 1805 @ 920, 1808 @ 970
+    L = ((1665.0, 450.0), (1690.0, 1050.0))
+    R = ((1801.0, 870.0), (1808.0, 970.0))
+
+    def isect(p, q, r, s):
+        p, q, r, s = map(np.array, (p, q, r, s))
+        d1, d2 = q - p, s - r
+        t = _cx(r - p, d2) / _cx(d1, d2)
+        return p + t * d1
+    vpv = isect(L[0], L[1], R[0], R[1])
+    if verbose:
+        print("groove/hatch slopes", [round(m, 3) for _, m in lines], "VP_H", vph.round(1), "VP_V", vpv.round(1))
+    return vph, vpv, lines[0]
+
+
+def _isect(p, q, r, s):
+    p, q, r, s = map(lambda v: np.array(v, float), (p, q, r, s))
+    d1, d2 = q - p, s - r
+    t = _cx(r - p, d2) / _cx(d1, d2)
+    return p + t * d1
+
+
+def r5_quad(vph, vpv, tl=(1716.0, 866.0), x_right=1775.0, y_bottom_left=966.0):
+    """the plate's corners in that plane: TL given; TR on the line TL-VP_H at x_right; the sides through VP_V; BL on the
+    left side at y_bottom_left; BR where the line BL-VP_H meets the right side"""
+    TL = np.array(tl)
+    d = TL - vph
+    TR = TL + d * (x_right - TL[0]) / d[0]
+    dl = TL - vpv
+    BL = TL + dl * (y_bottom_left - TL[1]) / dl[1]
+    BR = _isect(BL, vph, TR, vpv)
+    return [tuple(TL), tuple(TR), tuple(BR), tuple(BL)]
+
+
+def plate_rim(src_rgb, base_rgb, rough):
+    """the source plate's brass face, as 4 corners (orig px): an HSV brass key (the re-drawn hatching makes a difference
+    key useless) -> largest component, holes filled -> convex hull -> 4 sides by line fits, neighbours intersected"""
+    r = np.array(rough)
+    x0, y0 = r.min(0).astype(int) - 25
+    x1, y1 = r.max(0).astype(int) + 25
+    hsv = cv2.cvtColor(np.ascontiguousarray(src_rgb[y0:y1, x0:x1]), cv2.COLOR_RGB2HSV).astype(int)
+    H, S_, V = hsv[..., 0] * 2, hsv[..., 1], hsv[..., 2]
+    m = ((H >= 30) & (H <= 62) & (S_ > 70) & (V > 70)).astype(np.uint8)
+    m = cv2.morphologyEx(m, cv2.MORPH_CLOSE, np.ones((15, 15), np.uint8))
+    lab, k = ndimage.label(m)
+    m = ndimage.binary_fill_holes(lab == 1 + int(np.argmax(ndimage.sum(m, lab, range(1, k + 1))))).astype(np.uint8)
+    cs, _ = cv2.findContours(m, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
+    c = max(cs, key=cv2.contourArea)
+    hull = cv2.convexHull(c)
+    ap = cv2.approxPolyDP(hull, 0.04 * cv2.arcLength(hull, True), True).reshape(-1, 2).astype(np.float32)
+    assert len(ap) == 4, ap
+    # order TL, TR, BR, BL
+    ssum, sdif = ap.sum(1), ap[:, 0] - ap[:, 1]
+    q = np.array([ap[np.argmin(ssum)], ap[np.argmax(sdif)], ap[np.argmax(ssum)], ap[np.argmin(sdif)]])
+    pts = c.reshape(-1, 2).astype(np.float32)
+
+    def dist_seg(p, a, b):
+        ab = b - a
+        t = np.clip(((p - a) @ ab) / (ab @ ab), 0.15, 0.85)
+        return np.hypot(*(p - (a + t[:, None] * ab)).T)
+    D = np.stack([dist_seg(pts, q[i], q[(i + 1) % 4]) for i in range(4)], 1)
+    side = D.argmin(1)
+    fits = []
+    for i in range(4):
+        sp = pts[(side == i) & (D.min(1) < 6)]
+        vx, vy, px, py = cv2.fitLine(sp, cv2.DIST_HUBER, 0, 0.01, 0.01).ravel()
+        fits.append(((px, py), (px + vx, py + vy)))
+    return [_isect(*fits[(i - 1) % 4], *fits[i]) + [x0, y0] for i in range(4)]
+
+
+def plate_r5():
+    """gen2/plate_r5_flat.png (the r4_b plate rectified to a flat rectangle), gen2/door_plate_r5.jpg (pinned into the
+    pier face's plane), door_frame_r5.png, and the geometry in door_geom_r5.json (+ the check overlay)"""
+    src = np.asarray(Image.open(os.path.join(G2, "door_plate_r4_b.jpg")).convert("RGB"))
+    base = np.asarray(Image.open(os.path.join(PC, "door.jpg")).convert("RGB")).copy()
+    rim = plate_rim(src, base, to_orig(R4_SRC))
+    print("source rim (design px)", [(round(x * S_DES - 8, 1), round(y * S_DES, 1)) for x, y in rim])
+    TW, TH, PAD = 240, 400, 9                               # flat texture: the brass face + a 9 px rim all round
+    Hf = cv2.getPerspectiveTransform(np.float32(rim), np.float32([(PAD, PAD), (TW - PAD, PAD), (TW - PAD, TH - PAD), (PAD, TH - PAD)]))
+    flat = cv2.warpPerspective(src, Hf, (TW, TH), flags=cv2.INTER_LANCZOS4)
+    Image.fromarray(flat).save(os.path.join(G2, "plate_r5_flat.png"))
+    vph, vpv, groove = wall_vps()
+    Q = r5_quad(vph, vpv)
+    print("plate quad (design px)", [tuple(np.round(p, 1)) for p in Q])
+    Ht = cv2.getPerspectiveTransform(np.float32([(0, 0), (TW, 0), (TW, TH), (0, TH)]), np.float32(to_orig(Q)))
+    warped = cv2.warpPerspective(flat, Ht, (base.shape[1], base.shape[0]), flags=cv2.INTER_LANCZOS4)
+    m = np.zeros(base.shape[:2], np.float32)
+    cv2.fillPoly(m, [np.int32(np.round(np.array(to_orig(Q)) * 4))], 1.0, shift=2)
+    m = cv2.GaussianBlur(m, (0, 0), 0.9)[..., None]
+    out = (base * (1 - m) + warped * m).astype(np.uint8)
+    Image.fromarray(out).save(os.path.join(G2, "door_plate_r5.jpg"), quality=95)
+    # the frame: door_frame.png + the plate quad (design px)
+    P = design(os.path.join(G2, "door_plate_r5.jpg"))
+    fr = np.asarray(Image.open(os.path.join(PC, "door_frame.png")).convert("RGBA")).copy()
+    mq = np.zeros(fr.shape[:2], np.float32)
+    cv2.fillPoly(mq, [np.int32(np.round(np.array(Q) * 4))], 1.0, shift=2)
+    mq = cv2.GaussianBlur(cv2.dilate(mq, np.ones((3, 3), np.uint8)), (0, 0), 1.0)[..., None]
+    fr[..., :3] = (fr[..., :3] * (1 - mq) + P * mq).astype(np.uint8)
+    Image.fromarray(fr).save(os.path.join(PC, "door_frame_r5.png"))
+    geom = json.load(open(os.path.join(PC, "door_geom_r4.json")))
+    cx, cy = np.mean(np.array(Q), 0)
+    geom["press"]["plate"] = [list(map(float, p)) for p in Q]
+    geom["press"]["plateCentre"] = [float(cx), float(cy)]
+    geom["wall"] = {"vpH": vph.tolist(), "vpV": vpv.tolist()}
+    json.dump(geom, open(os.path.join(PC, "door_geom_r5.json"), "w"), indent=1)
+    # check overlay (design px, x4 zoom): the groove line and the plate's top and bottom edges extended toward VP_H,
+    # the plate's sides extended toward VP_V
+    x0, y0, x1, y1 = 1650, 800, 1840, 1000
+    z = 4
+    ov = Image.fromarray(fr[y0:y1, x0:x1, :3]).resize(((x1 - x0) * z, (y1 - y0) * z), Image.LANCZOS)
+    from PIL import ImageDraw
+    dr = ImageDraw.Draw(ov)
+    Z = lambda p: ((p[0] - x0) * z, (p[1] - y0) * z)
+    gp, gm = groove
+    for p, col in ((np.array(gp), (0, 200, 255)), (np.array(Q[0]), (255, 0, 255)), (np.array(Q[3]), (255, 160, 0))):
+        d_ = vph - p
+        a, b_ = p - d_ * 0.06, p + d_ * 0.08 if col != (0, 200, 255) else p - d_ * -0.08
+        dr.line([Z(p - d_ * 0.07), Z(p + d_ * 0.07)], fill=col, width=3)
+    for p in (Q[0], Q[1]):
+        d_ = np.array(p) - vpv
+        dr.line([Z(np.array(p) - d_ * 0.03), Z(np.array(p) + d_ * 0.03)], fill=(120, 255, 120), width=2)
+    ov.save(os.path.join(G2, "plate_r5_check.png"))
+    return Q
+
+
 def door_r4():
     """door_frame_r4.png (door_frame.png + the r4 plate) and press_hand_r4.png (BiRefNet on gen2/door_press_r4)"""
     P = design(os.path.join(G2, "door_plate_r4c.jpg"))
