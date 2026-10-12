@@ -95,3 +95,7 @@ game characters are out (public video, other people's IP).
 |---|---|---|---|
 | `v5-stairs2` | replace the v5 stair with the 3:13 clock Penrose stair | $3, `v5_stairs2_` | `docs/revisions/v5/stairs.md` (append a Round 2 section) |
 | `v5-build` | build merge option A, then the post-credits scene with Jade's notes | $10, `v5_build_` | `docs/revisions/v5/build.md` |
+
+**Later, Jade, verbatim:** "i think the sound fade of the credits can build right into the coda, actually, so the
+ticking up of the lives is followed by the hotel door ring". Sent to `v5-build`: no black gap between credits and
+the door; the last counter tick is followed by the bell, on the same beat grid.
