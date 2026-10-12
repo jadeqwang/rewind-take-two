@@ -166,9 +166,11 @@ export default ({ T }) => ({
         // Penrose stair on the near rooftop in place of the square stairwell (docs/revisions/v5/stairs.md). The take has
         // the plate baked in, so the stair is a still overlay riding the take's own transform and fade-in (she never
         // comes near it; her matte is unchanged). v4: S1_wide src 'media/shots/S1_wide/bg_1080/', no S1_stairs layer.
-        { id: 'S1_wide', type: 'video', src: 'media/shots/S1_wide/bg_1080_stairs/', in: -0.024, rate: 1, fit: 'cover', end: 1.4 },
+        // v5 round 2 (Jade: "copy the one from later in the same video ... inside the clock at 3:13"): the stair is the F6b
+        // clock stair lifted off its plate (tools/v5/stairs2/comp.py). Round 1: 'bg_1080_stairs/', 'overlay_S1.png'.
+        { id: 'S1_wide', type: 'video', src: 'media/shots/S1_wide/bg_1080_stairs_clock/', in: -0.024, rate: 1, fit: 'cover', end: 1.4 },
         { id: 'S1_take', type: 'video', src: S1_SRC, in: S1_IN, rate: 1, fit: 'cover', opacity: BEAN.takeIn, ...BEAN.bean },
-        { id: 'S1_stairs', type: 'image', src: 'media/sing/plates/stairs_v5/overlay_S1.png', fit: 'cover', opacity: BEAN.takeIn, ...BEAN.bean },
+        { id: 'S1_stairs', type: 'image', src: 'media/sing/plates/stairs_v5/overlay_S1_clock.png', fit: 'cover', opacity: BEAN.takeIn, ...BEAN.bean },
         // her again by matte, so the comps that replay S1 (C2, R4) show her in the wide part too
         { id: 'S1_her', type: 'video', src: S1_SRC, in: S1_IN, rate: 1, fit: 'cover', matte: { src: S1_MATTE, mode: 'luma' }, ...BEAN.her },
       ] },

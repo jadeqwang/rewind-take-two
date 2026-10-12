@@ -49,3 +49,58 @@ Jade's review. Open questions in the fragment (viewing angle; the V3S ramp mid-l
 
 - Drawn procedurally, not by a model: every model pass made the loop possible again.
 - The overlay sits only over the take (her matte and the take's in-point/framing untouched).
+
+## Round 2 (v5-stairs2, cap $3, tag `v5_stairs2_`): the 3:13 clock stair, copied
+
+Jade: "staircase looks bad, because it's not an actual impossible staircase. can you just copy the one from later in
+the same video? the one inside the clock at 3:13?"
+
+### Done
+
+- **Lifted, not redrawn.** `tools/v5/stairs2/lift.py` rasterises the engine's exact block faces
+  (`tools/sectionF/penrose_guide.py`: 22 steps, flights 7 / landing / 2 / landing / 2 / landing / 7 / landing, magic
+  angle) on the F6b plate `media/shots/F6b/kf_v3_F6b_redraw_crop_dered.png` (the 3:13 plate; the agents are a separate
+  sprite layer, so the plate's stair is clean). That polygon union (+2 px for the outline ink) is the cut-out mask:
+  watch face, ticks and agents excluded. Plate box of the blocks: (836, 405)–(1564, 825).
+- **Toned into the Bean's engraving** (`tools/v5/stairs2/comp.py`, free, deterministic, no model): luminance only, mapped
+  onto the Bean's paper (250,241,230) and ink (8,5,2); tops stay paper; walls keep the plate's own vertical hand
+  hatching and its face tones (light from the left, as at 3:13), contrast raised; outline lines thickened by 1 px. No
+  colour, no red. The plate's own hatched cast shadow (under the near flights and inside the well) is multiplied onto the
+  roof; the clock ticks inside that region are removed (morphological opening).
+- **Same shape, step count and viewing angle:** uniform scale only (0.446), no rotation or shear. Checked by drawing the
+  22 exact tread outlines over the result: every tread lands on its block, the loop closes at step 21 → 0
+  (`media/sing/plates/stairs_v5/clock_geometry_check.png`).
+- **Old square stairwell removed** under and round it: every hole pixel is the roof's hatch line through it, interpolated
+  between the hole's two edges along a per-pixel searched (then smoothed) line direction, slope 0.29–0.58. Hole =
+  the stairwell with its drawn base, widened, +28 px.
+- **Placement** on the close plate: blocks centred (302, 1218), 325 px wide (stair box 138..466 × 1122..1313). The roof
+  is tight here: its right parapet leans left going down, and the S1 take's slow 1.04 push (about the frame centre)
+  eats ~19 px of the left edge by 16.14; 325 px is the largest that keeps the whole loop on the roof and in frame for the
+  whole shot (380 px clipped the left corner block at the end of S1 and touched the parapet). At 540p the loop is ~120 px
+  wide, each block ~10 px.
+- Files (round-1 files untouched): `media/sing/plates/plate_close_1_stairs_clock.png`;
+  `media/sing/plates/stairs_v5/overlay_S1_clock.png`, `overlay_V3S_clock.png` (same take fits and per-channel tone match
+  as round 1); `media/sing/plates/plate_wide_v4_stairs_clock_bean.png` and `media/shots/S1_wide/bg_1080_stairs_clock/`
+  (bg.py push); checks `stairs_v5/clock_check_{S1,V3S}_{1080.jpg,540.png}`, `clock_lift.png`, `clock_mask_close.png`.
+- Timeline: `render/timeline/A.js` `S1_wide` → `bg_1080_stairs_clock/`, `S1_stairs` → `overlay_S1_clock.png`;
+  `render/timeline/E.js` `V3S_STAIRS` → `overlay_V3S_clock.png`. Round-1 paths are in the comments.
+- Clips (540p, sfx mix audio): `media/reviews/v5/0013_stairs_clock.mp4` (12.60–16.14),
+  `media/reviews/v5/0235_stairs_clock.mp4` (153.98–159.14). Checked frame by frame: the wide → take hand-over shows one
+  stair (no doubling), the loop stays whole in frame through the S1 push, no seams round the patch at 540p, static in
+  V3S/V3S_b (inter-frame change 0.1–0.3 grey levels).
+- Spend: $0 (no model calls).
+
+### Rebuild (free)
+
+    PY=~/Documents/moongazing/.venv/bin/python
+    $PY tools/v5/stairs2/comp.py --wide      # placement override: ST_CX, ST_CY, ST_W; wall levels ST_CURVE
+
+### Notes / open
+
+- The stair keeps the 3:13 viewing angle (isometric, ~35° elevation), which is lower than the roof's own (~55°), so
+  it reads as a solid object standing on the roof and seen a little more from the side than the roof is. Jade asked for
+  the same angle; say if it should be squashed to the roof's angle (that would no longer be the identical picture).
+- Its wall shading follows the 3:13 plate (light from the left); the roof is lit from the right. Not noticeable at 540p.
+- Mis-step during this round: `render.mjs --help` is not a flag and started a whole-film 1080p render; it was stopped
+  after ~36 s and its 864 frames deleted from `render/engine/out/rewind/full/frames/` (the engine cache
+  `media/engine_cache/full/` got the prepared `bg_1080_stairs_clock` and the F7m sources, which are valid caches).

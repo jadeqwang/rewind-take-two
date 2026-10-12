@@ -46,7 +46,9 @@ const V3S_SRC = 'media/sing/V3S/v4_sync_1080.mp4';
 // v5 (Jade 2:35: "make that rooftop staircase an actual impossible staircase"): a Penrose stair on the near rooftop
 // (lower left) in place of the square stairwell; the plate is baked into the take, so it is a still overlay over the take
 // (she never comes near it; take, in-point and her matte unchanged). docs/revisions/v5/stairs.md. v4: no 'stairs' layer.
-const V3S_STAIRS = 'media/sing/plates/stairs_v5/overlay_V3S.png';
+// v5 round 2 (Jade: copy the 3:13 clock stair): the F6b stair lifted off its plate (tools/v5/stairs2/comp.py).
+// Round 1: 'media/sing/plates/stairs_v5/overlay_V3S.png'.
+const V3S_STAIRS = 'media/sing/plates/stairs_v5/overlay_V3S_clock.png';
 const v3s = (id, start, end) => ({ id, start, end, background: '#000000',
   layers: [{ id: 'sing', type: 'video', src: V3S_SRC, in: start - V3S_T0 + V3S_LAG, rate: 1, fit: 'cover', keepColor: true },
     { id: 'stairs', type: 'image', src: V3S_STAIRS, fit: 'cover', keepColor: true }] });

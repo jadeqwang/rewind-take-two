@@ -2,8 +2,12 @@
   {
     "note": "0:13 & 2:35 - left of singer, make that rooftop staircase an actual impossible staircase",
     "v4_time": "0:13 (S1) and 2:35 (V3S)",
-    "shots": ["S1 12.60-16.14 (wide 12.60-14.00 and the landed take)", "V3S 153.98-157.39", "V3S_b 157.84-159.14"],
-    "status": "done (540p after clips)",
+    "shots": [
+      "S1 12.60-16.14 (wide 12.60-14.00 and the landed take)",
+      "V3S 153.98-157.39",
+      "V3S_b 157.84-159.14"
+    ],
+    "status": "superseded by round 2 (Jade: not an actual impossible staircase)",
     "after": "media/reviews/v5/0013_stairs.mp4",
     "before_range": "deliverables/wip/rewind_roughcut_v4_preview.mp4 12.60-16.14",
     "what_changed": "The square stairwell on the near rooftop (lower left of the Bean's reflection) is now a Penrose staircase in engraved masonry: four flights that climb all the way round and meet their own start. It is drawn as a real 3-D object whose loop closes only from this viewpoint (true Penrose construction), so it is genuinely impossible, not just a square of steps. Same stair in the wide Bean (S1 opening push), in the landed S1 take and in V3S/V3S_b. The takes, in-points, framing and her mattes are untouched (the stair is a still overlay on the take; she never comes within 100 px of it). Nothing else in the plate changed.",
@@ -12,11 +16,29 @@
   {
     "note": "0:13 & 2:35 - left of singer, make that rooftop staircase an actual impossible staircase",
     "v4_time": "2:35",
-    "shots": ["V3S 153.98-157.39", "V3S_cut 157.39-157.84 (unchanged)", "V3S_b 157.84-159.14"],
-    "status": "done (540p after clip)",
+    "shots": [
+      "V3S 153.98-157.39",
+      "V3S_cut 157.39-157.84 (unchanged)",
+      "V3S_b 157.84-159.14"
+    ],
+    "status": "superseded by round 2 (Jade: not an actual impossible staircase)",
     "after": "media/reviews/v5/0235_stairs.mp4",
     "before_range": "deliverables/wip/rewind_roughcut_v4_preview.mp4 153.98-159.14",
     "what_changed": "Same Penrose staircase as 0:13 on the near rooftop at lower left, overlaid on the V3S take (tone matched to its warmer grade).",
     "question": ""
+  },
+  {
+    "note": "Round 2: staircase looks bad, because it's not an actual impossible staircase. can you just copy the one from later in the same video? the one inside the clock at 3:13?",
+    "v4_time": "0:13 (S1) and 2:35 (V3S)",
+    "shots": [
+      "S1 12.60-16.14 (wide 12.60-14.00 and the landed take)",
+      "V3S 153.98-157.39",
+      "V3S_b 157.84-159.14"
+    ],
+    "status": "done (540p after clips)",
+    "after": "media/reviews/v5/0013_stairs_clock.mp4; media/reviews/v5/0235_stairs_clock.mp4",
+    "before_range": "deliverables/wip/rewind_roughcut_v4_preview.mp4 12.60-16.14 and 153.98-159.14; round 1: media/reviews/v5/0013_stairs.mp4, 0235_stairs.mp4",
+    "what_changed": "The rooftop stair is now the 3:13 clock stair itself: lifted off the F6b plate with the engine's exact block outlines (22 steps, same loop, same viewing angle, uniform scale only, nothing redrawn and no model), turned into the Bean's grey ink engraving (no colour) with its own hatched shadow, and set on the near rooftop lower left where the old square stairwell was (that stairwell is removed, roof hatching continued). Same stair in the wide Bean push, the landed S1 take and V3S/V3S_b. Takes, framing, camera and her matte untouched.",
+    "question": "It keeps the clock's viewing angle, which is a bit lower than the roof's, and it is ~120 px wide at 540p (the roof between the frame edge and the parapet allows no more). OK as is?"
   }
 ]
