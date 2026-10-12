@@ -4,6 +4,8 @@
 // The 13 R2 death tableaux are stills in media/shots/R2/ (see R2_STILLS below); Drop 1's director places them.
 // Media: media/shots/<ID>/ (chosen.json per shot); track keys: media/shots/<ID>/track_*.json (tools/sectionA/track_quad.py).
 import tracks from './_A_tracks.js';
+import { subQuad, stepKeys } from '../../tools/v5/signs/quad.js';   // v5-signs: sub-quads of a sign track (D1)
+import signTracks from '../../tools/v5/signs/tracks.js';            // v5-signs: D1 panels re-tracked per frame
 
 const S = (id, f) => `media/shots/${id}/${f}`;
 const INK = '#0b0b0c', PAPER = '#ece7dc', ORANGE = '#F08A24';
@@ -98,6 +100,32 @@ const D2_DOWN = { y: 90 };
 const D5_BOB = { scale: 1.04, y: (lt) => -11 * Math.abs(Math.sin(Math.PI * lt / 0.44)) + 6, x: (lt) => 5 * Math.sin(Math.PI * lt / 0.88) };
 // D3: two etched lines in the mirror's dark sky, left of the streetlight (the tracked strip, narrowed, deepened, moved left)
 const D3_QUAD = inset(tracks.D3_etch, 0.62, 2.3).map(([t, q]) => [t, q.map((v, i) => v + (i % 2 ? 40 : -185))]);
+// v5 (Jade, 0:22: "highway signs, add woodcut texture"; 0:50: "during rewind, lyrics on billboards and highway signs").
+// The D1 gantry signs are cut into the block: an engraved face (tools/v5/signs/woodpanel.js, like the V2f SIRENS panel)
+// under woodcut capitals in paper, each line in its own projective sub-quad of the tracked panel. They, and a
+// rewind-only lettering of the D2 billboard, are also drawn inside the R3 rewind comp (B.js), and only there: C2 and
+// later replays stay as before. docs/revisions/v5/signs.md. The panels are re-tracked per source frame
+// (tools/v5/signs/track_d1.py; the v3 right-panel track sheared from ~0.6 s) and held per frame like the plate.
+// v4: two `pin` style 'sign' layers (noRewind) on tracks.D1_signL ("LAKE SHORE DR\nI'm speeding down Lake Shore") and
+// tracks.D1_signR ("SOUTH").
+const PANEL = 'tools/v5/signs/woodpanel.js';
+const REWIND_RUN = t => t >= 48.42 && t < 56.54;
+const FWD_OR_RW = (lt, env) => (!env.rewinding || REWIND_RUN(env.frameT) ? 1 : 0);   // own shot + the rewind run
+const RW_ONLY = (lt, env) => (env.rewinding && REWIND_RUN(env.frameT) ? 1 : 0);      // only replayed in the rewind run
+const D1_SIGNS = (() => {
+  const L = signTracks.D1_signL, R = signTracks.D1_signR, FACE = [0.035, 0.06, 0.965, 0.94];
+  const pin = (keys, r) => stepKeys(subQuad(keys, r));
+  const wc = (text, keys, r, box, extra = {}) => ({ type: 'canvas', module: WOODCUT, opacity: FWD_OR_RW,
+    params: { text, at: -1, color: PAPER, box, pad: 4, hatch: 0.34, flecks: 10, corners: pin(keys, r), ...extra } });
+  return [
+    // left: the route name large, the lyric small on a band left solid (no gouges behind small letters)
+    { type: 'canvas', module: PANEL, opacity: FWD_OR_RW, params: { corners: pin(L, FACE), box: [480, 255], plain: [[0.6, 1]], seed: 1 } },
+    wc('LAKE SHORE DR', L, [0.07, 0.12, 0.93, 0.56], [600, 165]),
+    wc("I'M SPEEDING DOWN LAKE SHORE", L, [0.08, 0.63, 0.92, 0.88], [700, 110], { hatch: 0, flecks: 0, space: 0.3 }),
+    { type: 'canvas', module: PANEL, opacity: FWD_OR_RW, params: { corners: pin(R, FACE), box: [480, 240], seed: 2 } },
+    wc('SOUTH', R, [0.12, 0.18, 0.88, 0.82], [500, 200]),
+  ];
+})();
 const LETTERBOX = { type: 'letterbox', aspect: 2.39, amount: 1 };
 const lower = (extra = {}) => ({ type: 'canvas', module: 'lowerthird', stage: 'post',
   params: { color: PAPER, size: 50, y: 1022, halo: 0, ...extra } });
@@ -151,8 +179,7 @@ export default ({ T }) => ({
     { id: 'D1', start: 21.38, end: 23.16, background: INK,
       layers: [
         vid('D1'),
-        { type: 'canvas', module: 'pin', noRewind: true, params: { style: 'sign', text: "LAKE SHORE DR\nI'm speeding down Lake Shore", corners: tracks.D1_signL } },
-        { type: 'canvas', module: 'pin', noRewind: true, params: { style: 'sign', text: 'SOUTH', corners: tracks.D1_signR } },
+        ...D1_SIGNS,   // v5: woodcut signs, also in the R3 rewind
         lower({ text: 'I dreamt', sync: 'lyric' }),
       ], fx: [LETTERBOX] },
     // v3: the rooftop bulb billboard IS the lyric (it read HILBERT / VACANCY in v2). Each panel is dark until its word
@@ -162,6 +189,10 @@ export default ({ T }) => ({
         vid('D2', D2_DOWN),
         { type: 'canvas', module: WOODCUT, noRewind: true, ...D2_DOWN, params: { text: 'A SHADOW', sync: 'lyric', reveal: 'bulb', unlit: 0.82, color: INK, flecks: 0, hatch: 0.3, box: [380, 152], pad: 16, corners: tracks.D2_top } },
         { type: 'canvas', module: WOODCUT, noRewind: true, ...D2_DOWN, params: { text: 'CHASING', sync: 'lyric', reveal: 'bulb', unlit: 0.82, color: INK, flecks: 0, hatch: 0.3, box: [388, 186], pad: 18, corners: tracks.D2_bot } },
+        // v5-signs: drawn only when R3 replays this shot (51.5-52.0): the whole of "a shadow chasing" lit on the upper
+        // panel, the lower panel switched off (the REWIND title sits on it). Forward D2 is unchanged.
+        { type: 'canvas', module: WOODCUT, opacity: RW_ONLY, ...D2_DOWN, params: { text: 'A SHADOW\nCHASING', at: -1, color: INK, flecks: 0, hatch: 0.3, box: [380, 152], pad: 14, corners: tracks.D2_top } },
+        { type: 'canvas', module: PANEL, opacity: RW_ONLY, ...D2_DOWN, params: { corners: tracks.D2_bot, box: [388, 186], lines: 30, cut: 0.14, rule: 0, opacity: 0.9, seed: 3 } },
       ], fx: [LETTERBOX] },
     { id: 'D3', start: 25.34, end: 28.4, background: INK,
       layers: [

@@ -1,0 +1,22 @@
+[
+  {
+    "note": "0:22 - highway signs, add woodcut texture",
+    "v4_time": "0:22",
+    "shots": ["D1"],
+    "status": "done (540p after clip)",
+    "after": "media/reviews/v5/0022_signs.mp4",
+    "before_range": "deliverables/wip/rewind_roughcut_v4_preview.mp4 21.38-23.16",
+    "what_changed": "The flat black pin panels with clean Overpass text are gone. Each gantry sign is now cut into the block like the signed-off SIRENS panel in the car shot: an ink face cleared by hand-cut vertical gouges with a paper rule standing inside the edge (new module tools/v5/signs/woodpanel.js), with woodcut capitals in paper (tools/sectionA/modules/woodcut.js: hatched feet, nicks, gouge flecks). Left: LAKE SHORE DR (large) over I'M SPEEDING DOWN LAKE SHORE (small, on a solid band so no gouges cross the thin strokes). Right: SOUTH. Each line sits in its own projective sub-quad of the panel, so it follows the sign's perspective. The panels were re-tracked one frame at a time (tools/v5/signs/track_d1.py -> tools/v5/signs/tracks.js), because the v3 track for the right panel sheared from about 0.6 s on. The quads are also held per frame like the plate, so the old up-to-one-frame lead is gone. Reads at 540p from about 21.8 s (the gantry is small before that, as in v4).",
+    "question": "The signs now match the SIRENS look (light letters on a dark cut face). The other way would be ink letters straight onto the plate's own white faces, like the D2 bulb billboard. Keep this one?"
+  },
+  {
+    "note": "0:50 - during rewind, lyrics on billboards and highway signs",
+    "v4_time": "0:50",
+    "shots": ["R3 (replaying D2 at 51.50-52.04 and D1 at 52.04-52.48)"],
+    "status": "done (540p after clip)",
+    "after": "media/reviews/v5/0050_rewind_signs.mp4",
+    "before_range": "deliverables/wip/rewind_roughcut_v4_preview.mp4 42.38-56.54",
+    "what_changed": "The blank signs in the rewind were D2's bulb billboard and D1's gantry being replayed backward inside R3's comp. All in-world lettering was marked noRewind, so the comp dropped it. None of the R2 death stills or R4's shots (S2, S1x, S1, C4, C3) have a billboard or road sign. The sign layers are now drawn in their source shots and let into the comp only while the frame being rendered is in the rewind run (48.42-56.54). They ride the plate's own track, R3's echo, ripple and 12 fps judder, and play backward with the shot. C2's cold-open teaser and later replays are unchanged. The D2 billboard reads A SHADOW / CHASING (the line V1-3 this stretch is rewinding through), whole and lit, in the same ink woodcut as forward D2. Its lower panel is switched off (a dark cut face), because the REWIND title sits right on it. The D1 gantry carries the same woodcut LAKE SHORE DR / I'M SPEEDING DOWN LAKE SHORE and SOUTH as the forward shot. Everything reads right-way-round: by 51.5 s the REWIND title has already flipped to right-reading, and mirrored words would not read in the half second each sign is on screen at x8. No reverse reveal either: forward D2 lights its words one by one, and replaying that backward would leave the panel lit for only about 0.14 s.",
+    "question": "On the last 2-3 frames of R3 (52.40-52.48) the far gantry's small lyric line tucks under the top of the REWIND title. The title stays on top and legible. OK, or should the title or signs move? Also: should the D3 mirror etch and the D5cu lens lyrics come back in the rewind too? They are not signs, so they are still dropped. And should C2's teaser flash of the gantry (about 7.0 s) carry the new signs?"
+  }
+]
