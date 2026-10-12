@@ -147,6 +147,10 @@ B will re-render its 0:13 clip from the committed swap.
   and will say when the render starts. **Do not edit `render/timeline/*` while that render runs.**
 - Codex's v4 whole-film render has **started** (v4-B, ~18:50). Hands off `render/timeline/`, `media/sing/` and
   `media/sfx/` until B says codex's report has landed.
+- ~19:15: the v4 whole-film preview is done (B rendered it; codex's sandbox could not bind localhost):
+  `deliverables/wip/rewind_roughcut_v4_preview.mp4` (540p, 227.958 s), report `docs/revisions/render_v4_preview_report.md`.
+  Timelines are free again. Spot-checked S1 (wide Bean at 13.0, push landed by 14.5, lyric without comma) and V3S
+  (158.9, `DEFENSE` without comma): all as committed.
 
 ## What B needs (v4-B, 2026-10-11 ~17:25)
 
