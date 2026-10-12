@@ -35,7 +35,7 @@ The last two settle v4-B's open questions (the grey mirror sedans with light bar
 | 0:13 & 2:35 staircase | S1 12.60–16.14 (+S1x to 19.64), V3S 153.98–157.39, V3S_b 157.84–159.14 | `render/timeline/A.js` (S1), `render/timeline/E.js` (V3S); the stair is in the plate behind her (`media/sing/plates/`, `media/shots/S1_wide/`) |
 | 0:22 highway signs | D1 21.38–23.16 (LAKE SHORE DR / SOUTH gantry) | `render/timeline/A.js`; woodcut lettering module `tools/sectionA/modules/woodcut.js` (v4-B used it for SIRENS) |
 | 0:50 rewind lyrics | the rewind run R2_01–R4, 42.65–56.54 (blank billboard in R4 at ~52) | `render/timeline/A.js`, `render/timeline/A_R2.js` |
-| 3:23 merge | F7_06 202.88–203.76 (the two-figure light burst), with F7_05/F7_07 around it | section F timeline (find it with `grep -l F7_06 render/timeline/*.js tools/sectionF -r`); blue/orange variants are from the 2:00 co-op (`media/shots/C_coop/`, `docs/revisions/v4/plans/coop.md`) |
+| 3:23 merge | F7_07 203.76–205.52 (the two-figure light burst; corrected by v5-merge), with F7_06 202.88–203.76 before it | section F timeline (find it with `grep -l F7_06 render/timeline/*.js tools/sectionF -r`); blue/orange variants are from the 2:00 co-op (`media/shots/C_coop/`, `docs/revisions/v4/plans/coop.md`) |
 | credits fade + counter | O3_black 222.78–226.00, O4 226.00–227.96, O_credit 223.23–227.96 | `tools/sectionF/modules/end_credit.js`, the hud counter in O4, the mix `tools/sfx/build.py` → `media/sfx/Rewind_cinematic_sfx_mix.mp3` |
 | post-credits Hilbert Hotel | new, after the credits (past 227.96) | new; text box = the `dialogue` module used by `A_dialogue` at 33.6–37.96 in `render/timeline/A.js` |
 

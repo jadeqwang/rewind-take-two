@@ -1,0 +1,23 @@
+{
+ "shot": "F7_07m", "in": 202.88, "out": 205.52,
+ "_doc": "v5 merge (docs/revisions/v5/merge.md): BLUE + ORANGE reassemble into the one original Jade. Replaces F7_06 + F7_07. Assets: tools/v5/merge/bake.py. Crop = F7e take 2's paper margin; motes x,y = layout.json touch through that crop.",
+ "layers": [
+  {"id": "approach", "type": "video", "src": "media/shots/F7m/approach_bo.mp4", "in": 0.05, "rate": 0.74, "freeze": 0.44,
+   "frameBlend": true, "start": 0, "end": 0.88, "fit": "cover", "crop": [0.0495, 0.0466, 0.9517, 0.9488]},
+  {"id": "plate", "type": "image", "src": "media/shots/F7m/plate.png", "start": 0.88, "end": 1.76,
+   "fit": "cover", "crop": [0.0495, 0.0466, 0.9517, 0.9488]},
+  {"id": "fig", "type": "video", "src": "media/shots/F7m/fig/", "alpha": true, "start": 0.44, "end": 1.76,
+   "fit": "cover", "crop": [0.0495, 0.0466, 0.9517, 0.9488]},
+  {"id": "motes", "type": "canvas", "module": "motes", "start": 0.88, "end": 1.76, "keepColor": true,
+   "params": {"at": 203.76, "x": 909, "y": 344, "count": 36, "speed": 650, "life": 0.8, "size": 8}},
+  {"id": "merged", "type": "video", "src": "media/shots/F7e/take_2_engraved_dered.mp4", "in": 1.6667, "rate": 1,
+   "start": 1.76, "end": 2.64, "fit": "cover", "crop": [0.0495, 0.0466, 0.9517, 0.9488]},
+  {"id": "seams", "type": "video", "src": "media/shots/F7m/seams/", "alpha": true, "start": 1.76, "end": 2.06,
+   "fit": "cover", "crop": [0.0495, 0.0466, 0.9517, 0.9488]}
+ ],
+ "fx": [
+  {"type": "flash", "at": [0], "dur": 0.08, "amount": 0.4, "color": "#fff6e0"},
+  {"type": "flash", "at": [0.88], "dur": 0.12, "amount": 0.5, "color": "#fff6e0"},
+  {"type": "punch", "on": [204.64], "amount": 0.025}
+ ]
+}
