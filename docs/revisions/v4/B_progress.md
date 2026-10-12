@@ -177,6 +177,12 @@ break; cap rest of its $8.
 
 **19:45, Jade, verbatim:** "gunfire looks pretty good". Gunfire (notes 5, 6 and her follow-ups) treated as signed off.
 
+**20:10, Jade:** "you can tell codex to start the render job when you're done". Brief:
+`docs/revisions/render_v4_preview.md` (540p whole film, `--force`, current SFX mix, out
+`deliverables/wip/rewind_roughcut_v4_preview.mp4`, report `docs/revisions/render_v4_preview_report.md`). Codex is in
+tmux `moongazing:0.1`. v4-A reported "A done" at 20:12. Waiting on one last co-op check (C2 geography, hard cut at
+133.56) from `v4B-coop`, then hand off. No timeline edits while the render runs.
+
 ## Execution round
 
 **Correction:** clock times written in this file before 17:55 ran ahead of the real clock (the "19:xx" entries
