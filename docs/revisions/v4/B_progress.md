@@ -175,6 +175,8 @@ expression because she's just trying to concentrate". Sent to `v4B-car`: Seedanc
 road motion and her breathing, hair, blinks, eye flicks to the mirror, understated; retake once if face/pencils
 break; cap rest of its $8.
 
+**19:45, Jade, verbatim:** "gunfire looks pretty good". Gunfire (notes 5, 6 and her follow-ups) treated as signed off.
+
 ## Execution round
 
 **Correction:** clock times written in this file before 17:55 ran ahead of the real clock (the "19:xx" entries
