@@ -15,7 +15,10 @@ S = "media/shots/"
 CHOSEN = {
     "F1": dict(take=3, file=S + "F1/take_3_wipe.mp4", in_sec=0.0, rate=1.1, reverse=False,
                notes="colour-flood wipe (tools/sectionF/wipe.py): engraved twin -> colour clip, radial from her, gold leading edge"),
-    "F2": dict(take=3, in_sec=0.0, rate=1.0, reverse=False, notes="true wall-run up the tower (take 2); bar 100 jumps to 3.24 s (reaching the top and launching off it) with a 1.12x punch-in"),
+    # v6 (Jade 2:54, docs/revisions/v6/f2_jacket_back.md): *_dered_back = the dered plate with the orange band removed
+    # from her jacket BACK (cut at the side seams; sleeves keep it) and the big pale-blue back dot painted in, tracked per
+    # frame (tools/jacket_back.py, spec tools/jacket_back_specs/F2.json)
+    "F2": dict(take=3, file=S + "F2/take_3_engraved_dered_back.mp4", in_sec=0.0, rate=1.0, reverse=False, notes="true wall-run up the tower (take 2); bar 100 jumps to 3.24 s (reaching the top and launching off it) with a 1.12x punch-in"),
     "F3": dict(take=1, in_sec=0.0, rate=1.0, reverse=False, notes="Relativity hall; the engine snaps a 90-degree roll on the downbeat"),
     "F4": dict(take=2, in_sec=0.0, rate=1.3, reverse=False, notes="take 2: dive, touches her reflection at ~3 s, plunges into concentric ripples"),
     "F5a": dict(take=5, in_sec=1.4, rate=1.0, reverse=False, notes="v3 (Jade 3:05): the rainbow pencil (pale-blue eraser, rainbow core). She winds it back like a sword, slashes (1.4-2.5 s, a rainbow arc in its wake) and the swing turns into drawing: she guides the point like a pen and it draws a rainbow line up across the clock (2.5-4.9 s). Curtain bangs, mock neck; desk objects in the skyline. v2 was take 4"),
@@ -33,7 +36,9 @@ CHOSEN = {
     "F7_08": dict(take=3, file=S + "F6c/take_3_rewindpaint.mp4", matte=S + "F6c/take_3_cleanmatte.mp4", in_sec=3.24, rate=1.0,
                   reverse=True, notes="F6c played backward; wipe computed on the reversed clock so colour paints IN as it rewinds"),
     "F8": dict(take=4, in_sec=0.5, rate=1.0, reverse=False, notes="v3 (audit after Jade 3:21): curtain bangs instead of the blunt fringe, mock neck, white cuffs and hem, orange headphones, 1420 / MHz roundel; the committee of ghosts fades in behind her over the first second. v2 was take 3"),
-    "O2": dict(take=3, in_sec=0.0, rate=1.33, reverse=False, notes="v3 (Jade 3:40), retake: the coil is held with one pencil already through it, the second pencil slides through the coil crossing the first (~0.6-1.2 s source), she lets go and it holds, reaches the knob and pushes the door INWARD on its left hinges from ~3.8 s (lands on beat 221.78 at 1.33x); canon jacket back; no sign on the door. Fallback: take 2 at rate 1.4 (bun already pinned). v2: take 1, rate 1.3"),
+    # v6 (Jade 3:42, docs/revisions/v6/o2_erasers.md): *_dered_blue = the same plate with the upper-left pencil's eraser
+    # (the one already through the bun) recoloured pale blue in every frame (tools/blue_eraser.py, spec tools/blue_eraser_specs/O2.json); the other stays pink
+    "O2": dict(take=3, file=S + "O2/take_3_engraved_dered_blue.mp4", in_sec=0.0, rate=1.33, reverse=False, notes="v3 (Jade 3:40), retake: the coil is held with one pencil already through it, the second pencil slides through the coil crossing the first (~0.6-1.2 s source), she lets go and it holds, reaches the knob and pushes the door INWARD on its left hinges from ~3.8 s (lands on beat 221.78 at 1.33x); canon jacket back; no sign on the door. Fallback: take 2 at rate 1.4 (bun already pinned). v2: take 1, rate 1.3"),
 }
 OVR = os.path.join(ROOT, "tools/sectionF/chosen_overrides.json")
 if os.path.exists(OVR):
@@ -127,11 +132,11 @@ CREDIT_R_AT = ["224.82", "224.82", "225.04", "225.20", "225.36", "225.52", "225.
 
 # v5 coda (docs/revisions/v5/coda.md): the film runs on past the song (227.96) for the credits' fade. Keep these in step
 # with tools/sfx/build.py (CODA_END, CODA_T0, CODA_BEAT), which builds the matching sound (--coda).
-CODA_T0, CODA_BEAT = 226.400, 0.4526   # the counter reads 4,097 at the bar-129 downbeat and ticks +1 every ring-out beat
+CODA_T0, CODA_BEAT = 226.400, 0.4526   # the counter reads 4,098 (the canon run, docs/revisions/v5/counters.md) at the bar-129 downbeat and ticks +1 every ring-out beat
 CODA_TEXT_FADE = (231.00, 232.80)      # credits and "never stop." fade out; the counter ticks on
 # v5-build (Jade: "the sound fade of the credits can build right into the coda, actually, so the ticking up of the lives
 # is followed by the hotel door ring"; docs/revisions/v5/build.md): no black gap. The Hilbert Hotel door (PC1) fades up
-# under the still-ticking counter as the credits finish fading; the last tick (4,113 at 233.642) is followed one beat
+# under the still-ticking counter as the credits finish fading; the last tick (4,114 at 233.642) is followed one beat
 # later by the door's bell as the gloved hand pushes it open (CODA_BELL); the lobby (PC2) and the end sit on the same grid.
 CODA_BELL = round(CODA_T0 + 17 * CODA_BEAT, 4)     # 234.0942
 CODA_DOOR_IN = CODA_TEXT_FADE[1]                   # 232.80
@@ -225,7 +230,7 @@ def build():
     # v5 coda (Jade: "credits sound fades out gradually as the life count ticks up in the corner";
     # docs/revisions/v5/coda.md). The film now runs past the song's end (227.96) to CODA_END: the credits and "never
     # stop." hold, then fade out over CODA_TEXT_FADE while the ITERATION counter ticks +1 on every ring-out beat
-    # (mechanical snap, 4,098 at 226.853 ... 4,113 at 233.642: the same ticks as tools/sfx/build.py COUNTER_TICKS, whose
+    # (mechanical snap, 4,099 at 226.853 ... 4,114 at 233.642: the same ticks as tools/sfx/build.py COUNTER_TICKS, whose
     # coda_counter blips fade out with the held chord by 232.6, so the last ticks are silent). v4: O4 ended at 227.96
     # with a 227.0-227.96 fade-out and the counter rolling at 3/s from 226.45.
     # v5-build: O4 now ends where the door fades up; the counter moved to the O_counter overlay so it ticks on over the door
@@ -298,18 +303,18 @@ def build():
         # v5-build: the ITERATION counter (was a layer of O4) ticks on over the door's fade-up; it goes as the bell rings
         {"id": "O_counter", "start": 226.00, "end": round(CODA_BELL + 0.1, 3), "layers": [
             # v5-coda2 Round 5: a faint soft dark backing under the counter while it sits over the door's hatched stone
-            # (from the door's fade-up to the counter's own fade), so 4,112 -> 4,113 reads during the press
+            # (from the door's fade-up to the counter's own fade), so 4,113 -> 4,114 reads during the press
             {"type": "canvas", "module": "tools/sectionF/modules/hud_backing.js", "stage": "post",
              "start": round(CODA_DOOR_IN - 226.00, 3), "fadeIn": 0.5, "fadeOut": 0.4,
              "params": {"rect": [1414, 975, 464, 54], "alpha": 0.4, "blur": 10, "radius": 14}},
             {"type": "canvas", "module": "hud", "stage": "post", "fadeOut": 0.4,
-             "params": {"mode": "iteration", "side": "right", "margin": 64, "y": 1016, "base": 4097,
+             "params": {"mode": "iteration", "side": "right", "margin": 64, "y": 1016, "base": 4098,
                         "from": round(CODA_T0 - 226.00, 3), "rate": round(1 / CODA_BEAT, 5), "snap": True, "flicker": 0.2,
                         "size": 28, "color": "#ece7dc"}}]},
         {"id": "O1_variance_report", "start": 211.64, "end": 218.92, "layers": [
         {"type": "canvas", "module": "tools/sectionF/modules/variance_report.js", "stage": "post", "params": {
             "slideIn": ["211.90", "212.20"], "cps": 50, "size": 28, "rect": [1040, 640, 800, 330],
-            "lines": ["TIME VARIANCE █████████", "ANOMALY REPORT", "CASE 4,097", "SUBJECT: ████ NOT FOUND", "RESIDUE: UNTRACEABLE"],
+            "lines": ["TVA REPORT", "ANOMALY DETECTED", "CASE 4,098", "SUBJECT: ████ NOT FOUND", "RESIDUE: UNTRACEABLE"],
             # v4 (Jade 3:33, 3:37): "ANOMALY REPORT"; the stamp loses "IS" and is set larger (scale 1.75 x size)
             "unwrite": ["215.22", "217.04"], "stamp": {"text": STAMP, "at": "217.04", "scale": 1.75}}}]},
         # v4 (Jade, the ending): the song credit, set like a game's end credit in the HUD face, bottom left (the

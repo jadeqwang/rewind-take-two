@@ -19,7 +19,9 @@ const G_CLIPS = {
   // v2 picks, kept beside them: G1 take_1_engraved (in 0), G2 take_4_engraved (in 0.46, rate 1.15, y 54, scale 0.95),
   // G3 take_4_engraved_soft + take_4_matte/matte_dilated6 (in 1.2, rate 1.4).
   G1: { src: 'media/shots/G1/take_3_engraved_patch.mp4', matte: 'media/shots/G1/take_3_matte/matte.mp4', in: 0.0, rate: 1.0 },
-  G2: { src: 'media/shots/G2/take_5_engraved_patch.mp4', matte: 'media/shots/G2/take_5_matte/matte.mp4', in: 0.68, rate: 1.15 },  // boom 144.54 lands as the pencil comes free
+  // v6 (Jade 2:24, docs/revisions/v6/g2_dot.md): *_patch_dot = the same plate with the pale-blue chest dot painted on her
+  // left chest in every frame (tools/sectionE/g2_dot.py; placed off the orange band exactly as in G1/G3). Matte unchanged.
+  G2: { src: 'media/shots/G2/take_5_engraved_patch_dot.mp4', matte: 'media/shots/G2/take_5_matte/matte.mp4', in: 0.68, rate: 1.15 },  // boom 144.54 lands as the pencil comes free
   G3: { src: 'media/shots/G3/take_5_engraved_soft_patch.mp4', matte: 'media/shots/G3/take_5_matte/matte_dilated9.mp4', in: 1.3, rate: 1.6 },  // stroke starts ~1.3 s, ~85% drawn at the cut
 };
 function gShot(id, start, end, drift, note) {

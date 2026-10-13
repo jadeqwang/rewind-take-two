@@ -37,6 +37,9 @@ right) is recoloured after the engrave by `tools/v4B/coop/recolor.py`.
 - `two_bo/take_1_engraved_bo.mp4`: `media/shots/B_two/take_1_engraved.mp4` with the right twin recoloured BLUE (E6c).
 - `e5_arm/ghost_matte/`: the gold ghost's matte with her pointing forearm and hand recovered (`armfix.py`);
   `e5_arm/ghost_slideptb_v4_{rgb,alpha}.mp4`: the ghost rebaked from it (`tools/sections/D/ghostseq.py ... "#C9A227" ... 0.85 4.4333`).
+- v6 (`tools/v4B/coop/e5feet.py`): `e5_arm/ghost_matte_v6/` (the gold ghost's left leg, take frames 19-39, moved in from the
+  live matte; v6b also her left trouser edge beside the protagonist's sneaker, frames 36-89) and `e5_arm/live_v6/`
+  (PNG + `matte.mp4`, the jade layer's matte: leg and trouser edge out, sneaker soles and two trouser holes back in); `e5_arm/ghost_slideptb_v6_{rgb,alpha}.mp4` rebaked from `ghost_matte_v6` with the same ghostseq.py arguments.
 - `layout_c1.png`, `layout_c2.png`: composition sketches given to the image model (`layout.py`).
 
 Cost: $3.46 (3 keyframes, 6 edits, 3 Seedance 720p takes), tag prefix `v4B_coop_`.

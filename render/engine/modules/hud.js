@@ -178,8 +178,11 @@ function race(g, env, p) {
   const size = env.val(p.size, 24), col = colOf(env, p);
   const label = `GHOST: ITERATION ${fmt(env.val(p.iteration, 4096))}`, sp = env.val(p.split, 0);
   g.font = `${size}px ${P2}`;
-  const s = (sp >= 0 ? '+' : '-') + Math.abs(sp).toFixed(2), width = Math.max(g.measureText(label).width, g.measureText(s).width);
+  // optional `timer` ({from, offset, rate}, as in platformer): the run clock stays up and the split sits beside it
+  const tm = p.timer, clock = tm ? fmtClock((tm.offset ?? 0) + (env.t - (tm.from !== undefined ? absT(env, tm.from) : env.origin)) * (tm.rate ?? 1)) + '  ' : '';
+  const s = (sp >= 0 ? '+' : '-') + Math.abs(sp).toFixed(2), width = Math.max(g.measureText(label).width, g.measureText(clock + s).width);
   const x0 = corner(env, p, width), y = env.val(p.margin, 56) + size;
   g.fillStyle = col; g.fillText(label, x0, y);
-  g.fillStyle = env.val(p.splitColor, sp < 0 ? '#8DB8E8' : '#F08A24'); g.fillText(s, x0, y + size * 1.75);
+  if (clock) g.fillText(clock, x0, y + size * 1.75);
+  g.fillStyle = env.val(p.splitColor, sp < 0 ? '#8DB8E8' : '#F08A24'); g.fillText(s, x0 + g.measureText(clock).width, y + size * 1.75);
 }

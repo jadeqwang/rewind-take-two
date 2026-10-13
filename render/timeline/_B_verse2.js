@@ -15,6 +15,11 @@ const HOTEL_SIGN = true;
 
 const S = 'media/shots/';
 const PAPER = '#ece7dc', INK = '#0b0b0c', ORANGE = '#F08A24';
+// v5 counters (docs/revisions/v5/counters.md): "Reload." is a rewind out of the L-train, not a death (×4,096 holds), and
+// the respawn level (L tracks, Grant Park) is later in 4097's run, so 4097's run timer jumps 3:30 there. The race HUD
+// keeps that timer running under the ghost line, with the ghost split beside it (v5 swapped the timer for the split).
+export const RELOAD_SKIP = 210;
+const RUN_TIMER = { from: '56.54', offset: RELOAD_SKIP };
 const F = 1 / 24, E = F / 4;
 const plate = k => `${S}B_${k}/take_1_engraved.mp4`;
 const matteSrc = (k, j = '') => `${S}B_${k}/take_1_${j}matte/matte.mp4`;
@@ -211,16 +216,19 @@ export default function verse2B({ T }) {
   shots.push({ id: 'B2_pistol', start: 109.92, end: 110.78, background: INK, fx: [beatPunch], layers: [
     { id: 'plate', type: 'video', src: plate('pistol'), in: 1.1, rate: 1.15, fit: 'cover' }] });
 
+  // v6 (Jade 1:51, docs/revisions/v6/o2_erasers.md): the take drew both bun erasers pink; SHOT_BLUE = the same plate with
+  // the right-hand pencil's eraser recoloured the canon pale blue in every frame (tools/blue_eraser.py). Matte unchanged.
+  const SHOT_BLUE = `${S}B_shot/take_1_engraved_blue.mp4`;
   // ---- 110.78–111.22 the hit (side view, motes from her jacket) with the flash.
   shots.push({ id: 'B2_shot', start: 110.78, end: 111.22, background: INK,
     fx: [beatPunch, { type: 'flash', at: [0.04], dur: 0.05, amount: 0.45 }], layers: [
-      { id: 'plate', type: 'video', src: plate('shot'), in: 0.0, rate: 1, fit: 'cover' }] });
+      { id: 'plate', type: 'video', src: SHOT_BLUE, in: 0.0, rate: 1, fit: 'cover' }] });
 
   // ---- 111.22–112.66 CONTINUE?: freeze on the last frame of the hit, invert (P5 grammar), arcade countdown
   // (was C_V2n_continue on V2m1; re-pointed to B_shot so the frozen picture matches)
   shots.push({ id: 'C_V2n_continue', start: 111.22, end: 112.66, background: PAPER, layers: [
-    { type: 'video', src: plate('shot'), in: 0.44, rate: 1, freeze: 0, fit: 'cover', x: [[0, 0], [0.3, 330, 'outCubic']] },
-    { type: 'video', src: plate('shot'), in: 0.44, rate: 1, freeze: 0, fit: 'cover', x: [[0, 0], [0.3, 330, 'outCubic']], matte: matte('shot'), keepColor: true },
+    { type: 'video', src: SHOT_BLUE, in: 0.44, rate: 1, freeze: 0, fit: 'cover', x: [[0, 0], [0.3, 330, 'outCubic']] },
+    { type: 'video', src: SHOT_BLUE, in: 0.44, rate: 1, freeze: 0, fit: 'cover', x: [[0, 0], [0.3, 330, 'outCubic']], matte: matte('shot'), keepColor: true },
     { type: 'solid', color: PAPER, rect: [0, 0, 780, 1080], opacity: [[0, 0], [0.3, 0.92]] },  // inverts to ink under `negative`
   ], fx: [{ type: 'negative', amount: [[0, 0], [0.3, 1, 'outCubic']] }, { type: 'wobble', amount: [[0, 0.6], [0.4, 0]] }] });
 
@@ -233,10 +241,10 @@ export default function verse2B({ T }) {
     // HUD (v2's), moved to the top LEFT from the chasm cut (96.30) on, where the hotel billboard (HILBERT) is top right:
     // the race readout slides over with its chip; the platformer readout gets the same ink chip so it reads over the plates
     { id: 'C_race_chip', start: 94.06, end: 98.28, layers: [{ type: 'solid', color: INK, rect: [1300, 36, 600, 112], opacity: 0.95, x: [[0, 0, 'hold'], [2.24, -1280]] }] },
-    ov('C_hud_race', 94.06, 98.28, { type: 'canvas', module: 'hud', x: [[0, 0, 'hold'], [2.24, -1280]], params: { mode: 'race', side: 'right', iteration: 4096,
+    ov('C_hud_race', 94.06, 98.28, { type: 'canvas', module: 'hud', x: [[0, 0, 'hold'], [2.24, -1280]], params: { mode: 'race', side: 'right', iteration: 4094, timer: RUN_TIMER,
       split: [[0, 0.42], [1.8, 0.12], [2.6, -0.04], [4.2, -0.31]], color: PAPER, splitColor: [[0, PAPER, 'hold'], [2.55, '#5fd16a']] } }),
     { id: 'C_field_chip', start: 98.28, end: 110.78, layers: [{ type: 'solid', color: INK, rect: [20, 36, 470, 170], opacity: 0.95 }] },
-    ov('C_hud_field', 98.28, 110.78, { type: 'canvas', module: 'hud', params: { mode: 'platformer', side: 'left', color: PAPER, iteration: 4097, deaths: 4097, timer: { from: '56.54' } } }),
+    ov('C_hud_field', 98.28, 110.78, { type: 'canvas', module: 'hud', params: { mode: 'platformer', side: 'left', color: PAPER, iteration: 4097, deaths: 4096, timer: RUN_TIMER } }),
     ov('C_hud_continue', 111.30, 112.66, { type: 'canvas', module: 'hud', x: -560, params: { mode: 'continue', from: 9, every: 0.8, start: '111.40', press: 'PRESS ◀◀' } }),
     // lyrics not on a surface ("A shadow chasing me" is on the station signs, "I zigzag across the field of grass" on the lawn and the board)
     ov('C_lyr_race', 96.30, 98.28, { type: 'canvas', module: 'lowerthird', params: { text: 'like it’s a race', sync: 'lyric', color: INK, halo: 0.9, size: 74 } }),

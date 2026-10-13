@@ -1411,7 +1411,7 @@ export default {
     {
      "id": "bg",
      "type": "video",
-     "src": "media/shots/B_lawn/take_1_engraved.mp4",
+     "src": "media/shots/B_lawn/take_1_engraved_back.mp4",
      "start": 0,
      "end": 0.36,
      "srcTime": [
@@ -1456,7 +1456,7 @@ export default {
     {
      "id": "jade",
      "type": "video",
-     "src": "media/shots/B_lawn/take_1_engraved.mp4",
+     "src": "media/shots/B_lawn/take_1_engraved_back.mp4",
      "matte": {
       "src": "media/shots/B_lawn/take_1_matte/matte.mp4",
       "mode": "luma"
@@ -1561,7 +1561,7 @@ export default {
     {
      "id": "bg",
      "type": "video",
-     "src": "media/shots/B_lawn2/take_1_engraved.mp4",
+     "src": "media/shots/B_lawn2/take_1_engraved_back.mp4",
      "start": 0,
      "end": 0.49,
      "srcTime": [
@@ -1583,7 +1583,7 @@ export default {
     {
      "id": "g6",
      "type": "image",
-     "src": "media/shots/_D/sprites/B_lawn_take_1_matte_0.750_E9A23B_o4_b0.4-0-1-1.png",
+     "src": "media/shots/_D/sprites/B_lawn_take_1_back_matte_0.750_E9A23B_o4_b0.4-0-1-1_solo.png",
      "keepColor": true,
      "fit": "cover",
      "opacity": [
@@ -1606,7 +1606,7 @@ export default {
     {
      "id": "jade",
      "type": "video",
-     "src": "media/shots/B_lawn2/take_1_engraved.mp4",
+     "src": "media/shots/B_lawn2/take_1_engraved_back.mp4",
      "matte": {
       "src": "media/shots/B_lawn2/take_1_matte/matte.mp4",
       "mode": "luma"
@@ -1738,7 +1738,7 @@ export default {
     {
      "id": "g7",
      "type": "image",
-     "src": "media/shots/_D/sprites/B_lawn2_take_1_matte_1.300_8DB8E8_o4_b0.25-0-1-1.png",
+     "src": "media/shots/_D/sprites/B_lawn2_take_1_back_matte_1.300_8DB8E8_o4_b0.25-0-1-1.png",
      "keepColor": true,
      "fit": "cover",
      "opacity": [
@@ -3087,7 +3087,7 @@ export default {
     {
      "id": "bg",
      "type": "video",
-     "src": "media/shots/B_haul_b/take_1_engraved.mp4",
+     "src": "media/shots/B_haul_b/take_1_engraved_blue.mp4",
      "in": 0.05,
      "rate": 1.43
     },
@@ -3113,7 +3113,7 @@ export default {
     {
      "id": "jade",
      "type": "video",
-     "src": "media/shots/B_haul_b/take_1_engraved.mp4",
+     "src": "media/shots/B_haul_b/take_1_engraved_blue.mp4",
      "matte": {
       "src": "media/shots/B_haul_b/take_1_live/matte.mp4",
       "mode": "luma"
@@ -3191,11 +3191,11 @@ export default {
     {
      "id": "ghost",
      "type": "video",
-     "src": "media/shots/C_coop/e5_arm/ghost_slideptb_v4_rgb.mp4",
+     "src": "media/shots/C_coop/e5_arm/ghost_slideptb_v6_rgb.mp4",
      "keepColor": true,
      "opacity": 0.9,
      "matte": {
-      "src": "media/shots/C_coop/e5_arm/ghost_slideptb_v4_alpha.mp4",
+      "src": "media/shots/C_coop/e5_arm/ghost_slideptb_v6_alpha.mp4",
       "mode": "luma"
      },
      "in": 0.05,
@@ -3206,7 +3206,7 @@ export default {
      "type": "video",
      "src": "media/shots/B_slide_point_b/take_1_engraved.mp4",
      "matte": {
-      "src": "media/shots/B_slide_point_b/take_1_live/matte.mp4",
+      "src": "media/shots/C_coop/e5_arm/live_v6/matte.mp4",
       "mode": "luma"
      },
      "keepColor": true,
@@ -4258,7 +4258,7 @@ export default {
       ]
      ],
      "matte": {
-      "src": "media/shots/C_coop/c2t1_L.mp4",
+      "src": "media/shots/C_coop/c2t1_Lc.mp4",
       "mode": "luma"
      }
     }
@@ -4486,7 +4486,7 @@ export default {
      ],
      "y": 0,
      "matte": {
-      "src": "media/shots/C_coop/c2t1_L.mp4",
+      "src": "media/shots/C_coop/c2t1_Lc.mp4",
       "mode": "luma"
      }
     }
@@ -14839,7 +14839,7 @@ export default {
     {
      "id": "bg",
      "type": "video",
-     "src": "media/shots/B_lawn/take_1_engraved.mp4",
+     "src": "media/shots/B_lawn/take_1_engraved_back.mp4",
      "in": 1.3,
      "rate": 1.0
     },
@@ -14873,7 +14873,7 @@ export default {
     {
      "id": "fan",
      "type": "ghosts",
-     "src": "media/shots/B_lawn/take_1_engraved.mp4",
+     "src": "media/shots/B_lawn/take_1_engraved_back.mp4",
      "matte": {
       "src": "media/shots/B_lawn/take_1_jmatte/matte.mp4",
       "mode": "luma"
@@ -14929,7 +14929,7 @@ export default {
     {
      "id": "jade",
      "type": "video",
-     "src": "media/shots/B_lawn/take_1_engraved.mp4",
+     "src": "media/shots/B_lawn/take_1_engraved_back.mp4",
      "matte": {
       "src": "media/shots/B_lawn/take_1_matte/matte.mp4",
       "mode": "luma"
@@ -15062,7 +15062,7 @@ export default {
      "params": {
       "mode": "full",
       "lines": [
-       "TIME VARIANCE █████████",
+       "TVA ALERT",
        {
         "text": "ANOMALY DETECTED.",
         "sync": "lyric"
@@ -16752,7 +16752,7 @@ export default {
        230
       ],
       "lines": [
-       "TIME VARIANCE █████████",
+       "TVA ALERT",
        {
         "text": "ANOMALY DETECTED.",
         "sync": "lyric"

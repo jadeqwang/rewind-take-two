@@ -12,6 +12,7 @@ import { DW, DH, camAt, project, proj, jadeAt, agentAt, agentPose, plateAt, onPl
 const sm = u => { u = Math.min(1, Math.max(0, u)); return u * u * (3 - 2 * u); };
 import { G1WORLD } from './_B_gtrack.js';
 import { G2GUN } from './_B_ggun.js';
+import { G3RUN } from './_B_g3run.js';
 
 const S = 'media/shots/';
 export const G2GEO = {};          // filled by g2(): impacts, path, gun track (for tools/v4B/gunfire/geometry_check.mjs)
@@ -113,7 +114,13 @@ function g2() {
   const rot = (r, [x, y]) => [Math.cos(r) * x - Math.sin(r) * y, Math.sin(r) * x + Math.cos(r) * y];
   const muzzleAt = r => { const m = rot(r, off(CUT.muzzle)); return [PV[0] + m[0], PV[1] + m[1]]; };
   const A3 = [chest(I1f), chest(I2f)];                                   // the empty chest-high spots
-  const H = A3.map(a => { const M = muzzleAt(aimAngle(a, PV, off)); return [a[0] + (a[0] - M[0]) * 0.05, a[1] + (a[1] - M[1]) * 0.05]; });  // the board, just behind
+  // v6 (Jade's note 1:41, she clipped through the sign): the board now stands further back, feet on the turf at
+  // y BOARD_FEET (the plate's were at ~709, level with her second leg). Each round goes on along the line through
+  // the empty chest spot until it reaches the board's depth: on that 3D line screen position is affine in inverse
+  // depth, and inverse depth on this ground is proportional to (feet y - 523) (C's feet ~945, hers I1f/I2f).
+  const BOARD_FEET = 635, HZ = 523, C_FEET = 945;
+  const H = A3.map((a, k) => { const M = muzzleAt(aimAngle(a, PV, off)), wM = C_FEET - HZ, wA = [I1f, I2f][k][1] - HZ;
+    const u = (BOARD_FEET - HZ - wM) / (wA - wM); return [M[0] + (a[0] - M[0]) * u, M[1] + (a[1] - M[1]) * u]; });  // on the board
   const want = lt => { const P = path(lt), v = velAt(lt); let T = chest(add(P, v, 0.3));
     for (let k = 0; k < 2; k++) { const l = tb[k] - st, w = sm((lt - (l - 0.30)) / 0.12) * (1 - sm((lt - (l + 0.10)) / 0.10));
       if (w > 0) T = [T[0] + (H[k][0] - T[0]) * w, T[1] + (H[k][1] - T[1]) * w]; }
@@ -147,10 +154,14 @@ function g2() {
     targets: [P], size: 0.6, width: 8, scar: 0, flecks: 10 }));
   return { id: 'B2_G2', start: st, end: en, background: INK, fx: [beatPunch], layers: [
     { id: 'plate', type: 'video', src: `${S}B_g2clean/take_1_engraved.mp4`, srcTime: SRC, fit: 'cover' },
-    { id: 'noC', type: 'image', src: `${S}B_g2noC/patch.png`, fit: 'cover' },
-    { id: 'board', ...pin([985, 346, 1325, 346, 1325, 500, 985, 500], 'across the\nfield of',
-      { times: ['100.63', '101.28', '101.42', '101.74'], padding: 6 }) },
-    ...H.map((P, k) => ({ id: `hole${k}`, type: 'canvas', module: 'render/timeline/_B_hole.js', params: { at: tb[k] - st, x: P[0], y: P[1], r: 11 } })),
+    // v6b: patch_v6.png = patch.png opaque from x 538 (its feather let the take's own C's hanging arm show through)
+    { id: 'noC', type: 'image', src: `${S}B_g2noC/patch_v6.png`, fit: 'cover' },
+    // v6: the plate's board painted out and redrawn 0.7x, further back (tools/v4B/gunfire/g2_board_v6.py; per source
+    // frame, so it boils with the plate; B's hand stays in front). Panel [990, 370]-[1262, 555], feet y 635.
+    { id: 'board_v6', type: 'video', src: `${S}B_g2clean/v6_board/`, alpha: true, srcTime: SRC, fit: 'cover' },
+    { id: 'board', ...pin([1006, 381, 1244, 381, 1244, 489, 1006, 489], 'across the\nfield of',
+      { times: ['100.63', '101.28', '101.42', '101.74'], padding: 4 }) },
+    ...H.map((P, k) => ({ id: `hole${k}`, type: 'canvas', module: 'render/timeline/_B_hole.js', params: { at: tb[k] - st, x: P[0], y: P[1], r: 8 } })),
     ...misses.flatMap(m => m.under),
     jade,
     cut('C_body', 'body.png', PV[0] - DW / 2, PV[1] - DH / 2, 0),
@@ -160,11 +171,21 @@ function g2() {
 }
 
 // ---- G3: the earpiece close-up (take of the B_g3ear edit; camera locked) --------------------------------------------
+// v6 (Jade's note 1:42, "running really slowly"): in the take she jogs nearly in place (~1 m/s). She is lifted off the
+// plate (clean_v6.png patches the lawn where she and her shadow were) and redrawn through her + shadow matte, pushed
+// down the lawn toward the hotel: per source frame a uniform scale r about the heading's vanishing point V (a ground-
+// plane move in depth), advanced only on her airborne / landing drawings, held while a foot is planted.
+// tools/v4B/gunfire/g3_run.py builds the patch, the matte and _B_g3run.js; docs/revisions/v6/ear_run.md.
 function g3() {
-  const st = 102.46;
+  const st = 102.46, take = `${S}B_g3ear/take_1_engraved.mp4`, IN = 0.2;
+  const runR = lt => G3RUN.r[Math.max(0, Math.min(G3RUN.r.length - 1, Math.floor((IN + lt) * 24 + 1e-4)))];
   return { id: 'B2_G3', start: st, end: 104.22, background: INK, fx: [beatPunch], layers: [
-    { id: 'plate', type: 'video', src: `${S}B_g3ear/take_1_engraved.mp4`, in: 0.2, rate: 1, fit: 'cover' },
+    { id: 'plate', type: 'video', src: take, in: IN, rate: 1, fit: 'cover' },
+    { id: 'clean', type: 'image', src: `${S}B_g3ear/clean_v6.png`, fit: 'cover' },
     hilbert([1625, 105, 1819, 20, 1820, 97, 1626, 162], 'HILBERT\nHOTEL', 'hilbert', [420, 230]),   // one panel here
+    { id: 'jade', type: 'video', src: take, in: IN, rate: 1, fit: 'cover', keepColor: true,
+      matte: { src: `${S}B_g3ear/take_1_jsmatte_v6/matte.mp4`, mode: 'luma' },
+      anchor: [G3RUN.V[0] / DW, G3RUN.V[1] / DH], x: G3RUN.V[0] - DW / 2, y: G3RUN.V[1] - DH / 2, scale: runR },
   ] };
 }
 

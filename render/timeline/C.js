@@ -1,7 +1,7 @@
 // Section C: Verse 2, "the precision platformer" (V2a–V2n, 56.54–112.96). Director's doc: docs/sections/C.md
 // Cut list locked to the timing.json beat grid. Each row = one cut: [start, end, clip, take, clipIn, rate, extra].
 // Plates are engraved takes (tools/engrave); clips with Jade carry the engrave matte so she stays in colour.
-import verse2B from './_B_verse2.js';   // rev-B: 94.06–112.96 (the restaged chase) lives in _B_verse2.js
+import verse2B, { RELOAD_SKIP } from './_B_verse2.js';   // rev-B: 94.06–112.96 (the restaged chase) lives in _B_verse2.js
 import carShot from '../../tools/v4B/car/car_shot.js';   // v4: the 1:30 car shot (V2f)
 const CAR_START = 89.26;   // v4: the car shot starts on this tracked beat (89.26 = bar 51 beat 3); 90.14 = v3's cut
 const S = 'media/shots/';
@@ -67,7 +67,11 @@ const CUTS = [
   [93.66, 94.06, 'V2h1', 2, 0.25, 1.2, { scale: 1.5, x: 480, y: -240 }],
 ];
 
-const plate = (clip, take) => `${S}${clip}/take_${take}_engraved.mp4`;
+// v6 (Jade 0:59, 1:24, 1:26; docs/revisions/v6/o2_erasers.md): canon is one pale-blue and one pink eraser in her bun.
+// These takes drew both pink: *_blue = the same plate with one eraser recoloured in every frame (tools/blue_eraser.py).
+// The mattes are unchanged.
+const BLUE_ERASER = { V2a3_3: 'take_3_engraved_blue.mp4', V2d2_4: 'take_4_engraved_blue.mp4', V2e2_2: 'take_2_engraved_blue.mp4' };
+const plate = (clip, take) => `${S}${clip}/${BLUE_ERASER[`${clip}_${take}`] ?? `take_${take}_engraved.mp4`}`;
 const matte = (clip, take) => ({ src: `${S}${clip}/take_${take}_matte/matte.mp4`, mode: 'luma' });
 
 function videoLayer(clip, take, clipIn, rate, x = {}) {
@@ -103,7 +107,7 @@ function shotFor([start, end, clip, take, clipIn, rate, x = {}], i, T) {
     layers.push({ id: 'jade', type: 'video', src: plate(clip, take), in: clipIn, rate, fit: 'cover',
       matte: matte(clip, take), keepColor: true });
   }
-  if (x.ghost) {  // V2i: her previous attempt (iteration 4,096), her own clip as a graphite ghost 5 frames behind in time,
+  if (x.ghost) {  // V2i: an earlier attempt (iteration 4,094, the one that missed the chasm jump), her own clip as a graphite ghost 5 frames behind in time,
     // drawn under her: half a body ahead at first, then falling behind as she pulls ahead (x keys, design px)
     layers.splice(1, 0, { id: 'ghost', type: 'ghosts', src: plate(clip, take), matte: matte(clip, take).src, fit: 'cover',
       in: clipIn, rate, graphite: true, x: x.ghost, instances: [{ offset: -0.21, opacity: 0.62 }] });
@@ -126,8 +130,8 @@ export default function sectionC({ T }) {
   // 92.79 kaizo trap → 2 frames of black → "Reload." LOADING screen (V2h)
   shots.push({ id: 'C_V2g_black', start: 93.00, end: 93.07, layers: [{ type: 'solid', color: '#000000' }] });
   shots.push({ id: 'C_V2h_loading', start: 93.07, end: 93.66, background: INK, layers: [
-    { type: 'canvas', module: 'hud', params: { mode: 'loading', title: 'Reload.', titleSize: 64, deaths: 4097, spinner: true,
-      tip: 'The Time Variance █████████ can only follow what it can trace.', progress: [[0, 0], [0.55, 1, 'outCubic']], bg: INK } }] });
+    { type: 'canvas', module: 'hud', params: { mode: 'loading', title: 'Reload.', titleSize: 64, deaths: 4096, spinner: true,
+      tip: 'TVA agents can only follow what they can trace.', progress: [[0, 0], [0.55, 1, 'outCubic']], bg: INK } }] });
   shots.sort((a, b) => a.start - b.start);
 
   const ov = (id, start, end, layer) => ({ id, start, end, layers: [layer] });
@@ -135,7 +139,7 @@ export default function sectionC({ T }) {
     // HUD cluster (top-right, this section only); 4-frame pop on bar 33
     ov('C_hud_car', 56.54, CAR_START,   /* v4: ends with the car shot's cut (v3: 90.14) */ { type: 'canvas', module: 'hud', opacity: [[0, 0, 'hold'], [0.042, 1, 'hold'], [0.083, 0.25, 'hold'], [0.125, 1]],
       params: { mode: 'platformer', side: 'right', iteration: 4097, deaths: 4096, timer: { from: '56.54' } } }),
-    ov('C_hud_respawn', 93.66, 94.06, { type: 'canvas', module: 'hud', params: { mode: 'platformer', side: 'right', color: INK, margin: 104, iteration: 4097, deaths: 4097, timer: { from: '56.54' } } }),
+    ov('C_hud_respawn', 93.66, 94.06, { type: 'canvas', module: 'hud', params: { mode: 'platformer', side: 'right', color: INK, margin: 104, iteration: 4097, deaths: 4096, timer: { from: '56.54', offset: RELOAD_SKIP } } }),
 
     // lyrics
     ov('C_lyr_nowim', 83.40, 84.86, { type: 'canvas', module: 'lowerthird', params: { color: PAPER, text: 'And now I’m', sync: 'lyric', size: 76 } }),

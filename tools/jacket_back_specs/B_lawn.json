@@ -1,0 +1,25 @@
+{
+ "_note": "v6 (jacket audit, Jade's seam rule): B_lawn, the zig on the lawn seen from behind. The big back dot is already there; only the orange band across the back panel (below the dot) is removed, cut at the side seams (the creases where the back band turns into the sleeve bands). Keys are relative to the tracked centroid of the existing blue dot (anchor). Live uses: D E2_06_lawn 115.67-116.03 (src 0.44-0.75 s), D E7_06_lawn 138.38-139.00 (src 1.3-1.92 s + ghost fan), ghost sprite at 0.75 s. tools/jacket_back.py",
+ "clip": "media/shots/B_lawn/take_1_engraved.mp4",
+ "out": "media/shots/B_lawn/take_1_engraved_back.mp4",
+ "crf": 16,
+ "x264_extra": ["-tune", "grain", "-movflags", "+faststart"],
+ "dot": null,
+ "anchor": "blue_dot",
+ "anchor_ymax": 720,
+ "ranges": [[10, 58]],
+ "keys": {
+  "10": {"L": [-45, 35], "R": [52, 20], "BL": [-40, 75], "BR": [65, 65], "TL": [-45, -25], "TR": [55, -30]},
+  "14": {"L": [-60, 35], "R": [58, 40], "BL": [-60, 75], "BR": [60, 72], "TL": [-55, -25], "TR": [60, -20]},
+  "18": {"L": [-75, 40], "R": [55, 45], "BL": [-80, 80], "BR": [65, 78], "TL": [-75, -20], "TR": [60, -20]},
+  "22": {"L": [-60, 40], "R": [8, 30], "BL": [-70, 75], "BR": [5, 70], "TL": [-60, -20], "TR": [15, -15]},
+  "26": {"L": [-95, 30], "R": [60, 50], "BL": [-95, 78], "BR": [62, 82], "TL": [-95, -20], "TR": [60, -25]},
+  "30": {"L": [-58, 40], "R": [62, 40], "BL": [-60, 80], "BR": [60, 80], "TL": [-60, -20], "TR": [62, -20]},
+  "34": {"L": [-50, 40], "R": [50, 15], "BL": [-50, 65], "BR": [55, 55], "TL": [-45, -25], "TR": [50, -30]},
+  "38": {"L": [-75, 40], "R": [60, 35], "BL": [-75, 68], "BR": [65, 62], "TL": [-70, -20], "TR": [60, -25]},
+  "42": {"L": [-12, 15], "R": [45, 25], "BL": [-15, 55], "BR": [55, 55], "TL": [-15, -20], "TR": [40, -20]},
+  "46": {"L": [-62, 45], "R": [50, 28], "BL": [-60, 70], "BR": [55, 62], "TL": [-55, -15], "TR": [45, -20]},
+  "50": {"L": [-55, 30], "R": [40, 25], "BL": [-60, 60], "BR": [45, 60], "TL": [-55, -20], "TR": [40, -25]},
+  "54": {"L": [-45, 25], "R": [45, 30], "BL": [-45, 60], "BR": [55, 60], "TL": [-45, -30], "TR": [45, -25]}
+ }
+}

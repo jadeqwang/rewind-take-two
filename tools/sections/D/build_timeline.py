@@ -125,19 +125,28 @@ import ghostsprite  # noqa: E402
 SPR = f"{SH}/_D/sprites"
 
 
-def sprite_of(c, freeze, color, matte="matte", scale=1.0, box=None):
+def sprite_of(c, freeze, color, matte="matte", scale=1.0, box=None, solo=False):
     """bake (once) the luminous line-art afterimage of clip c at `freeze`; returns (path, stats in design px).
-    box = normalised [x0, y0, x1, y1] keeps only that part of the matte (agents out of the ghost)."""
+    box = normalised [x0, y0, x1, y1] keeps only that part of the matte (agents out of the ghost).
+    solo = keep only the largest blob of the baked sprite (v6, Jade 1:56: an agent's gun hand inside the box)."""
     os.makedirs(SPR, exist_ok=True)
     ol = int(round(min(12, max(4, 3.5 / max(scale, 0.05)))))      # outline/glow survive downscaling for distant ghosts
     tag = os.path.basename(os.path.dirname(c["stem"])) + "_" + os.path.basename(c["stem"])
+    if c["eng"].endswith("_back.mp4"):
+        tag += "_back"                                  # a repainted plate bakes its own sprite
     bx = "" if not box else "_b" + "-".join(f"{v:g}" for v in box)
-    name = f"{tag}_{matte}_{freeze:.3f}_{color.lstrip('#')}_o{ol}{bx}.png"
+    name = f"{tag}_{matte}_{freeze:.3f}_{color.lstrip('#')}_o{ol}{bx}{'_solo' if solo else ''}.png"
     path = f"{SPR}/{name}"
     meta = path[:-4] + ".json"
     if os.path.exists(path) and os.path.exists(meta) and os.path.getmtime(path) > os.path.getmtime(ghostsprite.__file__):
         return path, json.load(open(meta))
     st = ghostsprite.sprite(c["eng"], f"{c['stem']}_{matte}", freeze, color, path, outline=ol, glow=18 * ol / 4, box=box)
+    if solo:
+        im = cv2.imread(path, cv2.IMREAD_UNCHANGED)
+        n, lab, cs, _ = cv2.connectedComponentsWithStats((im[..., 3] > 8).astype(np.uint8))
+        if n > 2:
+            im[..., 3][lab != 1 + int(np.argmax(cs[1:, cv2.CC_STAT_AREA]))] = 0
+            cv2.imwrite(path, im)
     json.dump(st, open(meta, "w"))
     return path, st
 
@@ -186,8 +195,14 @@ E4_WORD = [400, 820, 1170, 820, 1170, 1055, 400, 1055]     # "Rewind." painted o
 def bclip(take):
     """a rev-B take (media/shots/B_<take>/take_1*): engraved plate, engrave matte, split twin mattes, colour-gated matte."""
     stem = f"{SH}/B_{take}/take_1"
-    return dict(eng=stem + "_engraved.mp4", matte=stem + "_matte/matte.mp4", ghost=stem + "_ghost/matte.mp4",
+    # v6 (jacket audit, docs/revisions/v6/f2_jacket_back.md): the lawn takes have the orange band taken off the
+    # jacket's back (and B_lawn2 the big back dot painted in), tools/jacket_back.py; mattes are unchanged
+    eng = stem + ("_engraved_back.mp4" if take in BACK_FIXED else "_engraved.mp4")
+    return dict(eng=eng, matte=stem + "_matte/matte.mp4", ghost=stem + "_ghost/matte.mp4",
                 live=stem + "_live/matte.mp4", jmatte=stem + "_jmatte/matte.mp4", stem=stem)
+
+
+BACK_FIXED = ("lawn", "lawn2")
 
 
 def doubling(id_, c, times_abs, shot_start, shot_dur, in0, rate=1.0, steps=(-4, 6, -2, 1), spacing=20, slot_time=2 / FPS,
@@ -311,7 +326,7 @@ def build():
             fx.append(dict(type="rewind", amount=[[0, 0.85], [0.12, 0]]))
             fx.append(dict(type="punch", at=[0], amount=0.035, decay=0.12))
         shots.append(dict(id=f"E2_{k + 1:02d}_{tk}", start=r4(a), end=r4(b), layers=L, fx=fx))
-        path, st = sprite_of(c, frz, HUE[k], "matte", 1.0, box=box)
+        path, st = sprite_of(c, frz, HUE[k], "matte", 1.0, box=box, solo=tk == "lawn")   # v6: no ghost gun
         nd = (CHOPS[k + 1] - CHOPS[k]) if k < 7 else 0.44
         prev_ghost = dict(id=f"g{k + 1}", type="image", src=path, keepColor=True, fit="cover",
                           opacity=[[0, 1.0], [r4(nd * 0.55), 0.85, "inCubic"], [r4(nd - 0.02), 0.0]], end=r4(nd))
@@ -378,10 +393,12 @@ def build():
     # "Rewind." lower third (ink, size 112, y 1000). The code is in git (commit 2fb9b82). media/sing/E3/ is untouched.
     # v4 plan: docs/revisions/v4/plans/coop.md. Everything from the ghost ladder to the split moves two bars earlier.
 
-    def twin_shot(id_, tk, gname, t0, t1, src_in, rate, g_t0, extra=(), under=(), fx=(), patch=True, g_op=0.9, ghost_stem=None):
+    def twin_shot(id_, tk, gname, t0, t1, src_in, rate, g_t0, extra=(), under=(), fx=(), patch=True, g_op=0.9, ghost_stem=None,
+                  plate=None):
         """a two-Jade take: the plate, a clean-plate patch where the ghost girl ever is, the ghost girl redrawn as a
-        translucent line-art ghost (baked by ghostseq.py from the split matte), the live girl on top, in colour."""
-        c = bclip(tk)
+        translucent line-art ghost (baked by ghostseq.py from the split matte), the live girl on top, in colour.
+        plate = a re-coloured copy of the take for the bg and jade layers (same frames; the mattes stay the take's)."""
+        c = dict(bclip(tk), **({"eng": plate} if plate else {}))
         tm = {"in": src_in, "rate": rate}
         return dict(id=id_, start=t0, end=t1, layers=[
             dict(id="bg", type="video", src=c["eng"], **tm),
@@ -453,7 +470,10 @@ def build():
     notes["E4a"] = dict(clip=c["eng"], in_=E4_IN, rate=E4_RATE, rungs="ghosts 9-13 at their frozen poses")
     # v4: 121.30-123.00 at x1.43 (the same 0.05 -> 2.48 of the take).  v3: 124.38, 126.25, 0.05, 1.3
     E4B_T0, E4B_T1, E4B_RATE = 121.30, 123.00, 1.43
+    # v6 (eraser audit, docs/revisions/v6/o2_erasers.md): the take drew both bun erasers pink; *_blue = the live (climbing)
+    # Jade's right-hand eraser recoloured pale blue in every frame (tools/blue_eraser.py). The gold ghost is baked separately.
     shots.append(twin_shot("E4b_haul", "haul_b", "haul", E4B_T0, E4B_T1, 0.05, E4B_RATE, 0.0,
+                           plate=f"{SH}/B_haul_b/take_1_engraved_blue.mp4",
                            fx=[dict(type="flash", at=[0], dur=0.06, amount=0.35, color="#ffffff"),
                                dict(type="punch", on="beat", amount=0.02)]))
     notes["E4b"] = dict(clip=bclip("haul_b")["eng"], ghost="girl lying on the roof, gold #C9A227", in_=0.05, rate=E4B_RATE)
@@ -477,9 +497,15 @@ def build():
     # her pointing forearm and hand on take frames ~25-86, so the clean patch showed through. Re-segmented with BiRefNet
     # on a crop (tools/v4B/coop/armfix.py) and rebaked with ghostseq.py (same colour, times and parameters as v3).
     # v3: ghost from media/shots/_D/v3/ghost_slideptb_{rgb,alpha}.mp4
+    # v6 (Jade, 2:03: "ethereal gold Jade's butt is opaque for a split second and protagonist Jade's sneaker is partly
+    # erased"): the split gave the gold girl's left leg to the live matte on take frames 19-39 (painted opaque navy) and
+    # the live matte had lost her sneaker soles (and a trouser patch on 45-49), so the cover showed through.
+    # tools/v4B/coop/e5feet.py moves the leg to the ghost matte and puts the soles back (BiRefNet); ghost rebaked with
+    # ghostseq.py (same colour, times and parameters). v4: ghost_slideptb_v4, jade matte take_1_live/matte.mp4
     shots.append(twin_shot("E5_slide_point", "slide_point_b", "slideptb", E5_T0, E5_T1, 0.9, E5_RATE, 0.85, under=[cover, lab],
-                           ghost_stem=f"{SH}/C_coop/e5_arm/ghost_slideptb_v4",
+                           ghost_stem=f"{SH}/C_coop/e5_arm/ghost_slideptb_v6",
                            fx=[dict(type="flash", at=[0], dur=0.06, amount=0.35, color="#ffffff")]))
+    shots[-1]["layers"][-1]["matte"]["src"] = f"{SH}/C_coop/e5_arm/live_v6/matte.mp4"
     notes["E5"] = dict(clip=bclip("slide_point_b")["eng"], ghost="leading (pointing) girl, gold", in_=0.9, rate=E5_RATE,
                        label="BANACH–/TARSKI pinned on the upright book's spine label; both girls turn to look at it")
 
@@ -623,20 +649,25 @@ def build():
     # C2a 132.26-133.56: take c2/take_1 0-1.9 (x1.46). BLUE holds the far button; ORANGE springs off the near one (it
     # pops up, the bridge stays down: BLUE still holds), the agents' hands close on air (~132.77) and they stop at the
     # lip (their matte frozen at take 1.1; in the take they dive into the gap, which is never shown).
+    # v6 (Jade, 2:13: "a few frames where a larger agent's head is visible"): ORANGE's matte held the take's own leading
+    # agent (head and arm, at twice the agents layer's scale) on take frames 17-28 and 37-38 (132.71-133.04, 133.33); "Lc" is
+    # her matte with him erased (tools/v4B/coop/unleak.py). The agents layer itself was never the cause; it is unchanged.
     C2T = [[0, 0.15], [1.30, 1.9]]
     level("C2a_swap", 132.26, 133.56, (
         [pencil(0), *btn("l", held(None, 0.20)), *btn("r", held(None))],
         [agents_v4(132.26),
-         girl("blue", "c2t1", "R", C2T, held(None)), girl("orange", "c2t1", "L", C2T, held(None, 0.20))]),
+         girl("blue", "c2t1", "R", C2T, held(None)), girl("orange", "c2t1", "Lc", C2T, held(None, 0.20))]),
         fx=[dict(type="punch", at=[0.20], amount=0.02)])
     # C2b 133.56-134.88: take c2/take_1 3.56-4.88 (jump cut over the landing; ORANGE stays the girl on the left).
     # 134.00 (bar) BLUE hops off, the far button pops up and the bridge swings up out of the agents' reach; 134.44
     # both run on, out of frame right; cut to E7 on 134.88.
+    # v6 (Jade, 2:13-14: "part of the tip of the pencil is detached and visible"): the take's flat pencil point rode in
+    # the left girl's matte on take frames 106-108 (134.417-134.500) while the pencil sprite is raised; "Lc" erases it.
     C2BT = [[0, 3.56], [1.32, 4.88]]
     level("C2b_letgo", 133.56, 134.88, (
         [pencil([[0, 0, "hold"], [0.44, 0, "outCubic"], [0.64, UP]]), *btn("l", 0), *btn("r", held(None, 0.46))],
         [agents_v4(133.56),
-         girl("blue", "c2t1", "R", C2BT, 0), girl("orange", "c2t1", "L", C2BT, 0)]),
+         girl("blue", "c2t1", "R", C2BT, 0), girl("orange", "c2t1", "Lc", C2BT, 0)]),
         # v4 (coordinator: "a visible double exposure ... make it a hard cut on the beat"): the white flash on the cut
         # washed both frames together; the cut is now plain. phase 2/3: flash at 0, dur 0.05, amount 0.3
         fx=[dict(type="punch", at=[0.44], amount=0.03)])
@@ -807,7 +838,7 @@ def build():
         dict(id="agents", type="video", src=c["eng"], **{"in": E8["line_in"], "rate": E8["line_rate"]})],
         fx=[dict(type="negative", amount=1), dict(type="flash", at=[0], dur=0.06, amount=0.7, color="#ffffff"),
             dict(type="punch", at=[0], amount=0.05)]))
-    TERM = ["TIME VARIANCE █████████", dict(text="ANOMALY DETECTED.", sync="lyric")]
+    TERM = ["TVA ALERT", dict(text="ANOMALY DETECTED.", sync="lyric")]
     shots.append(dict(id="E8c_terminal", start=140.12, end=141.00, background=INK, layers=[
         dict(type="canvas", module="terminal", params=dict(mode="full", lines=TERM + [dict(text="TRACE: LOCKED", at=0.42, cps=36)],
                                                            cps=200, alarm=1, blink=0, size=88, x=170, y=400))]))
