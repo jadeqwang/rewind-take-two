@@ -44,6 +44,12 @@ BEATS = []
 # v4 ones with the suffix _v5coda (stems_v5coda/, cues_v5coda.json, sfx_only_v5coda.wav, mix_preview_v5coda.wav,
 # Rewind_cinematic_sfx_mix_v5coda.mp3). Without the flag the v4 mix is rebuilt exactly as before.
 CODA = "--coda" in sys.argv[1:] or os.environ.get("REWIND_SFX_CODA") == "1"
+# v7 ghost pops (docs/revisions/v7/ghost_pop.md): `--v7pop` = the v5coda film mix (which v6 shipped) plus a Celeste-style
+# pop on every ghost that misses at 2:16-2:17 (E7 leap and chasm), minus b_wall_burst (v6's wall-clip motes are gone
+# in v7). Outputs get the suffix _v7pop (stems_v7pop/, cues_v7pop.json, sfx_only_v7pop.wav, mix_preview_v7pop.wav,
+# Rewind_cinematic_sfx_mix_v7pop.mp3); every other mix is left as it is. Without the flag nothing changes.
+V7POP = "--v7pop" in sys.argv[1:]
+CODA = CODA or V7POP
 CODA_BEAT = 0.4526           # the ring-out beat (timing.json beats 224.137 ... 226.400, interpolated)
 CODA_T0 = 226.400            # bar 129 downbeat: the counter reads 4,097 here and ticks +1 every CODA_BEAT
 COUNTER_TICKS = [round(CODA_T0 + k * CODA_BEAT, 4) for k in range(1, 17)]   # 4,098 at 226.853 ... 4,113 at 233.642
@@ -55,7 +61,7 @@ CODA_BELL = round(CODA_T0 + 17 * CODA_BEAT, 4)     # 234.0942: the bell = the ti
 CODA_DOOR_IN = 232.80                              # PC1 fades up from black as the credits finish fading
 CODA_END = round(CODA_T0 + 39 * CODA_BEAT, 2)      # 244.05: PC2 cuts to black (the film ends)
 CODA_FADE = (226.90, CODA_BELL)   # the held chord and clock fall from 0 dB (whisper end) to -40 dB at the bell
-CODA_SUFFIX = "_v5coda"
+CODA_SUFFIX = "_v7pop" if V7POP else "_v5coda"
 
 
 def coda_fade_db(t):
@@ -112,6 +118,8 @@ CUES = []
 # numbering so the other stems' file names do not shift.
 #   continue_vo: Jade, v2 review at 1:52: "don't use 'continue' voiceover" (2026-10-11).
 DISABLED = {"continue_vo"}
+V7POP_ONLY = {"g_pop_leap", "g_pop_chasm"}       # v7: the ghost pops, only in the --v7pop mix
+V7POP_DROPS = {"b_wall_burst"}                    # v7: no ghost clips the wall in a mote burst any more
 
 
 def cue(id, t, what, src, priority, gain_db, duck_vocal_db=0.0, duck_music_db=0.0):
@@ -1003,6 +1011,59 @@ def _():
     return np.stack([x, np.roll(x, N(0.013))]) * env, 0.0
 
 
+# ---------------------------------------------------------------- v7 ghost pops (--v7pop only; last in CUES so no
+# other stem is renumbered)
+# v7 (docs/revisions/v7/ghost_pop.md): Celeste's death pop for each ghost that misses. Sound on the first frame the
+# pop is drawn (render/timeline/D.js pop_* start, rounded up to the 24 fps frame). Pitched in the track's key.
+def ghost_pop(f, seed):
+    """A bubble 'bwip' (sine flicking up from 0.55 f to f in ~10 ms, 35 ms decay) + a 3 ms click + a short sparkle."""
+    t = tt(0.16)
+    fr = f * (0.55 + 0.45 * (1 - np.exp(-t / 0.005)))
+    ph = 2 * np.pi * np.cumsum(fr) / SR
+    env = np.minimum(1, t / 0.0015) * np.exp(-t / 0.035)
+    y = (np.sin(ph) + 0.25 * np.sin(2 * ph)) * env
+    ck = bp(noise(N(0.004), seed), 2000, 8000, 2) * expdec(N(0.004), 0.0012)
+    y[:len(ck)] += 0.35 * ck / (np.max(np.abs(ck)) + 1e-9)
+    sp = hp(pings(0.05, 5, 4000, 9500, seed + 1, tau=0.018), 3000, 2)
+    i = N(0.008)
+    y[i:i + len(sp)] += 0.18 * sp[:len(y) - i]
+    return y / np.max(np.abs(y))
+
+
+def frame_up(t):
+    return float(np.ceil(t * 24 - 1e-6) / 24)
+
+
+V7_LEAP_POPS = [(136.1767, "F5", -0.25), (136.4684, "Ab5", -0.2)]             # gold, lime (x 738, 774 of 1920)
+V7_CHASM_POPS = [(137.1617, -0.03), (137.2034, -0.04), (137.245, -0.06), (137.2867, 0.06), (137.2867, -0.09),
+                 (137.2867, -0.13), (137.3284, -0.15), (137.37, -0.19), (137.4117, -0.23), (137.4534, -0.29)]
+V7_RUN = ["F5", "Ab5", "Bb5", "C6", "Db6", "F6", "Ab6", "Bb6", "C7", "F7"]     # the chasm run climbs, one note per pop
+
+
+@cue("g_pop_leap", frame_up(V7_LEAP_POPS[0][0]), "v7 E7 leap: gold (136.18) and lime (136.47) fall through the gap "
+     "and pop, Celeste style: a bubble bwip F5 / Ab5 + click + sparkle", "procedural", "essential", -15)
+def _():
+    t0 = frame_up(V7_LEAP_POPS[0][0])
+    y = np.zeros((2, N(0.5)))
+    for k, (tp, nm, pn) in enumerate(V7_LEAP_POPS):
+        add_at(y, pan(ghost_pop(NOTE[nm], 13600 + k) * (1.0 if k == 0 else 0.8), pn), frame_up(tp) - t0)
+    return reverb(y, room(), -18), 0.0
+
+
+@cue("g_pop_chasm", frame_up(V7_CHASM_POPS[0][0]), "v7 E7 chasm: ten copies fall short and pop 137.16-137.45, a quick "
+     "rising run F5 ... F7 (simultaneous pops 8 ms apart)", "procedural", "essential", -17)
+def _():
+    t0 = frame_up(V7_CHASM_POPS[0][0])
+    y = np.zeros((2, N(0.55)))
+    seen = {}
+    for k, (tp, pn) in enumerate(V7_CHASM_POPS):
+        ft = frame_up(tp)
+        d = 0.008 * seen.get(ft, 0)
+        seen[ft] = seen.get(ft, 0) + 1
+        add_at(y, pan(ghost_pop(NOTE[V7_RUN[k]], 13700 + k) * (0.7 + 0.3 * k / 9), pn), ft - t0 + d)
+    return reverb(y, room(), -18), 0.0
+
+
 # ============================================================================= framework
 def vocal_env_db():
     v = VOC.mean(0)
@@ -1034,6 +1095,8 @@ def render(only=None):
         if c["id"] in DISABLED and not (only and c["id"] in only):
             continue
         if c["id"] in (CODA_REPLACES if CODA else CODA_ONLY):     # v5 coda: one set of ending cues or the other
+            continue
+        if c["id"] in (V7POP_DROPS if V7POP else V7POP_ONLY):    # v7 pops: one or the other
             continue
         y, off = c["fn"]()
         y = stereo(np.asarray(y, dtype=np.float64))

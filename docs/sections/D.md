@@ -355,3 +355,79 @@ the engine raises the bridge (hinge 1185,632; 72°) and sinks a held button 18 p
 earlier; new procedural `coop_btn1` 130.50, `coop_bridge_down` 130.80, `coop_btn2` 132.10, `coop_bridge_up` 134.00.
 Cost: $3.46 (`v4B_coop_`). Weak: BLUE's bun pencils tinted blue; jump cut over ORANGE's landing; agents at the lip are a
 held frame; faint engrave smudges travel with the agents' matte by the left book.
+
+## Revision 7 (v7): the ghosts that miss pop (E7 leap and chasm, 2:16–2:17)
+
+Jade on the v6 cut, 2:16: "some of the ghosts whose feet didn't land on the beam should fall through and not make it
+('pop' Celeste style)". Follow-ups: every airborne ghost from v6 goes back in the chasm jump, gold and lime included
+(she missed the height of the swarm). A ghost that comes down in the gap falls through it and then pops, as in the
+leap, not the instant it reaches the lip. The ones that make it keep going.
+
+One death for both shots: `fall_pop()` in `build_timeline.py`. From the frame before the miss the ghost is frozen in
+that pose and falls (vx 160–200 px/s, its own descent speed, g 9000 px/s², 5 frames; fewer only when the cut is
+near). It blinks white for the last 2 frames (colorize white, lift #d6d6d6) and pops at its centroid with
+`render/engine/modules/ghostpop.js`. The pop is Celeste's DeathEffect: a white hit disc rimmed in her colour, then
+eight ink-outlined orbs in a turning ring that swell and shrink away, flickering colour/white. Ring R 220 in the
+leap, R 170 in the chasm (ten pops there).
+Full fates: `media/shots/_D/ghost_table.json` → `E7_leap`, `E7_chasm`. Report: `docs/revisions/v7/ghost_pop.md`.
+
+### E7_02_leap (135.76–136.62)
+
+In `B_leap` the girder she jumps from ends at x 720 and the beam starts at x 1030 (design px, level y ≈ 598). The
+doubling peels copies 75 px per slot, so every copy 4+ slots behind her comes down over that gap.
+
+| Copy | Slot (×75 px, ×2 f) | Hue in the leap | Fate |
+|---|---|---|---|
+| 1 | −4 | gold #C9A227 (blue until v6) | comes down with both feet over the gap at 136.01, falls, pops at 136.18 (the 136.19 beat) |
+| 3 | +2 | **blue** #3E6FD8 (gold until v6) | lands; BLUE, the co-op partner, takes the slot ahead of her |
+| 9 | −3 | (violet) | never born: its parent, copy 1, is already dead at 136.19 |
+| 13 | −5 | lime #9CCB3B | born at 136.19 on the girder's lip (stacked on copy 5), slips off as it peels, pops at 136.47 |
+| 15 | +1 | **violet** #8E5CC8 (a second blue until v6) | lands |
+| 5 | −6 | green | stays on the girder; ends the shot with her back foot on the lip |
+| 4 | −2 | magenta | teeters: front foot ~90 px onto the beam for 0.2 s, then on |
+| all | | | copies end once their source passes 2.15 s (the agents enter the take's matte at 2.21; v6 showed a teal agent at 136.54) |
+
+The plat shot (E7_01) is unchanged (copy 1 blue, copy 2 orange, copy 3 gold).
+
+### E7_04_chasm (136.62–137.50)
+
+All fifteen v6 copies fly (offset −0.02k s). The survivors' v6 arcs are unchanged, except that violet's dip now starts
+at her own take-off. In v6 the ten non-survivors sagged linearly from frame 0, which put their feet into the beam at
+take-off and sank 13–15 through the beam end (`docs/revisions/v7/ghost_sink_13-15.jpg`).
+
+**v7 flight:** each copy's sag starts at its own take-off (her source 1.35 s) on a gravity curve, y + A·s^p, with drift
+−D·u. Per-copy p and the ×D, ×A multipliers of v6's A = 230 + 48·rank and D = 140 + 50·rank are in `CH`.
+
+**Solid edges:**
+- the beam: top y 597, ends at x 780;
+- the far wall's near top edge: corner (1010, 520), slope 0.62. Canon Jade's feet land at y 733 against 738 there.
+
+A silhouette passes through the beam if any part is more than 15 px below its top over it, and through the wall if it
+straddles that edge right of x 1010. The builder checks every flight and fall against this, survivors included, and
+fails the build otherwise.
+
+**Miss:** the first frame a copy is coming down with its feet below the ledge. From the frame before, it is frozen and
+falls (g 9000, a knock-back vx), tumbling toward upright about its centroid. The first clean (tumble, vx) is used.
+- Pops: 5 frames, white blink, ghostpop.
+- Drops: fall to the cut with v6's fade.
+
+| Copy | Hue | p, ×D, ×A | Comes down short | Fate |
+|---|---|---|---|---|
+| 1, 2, 4, 5, 9 | orange, blue, magenta, green, violet | | | land with canon Jade |
+| 12 | indigo | 1.5, 0.3, 2.0 | 137.00 | pops 137.16 |
+| 6 | amber | 1.5, 1.0, 2.0 | 137.08 | pops 137.25 |
+| 7 | pale blue | 2.0, 1.0, 1.5 | 137.16 | pops 137.33 |
+| 8 | yellow | 2.0, 1.0, 1.0 | 137.25 | pops 137.41 |
+| 14, 15 | orange (2nd), blue (2nd) | 2.0, 0.3, 1.0 | 137.16 | drop out of the gap |
+| 10, 11, 13 | teal, pink, lime | 2.0, 0.6, 1.0 | 137.20 | drop out of the gap |
+| 3 | gold | 2.0, 2.0, 1.25 | 137.25 | drops out of the gap |
+
+Continuity, kept on purpose (Jade): gold and lime already popped in the leap, fly again here and drop out of the gap.
+
+### Sound
+
+No pop sounds (Jade): the film keeps `Rewind_cinematic_sfx_mix_v5coda.mp3`. The v6 cues still fit the picture:
+- `b_fall_short` (six blips 136.96–137.26) steps down through the give-outs (136.95–137.20);
+- `b_wall_burst` (137.32) now lands on the pale-blue pop.
+
+`tools/sfx/build.py --v7pop` (a pop-sound mix) exists, unused. See `docs/revisions/v7/ghost_pop.md`.

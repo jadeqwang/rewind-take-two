@@ -13,6 +13,15 @@ blue in every frame, as a pixel pass (no generative model):
   * "smear" frame ranges also take the motion-smeared pink right next to the eraser; a frame with no enclosed region
     reuses the previous frame's mask when the clip holds a pose (these takes move in 2-frame steps).
 
+v7 (docs/revisions/v7/erasers.md) adds, per spec (defaults keep the v6 behaviour):
+  * "target": "blue" (default) | "pink" | [hue, sat] (OpenCV units). Canon pink = the pink erasers of D3 / P2 / D6
+    (good frames): RGB ~(224, 142, 165), hue ~344 deg (172), saturation ~0.35 (90).
+  * "sat_mode": "scale" (default: the v6 scale, pink 95 -> blue 56) | "target": saturation SET to the target's, so a
+    white, grey or lavender eraser (no colour to scale) takes the canon colour; value is kept, times "v_gain"
+    (default 1), capped at "v_cap" (default 255): a paper-white eraser can be brought down to the canon's lightness.
+  * "any_hue": true: the eraser is the enclosed non-dark region whatever its hue (white / grey erasers); with
+    "s_max" (default 255) as an upper saturation bound for it.
+
 Canon pale blue: median of the blue eraser in G1 take_3 / G2 take_5 (render/timeline/E.js G_CLIPS) and
 media/shots/O2/_ref_bun_two_pencils.jpg: RGB ~(175, 200, 224), hue 214 deg, saturation ~0.22.
 
@@ -46,7 +55,10 @@ def pinkhue(h):
     return (h >= 150) | (h <= 22)
 
 
-def find(f, p, maxd, R=40, max_area=400, max_wh=30, min_area=6, color=None):
+TARGETS = {"blue": (TGT_H, 56), "pink": (172, 90)}
+
+
+def find(f, p, maxd, R=40, max_area=400, max_wh=30, min_area=6, color=None, any_hue=False, s_max=255):
     """Enclosed eraser region nearest p. Returns (mask, centroid, area) or None, plus the ROI, its HSV and origin.
     color = (hue_lo, hue_hi, sat_min): where the backdrop is not pink (the night car plates), the eraser is simply the
     strongly pink blob (hue >= hue_lo or <= hue_hi, OpenCV units) nearest p; no enclosure test."""
@@ -58,7 +70,8 @@ def find(f, p, maxd, R=40, max_area=400, max_wh=30, min_area=6, color=None):
     for vt in (VTS if color is None else (110,)):
         if color is None:
             dd = cv2.dilate((v < vt).astype(np.uint8), np.ones((3, 3), np.uint8))   # close small gaps in the outline
-            cand = ((dd == 0) & pinkhue(h) & (s > 22)).astype(np.uint8)
+            hue_ok = (s <= s_max) if any_hue else (pinkhue(h) & (s > 22))
+            cand = ((dd == 0) & hue_ok).astype(np.uint8)
         else:
             cand = (((h >= color[0]) | (h <= color[1])) & (s > color[2]) & (v > vt)).astype(np.uint8)
         n, lab, st, c = cv2.connectedComponentsWithStats(cand, connectivity=4)
@@ -88,10 +101,14 @@ def alpha_for(comp, hsv):
     return al, (1 - full).astype(np.float32)
 
 
-def recolor(roi, hsv, a, ringw):
+def recolor(roi, hsv, a, ringw, tgt=(TGT_H, 56), sat_mode="scale", v_gain=1.0, v_cap=255):
     o = hsv.astype(np.float32)
-    o[..., 0] = TGT_H
-    s2 = np.minimum(o[..., 1] * SAT_K, SAT_CAP)
+    o[..., 0] = tgt[0]
+    if sat_mode == "target":
+        s2 = np.full_like(o[..., 1], float(tgt[1]))
+        o[..., 2] = np.where(ringw < 0.5, np.minimum(o[..., 2] * v_gain, v_cap), o[..., 2])
+    else:
+        s2 = np.minimum(o[..., 1] * SAT_K * tgt[1] / 56.0, SAT_CAP * tgt[1] / 56.0)
     o[..., 1] = s2 * (1 - ringw) + np.minimum(o[..., 1] * 0.25, 40) * ringw
     new = cv2.cvtColor(o.astype(np.uint8), cv2.COLOR_HSV2RGB).astype(np.float32)
     return (roi * (1 - a[..., None]) + new * a[..., None] + 0.5).astype(np.uint8)
@@ -127,13 +144,17 @@ def apply(spec, frames, log=None):
     R, max_area, max_wh = spec.get("roi", 40), spec.get("max_area", 400), spec.get("max_wh", 30)
     min_area, smear_k = spec.get("min_area", 20), spec.get("smear_px", 11)
     color = spec.get("color")
+    t = spec.get("target", "blue")
+    tgt = TARGETS[t] if isinstance(t, str) else tuple(t)
+    look = dict(tgt=tgt, sat_mode=spec.get("sat_mode", "scale"), v_gain=spec.get("v_gain", 1.0), v_cap=spec.get("v_cap", 255))
+    any_hue, s_max = spec.get("any_hue", False), spec.get("s_max", 255)
     last, out = None, []
     for i in range(n):
         f = frames[i].copy()
         if i in skip:
             out.append(f); log is not None and log.append([i, "skip"]); last = None
             continue
-        b, roi, hsv, (x0, y0) = find(f, prior[i], maxd[i], R, max_area, max_wh, color=color)
+        b, roi, hsv, (x0, y0) = find(f, prior[i], maxd[i], R, max_area, max_wh, color=color, any_hue=any_hue, s_max=s_max)
         how = "enclosed"
         if b is not None and b[2] < min_area:
             b = None
@@ -144,7 +165,8 @@ def apply(spec, frames, log=None):
             roi = np.ascontiguousarray(f[y0:y0 + comp.shape[0], x0:x0 + comp.shape[1]])
             hsv = cv2.cvtColor(roi, cv2.COLOR_RGB2HSV)
             hh, ss = hsv[..., 0].astype(int), hsv[..., 1].astype(int)
-            comp = comp & (((hh >= 150) | (hh <= 6)) & (ss > 20)).astype(np.uint8)
+            keep = (ss <= s_max) & (hsv[..., 2] > 120) if any_hue else (((hh >= 150) | (hh <= 6)) & (ss > 20))
+            comp = comp & keep.astype(np.uint8)
             how, cen, area = "reuse-prev", prior[i], int(comp.sum())
         elif b is None:
             out.append(f); log is not None and log.append([i, "MISS", list(prior[i])])
@@ -157,7 +179,7 @@ def apply(spec, frames, log=None):
             near = cv2.dilate(comp, cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (smear_k, smear_k)))
             comp = comp | (near & (((h >= 158) | (h <= 1)) & (s > 28) & (v > 130)).astype(np.uint8))
         a, ringw = alpha_for(comp, hsv)
-        f[y0:y0 + roi.shape[0], x0:x0 + roi.shape[1]] = recolor(roi, hsv, a, ringw)
+        f[y0:y0 + roi.shape[0], x0:x0 + roi.shape[1]] = recolor(roi, hsv, a, ringw, **look)
         out.append(f)
         log is not None and log.append([i, how, list(cen), area])
     return out
@@ -174,13 +196,13 @@ def encode(frames, fps, path, crf, extra=()):
     assert p.wait() == 0
 
 
-def track(frames, i0, xy, maxd=25):
+def track(frames, i0, xy, maxd=25, any_hue=False, R=40):
     """First pass: follow the enclosed eraser region by position continuity, both ways from a seed. Review the result."""
     res = {}
     for rng in (range(i0, len(frames)), range(i0, -1, -1)):
         p = tuple(xy)
         for i in rng:
-            b, *_ = find(frames[i], p, maxd)
+            b, *_ = find(frames[i], p, maxd, R, any_hue=any_hue)
             if b is not None:
                 p = b[1]
                 res[i] = list(p)
@@ -193,10 +215,11 @@ def main():
     a1 = sp.add_parser("apply"); a1.add_argument("spec"); a1.add_argument("--log")
     a2 = sp.add_parser("track"); a2.add_argument("input"); a2.add_argument("frame", type=int); a2.add_argument("x", type=int)
     a2.add_argument("y", type=int); a2.add_argument("--maxd", type=int, default=25)
+    a2.add_argument("--any-hue", action="store_true"); a2.add_argument("--roi", type=int, default=40)
     a = ap.parse_args()
     if a.cmd == "track":
         fr, _ = frames_of(a.input)
-        print(json.dumps(track(fr, a.frame, (a.x, a.y), a.maxd)))
+        print(json.dumps(track(fr, a.frame, (a.x, a.y), a.maxd, a.any_hue, a.roi)))
         return
     spec = json.load(open(a.spec))
     fr, fps = frames_of(os.path.join(ROOT, spec["clip"]))

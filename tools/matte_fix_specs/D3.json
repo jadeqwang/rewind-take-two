@@ -1,0 +1,17 @@
+{
+ "_note": "v7 (Jade 0:27): D3 take 2, a streetlight flash behind the bun (frames 34-47) made the engrave matte drop both pencil tops: the blue eraser went white (and the pink one partly). Same dropout at 82-83, 89-91, 96-97 (outside the cut's 0-73, fixed anyway). Masks = the matte of the nearest good frame, pencil tops only.",
+ "raw": "media/shots/D3/take_2.mp4",
+ "engraved": "media/shots/D3/take_2_engraved.mp4",
+ "matte": "media/shots/D3/take_2_matte",
+ "out": "media/shots/D3/take_2_engraved_eraser.mp4",
+ "pencils": [
+  {"name": "pink 34-47", "ref": 33, "box": [100, 200, 214, 318], "frames": [[34, 47]]},
+  {"name": "blue 34-47", "ref": 33, "box": [[214, 190, 302, 300], [200, 300, 266, 334]], "frames": [[34, 47]]},
+  {"name": "pink 82-91", "ref": 81, "box": [100, 200, 214, 318], "frames": [[82, 83]]},
+  {"name": "blue 82-83", "ref": 81, "box": [[214, 190, 302, 300], [200, 300, 266, 334]], "frames": [[82, 83]]},
+  {"name": "pink 89-91", "ref": 88, "box": [100, 200, 214, 318], "frames": [[89, 91]]},
+  {"name": "blue 89-91", "ref": 88, "box": [[214, 190, 302, 300], [200, 300, 266, 334]], "frames": [[89, 91]]},
+  {"name": "pink 96-97", "ref": 92, "box": [100, 200, 214, 318], "frames": [[96, 97]]},
+  {"name": "blue 96-97", "ref": 92, "box": [[214, 190, 302, 300], [200, 300, 266, 334]], "frames": [[96, 97]]}
+ ]
+}

@@ -14,19 +14,19 @@ const INK = '#0b0b0c', PAPER = '#ece7dc', ORANGE = '#F08A24';
 const PLATE = {
   C1: { src: S('C1', 'take_3_engraved.mp4'), in: 0.0, rate: 1 },   // v3: no bullet, a muzzle flare at the centre pistol; two pencils
   C3: { src: S('C3', 'take_1_engraved.mp4'), in: 0.0, rate: 1 },
-  C4: { src: S('C4', 'take_4_engraved.mp4'), in: 0.0, rate: 1 },   // v3: two crossed pencils; near (right) sleeve has no roundel
+  C4: { src: S('C4', 'take_4_engraved_bun.mp4'), in: 0.0, rate: 1 },   // v3: two crossed pencils; near (right) sleeve has no roundel. v7 (Jade 0:11): the pencils go through a bun, short points (tools/c4_bun.py)
   S2: { src: S('S2', 'take_1_lens.mp4'), in: 0.0, rate: 1 },
   D1: { src: S('D1', 'take_1_engraved.mp4'), in: 0.0, rate: 1 },
   D2: { src: S('D2', 'take_2_engraved.mp4'), in: 0.0, rate: 1 },   // v3: the bulb billboard big in the window (lyric surface)
-  D3: { src: S('D3', 'take_2_engraved.mp4'), in: 0.0, rate: 1 },   // v3: two straight pencils crossed through the bun
+  D3: { src: S('D3', 'take_2_engraved_eraser.mp4'), in: 0.0, rate: 1 },   // v3: two straight pencils crossed through the bun. v7 (Jade 0:27): pencil tops back in colour through the flash (tools/matte_fix.py)
   D4: { src: S('D4', 'take_2_engraved.mp4'), in: 0.9, rate: 1 },   // v3: both cars on the right shoulder, the black sedan behind the Acura
   D5cu: { src: S('D5', 'take_2_engraved.mp4'), in: 0.0, rate: 1 },   // v3: close-up of the shades (lyric in the lenses)
   D5: { src: S('D5', 'take_3_engraved.mp4'), in: 0.3, rate: 1 },   // v3: the three men on the same lakefront shoulder as D4
-  D6: { src: S('D6', 'take_2_engraved.mp4'), in: 0.4, rate: 1 },   // v3: starts one beat later (32.36). Restaged: from the passenger seat, agents at HER window (same view direction as D8); two pencils
+  D6: { src: S('D6', 'take_2_engraved_breath.mp4'), in: 0.4, rate: 1 },   // v3: starts one beat later (32.36). Restaged: from the passenger seat, agents at HER window (same view direction as D8); two pencils. v7 (Jade 0:33): whole pink eraser + canon blue eraser (tools/matte_fix.py, tools/blue_eraser.py); v7 (Jade): she breathes (tools/d6_breath.py)
   D7: { src: S('D7', 'take_2_engraved.mp4') },   // v3: the agent's view through her window; played backward (D7_SRC)
   D8: { src: S('D8', 'take_3_engraved.mp4'), in: 1.18, rate: 1.25 },   // v3: reverse angle, only the BACK of her card; needle slams on "do" (36.92)
   P1: { src: S('P1', 'take_2_engraved.mp4'), in: 0.3, rate: 1 },   // take_2 = A_P1b (lakefront)
-  P2: { src: S('P2', 'take_2_engraved.mp4'), in: 0.3, rate: 1 },   // v3: the v2 keyframe with the two-pencil bun
+  P2: { src: S('P2', 'take_2_engraved_eraser.mp4'), in: 0.3, rate: 1 },   // v3: the v2 keyframe with the two-pencil bun. v7 (Jade 0:39): blue eraser top back in colour (tools/matte_fix.py)
   P3: { src: S('P3', 'take_1_engraved.mp4'), in: 0.4, rate: 1 },
   P4: { src: S('P4', 'take_1_engraved.mp4'), in: 0.0, rate: 1 },
 };
@@ -88,8 +88,11 @@ const inset = (keys, fx, fy) => keys.map(([t, q]) => {
   const cx = (q[0] + q[2] + q[4] + q[6]) / 4, cy = (q[1] + q[3] + q[5] + q[7]) / 4;
   return [t, q.map((v, i) => (i % 2 ? cy + (v - cy) * fy : cx + (v - cx) * fx))];
 });
+// v7 (Jade 0:11): the pencils now go through a bun (take_4_engraved_bun.mp4) at source y ~61-201, mostly under the
+// top letterbox bar (y < 138) at scale 1, so the hold frames the plate C4_DOWN px lower; the push still lands on the note.
+const C4_DOWN = 60;
 const C4_PUSH = { scale: [[0, 1], [0.55, 1, 'inOutCubic'], [1.45, 2.6]], x: [[0, 0], [0.55, 0, 'inOutCubic'], [1.45, -(1326 - 960) * 2.6]],
-  y: [[0, 0], [0.55, 0, 'inOutCubic'], [1.45, -(850 - 540) * 2.6]] };
+  y: [[0, C4_DOWN], [0.55, C4_DOWN, 'inOutCubic'], [1.45, -(850 - 540) * 2.6]] };
 // D7 (v3): source time of take_2 over the shot's 2.64 s, backward: hand in the jacket (3.1) → card held up (0.0)
 const D7_SRC = [[0, 3.1, 'inOutSine'], [2.1, 0.3, 'out'], [2.64, 0.0]];
 // v3 in-world lyrics: lettering cut into the woodblock (lenses) / bulb-sign letters (rooftop billboard)
@@ -220,7 +223,7 @@ export default ({ T }) => ({
         // so the raw take is laid back inside a static soft window round her (she doesn't move: centroid within 3 px)
         { id: 'D4_jade', type: 'video', src: S('D4', 'take_2.mp4'), in: 0.9, rate: 1, fit: 'cover', keepColor: true, grade: { saturation: 1.35 },
           matte: { src: S('D4', 'v3_colour_mask.mp4'), mode: 'luma' } },
-        lower({ text: 'I pulled over,', sync: 'lyric' })], fx: [LETTERBOX] },
+        lower({ text: 'I pulled over', sync: 'lyric' })], fx: [LETTERBOX] },
     { id: 'D5', start: 29.74, end: 30.6, background: INK,
       layers: [vid('D5', { kenBurns: { from: { scale: 1.0, y: 40 }, to: { scale: 1.12, y: 110 }, ease: 'linear' } })], fx: [LETTERBOX] },
     // the shades fill the frame; "men in shades" / "and suits" are cut into the lenses, white line on black, word-timed
@@ -288,7 +291,8 @@ export default ({ T }) => ({
     })() },
     { id: 'A_dialogue', start: 33.6, end: 37.96, layers: [
       // v3: a compact box at lower left, mostly in the letterbox bar, so it never covers the card or a hand in D7/D8
-      { type: 'canvas', module: 'dialogue', stage: 'post', params: { rect: [80, 856, 960, 132], size: 46, speaker: 'JADE' } }] },
+      // v7 (Jade, 0:37): text given explicitly so the line ends without the lyric sheet's trailing comma
+      { type: 'canvas', module: 'dialogue', stage: 'post', params: { text: 'I reach for my ID to show them and I do', sync: 'lyric', rect: [80, 856, 960, 132], size: 46, speaker: 'JADE' } }] },
     { id: 'A_predrop_lyric', start: 37.96, end: 40.24, layers: [lower({ text: 'With no warning I get', sync: 'lyric' })] },
   ],
 });

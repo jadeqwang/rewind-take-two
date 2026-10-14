@@ -1,0 +1,15 @@
+{
+ "_note": "v7 (Jade 0:39): P2 take 2, the engrave matte cut the blue pencil's top in every frame but 18 (eraser half white, ferrule engraved), and the pink pencil's ferrule in frames ~4-17. Frame 18 is an odd frame (pencils redrawn larger), so the masks are hand polygons round eraser + ferrule (1080p px, on the raw take in frames 12 and 30), tracked over the take.",
+ "raw": "media/shots/P2/take_2.mp4",
+ "engraved": "media/shots/P2/take_2_engraved.mp4",
+ "matte": "media/shots/P2/take_2_matte",
+ "out": "media/shots/P2/take_2_engraved_eraser.mp4",
+ "pencils": [
+  {"name": "blue 0-17", "ref": 12, "grow": 2, "frames": [[0, 17]],
+   "poly": [[1311,64],[1322,58],[1336,62],[1342,72],[1338,84],[1318,108],[1308,124],[1284,118],[1284,108],[1296,86],[1306,72]]},
+  {"name": "blue 19-96", "ref": 30, "grow": 2, "frames": [[19, 96]],
+   "poly": [[1333,58],[1343,52],[1356,57],[1364,68],[1354,88],[1337,112],[1322,124],[1305,120],[1306,108],[1320,86],[1329,70]]},
+  {"name": "pink 0-17", "ref": 12, "grow": 2, "frames": [[0, 17]],
+   "poly": [[1147,35],[1175,27],[1180,40],[1190,82],[1192,95],[1175,100],[1162,75],[1147,50]]}
+ ]
+}

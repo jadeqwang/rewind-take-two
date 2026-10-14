@@ -12,6 +12,7 @@ ITERATION 4,097 ×4,097, the timer counts down, goes negative and then counts up
 
 | Iteration | On screen | Fate | HUD |
 |---|---|---|---|
+| 4,081–4,093 | 0:42.65–0:48.42, the thirteen R2 death tableaux (train first) | thirteen earlier deaths, one per still | `ITERATION` flips 4,093 → 4,081, randomized but decreasing (v7; was 4,095 → 4,084, which reused 4,095 and repeated 4,084) |
 | 4,094 | 1:34–1:38, the graphite ghost on the L tracks | misses the chasm jump | race HUD `GHOST: ITERATION 4,094` (was 4,096) |
 | 4,095 | 0:00 cold open, mid-air jump-kick | shot by the ring of agents | `ITERATION 4,095` (was 4,096); the C2 ◀◀ teaser ticks 4,095 → 4,096 (was 4,096 → 4,097) |
 | 4,096 | 0:12–0:40 verse 1, shows her ID at 0:34 | shot at 0:40 | no HUD |

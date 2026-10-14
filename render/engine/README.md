@@ -158,6 +158,7 @@ Fonts (OFL, vendored in `render/fonts/`, loaded automatically): **IM Fell Englis
 | `pencil` | handwriting that writes itself (sticky note, anagram slip, "never stop" on walls) | `text`, `at` + `cps` or `sync`/`times`, `size`, `color` (graphite; orange for coloured pencil), `x`, `y`, `rotate`, `corners`, `grain`, `point` | `kit_pencil_handwriting.jpg` |
 | `hud` | game UI, Press Start 2P, small, top corners; one mode per layer (below) | `color`, `accent`, `side`, `size`, `margin` | |
 | `motes` | Celeste-style death burst at a point, orange/blue | `at`, `x`, `y`, `count`, `colors`, `speed`, `drag`, `gravity`, `size`, `life`, `ring`, `shape`, `spread`, `angle` | `kit_motes_burst_whisper.jpg` |
+| `ghostpop` | Celeste's death pop for one ghost (E7 leap and chasm, v7): a white hit disc rimmed in her colour, then eight ink-outlined orbs open in a turning ring, swell and shrink away, flickering colour/white | `at`, `x`, `y`, `color`, `dur` .36, `R` 150, `size` 24, `n` 8, `spin` .25, `flash`, `flashR` 95, `rim` 7, `flashColor`, `ink`, `line` | `docs/revisions/v7/ghost_pop_sheet.jpg` |
 | `ribbon` | causal residue trail | see below | `kit_ribbon_follow_bloom.jpg` |
 | `lyric`, `slate`, `iso_test` | take-one-style lyric line (Anton), animatic placeholder, reference three.js module | | |
 

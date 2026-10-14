@@ -164,7 +164,8 @@ def build():
         cut("F1", 169.40, 172.96, "F1", fx=[FLASH(0.9, "#ffffff", 0.12), {"type": "shake", "on": "downbeat", "amp": 14, "decay": 0.2},
                                             {"type": "punch", "on": "beat", "amount": 0.02}]),
         # ---- bars 99-100: wall-run; punch-in on bar 100 -------------------------------------------------------------------
-        cut("F2", 172.96, 174.72, "F2", fx=[FLASH(0.5)]),
+        # v7 (Jade, 2:53): the take starts nearly still and only reaches a full run ~0.7 s in, so cut in already running
+        cut("F2", 172.96, 174.72, "F2", clip_in=0.67, fx=[FLASH(0.5)]),
         cut("F2b", 174.72, 176.48, "F2", clip_in=3.24, scale=1.12,
             text=[never_stop(175.59, 176.46, 1530, 960, rot=-6, size=60, color="#ece6da")], fx=[FLASH(0.35)]),
         # ---- bars 101-102: Relativity flip: the frame snaps through 90 degrees on the downbeat ----------------------------

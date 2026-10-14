@@ -5,7 +5,7 @@
 const DIR = 'media/shots/R2/engraved/';
 const STILLS = ['01train', '02marinab', '03picasso', '04bridge', '05fountain', '06watertower', '07riverwalk',
   '08skydeck', '09lightning', '10gearsb', '11ferris', '12iceb', '13sedanb'];
-const ITER = [4095, 4093, 4094, 4091, 4092, 4090, 4088, 4089, 4087, 4086, 4084, 4085, 4084];   // randomized but decreasing
+const ITER = [4093, 4091, 4092, 4089, 4090, 4088, 4086, 4087, 4085, 4084, 4082, 4083, 4081];   // randomized but decreasing; all below 4094 (4094-4098 have their own fates, docs/revisions/v5/counters.md)
 
 export default ({ T }) => {
   const chops = T.lists.vocal_chops.map(c => (typeof c === 'number' ? c : c.start)).filter(t => t >= 42.6 && t < 48.5);

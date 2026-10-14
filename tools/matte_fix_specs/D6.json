@@ -1,0 +1,13 @@
+{
+ "_note": "v7 (Jade 0:33): D6 take 2, the engrave matte kept only half of the pink eraser and none of the right pencil's top (eraser + ferrule) for frames 0-41, so they engraved white. Hand polygons (1080p px, raw frame 20) tracked over the take. The right pencil's eraser is pale lavender-grey in the raw take, so after this pass tools/blue_eraser.py (spec D6.json) turns it canon blue.",
+ "raw": "media/shots/D6/take_2.mp4",
+ "engraved": "media/shots/D6/take_2_engraved.mp4",
+ "matte": "media/shots/D6/take_2_matte",
+ "out": "media/shots/D6/take_2_engraved_matte.mp4",
+ "pencils": [
+  {"name": "pink top", "ref": 20, "grow": 2, "frames": [[0, 96]],
+   "poly": [[358,266],[370,259],[380,264],[387,272],[406,294],[408,300],[395,307],[380,297],[362,282],[356,272]]},
+  {"name": "right top", "ref": 20, "grow": 2, "frames": [[0, 96]],
+   "poly": [[425,248],[430,242],[440,242],[445,247],[446,284],[426,284]]}
+ ]
+}

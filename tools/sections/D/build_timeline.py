@@ -206,11 +206,13 @@ BACK_FIXED = ("lawn", "lawn2")
 
 
 def doubling(id_, c, times_abs, shot_start, shot_dur, in0, rate=1.0, steps=(-4, 6, -2, 1), spacing=20, slot_time=2 / FPS,
-             stagger=16, peel=0.3, tint=0.82, opacity=0.9, place=None):
+             stagger=16, peel=0.3, tint=0.82, opacity=0.9, place=None, src_max=None):
     """Python port of render/timeline/_B_fx.js doubling() with every function sampled into keys (D.js is plain JSON).
     The number of Jades doubles on each time; a new copy starts stacked on its parent (same place, same frame) and
     peels to its own slot in a bar ahead of / behind her: slot q = q*slot_time s of her own clip and q*spacing px.
-    Copy n takes HUE[(n-1) % 13]; times before the shot start are already peeled (the bar continues across a cut)."""
+    Copy n takes HUE[(n-1) % 13]; times before the shot start are already peeled (the bar continues across a cut).
+    src_max: a copy's layer ends once its source time passes this (v7: the agents enter the leap take's matte at 2.21;
+    the keys sit on a 1/24 grid that is not frame-aligned, so leave a frame of margin)."""
     place = place or {}
     tb = [t - shot_start for t in times_abs]
     G = len(tb)
@@ -235,10 +237,135 @@ def doubling(id_, c, times_abs, shot_start, shot_dur, in0, rate=1.0, steps=(-4, 
                  loop=False, rate=rate, fit="cover", x=k_x, y=k_y, opacity=op,
                  instances=[dict(color=HUE[(cp["n"] - 1) % 13], tint=tint, opacity=opacity)])
         L["in"] = k_in
+        if src_max is not None:
+            past = [lt for lt, v in k_in if v + rate * lt > src_max]
+            if past:
+                L["end"] = past[0]
         if "scale" in place:
             L["scale"] = place["scale"]
         out.append(L)
     return out
+
+
+LEAP_GIRDER = 720 - 960          # B_leap: the girder's right end (centre-origin x); the beam starts at x 1030, level y 598
+
+
+_SIL = {}
+
+
+def silhouette(stem, t, step=4):
+    """v7: a matte's silhouette at source time t as point arrays (absolute design px, every step-th pixel; the engine's
+    frame pick: floor(t * 24))."""
+    fs = sorted(glob.glob(f"{stem}_matte/*.png"))
+    i = max(0, min(len(fs) - 1, int(t * FPS + 1e-4)))
+    key = (stem, i, step)
+    if key not in _SIL:
+        m = cv2.imread(fs[i], cv2.IMREAD_GRAYSCALE)
+        sx, sy = 1920 / m.shape[1], 1080 / m.shape[0]
+        ys, xs = np.nonzero(m[::step, ::step] >= 128)
+        _SIL[key] = (xs * step * sx, ys * step * sy)
+    return _SIL[key]
+
+
+def fall_pop(c, tag, col, tint, s0, x0, y0, t0, tm, fall_frames, vx, vy, g, opacity=0.9, R=220, size=30, flashR=95,
+             wh=(1920, 1080), th=0.0, spin_t=0.17, pop=True, fade=None):
+    """v7: a ghost that has missed, from t0 (the frame before the miss tm; shot-local): frozen in pose s0 (source s) at
+    layer offset (x0, y0), it falls (vx, vy px/s, g px/s^2) until the pop at tm + (fall_frames - 1) frames, flashing
+    white for the last two frames, and pops at its centroid (ghostpop.js). th (deg): it tumbles about its centroid,
+    reaching th after spin_t s (the layer's rotate is about the frame centre, so x/y are compensated). pop=False: no
+    blink or pop; it just falls for fall_frames frames, with opacity keys `fade`. Returns (layers, pop layer or None, tp)."""
+    dt = 1 / FPS
+    tp = r4(tm + (fall_frames - 1) * dt)
+    fall = [r4(q * dt) for q in range(fall_frames + 1)]
+    st0 = mstats(c["stem"], s0)
+    gx, gy = st0["cx"], st0["cy"]                       # the pose's centroid, centre-origin source px
+    ang = lambda u: th * min(1.0, u / spin_t)
+
+    def xy(u):                                          # layer x/y at fall time u (rotation about the centroid)
+        dx, dy = vx * u, vy * u + 0.5 * g * u * u
+        if not th:
+            return r4(x0 + dx), r4(y0 + dy)
+        a_ = math.radians(ang(u))
+        rx = math.cos(a_) * -gx - math.sin(a_) * -gy    # R(a) (C - G), C = the frame centre (0, 0 centre-origin)
+        ry = math.sin(a_) * -gx + math.cos(a_) * -gy
+        return r4(gx + x0 + rx + dx), r4(gy + y0 + ry + dy)
+
+    def keys(us, shift=0.0):
+        k = dict(x=[[r4(u), xy(u + shift)[0]] for u in us], y=[[r4(u), xy(u + shift)[1]] for u in us])
+        if th:
+            k["rotate"] = [[r4(u), r4(ang(u + shift))] for u in us]
+        return k
+    common = dict(type="ghosts", src=c["eng"], matte=dict(src=c["matte"], mode="luma"), keepColor=True, fit="cover")
+    if not pop:
+        L = dict(id=f"drop_{tag}", start=t0, end=r4(t0 + fall_frames * dt), **common, **keys(fall),
+                 instances=[dict(freeze=s0, color=col, tint=tint, opacity=opacity)])
+        if fade:
+            L["opacity"] = fade
+        return [L], None, None
+    lay = [dict(id=f"fall_{tag}", start=t0, end=tp, **common, **keys(fall),
+                instances=[dict(freeze=s0, color=col, tint=tint, opacity=opacity)]),
+           dict(id=f"blink_{tag}", start=r4(tp - 2 * dt), end=tp, **common, **keys((0, dt, 2 * dt), tp - 2 * dt - t0),
+                instances=[dict(freeze=s0, color="#ffffff", tint=1.0, opacity=0.95, grade=dict(lift="#d6d6d6"))])]
+    u = tp - t0
+    pop_l = dict(id=f"pop_{tag}", type="canvas", module="ghostpop", keepColor=True, start=tp, params=dict(
+        at=0, x=r4(gx + x0 + vx * u + wh[0] / 2), y=r4(gy + y0 + vy * u + 0.5 * g * u * u + wh[1] / 2), color=col,
+        dur=0.36, R=R, size=size, flashR=flashR))
+    return lay, pop_l, tp
+
+
+def leap_misses(c, cps, in0, a, miss, fall_frames=5, vx=200.0, g=9000.0):
+    """v7: the copies of the E7 leap whose feet come down over the gap between the girder and the beam drop through it
+    and pop (Celeste). miss: copy -> "contact" (the first frame her feet are at the beam's level) or n (the first frame on
+    that level with her centroid n px past the girder's end). From the frame before the miss she is frozen in that pose
+    and falls (vx px/s, g px/s^2, her own descent speed if she was still coming down) for fall_frames frames, flashes
+    white for the last two and pops at her centroid. Copies born from a parent that has already died are dropped.
+    Returns (layers, pop layers, notes)."""
+    lay = {int(L["id"].rsplit("_", 1)[1]): L for L in cps}
+    dt = 1 / FPS
+    at = lambda keys, lt: min(keys, key=lambda k: abs(k[0] - lt))[1]
+    born = lambda L: 0.0 if L["opacity"][0][1] > 0 else L["opacity"][1][0] + 0.01
+    src = lambda L, lt: at(L["in"], lt) + lt
+    death, out_pops, notes = {}, [], {}
+    for n in sorted(lay):
+        L = lay[n]
+        gen = n.bit_length() - 1
+        par = n - (1 << gen)
+        if par and par in death and death[par] <= born(L) + 1e-6:
+            notes[f"{n:02d} {L['instances'][0]['color']}"] = f"never born (parent copy {par} died at {a + death[par]:.2f})"
+            del lay[n]
+            continue
+        if n not in miss:
+            notes[f"{n:02d} {L['instances'][0]['color']}"] = "lands"
+            continue
+        lts = [k[0] for k in L["in"] if k[0] >= born(L) - 1e-6]
+        tm = None
+        for lt in lts:
+            st = mstats(c["stem"], src(L, lt))
+            if not st or st["y1"] < 45:                        # feet not yet at the beam's level (y 585 of 1080)
+                continue
+            if miss[n] == "contact" or st["cx"] + at(L["x"], lt) > LEAP_GIRDER + miss[n]:
+                tm = lt
+                break
+        t0 = r4(tm - dt)                                        # the pose of the frame before the miss
+        s0 = r4(src(L, t0))
+        st0, stp = mstats(c["stem"], s0), mstats(c["stem"], src(L, t0 - dt))
+        vy = max(250.0, (st0["y1"] - stp["y1"]) * FPS) if stp else 250.0
+        col = L["instances"][0]["color"]
+        L["end"] = t0
+        L["_fall"], pop, tp = fall_pop(c, f"{n:02d}", col, L["instances"][0]["tint"], s0, at(L["x"], t0), at(L["y"], t0),
+                                       t0, tm, fall_frames, vx, vy, g)
+        out_pops.append(pop)
+        death[n] = tp
+        cm = mstats(c["stem"], src(L, tm))["cx"] + at(L["x"], tm) + 960
+        notes[f"{n:02d} {col}"] = (f"misses the beam at {a + tm:.2f} (centroid x {cm:.0f}, gap 720-1030), "
+                                   f"falls from {a + t0:.2f}, pops at {a + tp:.2f}")
+    layers = []
+    for L in cps:
+        n = int(L["id"].rsplit("_", 1)[1])
+        if n in lay:
+            layers.append(L)
+            layers.extend(L.pop("_fall", []))
+    return layers, out_pops, notes
 
 
 def build():
@@ -686,16 +813,30 @@ def build():
     def e7(id_, a, b, layers, fx=()):
         shots.append(dict(id=id_, start=a, end=b, layers=layers, fx=[dict(type="flash", at=[0], dur=0.05, amount=0.25, color="#ffffff"),
                                                                     dict(type="punch", at=[0], amount=0.04)] + list(fx)))
+    # v4: the pair that leaves the co-op level is ORANGE (the untinted Jade here) and BLUE, so the first copy is the
+    # blue one and the second the orange one (v3: copy 1 orange, copy 2 blue).
+    # v7 (Jade on the v6 cut, 2:16: "some of the ghosts whose feet didn't land on the beam should fall through and not
+    # make it ('pop' Celeste style)"; docs/revisions/v7/ghost_pop.md): the leap take's beam starts at x 1030 and the
+    # girder of the platform she jumps from ends at x 720 (design px), so every copy peeled 4+ slots (300 px) behind her
+    # lands in that gap. Copy 1 (slot -4) comes down with both feet over the gap at 136.01, and copy 13 (slot -5, born on
+    # the girder's lip at 136.19) slips off it as it peels. They drop through and pop (ghostpop.js); copy 9, copy 1's
+    # child at 136.19, is never born. BLUE (the co-op partner) must make it, so in the leap the gold and blue copies
+    # trade places (blue takes copy 3's slot +2, on the beam ahead of her; gold takes copy 1's slot and falls), and copy
+    # 15 (a second blue until v6) is violet, so the chasm's five survivors (orange, blue, magenta, green, violet) are all
+    # on the beam at the cut. (Gold and lime fly again in the chasm: Jade wants the whole v6 swarm in the air there.)
+    DBL_COLORS = dict(plat={1: HUE[1], 2: HUE[0]}, leap={1: HUE[2], 2: HUE[0], 3: HUE[1], 15: HUE[8]})
+    LEAP_MISS = {1: "contact", 13: 40}       # copy -> "contact" (first frame on the beam's level) or px past the girder end
     for (id_, tk, a, b, in0, sp) in (("E7_01_plat", "plat", 134.88, 135.76, 0.55, 30), ("E7_02_leap", "leap", 135.76, 136.62, 0.85, 75)):
         c = bclip(tk)
-        cps = doubling("dbl", c, DB, a, b - a, in0, spacing=sp, stagger=22)
-        # v4: the pair that leaves the co-op level is ORANGE (the untinted Jade here) and BLUE, so the first copy is
-        # the blue one and the second the orange one (v3: copy 1 orange, copy 2 blue)
+        cps = doubling("dbl", c, DB, a, b - a, in0, spacing=sp, stagger=22, src_max=2.15 if tk == "leap" else None)
         for L_ in cps:
             n_ = int(L_["id"].rsplit("_", 1)[1])
-            if n_ in (1, 2):
-                L_["instances"][0]["color"] = HUE[2 - n_]
-        e7(id_, a, b, [dict(id="bg", type="video", src=c["eng"], **{"in": in0, "rate": 1.0}), *cps,
+            if n_ in DBL_COLORS[tk]:
+                L_["instances"][0]["color"] = DBL_COLORS[tk][n_]
+        pops = []
+        if tk == "leap":
+            cps, pops, notes["E7_leap"] = leap_misses(c, cps, in0, a, LEAP_MISS)
+        e7(id_, a, b, [dict(id="bg", type="video", src=c["eng"], **{"in": in0, "rate": 1.0}), *cps, *pops,
                        dict(id="jade", type="video", src=c["eng"], matte=dict(src=c["matte"], mode="luma"), keepColor=True,
                             **{"in": in0, "rate": 1.0})],
            fx=[dict(type="flash", at=[r4(t - a) for t in DB if a <= t < b], dur=0.05, amount=0.12)])
@@ -719,22 +860,65 @@ def build():
                     text="HILBERT\nHOTEL", at=-1, color=INK, flecks=0, hatch=0.15, box=[420, 230], pad=8, corners=corners))]
 
     # chasm (rev 5b): the Super Meat Boy replay. Fifteen copies leave the beam stacked on her and fan into separate arcs;
-    # most don't make it: six fall short (they lose ground, sag below the far lip, freeze and drop out of frame, fading),
-    # four clip the face of the far wall and end in place in a small burst of motes in their own hue. Five survive and
-    # land behind the real (untinted) Jade on the wall top. (docs/revisions/B_research_games.md, Super Meat Boy 4-5)
+    # most don't make it: ten lose ground and sag below the ledge (v7: then fall through the gap or down the brick face
+    # and pop, see SHORT below). Five survive and land behind the real (untinted) Jade on the wall top.
+    # (docs/revisions/B_research_games.md, Super Meat Boy 4-5)
     c = bclip("chasm_dash")
     a, b, in0, rate = 136.62, 137.50, 1.1, 2.0
     d = b - a
     lts = [q / 24 for q in range(int(round(d * 24)) + 1)]
     ss = lambda x: x * x * (3 - 2 * x)
 
-    def her(s_):
-        st = mstats(c["stem"], s_)
-        return (st["cx"], st["cy"]) if st else None
-    lip = lambda x: -21 + (x - 48) * 0.14          # the far wall's top edge (design px, centre origin), x >= 48
     SURV = [1, 2, 4, 5, 9]                          # orange, blue, magenta, green, violet
-    FALL = dict(zip([3, 7, 8, 11, 13, 15], [0.34, 0.40, 0.46, 0.52, 0.58, 0.64]))
-    CLIP = [6, 10, 12, 14]
+    # v6: FALL = {3: .34, 7: .40, 8: .46, 11: .52, 13: .58, 15: .64} (froze and dropped, fading), CLIP = [6, 10, 12, 14]
+    # (ended on the wall face in a mote burst). The ten sagged linearly from frame 0 (y + A*u), which pushed their feet
+    # into the beam at take-off and sank the back three (13 lime, 14 orange, 15 blue) through the beam end.
+    # v7 (Jade on the v7 preview: every airborne ghost back; a gravity curve so they rise with the swarm and then fall
+    # into the gap clear of the beam end, never through it; about four readable pops, the others drop out of the gap as
+    # in v6; nothing passes through the beam or the wall):
+    #  - flight: each copy's sag starts at its own take-off (her source 1.35 s; the copies run 0.02k s behind her) and
+    #    follows a gravity curve, y + A*s^p; drift back -D*u as v6. (p, D and A multipliers) per copy in CH below;
+    #  - solid: the beam (top y 597, ends x 780) and the far wall's near top edge (corner 1010,520, slope .62; canon
+    #    Jade's feet land at y 733 against 738). A silhouette is through the beam if any of it is more than 15 px below
+    #    the beam top while over the beam; through the wall if it straddles that edge right of x 1010 (the brick face is
+    #    the near side of a cliff facing the gap, so a ghost wholly below the edge is falling in front of it);
+    #  - miss: the first frame she is coming down with her feet below the ledge; from the frame before, she is frozen
+    #    and falls (knock-back vx, g 9000) tumbling toward upright about her centroid (th, over 0.17 s); the first
+    #    (th, vx) whose whole fall is clean is used. Pops: 5-frame fall, white blink, ghostpop. Drops: fall to the cut
+    #    with v6's fade. Every flight and fall is checked here and the build fails if one is not clean.
+    SHORT = [3, 6, 7, 8, 10, 11, 12, 13, 14, 15]
+    CH = {12: (1.5, 0.3, 2.0, "pop"), 6: (1.5, 1.0, 2.0, "pop"), 7: (2.0, 1.0, 1.5, "pop"), 8: (2.0, 1.0, 1.0, "pop"),
+          3: (2.0, 2.0, 1.25, "drop"), 10: (2.0, 0.6, 1.0, "drop"), 11: (2.0, 0.6, 1.0, "drop"),
+          13: (2.0, 0.6, 1.0, "drop"), 14: (2.0, 0.3, 1.0, "drop"), 15: (2.0, 0.3, 1.0, "drop")}
+    TAKEOFF = 1.35                                  # her feet leave the beam (source s)
+    LAST = (math.ceil(b * FPS - 1e-6) - 1) / FPS - a                          # the shot's last frame, local
+    diag = lambda X: 520 + (X - 1010) * 0.62                                  # absolute design px
+    below = lambda X, Y: Y > (520 if X < 1010 else diag(X))
+
+    def through(X, Y, tol=15):
+        beam = bool(np.any((X < 780) & (Y > 597 + tol)))
+        w = X > 1010
+        wall = bool(np.any(w & (Y > diag(X) + tol)) and np.any(w & (Y < diag(X) - tol)))
+        return beam, wall
+
+    def tumble(X, Y, cx, cy, deg):
+        c_, s_ = math.cos(math.radians(deg)), math.sin(math.radians(deg))
+        return cx + c_ * (X - cx) - s_ * (Y - cy), cy + s_ * (X - cx) + c_ * (Y - cy)
+
+    def fall_clean(X0, Y0, vx, vy, th, t0, t1):
+        cx, cy = X0.mean(), Y0.mean()
+        for q in range(1, 40):
+            u = q / FPS
+            if t0 + u > t1 + 1e-6:
+                return True
+            X, Y = tumble(X0, Y0, cx, cy, th * min(1.0, u / 0.17))
+            X, Y = X + vx * u, Y + vy * u + 4500 * u * u
+            if Y.min() > 1080:
+                return True
+            if any(through(X, Y)):
+                return False
+        return True
+
     back, front, bursts, fates = [], [], [], {}
     for k in range(1, 16):
         col = HUE[(k - 1) % 13]
@@ -744,49 +928,71 @@ def build():
             j = SURV.index(k)
             off = -0.025 * (j + 1)
             A = [-300, -170, -60, -380, 90][j]       # survivors fan up and converge on the far lip
+            # v7: violet (the one survivor that flies lower than her, A > 0) dipped into the beam at take-off; its dip
+            # now starts at its own take-off
+            to = (TAKEOFF - in0 - off) / rate if A > 0 else 0.0
+            sv = lambda lt, to=to: min(1.0, max(0.0, (lt - to) / (0.86 - to)))
             xo = lambda lt, j=j: -70 * (j + 1) * ss(min(1.0, lt / 0.86))
-            yo = lambda lt, j=j, A=A: A * math.sin(math.pi * min(1.0, lt / 0.86)) - 14 * (j + 1) * ss(min(1.0, lt / 0.86))
+            yo = lambda lt, j=j, A=A, sv=sv: A * math.sin(math.pi * sv(lt)) - 14 * (j + 1) * ss(min(1.0, lt / 0.86))
+            for t in lts:
+                if t <= LAST + 1e-6:
+                    X, Y = silhouette(c["stem"], in0 + rate * t + off)
+                    assert not any(through(X + xo(t), Y + yo(t))), f"survivor {k} passes through at {t:.3f}"
             front.append(dict(id=f"surv{k:02d}", **base, x=[[r4(t), r4(xo(t))] for t in lts], y=[[r4(t), r4(yo(t))] for t in lts],
                               instances=[dict(offset=r4(off), color=col, tint=0.82, opacity=0.88)], opacity=[[0, 0.7], [0.08, 1.0]]))
             fates[k] = "lands"
             continue
         off = -0.02 * k
-        rk = [3, 6, 7, 8, 10, 11, 12, 13, 14, 15].index(k)
-        A = 230 + 48 * rk                          # each a lower, shorter arc than hers from take-off: sags below her ...
-        D = 140 + 50 * rk                          # ... and loses ground
+        rk = SHORT.index(k)
+        p_, dm, am, fate = CH[k]
+        A = (230 + 48 * rk) * am                  # each a lower, shorter arc than hers: sags below her ...
+        D = (140 + 50 * rk) * dm                  # ... and loses ground
+        to = (TAKEOFF - in0 - off) / rate
         xo = lambda lt, D=D: -D * min(lt, 0.86) / 0.86
-        yo = lambda lt, A=A: A * min(lt, 0.86) / 0.86
-        if k in CLIP:                              # first frame where this copy's body is below the far lip, past the wall's edge
-            tf = None
-            for t in lts[4:]:
-                h = her(in0 + rate * t + off)
-                if h and h[0] + xo(t) > 70 and h[1] + yo(t) > lip(h[0] + xo(t)) + 25:
-                    tf = t; break
-            tf = tf or 0.7
-            h = her(in0 + rate * tf + off)
-            px, py = h[0] + xo(tf), h[1] + yo(tf)
-            back.append(dict(id=f"clip{k:02d}", **base, end=r4(tf), x=[[r4(t), r4(xo(t))] for t in lts if t <= tf + 0.05],
-                             y=[[r4(t), r4(yo(t))] for t in lts if t <= tf + 0.05],
-                             instances=[dict(offset=r4(off), color=col, tint=0.82, opacity=0.85)]))
-            bursts.append(dict(id=f"pop{k:02d}", type="canvas", module="motes", keepColor=True, start=r4(tf), params=dict(
-                at=0, x=r4(px + 960), y=r4(py + 540), count=44, colors=[col, col, col, "#ffffff"], shape="circle", speed=1000, drag=3.0,
-                gravity=300, size=13, life=0.6, ring=False, glow=0.9, seed=200 + k)))
-            fates[k] = f"clips the wall at {a + tf:.2f}"
+        yo = lambda lt, A=A, to=to, p_=p_: A * min(1.0, max(0.0, (lt - to) / (0.86 - to))) ** p_
+        sil = lambda lt: (lambda XY: (XY[0] + xo(lt), XY[1] + yo(lt)))(silhouette(c["stem"], in0 + rate * lt + off))
+        found, prev = None, None
+        for t in lts[1:]:
+            X, Y = sil(t)
+            assert not any(through(X, Y)), f"copy {k} passes through in flight at {t:.3f}"
+            cx, cy = X.mean(), Y.mean()
+            if prev is not None and cy > prev and below(cx, Y.max()):
+                t0 = t - 1 / FPS
+                X0, Y0 = sil(t0)
+                vy = max(250.0, (cy - prev) * FPS)
+                t1 = min(LAST, t0 + 5 / FPS) if fate == "pop" else LAST
+                for th in (0, -30, -50, -70, 30, 50):
+                    for vx in (0, 160, -200, 320, -350):
+                        if fall_clean(X0, Y0, vx, vy, th, t0, t1):
+                            found = (t, t0, vx, vy, th, cx, cy)
+                            break
+                    if found:
+                        break
+                if found:
+                    break
+            prev = cy
+        assert found, f"copy {k}: no clean miss"
+        tm, t0, vx, vy, th, cx, cy = found
+        tm, t0 = r4(tm), r4(t0)
+        back.append(dict(id=f"miss{k:02d}", **base, end=t0, x=[[r4(t), r4(xo(t))] for t in lts if t <= t0 + 0.05],
+                         y=[[r4(t), r4(yo(t))] for t in lts if t <= t0 + 0.05],
+                         instances=[dict(offset=r4(off), color=col, tint=0.82, opacity=0.85)]))
+        where = "over the gap" if cx < 1010 else "at the brick face"
+        if fate == "pop":
+            lay, pop, tp = fall_pop(c, f"{k:02d}", col, 0.82, r4(in0 + rate * t0 + off), r4(xo(t0)), r4(yo(t0)), t0, tm, 5,
+                                    vx, vy, 9000.0, opacity=0.85, R=170, size=24, flashR=60, th=th)
+            back += lay
+            bursts.append(pop)
+            fates[k] = (f"comes down short at {a + tm:.2f} ({where}, centroid {cx:.0f},{cy:.0f}), falls from {a + t0:.2f} "
+                        f"(knock-back {vx:.0f} px/s, tumbles {th:.0f} deg), pops at {a + tp:.2f}")
         else:
-            tf = FALL[k]
-            back.append(dict(id=f"short{k:02d}", **base, end=r4(tf), x=[[r4(t), r4(xo(t))] for t in lts if t <= tf + 0.05],
-                             y=[[r4(t), r4(yo(t))] for t in lts if t <= tf + 0.05],
-                             instances=[dict(offset=r4(off), color=col, tint=0.82, opacity=0.85)]))
-            sf = r4(in0 + rate * tf + off)          # her pose when she gives out: frozen, she drops away and fades
-            x0, y0 = xo(tf), yo(tf)
-            fl = [t for t in lts if t >= tf] + [d]
-            back.append(dict(id=f"drop{k:02d}", type="ghosts", src=c["eng"], matte=dict(src=c["matte"], mode="luma"), keepColor=True,
-                             fit="cover", start=r4(tf), x=[[r4(t - tf), r4(x0 + 160 * (t - tf))] for t in fl],
-                             y=[[r4(t - tf), r4(y0 + 1100 * (t - tf) + 2600 * (t - tf) ** 2)] for t in fl],
-                             instances=[dict(freeze=sf, color=col, tint=0.82, opacity=0.85)],
-                             opacity=[[0, 1.0], [0.18, 0.85], [0.42, 0.0]]))
-            fates[k] = f"falls short at {a + tf:.2f}"
-    notes["E7_chasm"] = {HUE[(k - 1) % 13]: fates[k] for k in sorted(fates)}
+            nf = int(round((d - t0) * FPS)) + 1
+            lay, _, _ = fall_pop(c, f"{k:02d}", col, 0.82, r4(in0 + rate * t0 + off), r4(xo(t0)), r4(yo(t0)), t0, tm, nf,
+                                 vx, vy, 9000.0, opacity=0.85, th=th, pop=False, fade=[[0, 1.0], [0.18, 0.85], [0.42, 0.0]])
+            back += lay
+            fates[k] = (f"comes down short at {a + tm:.2f} ({where}, centroid {cx:.0f},{cy:.0f}), drops out of the gap from "
+                        f"{a + t0:.2f} (knock-back {vx:.0f} px/s, tumbles {th:.0f} deg), no pop")
+    notes["E7_chasm"] = {f"{k:02d} {HUE[(k - 1) % 13]}": fates[k] for k in sorted(fates)}   # v7: keyed by copy (14/15 repeat hues)
     e7("E7_04_chasm", a, b, [dict(id="bg", type="video", src=c["eng"], **{"in": in0, "rate": rate}), *hilbert(BB["chasm"], face=True),
                              *back, *bursts, *front[::-1],
                              dict(id="jade", type="video", src=c["eng"], matte=dict(src=c["matte"], mode="luma"), keepColor=True,

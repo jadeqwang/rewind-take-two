@@ -161,3 +161,35 @@ are kept as `Rewind_cinematic_sfx_mix_v2.mp3`, `cues_v2.json`, `sfx_only_v2.wav`
   0.001, lyrics transcribe as before. The previous mix is kept as `*_v3c.*`.
 - Fifth rebuild: `b_bump` moved from 108.16 to 108.31, where her shoulder meets his chest (108.29–108.33, checked
   frame by frame by A and B); same gain, now 4 % masked. Verify unchanged. The previous mix is kept as `*_v3d.*`.
+
+## v7 ghost pops (2026-10-14): `--v7pop` (built, NOT used)
+
+**Jade decided against pop sounds:** the film keeps `Rewind_cinematic_sfx_mix_v5coda.mp3`. The `--v7pop` mode and its
+outputs stay in place, unused. They were also built against the earlier ten-pop picture, while the final chasm has four
+pops (137.16, 137.25, 137.33, 137.41), so retime `V7_CHASM_POPS` before any reuse. The v6 cues `b_fall_short` and
+`b_wall_burst` still fit the v7 picture (`docs/revisions/v7/ghost_pop.md` → Sound).
+
+Jade's 2:16 note: ghosts that miss the jump fall through the gap and pop, Celeste style (`docs/revisions/v7/ghost_pop.md`).
+`tools/sfx/build.py --v7pop` builds the v5coda film mix, which is the one v6 shipped, plus two new cues. It drops
+`b_wall_burst`, because no ghost clips the far wall in a mote burst in v7.
+
+- **`g_pop_leap`:** gold at 136.208 (F5) and lime at 136.500 (Ab5), at −15.
+- **`g_pop_chasm`:** ten pops at 137.167 … 137.458, a rising run F5 Ab5 Bb5 C6 Db6 F6 Ab6 Bb6 C7 F7. Simultaneous
+  pops are spread 8 ms apart. Level −17, with the later pops slightly louder.
+- **The sound (`ghost_pop()`):** a bubble "bwip", a sine flicking up from 0.55 f to f in about 10 ms with a 35 ms
+  decay. On top of that, a 3 ms click and a short high sparkle, in the room reverb.
+- **Timing:** each pop sits on the first frame its `ghostpop` layer draws (the D.js `pop_*` start, rounded up to the
+  frame).
+- **Level:** the leap pops sit 14.3 LU under the music (13 % masked); the chasm run sits 11.6 LU under (0 % masked).
+  No vocal overlaps either.
+
+The two cues are last in `CUES`, so no other stem is renumbered. Without the flag every build is unchanged.
+
+Outputs: `stems_v7pop/`, `cues_v7pop.json`, `sfx_only_v7pop.wav`, `mix_preview_v7pop.wav` and
+`Rewind_cinematic_sfx_mix_v7pop.mp3`.
+
+Checks:
+- The v7pop WAV is sample-identical to `mix_preview_v5coda.wav` except in 136.208–136.905 and 137.167–137.827.
+- 59 cues. Integrated −15.78 LUFS (delta −0.01 LU), true peak −3.30 dBTP, original bit-exact outside the cues.
+
+The existing mixes were not touched.
