@@ -754,8 +754,9 @@ def build():
         return L
 
     def level(id_, a, b, layers, fx):
+        # v8: the plate with the two book titles drawn on (tools/book_titles.py writes plate_titled.png from plate.png)
         shots.append(dict(id=id_, start=a, end=b, layers=[
-            dict(id="plate", type="image", src=f"{CO}/plate.png", fit="cover"), *layers[0],
+            dict(id="plate", type="image", src=f"{CO}/plate_titled.png", fit="cover"), *layers[0],
             dict(id="tail", type="image", src=f"{CO}/patch_tail.png", fit="cover"),
             dict(id="hinge", type="image", src=f"{CO}/hinge.png", fit="cover"), *layers[1]], fx=fx))
 

@@ -431,3 +431,16 @@ No pop sounds (Jade): the film keeps `Rewind_cinematic_sfx_mix_v5coda.mp3`. The 
 - `b_wall_burst` (137.32) now lands on the pale-blue pop.
 
 `tools/sfx/build.py --v7pop` (a pop-sound mix) exists, unused. See `docs/revisions/v7/ghost_pop.md`.
+
+## Revision 8 (v8): book titles on the co-op plate (2:09–2:15)
+
+Jade's idea after v7. The two leaning books on the co-op desks (`media/shots/C_coop/plate.png`) had blank covers. They now
+carry titles, drawn by `tools/book_titles.py` into `plate_titled.png`, which `level()` uses for C1_hold, C2a_swap and
+C2b_letgo (129.18–134.88):
+
+- left, orange side: *Nonlinear Dynamics and Chaos*, Steven H. Strogatz (the real title, without "Theory");
+- right, blue side: *The Elegant Universe*, Brian Greene.
+
+Engraved title pages in IM Fell English with a double-rule frame, perspective-warped onto each cover and laid in as
+ink. The 2:08 pile-up books (E6c_two) stay blank. The engine caches images by path: after redrawing the titles, write
+to a new filename or clear `media/engine_cache`.

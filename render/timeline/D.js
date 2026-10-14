@@ -3745,7 +3745,7 @@ export default {
     {
      "id": "plate",
      "type": "image",
-     "src": "media/shots/C_coop/plate.png",
+     "src": "media/shots/C_coop/plate_titled.png",
      "fit": "cover"
     },
     {
@@ -4046,7 +4046,7 @@ export default {
     {
      "id": "plate",
      "type": "image",
-     "src": "media/shots/C_coop/plate.png",
+     "src": "media/shots/C_coop/plate_titled.png",
      "fit": "cover"
     },
     {
@@ -4281,7 +4281,7 @@ export default {
     {
      "id": "plate",
      "type": "image",
-     "src": "media/shots/C_coop/plate.png",
+     "src": "media/shots/C_coop/plate_titled.png",
      "fit": "cover"
     },
     {
