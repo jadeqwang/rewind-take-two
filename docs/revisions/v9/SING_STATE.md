@@ -49,3 +49,16 @@ direction, in progress:
   `tools/engrave/.venv/bin/python`.
 - Range preview: `node render/engine/render.mjs --preview --force --range A B --encode --audio
   media/sfx/Rewind_cinematic_sfx_mix_v5coda.mp3 --out deliverables/wip/<name>.mp4`
+
+## Decisions after the checkpoint (2026-10-16)
+
+- **Photo:** round 3 on `inputs/light_makeup_irl.png`. Jade: "hybrid's fuller hair looks good, model del has right
+  posture", so the pick combines the model edit's posture with fuller hair, her exact face pasted back, and the patch
+  outpainted (`media/sing/selfie/r3b/`, `selfie_r3b_pick.png`).
+- **Both singing slots use the hair-down photo** (Jade: "let's just use the hair down in both"). No pencils in S1 any
+  more, so S1 needs no pencil key (`v5_pencils.py`).
+- **Collar:** the model edit's jacket collar is correct; the r3 hybrid's face paste erased part of it (Jade). In r3b
+  the collar (stand-up sides, snaps, turtleneck edge) comes from the model edit untouched, and the face mask stops at
+  the jaw.
+- **r3b at this checkpoint:** running (an agent was editing `selfie_r3_pick_model.png` for fuller hair, pasting her
+  face back, and outpainting the patch). If it was interrupted, re-run that brief from these notes.
