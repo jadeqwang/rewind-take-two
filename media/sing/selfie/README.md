@@ -257,3 +257,47 @@ The models were far more faithful on this frontal, evenly lit photo than on the 
   - her face is toned toward the take's skin only inside the feather ring, so the seam disappears without recolouring her face;
   - a light dark-spot conceal (35%) is the only skin change, as Jade allowed;
   - hybrids built on gpt are cropped to the area gpt actually rendered.
+
+---
+
+# Round 3b: model edit's posture + fuller hair + complete patch
+
+Jade: *"hybrid's fuller hair looks good, model del has right posture"*, then *"the model edit has the correct collar. the hybrid erased part of the collar"*. Both singing slots will use this hair-down photo.
+
+**Pick: `selfie_r3b_pick.png`** (= `r3b/col_fin_full_gpt_4__nbp_1.png`, 1280×1600). It is built in five steps:
+1. **Hair:** gpt-image-2.5 edited the hair on the round-3 model edit, with the gpt_4 take as the hair reference (`gpt_4`). The hair is fuller and smoother, with the same length, part and placement; the locks stay in front of the shoulders.
+2. **Back into the full frame:** gpt only sees a 2:3 crop, so its edit is put back into the model edit's full frame (`full_gpt_4`). It is registered by the face and feathered 40 px inside the crop edges, so the sleeves at the sides are the model edit's own pixels.
+3. **Face:** her exact face from `light_makeup_irl.png` is pasted back (`face_full_gpt_4`), with a light freckle conceal only. The mask is now **clipped above the jaw line**: the soft edge sits entirely inside the face, so nothing below the chin is touched. The glasses band is also kept inside the face edge, so it does not punch through the fuller hair at the temples.
+4. **Patch:** the canvas is padded (64 px left, 256 px right, 244 px bottom in the 2× frame) and nano-banana-pro outpainted the rest of the left sleeve with the complete "1420 MHz" patch (`op_full_gpt_4__nbp_1`). The composite's own pixels are then pasted back over everything it shows (`fin_*`), as `tools/sing/v5_outpaint.py` does. The one exception is the cut half-patch zone at the old right edge, which goes to the model, because pasting it back doubled "1420" into a ghost.
+5. **Collar:** the model edit's own collar is pasted back (`col_*`). It is registered by the face, refined by phase correlation on the collar box (−2.2, −1.7 px), and feathered between the hair locks from the jaw line to below the lower snap.
+
+**Pick checks** (against `light_makeup_irl.png`; body shift and collar against the model edit):
+- **Shape:** residual 0.44/1.55 px. Every ratio and brow measure is within the floor (largest: eyeL −3.4% against a 7.2% eye floor; brow arch −3.0/−2.9% against a 2.4% floor, so +0.6 beyond it, below the 3% flag).
+- **Skin:** her own colours (cheeks a\*b\* shift 0.17, lips 0.04); cheek texture 0.76×, which counts as light smoothing.
+- **Posture:** the jacket and body below the chin, with the head registered, moved −2.7, −2.7 px (2× photo px) relative to the model edit.
+- **Shoulders:** the shoulder line angle is within 0.6°.
+- **Pose keypoints are unreliable here:** MediaPipe Pose shoulder points jump 35–90 px between images because the padded canvas shows more arm. I reported the body shift instead.
+- **Collar:** the collar pixels are the model edit's. The check's mean diff of 15.5 is just that ~2.7 px registration offset; by eye, the collar crop matches the model edit's stitching, snaps and turtleneck edge.
+- **Remaining flaws:** a small blue fleck under the patch and a teal fleck lower on that sleeve.
+
+Script: `tools/sing/selfie_r3b.py` (`gen`, `widen`, `face`, `canvas`, `outpaint`, `merge`, `collar`, `check`). Sheet: `contact_sheet_r3b.jpg`. It is headed by the round-3 model edit and hybrid, and ends with a **collar crop row** plus body shift for every candidate. Numbers: `r3b/metrics_r3b.json` and `r3b/posture_r3b.json`.
+
+## Spend
+- **Round 3b:** $1.93 logged over 15 calls, with no failures.
+  - Hair edits: gpt-image-2.5 4 × $0.21; nano-banana-2 4 × $0.07; nano-banana-pro 3 × $0.13.
+  - Outpaints: nano-banana-2 2 × $0.07; nano-banana-pro 2 × $0.13.
+- **Selfie task total, rounds 1–3b:** $7.63 logged, about $7.8 counting round 1's flux-2/try-on under-count.
+
+## Verdicts
+| key | verdict | notes |
+|---|---|---|
+| gpt_4 → full → face → outpaint nbp_1 → collar | **PICK** | fuller hair, her exact face, the edit's collar, complete patch, body within 3 px |
+| col_fin_full_gpt_4__nb2_1 | OK | same, with the nano-banana-2 outpaint; small mark beside the "0" of the patch |
+| col_fin_full_gpt_2__* | REJECT | gpt_2 dropped the blue disc on the chest |
+| gpt_1 | OK | collar kept (11), hair fuller; not carried forward |
+| gpt_3 | REJECT | body −5 px, collar 17 |
+| nb2_1–4, nbp_1–3 | REJECT | all redrew the collar: mean diff 37–50 against about 11 for gpt; the stand-up collar and snaps change shape. Some also moved the body 9–18 px; nb2_1 barely fuller |
+| face_nb2_*, face_nbp_* | REJECT | their bases redrew the collar |
+| r3_hybrid (round 3) | REF | its old unclipped face mask erased part of the collar (diff 98): the bug Jade saw, now fixed by the jaw clip |
+
+Nano-banana models restyle the collar whenever they touch hair near it. gpt-image left the collar alone, at the cost of the 2:3 crop handled in step 2.

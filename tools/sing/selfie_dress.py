@@ -273,7 +273,27 @@ EYE_UP_R = [246, 161, 160, 159, 158, 157, 173]
 EYE_UP_L = [398, 384, 385, 386, 387, 388, 466]
 
 
-def hybrid_face_mask(shape_, L, io):
+def jaw_clip(shape_, L, io, inset=0.03):
+    """1 above the jaw/chin line, 0 below it, with the whole soft edge INSIDE the face: the oval's lower half moved in by
+    `inset` io, then eroded by 3 sigma before blurring, so nothing below the jaw (collar, turtleneck, neck) gets her old
+    pixels. Round 3b (Jade: "the hybrid erased part of the collar")."""
+    import cv2
+    import numpy as np
+    import tint_match as T
+    P = L[T.OVAL].copy()
+    c = (L[33] + L[263]) / 2
+    lo = P[:, 1] > L[1, 1]
+    P[lo] = P[lo] - (P[lo] - c) / np.linalg.norm(P[lo] - c, axis=1)[:, None] * inset * io
+    up = ~lo
+    P[up] = P[up] + (P[up] - c) / np.linalg.norm(P[up] - c, axis=1)[:, None] * 1.0 * io    # no clip above the nose tip
+    m = T._poly(shape_, P)
+    sg = 0.015 * io
+    r = int(3 * sg) + 1
+    m = cv2.erode(m, cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (2 * r + 1, 2 * r + 1)))
+    return np.clip(cv2.GaussianBlur(m, (0, 0), sg), 0, 1)
+
+
+def hybrid_face_mask(shape_, L, io, clip=False, band_in_oval=False):
     """Face oval with its upper half pushed out to the hairline, plus the whole glasses band; feathered."""
     import cv2
     import numpy as np
@@ -288,8 +308,13 @@ def hybrid_face_mask(shape_, L, io):
     brow_top = min(L[T.BROW_L][:, 1].min(), L[T.BROW_R][:, 1].min()) - 0.12 * io
     band = np.array([[L[T.OVAL][:, 0].min() - 0.18 * io, brow_top], [L[T.OVAL][:, 0].max() + 0.18 * io, brow_top],
                      [L[T.OVAL][:, 0].max() + 0.18 * io, L[195, 1]], [L[T.OVAL][:, 0].min() - 0.18 * io, L[195, 1]]])
-    m = np.maximum(m, T._poly(shape_, band))
-    return np.clip(cv2.GaussianBlur(m, (0, 0), 0.04 * io), 0, 1)
+    bm = T._poly(shape_, band)
+    if band_in_oval:   # round 3b: the take's hair is fuller than hers, so her glasses band must not reach past the face edge
+        k = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (int(0.08 * io) * 2 + 1,) * 2)
+        bm = bm * cv2.dilate(T._poly(shape_, L[T.OVAL]), k)
+    m = np.maximum(m, bm)
+    m = np.clip(cv2.GaussianBlur(m, (0, 0), 0.04 * io), 0, 1)
+    return m * jaw_clip(shape_, L, io) if clip else m
 
 
 def makeup(rgb, L, ref=None, conceal=0.45, even=0.5, lips=0.7, lash=0.18):
@@ -336,7 +361,7 @@ def _ss01(x):
 
 
 def hybrid(argv, cand_dir=OUT, look=None, src_path=SRC, tone=(0.5, 0.6, 0.6), sharpen=0.6, edge_tone_only=False,
-           label=None, crop_invalid=False):
+           label=None, crop_invalid=False, clip_jaw=False, prefix="hyb_", band_in_oval=False):
     """Her own face (selfie, 2x Lanczos) back onto a take, aligned by landmarks, with the local makeup on it. Works in
     the selfie's framing at 2x (1024x1366). Hair and jacket come from the take; face + hairline + glasses from her.
     look(rgb, L, ref) -> rgb replaces the round-1 makeup() (round 2 passes the glow look; round 3 passes no-op).
@@ -362,7 +387,7 @@ def hybrid(argv, cand_dir=OUT, look=None, src_path=SRC, tone=(0.5, 0.6, 0.6), sh
         mb, mw = T.masks(big, Lb), T.masks(w, Lb)
         sb, sw = T.stats(mb["lab"], mb["skin"]), T.stats(mw["lab"], mb["skin"])
         lab = mb["lab"].copy()
-        m = hybrid_face_mask(big.shape, Lb, io)[..., None]
+        m = hybrid_face_mask(big.shape, Lb, io, clip=clip_jaw, band_in_oval=band_in_oval)[..., None]
         wt = np.clip(mb["skin"] * 1.5, 0, 1)
         if edge_tone_only:
             wt = wt * np.clip((1 - m[..., 0]) * 2.5, 0, 1)
@@ -379,7 +404,7 @@ def hybrid(argv, cand_dir=OUT, look=None, src_path=SRC, tone=(0.5, 0.6, 0.6), sh
             if len(cols) and len(rows) and (len(cols) < valid.shape[1] or len(rows) < valid.shape[0]):
                 out = out[rows[0]:rows[-1] + 1, cols[0]:cols[-1] + 1]
                 m = m[rows[0]:rows[-1] + 1, cols[0]:cols[-1] + 1]
-        name = "hyb_" + key
+        name = prefix + key
         os.makedirs(os.path.join(cand_dir, "_in"), exist_ok=True)
         Image.fromarray(out).save(os.path.join(cand_dir, name + ".png"))
         Image.fromarray((m[..., 0] * 255).astype(np.uint8)).save(os.path.join(cand_dir, "_in", name + "_mask.png"))
