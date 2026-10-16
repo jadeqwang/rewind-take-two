@@ -62,3 +62,18 @@ direction, in progress:
   the jaw.
 - **r3b at this checkpoint:** running (an agent was editing `selfie_r3_pick_model.png` for fuller hair, pasting her
   face back, and outpainting the patch). If it was interrupted, re-run that brief from these notes.
+
+## v6: both shots rebuilt from the chosen photo (2026-10-16 evening, Jade away)
+
+Jade: "go ahead and animate the singing so i can see it". Built from `media/sing/selfie/selfie_r3b_pick.png`, hair
+down in both, with no outpaint needed. Full report: `docs/revisions/v9/sing_v6.md`.
+
+| Shot | Wired file | Take | Lag |
+|---|---|---|---|
+| S1 0:12.60-0:19.64 | A.js `media/sing/S1/v6_sync_1080.mp4` | v6_take_1 | +1.09, measured over the whole line (v5c's phrase-1-only method read too small) |
+| V3S 2:33.98-2:39.14 | E.js `media/sing/V3S/v6_sync_1080.mp4` | v6_take_3 | +0.20 measured |
+
+- Previews: `deliverables/wip/sing_v6_{S1,V3S}_preview.mp4`. Ear tests: `media/sing/review/v6_*_lag*.mp4`.
+- Open: Jade picks the sync by ear on `deliverables/wip/sing_review.html` (section "Singing v6"). Then rebuild the
+  sync file at her pick (`wc_post.py` `SYNC_V6`, `--name`), re-matte, re-wire, re-render the preview, and re-check the
+  eyes at the new in-point.

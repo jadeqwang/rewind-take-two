@@ -145,6 +145,21 @@ SYNC_V5C = {
 SYNC_V5D = {
     "V3S": ("v5d_take_2", [(153.98, 0.45), (159.14, 5.61)]),
 }
+# v6: both slots from Jade's approved photo (tools/sing/v6_first.py; media/sing/NOTES.md "v6").
+#   Lesson (re-measuring v5c_take_2): over "The night before" alone the correlation locks on the take's pre-roll mouthing
+#   (+0.11 for v5c), while "my dissertation defense" and the whole take say +0.8 .. +1.3; Jade's ear picked +0.90. So the
+#   v6 lag is read from the whole take, the phrase-2 windows and the lip events, then checked on a trace plot.
+#   S1 v6_take_1: look.py corr +1.087 (r .54), events open +1.075, 'b' +1.01, 'm' +1.11, end +1.23 (median +1.095);
+#       phrase-2 windows +1.13..+1.30 (r .82-.99). Wired at the measured +1.09, untouched frames. (v6_take_2: events drift
+#       +0.74 .. +1.15 and it blinks on "The" and on "my": spare.)
+#   V3S v6_take_3: look.py corr +0.202 (r .58), events open +0.33, 'b' -0.08, 'm' +0.14, end +0.25 (median +0.196); on
+#       the trace the 'm' of "my" closes at 157.0-157.2 and the mouth falls with the voice at 159.3. Wired at the measured
+#       +0.20, untouched frames. (take_1 21:9: rejected; take_2 unsteady, -0.34 with events -0.26 .. -0.73; take_4 blinks
+#       at the in-point and on "my".)
+SYNC_V6 = {
+    "S1": ("v6_take_1", [(12.60, 0.79), (19.64, 7.83)]),
+    "V3S": ("v6_take_3", [(153.98, 0.50), (159.14, 5.66)]),
+}
 if VER == "v4":
     SYNC = SYNC_V4
 elif VER == "v5":
@@ -155,6 +170,8 @@ elif VER == "v5c":
     SYNC = SYNC_V5C
 elif VER == "v5d":
     SYNC = SYNC_V5D
+elif VER == "v6":
+    SYNC = SYNC_V6
 
 
 def clip_time(keys, t):

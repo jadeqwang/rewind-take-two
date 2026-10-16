@@ -435,3 +435,80 @@ WC_VER=v5 $PY tools/sing/wc_post.py review_sync S1 media/sing/review/v5_S1_sync_
 - Ear test: `review/v5d_V3S_lag+0.00/0.15/0.30/0.45_*`.
 - Jade's v5b half-blink was the take's own, on "my", 157.08-157.38 (f3770-f3777).
 - Spend now $17.45 of the $20 cap (tag `v5_sing_V3S_r3`, $3.24).
+
+---
+
+# v6 Jade's approved photo in both slots (2026-10-16)
+
+Jade approved `media/sing/selfie/selfie_r3b_pick.png` (her real face and light makeup, fuller hair worn down, the film's
+jacket) and said "let's just use the hair down in both". One figure for both shots; only the plate differs (S1
+`plate_close_1`, V3S `plate_truth_1`). No pencils any more. Everything is beside the v5 files with a `v6_` prefix. Full
+report: `docs/revisions/v9/sing_v6.md`.
+
+## Files for the engine
+
+Same contract as v3-v5: file time 0 = the shot's in-point, rate 1, 1920x1080, 24 fps, per-frame matte dir with `fps.txt`.
+
+| Shot | Song in-out | File | Take | Sync baked in | Matte |
+|---|---|---|---|---|---|
+| S1 | 12.60-19.64 | `media/sing/S1/v6_sync_1080.mp4` (174 fr) | `v6_take_1` | one lag, +1.09; untouched frames; no eye patch | `v6_sync_1080_matte/` (BiRefNet) |
+| V3S | 153.98-159.14 | `media/sing/V3S/v6_sync_1080.mp4` (133 fr) | `v6_take_3` | one lag, +0.20; untouched frames; no eye patch | `v6_sync_1080_matte/` (BiRefNet) |
+
+`render/timeline/A.js` `S1_SRC` (and through it `S1_MATTE`) and `render/timeline/E.js` `V3S_SRC` plus the `V3S_lyric`
+HER matte point at these. The v5c / v5d paths are in comments.
+
+## First frames (`tools/sing/v6_first.py`, no paid call)
+
+- **Matte:** BiRefNet on the photo (`WC_VER=v6 wc_comp.py matte`), checked by eye. The headboard, sconces, fan, bed and
+  the gaps between her arms and body are all keyed out.
+- **Placement:** v5d's geometry. Scale 1.130, face 504.6 crop px (0.348 by the photo's landmarks; 0.336 measured on the
+  composite), eyes at 1080p (941, 429).
+- **No outpaint.** The frame's bottom edge is photo row 1281, and her arms meet the photo's side borders only at rows
+  1359 / 1372, so every pixel of her is the photo's own and there is no seam.
+- **Outputs:** `first/v6_{S1,V3S}_first.jpg` (one figure, pixel-identical), `v6_her_mask_first_frame_{S1,V3S}.png`,
+  `v6_fig.jpg`, `v6_alpha.png`. Sheet: `review/v6_first_vs_v5.jpg`.
+
+## Takes (`WC_VER=v6 wc_takes.py`, Seedance 2.5 720p avatar, v4 slices; tag `v6_sing_*`; prompt `P6`)
+
+| Take | Frame | Lag | Verdict |
+|---|---|---|---|
+| S1 `v6_take_1` | 16:9 | corr +1.087, events median +1.095, phrase-2 windows +1.13..+1.30 | **pick**, +1.09 |
+| S1 `v6_take_2` | 16:9 | +0.74 .. +1.15 drifting | spare (blinks on "The", ~16.25, ~17.6) |
+| V3S `v6_take_1` | 21:9 | - | reject (reframed) |
+| V3S `v6_take_2` | 16:9 | -0.34, events -0.26 .. -0.73 | reject (unsteady) |
+| V3S `v6_take_3` | 16:9 | corr +0.202, events median +0.196 | **pick**, +0.20 |
+| V3S `v6_take_4` | 16:9 | +0.17 | spare (blinks at the in-point and on "my") |
+
+No identity drift: inter-ocular and eye width are within 2 % of the first frame, so no eye enlargement. Glasses, hair
+down, collar and patch hold in every take.
+
+## Sync lesson (applies to every S1 take so far)
+
+Over "The night before" alone (13.05-14.95), correlation locks on Seedance's pre-roll mouthing. Re-measured now,
+`v5c_take_2` gives +0.11 there, but +1.21..+1.29 over "my dissertation defense" and +0.81 over the whole take; Jade's
+ear picked +0.90. So S1's lag is read from the whole take, the lip events and the phrase-2 windows, then checked on a
+trace plot. `tools/sing/v6_lagwin.py` prints the window and sliding-window lags.
+
+**Ear tests** (`media/sing/review/`):
+- S1: `v6_S1_lag+{0.79,0.94,1.09,1.24,1.39,1.54,1.69,1.99}_*`. 1.09 is wired. 0.79 is an extra on the early side.
+- V3S: `v6_V3S_lag+{0.05,0.20,0.35,0.50}_*`. 0.20 is wired.
+
+## Eyes (`tools/sing/v6_eyes.py`)
+
+- **S1:** open (0.88-1.00) on every frame on screen, 12.60-16.14 (f302-f386), including the whole Bean wide. A full
+  blink at 19.31-19.48 (f463-f466) comes after the cutaway and is never shown.
+- **V3S:** open throughout (0.88-1.04). The cut-in frame 153.98 (f3696) is 0.83 (the tail of a blink before the
+  in-point), and by 154.06 it is 0.90. No patch.
+
+## What is weak
+
+- Lags are measured, not heard. The S1 method is new (see above).
+- S1's lips are slightly parted at 12.60, closing by 12.85.
+- S1's lips hold slightly parted in the silence 15.27-15.93.
+- V3S cut-in frame lids 0.83.
+- 720p takes upscaled, so the skin is soft.
+
+## Cost
+
+Seedance 2.5 720p: S1 2 x 8 s $3.70, V3S 4 x 7 s $6.47. **Total $10.17** (project estimate $293.23 -> $303.40). The
+genlog writes two lines per job, so a plain sum doubles it.

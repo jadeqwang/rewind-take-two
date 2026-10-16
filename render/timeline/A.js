@@ -50,7 +50,12 @@ const S1_IN = 0 + { A: 0.15, B: 0, C: -0.15 }[LIP];   // clip time at song 12.60
 // v5c re-sync (Jade by ear: +0.30 "closer but the lips are still late"; +0.90 "about right, for the first half"):
 // lag +0.90, eyes patched open on file frames 1-6 (v4_noblink.py, ref 0); matte -> v5c_sync_1080_l090_matte/ (pencils
 // keyed). +0.15: 'media/sing/S1/v5c_sync_1080.mp4'
-const S1_SRC = 'media/sing/S1/v5c_sync_1080_l090_open.mp4';
+// v6 (Jade: the approved selfie media/sing/selfie/selfie_r3b_pick.png, "let's just use the hair down in both"; no pencils):
+// one figure for S1 and V3S (tools/sing/v6_first.py), take v6_take_1, lag +1.09 measured over the whole take and
+// "my dissertation defense" (the "night before" window alone locks on pre-roll mouthing). Eyes open on every frame
+// 12.60-16.14, so no noblink; plain BiRefNet matte (no pencils to key). Ear-test variants: media/sing/review/v6_S1_lag*.mp4.
+// media/sing/NOTES.md "v6", docs/revisions/v9/sing_v6.md. v5c +0.90: 'media/sing/S1/v5c_sync_1080_l090_open.mp4'
+const S1_SRC = 'media/sing/S1/v6_sync_1080.mp4';
 // slow push over the three singing cuts (1.0 -> 1.08 keeps the band, dot and 1420 MHz roundel in frame)
 const S1_PUSH = (a, b) => ({ from: { scale: a }, to: { scale: b }, ease: 'linear' });
 // v4 (Jade, 0:13: "start further away and then zoom in"): S1 opens on the whole Bean and pushes in to the v3 framing,
@@ -298,7 +303,7 @@ export default ({ T }) => ({
     // render/timeline/_arc_lyric.js), one word per sung onset, behind her (her matte is laid back over it). S1x: "MY
     // DISSERTATION DEFENSE" (no comma, Jade v4) on the plaza paving of the reflection. Layer times are local to 12.60: S1 0-3.54, S1x 3.54-7.04.
     { id: 'A_S1_lyric', start: 12.6, end: 19.64, layers: (() => {
-      const ARC = 'render/timeline/_arc_lyric.js', HER = { src: S1_MATTE, mode: 'luma' };   // v5c: S1_MATTE = 'media/sing/S1/v5c_sync_1080_matte/'; v5: 'media/sing/S1/v5_sync_1080_l061_open_matte/' (-> v5_sync_1080_l061_matte/); v4 A: 'media/sing/S1/v4_sync_1080_matte/'
+      const ARC = 'render/timeline/_arc_lyric.js', HER = { src: S1_MATTE, mode: 'luma' };   // v6: S1_MATTE = 'media/sing/S1/v6_sync_1080_matte/'; v5c +0.90: 'media/sing/S1/v5c_sync_1080_l090_open_matte/' (-> v5c_sync_1080_l090_matte/); v5c: S1_MATTE = 'media/sing/S1/v5c_sync_1080_matte/'; v5: 'media/sing/S1/v5_sync_1080_l061_open_matte/' (-> v5_sync_1080_l061_matte/); v4 A: 'media/sing/S1/v4_sync_1080_matte/'
       const arc = (text, times, r, at) => ({ text, times, cx: 965, cy: 981, r, ...at, size: 88, style: 'woodcut' });
       const LEFT = [arc('THE NIGHT', ['word:the@13', 'word:night@13'], 1014, { to: -31 }), arc('BEFORE', ['word:before@13'], 930, { to: -31 })];
       // S1x: the plate drifts left about 38 px/s; the quad rides it (plate px before the layer's 1.04 scale)
