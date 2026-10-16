@@ -1,0 +1,24 @@
+{
+ "_note": "v9 fix 11 (Jade 3:40): RARE EARTH under the back dot in O2 (tools/v9/rare_earth.py). Geometry in dot radii, from the canon sheet (inputs/jade_in_outfit.png BACK).",
+ "clip": "media/shots/O2/take_3_engraved_dered_blue.mp4",
+ "out": "media/shots/O2/take_3_engraved_dered_blue_v9rare.mp4",
+ "crf": 14,
+ "start": [
+  1116,
+  424
+ ],
+ "text": "RARE EARTH",
+ "font": "/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf",
+ "tracking": 0.05,
+ "word_space": 1.5,
+ "width": 2.15,
+ "gap": 0.26,
+ "bow": 0.0,
+ "ink": [
+  52,
+  51,
+  56
+ ],
+ "soft": 0.35,
+ "anchor_dir": "vertical"
+}

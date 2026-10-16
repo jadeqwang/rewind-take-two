@@ -6,27 +6,28 @@
 import tracks from './_A_tracks.js';
 import { subQuad, stepKeys } from '../../tools/v5/signs/quad.js';   // v5-signs: sub-quads of a sign track (D1)
 import signTracks from '../../tools/v5/signs/tracks.js';            // v5-signs: D1 panels re-tracked per frame
+import { D2_BILL_TOP, D2_BILL_BOT, D3_BILL_TOP, D3_BILL_BOT, D3_PLATE_R3, D3_ETCH_R3 } from '../../tools/v9/d23/d23_tracks_r7.js';   // v9 #2 round 7 (mirror on its sail at the window's front lower corner, camera 23 cm forward, drawn housing; round 5-6: d23_tracks_r5.js); round 5 (Acura TL door mirror, plate fitted to the drawn plate; round 3-4: d23_tracks.js); round 3: D2+D3 three.js scene, tracks from its rig (round 2: tools/v9/mirrors/d3_tracks_r2.js)
 
 const S = (id, f) => `media/shots/${id}/${f}`;
 const INK = '#0b0b0c', PAPER = '#ece7dc', ORANGE = '#F08A24';
 
 // chosen takes (mirrors media/shots/<ID>/chosen.json)
 const PLATE = {
-  C1: { src: S('C1', 'take_3_engraved.mp4'), in: 0.0, rate: 1 },   // v3: no bullet, a muzzle flare at the centre pistol; two pencils
+  C1: { src: S('C1', 'take_3_engraved_patch.mp4'), in: 0.0, rate: 1 },   // v9: sleeve roundel re-lettered 1420 / MHz (tools/sectionE/patchfix.py). v3: no bullet, a muzzle flare at the centre pistol; two pencils
   C3: { src: S('C3', 'take_1_engraved.mp4'), in: 0.0, rate: 1 },
   C4: { src: S('C4', 'take_4_engraved_bun.mp4'), in: 0.0, rate: 1 },   // v3: two crossed pencils; near (right) sleeve has no roundel. v7 (Jade 0:11): the pencils go through a bun, short points (tools/c4_bun.py)
   S2: { src: S('S2', 'take_1_lens.mp4'), in: 0.0, rate: 1 },
   D1: { src: S('D1', 'take_1_engraved.mp4'), in: 0.0, rate: 1 },
-  D2: { src: S('D2', 'take_2_engraved.mp4'), in: 0.0, rate: 1 },   // v3: the bulb billboard big in the window (lyric surface)
-  D3: { src: S('D3', 'take_2_engraved_eraser.mp4'), in: 0.0, rate: 1 },   // v3: two straight pencils crossed through the bun. v7 (Jade 0:27): pencil tops back in colour through the flash (tools/matte_fix.py)
+  D2: { src: S('D23', 'v9r7_engraved.mp4'), in: 0.0, rate: 1 },   // v9 round 3 (Jade 0:24): one three.js scene for D2+D3 (tools/v9/d23/, docs/revisions/v9/fix_2_round3_threejs.md): from the passenger seat, Jade driving, head turned to her door mirror; the billboard is in the glass. v3: S('D2', 'take_2_engraved.mp4'), the bulb billboard big in the window
+  D3: { src: S('D23', 'v9r7_engraved.mp4'), in: 2.18, rate: 1 },   // v9 round 3 (Jade 0:27): the same take, zooming into the door mirror until the TVA sedan fills the glass. round 2: S('D3', 'v9_take_2_push_r2.mp4') (interior mirror); v8: take_2_engraved_eraser.mp4
   D4: { src: S('D4', 'take_2_engraved.mp4'), in: 0.9, rate: 1 },   // v3: both cars on the right shoulder, the black sedan behind the Acura
   D5cu: { src: S('D5', 'take_2_engraved.mp4'), in: 0.0, rate: 1 },   // v3: close-up of the shades (lyric in the lenses)
   D5: { src: S('D5', 'take_3_engraved.mp4'), in: 0.3, rate: 1 },   // v3: the three men on the same lakefront shoulder as D4
   D6: { src: S('D6', 'take_2_engraved_breath.mp4'), in: 0.4, rate: 1 },   // v3: starts one beat later (32.36). Restaged: from the passenger seat, agents at HER window (same view direction as D8); two pencils. v7 (Jade 0:33): whole pink eraser + canon blue eraser (tools/matte_fix.py, tools/blue_eraser.py); v7 (Jade): she breathes (tools/d6_breath.py)
   D7: { src: S('D7', 'take_2_engraved.mp4') },   // v3: the agent's view through her window; played backward (D7_SRC)
   D8: { src: S('D8', 'take_3_engraved.mp4'), in: 1.18, rate: 1.25 },   // v3: reverse angle, only the BACK of her card; needle slams on "do" (36.92)
-  P1: { src: S('P1', 'take_2_engraved.mp4'), in: 0.3, rate: 1 },   // take_2 = A_P1b (lakefront)
-  P2: { src: S('P2', 'take_2_engraved_eraser.mp4'), in: 0.3, rate: 1 },   // v3: the v2 keyframe with the two-pencil bun. v7 (Jade 0:39): blue eraser top back in colour (tools/matte_fix.py)
+  P1: { src: S('P1', 'take_v9_2_engraved_jade.mp4'), in: 0.3, rate: 1 },   // v9 #9: agent at her driver's door, nose left as in D7, Jade driving (tools/v9/p1_matte.py; docs/revisions/v9/fix_1a_9_car.md). v8: take_2_engraved.mp4 (lakefront, empty car)
+  P2: { src: S('P2', 'take_v9_1_engraved.mp4'), in: 0.3, rate: 1 },   // v9 #1a: D7's angle, she is behind the wheel (tools/v9/car_kf.py, car_vid.py). v8: take_2_engraved_eraser.mp4. v3: the v2 keyframe with the two-pencil bun. v7 (Jade 0:39): blue eraser top back in colour (tools/matte_fix.py)
   P3: { src: S('P3', 'take_1_engraved.mp4'), in: 0.4, rate: 1 },
   P4: { src: S('P4', 'take_1_engraved.mp4'), in: 0.0, rate: 1 },
 };
@@ -37,7 +38,19 @@ const LIP = 'B';
 const S1_IN = 0 + { A: 0.15, B: 0, C: -0.15 }[LIP];   // clip time at song 12.60
 // v4 (Jade: glossier hair, no smile; media/sing/NOTES.md, "v4"): same framing, scale and timing as v3. v3: 'media/sing/S1/v3_sync_1080.mp4'
 // v4 _open: the same take with the blink at 12.93-13.14 replaced by open eyes (tools/sing/v4_noblink.py); plain: 'media/sing/S1/v4_sync_1080.mp4'
-const S1_SRC = 'media/sing/S1/v4_sync_1080_open.mp4';
+// v5 (Jade, 2026-10-16: "reshoot the 2 lip sync clips using these 2 new photos", the pencils photo here): her own photo
+// over the plate, photographic; Seedance 2.5 take v5_take_2, lag +0.46 baked in, first-frame blink at 12.60-12.72 replaced
+// by open eyes (_open); per-frame matte with the two pencils keyed back in (tools/sing/v5_pencils.py). media/sing/NOTES.md
+// "v5", docs/revisions/v9/sing_v5.md. Same contract (file time 0 = 12.60, rate 1, 1920x1080). v4: 'media/sing/S1/v4_sync_1080_open.mp4'
+// v5 re-sync (Jade: "the video lags behind audio"): lag +0.61 (was +0.46: 'media/sing/S1/v5_sync_1080_open.mp4'); ear-test
+// variants +0.61/+0.76/+0.91 in media/sing/review/v5_S1_lag+*.mp4. v5 re-sync: 'media/sing/S1/v5_sync_1080_l061_open.mp4'
+// v5c (Jade: "local_a is good"): S1 shot again from the re-tinted pencils photo (v5_first.py V5_REV=c), take v5c_take_2,
+// lag +0.15 (measured +0.10, leaning early), first frame held 12.60-12.75; matte with the pencils keyed in. Ear-test
+// variants: media/sing/review/v5c_S1_lag+*.mp4
+// v5c re-sync (Jade by ear: +0.30 "closer but the lips are still late"; +0.90 "about right, for the first half"):
+// lag +0.90, eyes patched open on file frames 1-6 (v4_noblink.py, ref 0); matte -> v5c_sync_1080_l090_matte/ (pencils
+// keyed). +0.15: 'media/sing/S1/v5c_sync_1080.mp4'
+const S1_SRC = 'media/sing/S1/v5c_sync_1080_l090_open.mp4';
 // slow push over the three singing cuts (1.0 -> 1.08 keeps the band, dot and 1420 MHz roundel in frame)
 const S1_PUSH = (a, b) => ({ from: { scale: a }, to: { scale: b }, ease: 'linear' });
 // v4 (Jade, 0:13: "start further away and then zoom in"): S1 opens on the whole Bean and pushes in to the v3 framing,
@@ -70,8 +83,8 @@ const PUSH_KB = { from: { scale: 1.08, x: 0, y: 0 }, to: { scale: PUSH, x: -(HEA
 // keyframes: used instead of the takes while USE_STILLS is true (layout checks before the takes exist)
 const USE_STILLS = false;
 const KF = { C1: 'still_hero_engraved.png', C3: 'kf_sdr2.jpg', C4: 'kf_sdr1f.jpg', S2: 'kf_nbp1.jpg', D1: 'kf_sdr1.jpg', D2: 'kf_sdr1.jpg',
-  D3: 'kf_sdr3.jpg', D4: 'kf_nbp1.png', D5: 'kf_sdr1.jpg', D5cu: 'kf_v3_cu.jpg', D6: 'kf_v3_2.jpg', D7: 'kf_v3_2.jpg', D8: 'kf_v3_2.jpg', P1: 'kf_sdr1.jpg',
-  P2: 'kf_v3_1.jpg', P3: 'kf_sdr1.jpg', P4: 'kf_torso1.jpg' };
+  D3: 'kf_v9.png', D4: 'kf_nbp1.png', D5: 'kf_sdr1.jpg', D5cu: 'kf_v3_cu.jpg', D6: 'kf_v3_2.jpg', D7: 'kf_v3_2.jpg', D8: 'kf_v3_2.jpg', P1: 'kf_v9a.jpg',
+  P2: 'kf_v9d.png', P3: 'kf_sdr1.jpg', P4: 'kf_torso1.jpg' };
 const MATTE = id => ({ src: PLATE[id].src.replace('_engraved.mp4', '_matte/'), mode: 'luma' });
 const vid = (id, extra = {}) => {
   if (USE_STILLS) { const { matte, ...rest } = extra; return { id: `${id}_plate`, type: 'image', src: S(id, KF[id]), fit: 'cover', ...rest }; }
@@ -196,25 +209,35 @@ export default ({ T }) => ({
     // is sung, then flickers on like a lamp. One beat longer (to 25.34) so "chasing" (24.78) can be read.
     { id: 'D2', start: 23.16, end: 25.34, background: INK,
       layers: [
-        vid('D2', D2_DOWN),
-        { type: 'canvas', module: WOODCUT, noRewind: true, ...D2_DOWN, params: { text: 'A SHADOW', sync: 'lyric', reveal: 'bulb', unlit: 0.82, color: INK, flecks: 0, hatch: 0.3, box: [380, 152], pad: 16, corners: tracks.D2_top } },
-        { type: 'canvas', module: WOODCUT, noRewind: true, ...D2_DOWN, params: { text: 'CHASING', sync: 'lyric', reveal: 'bulb', unlit: 0.82, color: INK, flecks: 0, hatch: 0.3, box: [388, 186], pad: 18, corners: tracks.D2_bot } },
+        vid('D2'),
+        // v9 round 3: the billboard is seen IN her door mirror; the lettering is pinned to the mirror image of each panel
+        // (tracks from the scene's rig) with its corners swapped so it reads forward (Jade's plate cheat, applied to the lyric)
+        { type: 'canvas', module: WOODCUT, noRewind: true, params: { text: 'A SHADOW', sync: 'lyric', reveal: 'bulb', unlit: 0.82, color: INK, flecks: 0, hatch: 0.3, box: [460, 96], pad: 6, corners: D2_BILL_TOP } },
+        { type: 'canvas', module: WOODCUT, noRewind: true, params: { text: 'CHASING', sync: 'lyric', reveal: 'bulb', unlit: 0.82, color: INK, flecks: 0, hatch: 0.3, box: [460, 96], pad: 6, corners: D2_BILL_BOT } },
+        // whatever is in front of the billboard (lamp poles, the glass's edge, the A-pillar) is re-drawn over the lettering:
+        // the same clip through the inverse of the scene's billboard-visibility mask
+        vid('D2', { id: 'D2_occluder', matte: { src: S('D23', 'r7_billmask_frames/'), mode: 'lumaInv' } }),
         // v5-signs: drawn only when R3 replays this shot (51.5-52.0): the whole of "a shadow chasing" lit on the upper
         // panel, the lower panel switched off (the REWIND title sits on it). Forward D2 is unchanged.
-        { type: 'canvas', module: WOODCUT, opacity: RW_ONLY, ...D2_DOWN, params: { text: 'A SHADOW\nCHASING', at: -1, color: INK, flecks: 0, hatch: 0.3, box: [380, 152], pad: 14, corners: tracks.D2_top } },
-        { type: 'canvas', module: PANEL, opacity: RW_ONLY, ...D2_DOWN, params: { corners: tracks.D2_bot, box: [388, 186], lines: 30, cut: 0.14, rule: 0, opacity: 0.9, seed: 3 } },
+        // (round 3: after the occluder, which hid them in the replay)
+        { type: 'canvas', module: WOODCUT, opacity: RW_ONLY, params: { text: 'A SHADOW\nCHASING', at: -1, color: INK, flecks: 0, hatch: 0.3, box: [460, 96], pad: 4, corners: D2_BILL_TOP } },
+        { type: 'canvas', module: PANEL, opacity: RW_ONLY, params: { corners: D2_BILL_BOT, box: [460, 96], lines: 16, cut: 0.14, rule: 0, opacity: 0.9, seed: 3 } },
       ], fx: [LETTERBOX] },
     { id: 'D3', start: 25.34, end: 28.4, background: INK,
       layers: [
         vid('D3'),
-        // v4 (Jade, 0:26): the sedan's front plate reads TVA 1729 (v5 text pass: TVA is now also named on the terminals and the loading tip). Drawn over the take's
-        // blank plate, pinned to its track, 1.5x the take's width so it reads at 540p; `light` follows the streetlights
-        { type: 'canvas', module: 'tools/v4B/plate/plate.js', noRewind: true, params: { text: 'TVA 1729', corners: tracks.D3_plate, grow: 1.5, aspect: 2.3, dim: 0.12,
-          light: [[0, 0], [0.42, 0.05], [0.5, 0.19], [0.75, 0.83], [1.0, 0.97], [1.25, 0.4], [1.42, 0.03], [2.4, 0.04], [2.5, 0.16], [2.75, 0.71], [3.0, 1]] } },
-        // etch across the top of the mirror glass (dark sky): an ink shadow under paper-white glyphs. The billboard
-        // carried "a shadow chasing", the mirror finishes the line.
-        { type: 'canvas', module: 'etch', noRewind: true, x: 3, y: 27, opacity: 0.85, params: { text: "me I couldn't\nplace", sync: 'lyric', size: 60, corners: D3_QUAD, color: INK } },
-        { type: 'canvas', module: 'etch', noRewind: true, y: 24, params: { text: "me I couldn't\nplace", sync: 'lyric', size: 60, corners: D3_QUAD, color: '#fbf8f1' } },
+        // the billboard stays lit in the glass (whole line, as D2 ends) until the sedan drives in front of it
+        { type: 'canvas', module: WOODCUT, noRewind: true, params: { text: 'A SHADOW', at: -1, color: INK, flecks: 0, hatch: 0.3, box: [460, 96], pad: 6, corners: D3_BILL_TOP } },
+        { type: 'canvas', module: WOODCUT, noRewind: true, params: { text: 'CHASING', at: -1, color: INK, flecks: 0, hatch: 0.3, box: [460, 96], pad: 6, corners: D3_BILL_BOT } },
+        // v4 (Jade, 0:26): the sedan's front plate reads TVA 1729. v9 round 3: seen in her door mirror, pinned to the
+        // mirror image of the plate, corners swapped so it reads FORWARD (Jade: legible, though a real mirror reverses it)
+        { type: 'canvas', module: 'tools/v4B/plate/plate.js', noRewind: true, params: { text: 'TVA 1729', corners: D3_PLATE_R3, grow: 1.0, aspect: null, dim: 0.12, light: 0.8 } },
+        // round 4: the occluder re-draws the clip wherever the mask is black, so the lettering AND the plate only show
+        // where they are really seen (inside the glass; the sedan slides into it during the zoom)
+        vid('D3', { id: 'D3_occluder', matte: { src: S('D23', 'r7_billmask_frames/'), mode: 'lumaInv' } }),
+        // etch on the glass itself, two lines in the top-left sky of the glass (round 5; round 4 ran along the bottom edge)
+        { type: 'canvas', module: 'etch', noRewind: true, x: 2, y: 2, opacity: 0.85, params: { text: "me I couldn't\nplace", sync: 'lyric', size: 60, padding: 4, corners: D3_ETCH_R3, color: INK } },
+        { type: 'canvas', module: 'etch', noRewind: true, params: { text: "me I couldn't\nplace", sync: 'lyric', size: 60, padding: 4, corners: D3_ETCH_R3, color: '#fbf8f1' } },
       ], fx: [LETTERBOX] },
     // v3 restage: three beats on the shoulder, two on the men, four on the shades (cuts on beats 29.74, 30.60, 32.36)
     { id: 'D4', start: 28.4, end: 29.74, background: INK,
@@ -253,7 +276,7 @@ export default ({ T }) => ({
     { id: 'P2', start: 38.9, end: 39.68, background: INK,
       // v3: framed lower with a gentler push, so the two crossed pencils (erasers at the plate's top edge) stay inside
       // the letterbox; the plate's own top edge stays behind the bar
-      layers: [vid('P2', { kenBurns: { from: { scale: 1.02, y: 130 }, to: { scale: 1.07, y: 148 } } })], fx: [LETTERBOX] },
+      layers: [vid('P2', { kenBurns: { from: { scale: 1.0, y: 60 }, to: { scale: 1.1, y: 100 } } })], fx: [LETTERBOX] },   // v9: v8 was 1.02/130 -> 1.07/148
     // v3 (Jade, 0:39): the gun pointed into the car put her head above the roof line, so no gun shot: back to the
     // agent, his hand at the holster inside his jacket, pushing in on it, then the hit (P4). v2: P3 take_1, in 0.4.
     { id: 'P1b', start: 39.68, end: 40.24, background: INK,
@@ -275,7 +298,7 @@ export default ({ T }) => ({
     // render/timeline/_arc_lyric.js), one word per sung onset, behind her (her matte is laid back over it). S1x: "MY
     // DISSERTATION DEFENSE" (no comma, Jade v4) on the plaza paving of the reflection. Layer times are local to 12.60: S1 0-3.54, S1x 3.54-7.04.
     { id: 'A_S1_lyric', start: 12.6, end: 19.64, layers: (() => {
-      const ARC = 'render/timeline/_arc_lyric.js', HER = { src: S1_MATTE, mode: 'luma' };   // v4 A: 'media/sing/S1/v4_sync_1080_matte/'
+      const ARC = 'render/timeline/_arc_lyric.js', HER = { src: S1_MATTE, mode: 'luma' };   // v5c: S1_MATTE = 'media/sing/S1/v5c_sync_1080_matte/'; v5: 'media/sing/S1/v5_sync_1080_l061_open_matte/' (-> v5_sync_1080_l061_matte/); v4 A: 'media/sing/S1/v4_sync_1080_matte/'
       const arc = (text, times, r, at) => ({ text, times, cx: 965, cy: 981, r, ...at, size: 88, style: 'woodcut' });
       const LEFT = [arc('THE NIGHT', ['word:the@13', 'word:night@13'], 1014, { to: -31 }), arc('BEFORE', ['word:before@13'], 930, { to: -31 })];
       // S1x: the plate drifts left about 38 px/s; the quad rides it (plate px before the layer's 1.04 scale)

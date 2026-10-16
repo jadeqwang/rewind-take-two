@@ -98,6 +98,9 @@ export class SpriteActor {
     }
     for (const [k, m] of Object.entries(this.meshes)) m.visible = k === key;
     const m = this.meshes[key];
+    // wrap by the clip's frame count, not the atlas cell count: cells past n are empty (v9: sprite blinked out)
+    const n = this.clips[key].n;
+    frame = ((Math.floor(frame) % n) + n) % n;
     this.eng.spriteFrame(m.material, frame, flip);
     m.position.set(pos.x, pos.y - m.userData.feetOffset, pos.z);
     m.rotation.set(0, camAz, 0);

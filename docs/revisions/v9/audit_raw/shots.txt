@@ -1,0 +1,183 @@
+{"timing":"analysis/cinematic/timing.json","stub":false,"gl":{"renderer":"ANGLE (NVIDIA, Vulkan 1.3.277 (NVIDIA NVIDIA GeForce RTX 3090 (0x00002204)), NVIDIA)"},"shots":153,"overlays":29,"range":[0,244.05],"W":1920,"H":1080}
+ C1                    0.000 →    1.900  (1.90 s, bar 0:4.78)  video solid canvas:hud
+ C2                    1.900 →    7.240  (5.34 s, bar 2:1.00)  comp canvas:ribbon canvas:ribbon canvas:ribbon canvas:ribbon canvas:ribbon solid canvas:hud solid canvas:hud
+ C3                    7.240 →   10.820  (3.58 s, bar 5:1.00)  video canvas:title
+ C4                   10.820 →   12.600  (1.78 s, bar 7:1.00)  video canvas:pencil
+ S1                   12.600 →   16.140  (3.54 s, bar 8:1.00)  video video image video
+ S1x                  16.140 →   19.640  (3.50 s, bar 10:1.00)  video
+ S2                   19.640 →   21.380  (1.74 s, bar 12:1.00)  video
+ D1                   21.380 →   23.160  (1.78 s, bar 13:1.00)  video canvas:tools/v5/signs/woodpanel.js canvas:tools/sectionA/modules/woodcut.js canvas:tools/sectionA/modules/woodcut.js canvas:tools/v5/signs/woodpanel.js canvas:tools/sectionA/modules/woodcut.js canvas:lowerthird
+ D2                   23.160 →   25.340  (2.18 s, bar 14:1.00)  video canvas:tools/sectionA/modules/woodcut.js canvas:tools/sectionA/modules/woodcut.js canvas:tools/sectionA/modules/woodcut.js canvas:tools/v5/signs/woodpanel.js
+ D3                   25.340 →   28.400  (3.06 s, bar 15:2.00)  video canvas:tools/v4B/plate/plate.js canvas:etch canvas:etch
+ D4                   28.400 →   29.740  (1.34 s, bar 17:1.00)  video video canvas:lowerthird
+ D5                   29.740 →   30.600  (0.86 s, bar 17:4.00)  video
+ D5cu                 30.600 →   32.360  (1.76 s, bar 18:2.00)  video canvas:tools/sectionA/modules/woodcut.js canvas:tools/sectionA/modules/woodcut.js
+ D6                   32.360 →   33.660  (1.30 s, bar 19:2.00)  video
+ D7                   33.660 →   36.300  (2.64 s, bar 20:1.00)  video
+ D8                   36.300 →   37.960  (1.66 s, bar 21:3.05)  video canvas:motes
+ P1                   37.960 →   38.900  (0.94 s, bar 22:2.82)  video
+ P2                   38.900 →   39.680  (0.78 s, bar 23:1.00)  video
+ P1b                  39.680 →   40.240  (0.56 s, bar 23:2.76)  video
+ P4                   40.240 →   40.650  (0.41 s, bar 23:4.05)  video video canvas:motes canvas:whisper
+ P5                   40.650 →   41.400  (0.75 s, bar 24:1.02)  video video canvas:render/timeline/_B_motes_hold.js
+ P6                   41.400 →   42.380  (0.98 s, bar 24:2.81)  video video canvas:render/timeline/_B_motes_hold.js
+ R1                   42.380 →   42.650  (0.27 s, bar 25:1.00)  video video canvas:render/timeline/_B_motes_hold.js canvas:motes
+ R2_01                42.650 →   43.280  (0.63 s, bar 25:1.61)  image solid canvas:hud
+ R2_02                43.280 →   43.720  (0.44 s, bar 25:3.05)  image solid canvas:hud
+ R2_03                43.720 →   44.180  (0.46 s, bar 25:4.05)  image solid canvas:hud
+ R2_04                44.180 →   44.610  (0.43 s, bar 26:1.09)  image solid canvas:hud
+ R2_05                44.610 →   45.040  (0.43 s, bar 26:2.07)  image solid canvas:hud
+ R2_06                45.040 →   45.560  (0.52 s, bar 26:3.05)  image solid canvas:hud
+ R2_07                45.560 →   45.950  (0.39 s, bar 26:4.23)  image solid canvas:hud
+ R2_08                45.950 →   46.370  (0.42 s, bar 27:1.11)  image solid canvas:hud
+ R2_09                46.370 →   46.820  (0.45 s, bar 27:2.07)  image solid canvas:hud
+ R2_10                46.820 →   47.270  (0.45 s, bar 27:3.05)  image solid canvas:hud
+ R2_11                47.270 →   47.700  (0.43 s, bar 27:4.07)  image solid canvas:hud
+ R2_12                47.700 →   48.150  (0.45 s, bar 28:1.05)  image solid canvas:hud
+ R2_13                48.150 →   48.420  (0.27 s, bar 28:2.07)  image solid canvas:hud
+ R3                   48.420 →   52.480  (4.06 s, bar 28:2.68)  comp canvas:ribbon canvas:hud canvas:title
+ R4                   52.480 →   56.540  (4.06 s, bar 30:3.86)  comp canvas:hud canvas:title
+ C01_V2a1             56.540 →   58.300  (1.76 s, bar 33:1.00)  video
+ C02_V2a2             58.300 →   59.200  (0.90 s, bar 34:1.00)  video
+ C03_V2a3             59.200 →   60.080  (0.88 s, bar 34:3.00)  video
+ C04_V2a4             60.080 →   61.400  (1.32 s, bar 35:1.00)  video
+ C05_V2a5             61.400 →   62.300  (0.90 s, bar 35:4.00)  video
+ C06_V2a3             62.300 →   63.620  (1.32 s, bar 36:2.00)  video
+ C07_V2b1             63.620 →   64.500  (0.88 s, bar 37:1.00)  video
+ C08_V2b1             64.500 →   65.400  (0.90 s, bar 37:3.00)  video
+ C09_V2b2             65.400 →   66.280  (0.88 s, bar 38:1.00)  video
+ C10_V2b3             66.280 →   67.160  (0.88 s, bar 38:3.00)  video
+ C11_V2b4             67.160 →   68.060  (0.90 s, bar 39:1.00)  video
+ C12_V2b4             68.060 →   68.940  (0.88 s, bar 39:3.00)  video
+ C13_V2a2             68.940 →   69.820  (0.88 s, bar 40:1.00)  video
+ C14_V2b5             69.820 →   70.700  (0.88 s, bar 40:3.00)  video
+ C15_V2b6             70.700 →   71.580  (0.88 s, bar 41:1.00)  video
+ C16_V2b6             71.580 →   72.480  (0.90 s, bar 41:3.00)  video
+ C17_V2c1             72.480 →   73.340  (0.86 s, bar 42:1.00)  video
+ C18_V2c2             73.340 →   75.120  (1.78 s, bar 42:2.96)  video
+ C19_V2c3             75.120 →   76.020  (0.90 s, bar 43:3.00)  video
+ C20_V2c4             76.020 →   76.900  (0.88 s, bar 44:1.00)  video
+ C21_V2c5             76.900 →   78.660  (1.76 s, bar 44:3.00)  video
+ C22_V2c3             78.660 →   79.560  (0.90 s, bar 45:3.00)  video
+ C23_V2c6             79.560 →   80.440  (0.88 s, bar 46:1.00)  video
+ C24_V2c7             80.440 →   82.220  (1.78 s, bar 46:3.00)  video canvas:tessellate solid
+ C25_V2c8             82.220 →   83.100  (0.88 s, bar 47:3.00)  video
+ C26_V2d1             83.100 →   83.980  (0.88 s, bar 48:1.00)  video
+ C27_V2d2             83.980 →   84.860  (0.88 s, bar 48:3.00)  video
+ C28_V2e1             84.860 →   86.180  (1.32 s, bar 49:1.00)  video
+ C29_V2e2             86.180 →   87.060  (0.88 s, bar 49:4.00)  video
+ C30_V2e3             87.060 →   88.380  (1.32 s, bar 50:2.00)  video
+ C31_V2f1             88.380 →   89.260  (0.88 s, bar 51:1.00)  video
+ C_V2f_car            89.260 →   92.790  (3.53 s, bar 51:3.00)  video image image video canvas:tools/sectionA/modules/woodcut.js canvas:tools/v4B/car/fx_car.js image image image canvas:tools/v4B/car/fx_car.js canvas:tools/v4B/plate/plate.js image canvas:tools/v4B/car/fx_car.js canvas:tools/v4B/plate/plate.js image canvas:tools/v4B/car/fx_car.js canvas:tools/v4B/plate/plate.js canvas:tools/sectionA/modules/woodcut.js
+ C32_V2g1             92.790 →   93.000  (0.21 s, bar 53:3.02)  video
+ C_V2g_black          93.000 →   93.070  (0.07 s, bar 53:3.50)  solid
+ C_V2h_loading        93.070 →   93.660  (0.59 s, bar 53:3.66)  canvas:hud
+ C33_V2h1             93.660 →   94.060  (0.40 s, bar 54:1.00)  video
+ B2_plat              94.060 →   95.420  (1.36 s, bar 54:1.91)  video ghosts video canvas:pin canvas:pin
+ B2_leap              95.420 →   96.300  (0.88 s, bar 55:1.00)  video ghosts video
+ B2_chasm             96.300 →   98.280  (1.98 s, bar 55:3.00)  video video canvas:render/timeline/_B_quad.js canvas:tools/sectionA/modules/woodcut.js ghosts canvas:render/timeline/_B_motes_hold.js ghosts ghosts ghosts canvas:b_dashfx video video video canvas:b_dashfx
+ B2_G1                98.280 →  100.700  (2.42 s, bar 56:3.50)  image canvas:tools/sectionA/modules/woodcut.js canvas:tools/sectionA/modules/woodcut.js canvas:pin canvas:pin canvas:render/timeline/_B_gunribbon.js video image image image canvas:render/timeline/_B_gunshot.js canvas:render/timeline/_B_gunshot.js canvas:render/timeline/_B_gunshot.js canvas:render/timeline/_B_gunshot.js
+ B2_G2               100.700 →  102.460  (1.76 s, bar 58:1.00)  video image video canvas:pin canvas:render/timeline/_B_hole.js canvas:render/timeline/_B_hole.js canvas:b_tracemiss canvas:b_tracemiss video image image canvas:b_tracemiss canvas:b_tracemiss
+ B2_G3               102.460 →  104.220  (1.76 s, bar 59:1.00)  video image canvas:tools/sectionA/modules/woodcut.js video
+ B2_skip             104.220 →  105.980  (1.76 s, bar 60:1.00)  video video video video video video video video
+ B2_glance           105.980 →  107.280  (1.30 s, bar 61:1.00)  video
+ B2_corner           107.280 →  108.670  (1.39 s, bar 61:4.00)  video image
+ B2_corner_in        108.670 →  109.920  (1.25 s, bar 62:3.12)  video
+ B2_pistol           109.920 →  110.780  (0.86 s, bar 63:2.00)  video
+ B2_shot             110.780 →  111.220  (0.44 s, bar 63:4.00)  video
+ C_V2n_continue      111.220 →  112.660  (1.44 s, bar 64:1.00)  video video solid
+ B2_V2n1             112.660 →  112.960  (0.30 s, bar 64:4.32)  video
+ E1_E2a_tracks       112.960 →  114.905  (1.95 s, bar 65:1.00)  image image image video video video canvas:ribbon canvas:ribbon canvas:ribbon image image image canvas:motes canvas:ribbon canvas:ribbon canvas:ribbon canvas:ribbon canvas:ribbon canvas:ribbon canvas:ribbon canvas:ribbon canvas:ribbon
+ E2_04_leap          114.905 →  115.240  (0.33 s, bar 66:1.39)  video video canvas:ribbon
+ E2_05_chasm_short   115.240 →  115.670  (0.43 s, bar 66:2.18)  video image video canvas:ribbon
+ E2_06_lawn          115.670 →  116.030  (0.36 s, bar 66:3.16)  video image video canvas:ribbon
+ E2_07_lawn2         116.030 →  116.520  (0.49 s, bar 66:3.98)  video image video canvas:ribbon
+ E2_08_kick          116.520 →  116.950  (0.43 s, bar 67:1.09)  video image video canvas:ribbon
+ E2_09_climb         116.950 →  119.440  (2.49 s, bar 67:2.07)  video video video video video video video video video video canvas:ribbon image image image image image image
+ R1_unclimb          119.440 →  119.980  (0.54 s, bar 68:3.77)  video canvas:pin image image image image image video solid canvas:hud
+ E4a_ladder          119.980 →  121.300  (1.32 s, bar 69:1.00)  video canvas:pin image image image image image video canvas:ribbon
+ E4b_haul            121.300 →  123.000  (1.70 s, bar 69:4.00)  video image video video
+ E5_slide_point      123.000 →  125.260  (2.26 s, bar 70:3.86)  video image image canvas:pin video video
+ E6a_swarm           125.260 →  127.880  (2.62 s, bar 72:1.00)  video video video
+ E6b_atomize         127.880 →  128.320  (0.44 s, bar 73:3.00)  image image image canvas:motes
+ E6c_two             128.320 →  129.180  (0.86 s, bar 73:4.00)  video image video image canvas:motes canvas:motes canvas:ribbon canvas:ribbon
+ C1_hold             129.180 →  132.260  (3.08 s, bar 74:2.00)  image image image image image image image image video video video
+ C2a_swap            132.260 →  133.560  (1.30 s, bar 76:1.00)  image image image image image image image image video video video
+ C2b_letgo           133.560 →  134.880  (1.32 s, bar 76:4.00)  image image image image image image image image video video video
+ E7_01_plat          134.880 →  135.760  (0.88 s, bar 77:3.00)  video ghosts ghosts ghosts ghosts ghosts ghosts ghosts video
+ E7_02_leap          135.760 →  136.620  (0.86 s, bar 78:1.00)  video ghosts ghosts ghosts ghosts ghosts ghosts ghosts ghosts ghosts ghosts ghosts ghosts ghosts ghosts ghosts ghosts ghosts ghosts canvas:ghostpop canvas:ghostpop video
+ E7_04_chasm         136.620 →  137.500  (0.88 s, bar 78:3.00)  video canvas:render/timeline/_B_quad.js canvas:tools/sectionA/modules/woodcut.js ghosts ghosts ghosts ghosts ghosts ghosts ghosts ghosts ghosts ghosts ghosts ghosts ghosts ghosts ghosts ghosts ghosts ghosts ghosts ghosts ghosts ghosts ghosts ghosts canvas:ghostpop canvas:ghostpop canvas:ghostpop canvas:ghostpop ghosts ghosts ghosts ghosts ghosts video
+ E7_05_ear           137.500 →  138.380  (0.88 s, bar 79:1.00)  video canvas:tools/sectionA/modules/woodcut.js
+ E7_06_lawn          138.380 →  139.000  (0.62 s, bar 79:3.00)  video canvas:tools/sectionA/modules/woodcut.js ghosts video
+ E8a_ring_turns      139.000 →  139.680  (0.68 s, bar 79:4.41)  video
+ E8b_line_turns      139.680 →  140.120  (0.44 s, bar 80:2.00)  video
+ E8c_terminal        140.120 →  141.000  (0.88 s, bar 80:3.00)  canvas:terminal
+ G1                  141.000 →  144.540  (3.54 s, bar 81:1.00)  solid canvas:render/three/canvas/drift_lines.js video
+ G2                  144.540 →  146.320  (1.78 s, bar 83:1.00)  solid canvas:render/three/canvas/drift_lines.js video
+ G3                  146.320 →  148.080  (1.76 s, bar 84:1.00)  solid canvas:render/three/canvas/drift_lines.js video
+ G4                  148.080 →  151.620  (3.54 s, bar 85:1.00)  three:render/three/scenes/e_loop.js
+ M1                  151.620 →  153.980  (2.36 s, bar 87:1.00)  three:render/three/scenes/e_loop.js
+ V3S                 153.980 →  157.390  (3.41 s, bar 88:2.30)  video image
+ V3S_cut             157.390 →  157.840  (0.45 s, bar 90:2.00)  three:render/three/scenes/penrose_loop.js
+ V3S_b               157.840 →  159.140  (1.30 s, bar 90:3.00)  video image
+ M2                  159.140 →  165.180  (6.04 s, bar 91:1.91)  three:render/three/scenes/e_mobius.js
+ M3                  165.180 →  169.400  (4.22 s, bar 94:3.48)  three:render/three/scenes/e_loop.js canvas:render/three/canvas/trace_lyric.js
+ F1                  169.400 →  172.960  (3.56 s, bar 97:1.00)  video
+ F2                  172.960 →  174.720  (1.76 s, bar 99:1.00)  video
+ F2b                 174.720 →  176.480  (1.76 s, bar 100:1.00)  video canvas:pencil
+ F3                  176.480 →  180.020  (3.54 s, bar 101:1.00)  video canvas:pencil
+ F4                  180.020 →  183.560  (3.54 s, bar 103:1.00)  video canvas:pencil
+ F5a                 183.560 →  187.080  (3.52 s, bar 105:1.00)  video
+ F5b                 187.080 →  188.840  (1.76 s, bar 107:1.00)  video
+ F5c                 188.840 →  190.580  (1.74 s, bar 108:1.00)  video
+ F6a                 190.580 →  192.340  (1.76 s, bar 109:1.00)  video
+ F6b                 192.340 →  195.420  (3.08 s, bar 110:1.00)  image canvas:tools/sectionF/modules/penrose_march.js
+ F6c                 195.420 →  197.600  (2.18 s, bar 111:4.00)  video canvas:pencil
+ F7_01               197.600 →  198.480  (0.88 s, bar 113:1.00)  video
+ F7_02               198.480 →  199.380  (0.90 s, bar 113:3.00)  video
+ F7_03               199.380 →  200.240  (0.86 s, bar 114:1.00)  image canvas:tools/sectionF/modules/penrose_march.js
+ F7_04               200.240 →  202.020  (1.78 s, bar 114:3.00)  video
+ F7_05               202.020 →  202.880  (0.86 s, bar 115:3.00)  video
+ F7_07m              202.880 →  205.520  (2.64 s, bar 116:1.00)  video image video canvas:motes video video
+ F7_08               205.520 →  207.280  (1.76 s, bar 117:3.00)  video canvas:hud
+ F7_09               207.280 →  208.140  (0.86 s, bar 118:3.00)  video
+ F7_10               208.140 →  208.580  (0.44 s, bar 119:1.00)  video
+ F7_11               208.580 →  209.020  (0.44 s, bar 119:2.00)  video
+ F7_12               209.020 →  209.460  (0.44 s, bar 119:3.00)  video
+ F7_13               209.460 →  209.900  (0.44 s, bar 119:4.00)  video
+ F8                  209.900 →  211.640  (1.74 s, bar 120:1.00)  video canvas:pencil
+ O1                  211.640 →  218.920  (7.28 s, bar 121:1.00)  three:render/three/scenes/penrose_loop.js
+ O2                  218.920 →  222.780  (3.86 s, bar 125:1.00)  video canvas:lowerthird
+ O3_black            222.780 →  226.000  (3.22 s, bar 127:1.00)  solid
+ O4                  226.000 →  232.800  (6.80 s, bar 128:4.12)  solid canvas:pencil
+ PC1_door            232.800 →  236.357  (3.56 s, bar 132:3.13)  canvas:tools/sectionF/modules/hilbert_door.js
+ PC2_lobby           236.357 →  244.050  (7.69 s, bar 134:2.98)  canvas:tools/sectionF/modules/hilbert_lobby.js canvas:dialogue
++A_S1_lyric           12.600 →   19.640  (7.04 s, bar 8:1.00)  canvas:render/timeline/_arc_lyric.js canvas:render/timeline/_arc_lyric.js video canvas:pin
++A_dialogue           33.600 →   37.960  (4.36 s, bar 19:4.86)  canvas:dialogue
++A_predrop_lyric      37.960 →   40.240  (2.28 s, bar 22:2.82)  canvas:lowerthird
++P5_whisper           40.950 →   42.380  (1.43 s, bar 24:1.74)  canvas:whisper
++P6_menu              41.400 →   42.380  (0.98 s, bar 24:2.81)  solid canvas:hud
++C_hud_car            56.540 →   89.260  (32.72 s, bar 33:1.00)  canvas:hud
++C_lyr_nowim          83.400 →   84.860  (1.46 s, bar 48:1.68)  canvas:lowerthird
++C_lyr_back           84.860 →   89.260  (4.40 s, bar 49:1.00)  canvas:slam
++C_hud_respawn        93.660 →   94.060  (0.40 s, bar 54:1.00)  canvas:hud
++C_race_chip          94.060 →   98.280  (4.22 s, bar 54:1.91)  solid
++C_hud_race           94.060 →   98.280  (4.22 s, bar 54:1.91)  canvas:hud
++C_lyr_race           96.300 →   98.280  (1.98 s, bar 55:3.00)  canvas:lowerthird
++C_field_chip         98.280 →  110.780  (12.50 s, bar 56:3.50)  solid
++C_hud_field          98.280 →  110.780  (12.50 s, bar 56:3.50)  canvas:hud
++C_lyr_grass         102.460 →  104.170  (1.71 s, bar 59:1.00)  canvas:lowerthird
++C_lyr_toofast       104.170 →  108.670  (4.50 s, bar 59:4.89)  canvas:lowerthird
++C_lyr_nowarning     108.670 →  110.780  (2.11 s, bar 62:3.12)  canvas:lowerthird
++C_lyr_shot          110.780 →  111.620  (0.84 s, bar 63:4.00)  canvas:whisper
++C_motes             110.780 →  112.660  (1.88 s, bar 63:4.00)  canvas:motes
++C_hud_continue      111.300 →  112.660  (1.36 s, bar 64:1.18)  canvas:hud
++C_lyr_timestops     111.620 →  112.660  (1.04 s, bar 64:1.91)  canvas:whisper
++C_rw_glyph          112.660 →  112.960  (0.30 s, bar 64:4.32)  canvas:pin
++D_ghost_counter     113.890 →  119.440  (5.55 s, bar 65:3.11)  solid canvas:hud
++D_E7_ribbons        134.880 →  139.000  (4.12 s, bar 77:3.00)  solid canvas:ribbon canvas:ribbon canvas:ribbon canvas:ribbon canvas:ribbon canvas:ribbon canvas:ribbon canvas:ribbon canvas:ribbon canvas:ribbon
++D_terminal_panel    139.000 →  140.120  (1.12 s, bar 79:4.41)  canvas:terminal
++V3S_lyric           153.980 →  159.140  (5.16 s, bar 88:2.30)  canvas:render/timeline/_arc_lyric.js canvas:render/timeline/_arc_lyric.js canvas:render/timeline/_arc_lyric.js video canvas:render/timeline/_arc_lyric.js canvas:render/timeline/_arc_lyric.js video
++O1_variance_report  211.640 →  218.920  (7.28 s, bar 121:1.00)  canvas:tools/sectionF/modules/variance_report.js
++O_credit            223.230 →  232.800  (9.57 s, bar 127:1.99)  canvas:tools/sectionF/modules/end_credit.js canvas:tools/sectionF/modules/end_credit.js
++O_counter           226.000 →  234.194  (8.19 s, bar 128:4.12)  canvas:tools/sectionF/modules/hud_backing.js canvas:hud

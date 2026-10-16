@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+# Fallback messenger between the two revision instances (see docs/revisions/README.md).
+# Types a one-line message into the other instance's tmux pane and submits it.
+#   tools/streams/tell A "V2h redaction blocks now use Plex Mono, C.js updated"
+#   FROM=A tools/streams/tell B "pencil canon: two pencils, crossed"
+set -euo pipefail
+
+SESSION="${REV_SESSION:-rewind-rev}"
+case "${1:-}" in
+  A|a) pane=0 ;;
+  B|b) pane=1 ;;
+  *) echo "usage: tools/streams/tell A|B \"message\"" >&2; exit 2 ;;
+esac
+shift
+[ $# -gt 0 ] || { echo "tell: empty message" >&2; exit 2; }
+
+# One line only: a newline would submit the message early.
+msg="$(printf '%s' "$*" | tr '\n' ' ')"
+target="$SESSION:0.$pane"
+tmux send-keys -t "$target" -l -- "[message from instance ${FROM:-?}] $msg"
+sleep 0.4
+tmux send-keys -t "$target" Enter

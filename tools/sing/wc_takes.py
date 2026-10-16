@@ -28,6 +28,7 @@ import takes as V2  # noqa: E402  (vocal slices, contact sheet)
 SING = os.path.join(ROOT, "media/sing")
 MODEL = "bytedance/seedance-2.5"
 VER = os.environ.get("WC_VER", "v3")      # v4: WC_VER=v4 (new first frames: glossier hair, less smile); docs/revisions/v4/A.md
+#                                            v5: WC_VER=v5 (Jade's two photos, photographic; media/sing/NOTES.md "v5")
 PRE = f"{VER}_take_"
 
 P = ("A picture comes to life and stays the same picture in every frame: the woman is a soft colour painting in gentle brushed "
@@ -82,7 +83,29 @@ LOOK = {
                HAIRPRE="long ", HAIR="loose dark hair"),
     "v4": dict(BEGIN="She never smiles: from the calm, serious, closed mouth of the first frame she", EYES="steady",
                HAIRPRE="", HAIR="long glossy dark hair"),
-}[VER]
+    "v5": dict(BEGIN="She never smiles: from the calm, closed mouth of the first frame she", EYES="steady",
+               HAIRPRE="", HAIR="dark hair"),
+}["v5" if VER.startswith("v5") else VER]      # v5b = the v5 prompt on the V3S shoulder-retake first frame (v5_first.py V5_REV=b); v5c = S1 from the re-tinted photo (V5_REV=c)
+# v5 (Jade, 2026-10-16: "reshoot the 2 lip sync clips using these 2 new photos"): she is her own PHOTO now, laid over the
+# engraved plate (tools/sing/v5_first.py), so the prompt no longer calls her a painting. The film's point is that she
+# mismatches the engraved world: she stays photographic, the world stays ink. Hair differs per shot (S1: the pencils
+# photo, hair up with two pencils = film canon; V3S: long hair down), so HAIR / BEGIN are per shot below.
+P5 = ("A photograph comes to life: the woman is a real, photographed person with natural skin, hair and fabric; "
+      "the world behind her is a hard black-and-white wood engraving drawn to all four edges, as in the "
+      "first frame. The woman stays photographic and real; the world stays black ink engraving; the two never blend. She is "
+      "never painted, drawn or cartoonised. {BEGIN} sings {WORDS} {ACT} Her eyes stay open, {EYES}; a quick blink is fine. "
+      "Her forehead stays smooth: brows relaxed, never knit, no frown. Her head keeps its angle: no tipping back or turning, "
+      "only a slight sway. Her mouth opens naturally, as in gentle singing. She stays exactly the same person as in the "
+      "first frame: the same face, the same thin dark glasses, {HAIRPRE}{HAIR}. Do not redraw, beautify, slim, age or "
+      "restyle her; no makeup. Her white jacket, its orange band, blue disc and round '1420 MHz' sleeve patch stay exactly "
+      "as in the first frame, the patch sharp. No headphones. Static locked-off camera, no zoom: she stays framed chest-up "
+      "exactly as in the first frame. {WHERE} No new text.")
+V5 = {
+    "S1": dict(HAIR=("her dark hair up in a loose messy bun with two yellow pencils through it, one with a pale-blue eraser, "
+                     "one with a pink eraser; both pencils stay exactly as they are, same place and colours, never falling out"),
+               BEGIN="Her faint smile fades at once into a serious face and she never smiles again: she"),
+    "V3S": dict(HAIR="her long dark hair worn down, falling straight past her shoulders, parted as in the first frame"),
+}
 V4 = {   # v4 acting: tense and determined, not warm (the lyric is about being hunted the night before her defense)
     "S1": dict(ACT="She sings it quietly and intently, looking into the camera: wide awake, a little tense, determined."),
     "V3S": dict(ACT="She sings it clearly, lips shaping every word, eyes on the camera, resolute. Her jacket stays "
@@ -95,6 +118,10 @@ if VER != "v3":
     for _k, _d in V4.items():
         SHOTS[_k].update(_d)
         SHOTS[_k]["first"] = SHOTS[_k]["first"].replace("/v3_", f"/{VER}_")
+if VER.startswith("v5"):
+    P = P5
+    for _k, _d in V5.items():
+        SHOTS[_k]["LOOK"] = {**LOOK, **_d}
 for _k, _s in SHOTS.items():      # same slices and windows as v2
     _s.update({k: V2.SHOTS[_k][k] for k in ("ref_t0", "duration", "in_out")})
 
@@ -117,13 +144,14 @@ def submit(shot, n=1, res="720p", dry=False, note=""):
     aud = V2.audio_path(shot)
     assert os.path.exists(aud), aud
     img = gen.ref_image(os.path.join(ROOT, s["first"]), os.path.join(d, f"{VER}_first_2048.jpg"))
-    prompt = P.format(WORDS=s["WORDS"], ACT=s["ACT"], WHERE=s["WHERE"], **LOOK)
+    prompt = P.format(WORDS=s["WORDS"], ACT=s["ACT"], WHERE=s["WHERE"], **s.get("LOOK", LOOK))
     assert len(prompt) <= 2000, len(prompt)
     for _ in range(n):
         used = [k for k, _ in sidecars(shot)] + [int(f[len(PRE):].split(".")[0]) for f in os.listdir(d)
                                                  if f.startswith(PRE) and f.endswith(".spec.json")]
         k = max(used) + 1 if used else 1
-        spec = {"model": MODEL, "tag": f"revA_sing_{shot}" if VER == "v3" else f"{VER}A_sing_{shot}", "notes": f"{shot} {PRE}{k} {res} {note}".strip(),
+        tag = {"v3": f"revA_sing_{shot}", "v5": f"v5_sing_{shot}", "v5b": f"v5_sing_{shot}_r2", "v5c": f"v5_sing_{shot}_tint", "v5d": f"v5_sing_{shot}_r3"}.get(VER, f"{VER}A_sing_{shot}")
+        spec = {"model": MODEL, "tag": tag, "notes": f"{shot} {PRE}{k} {res} {note}".strip(),
                 "input": {"prompt": prompt, "image": "file:" + os.path.relpath(img, ROOT),
                           "reference_audios": ["file:" + os.path.relpath(aud, ROOT)], "duration": s["duration"],
                           "resolution": res, "aspect_ratio": "16:9", "generate_audio": False,

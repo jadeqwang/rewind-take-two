@@ -13,14 +13,14 @@ S = "media/shots/"
 # chosen take per GEN shot. file = engine-ready 1080p plate (colour pass of the take, or a wipe composite),
 # matte = Jade's matte from tools/engrave. in_sec/rate/reverse are the shot's own (first) use.
 CHOSEN = {
-    "F1": dict(take=3, file=S + "F1/take_3_wipe.mp4", in_sec=0.0, rate=1.1, reverse=False,
+    "F1": dict(take=3, file=S + "F1/take_3_wipe_dered_patch.mp4", in_sec=0.0, rate=1.1, reverse=False,
                notes="colour-flood wipe (tools/sectionF/wipe.py): engraved twin -> colour clip, radial from her, gold leading edge"),
     # v6 (Jade 2:54, docs/revisions/v6/f2_jacket_back.md): *_dered_back = the dered plate with the orange band removed
     # from her jacket BACK (cut at the side seams; sleeves keep it) and the big pale-blue back dot painted in, tracked per
     # frame (tools/jacket_back.py, spec tools/jacket_back_specs/F2.json)
     "F2": dict(take=3, file=S + "F2/take_3_engraved_dered_back.mp4", in_sec=0.0, rate=1.0, reverse=False, notes="true wall-run up the tower (take 2); bar 100 jumps to 3.24 s (reaching the top and launching off it) with a 1.12x punch-in"),
     "F3": dict(take=1, in_sec=0.0, rate=1.0, reverse=False, notes="Relativity hall; the engine snaps a 90-degree roll on the downbeat"),
-    "F4": dict(take=2, in_sec=0.0, rate=1.3, reverse=False, notes="take 2: dive, touches her reflection at ~3 s, plunges into concentric ripples"),
+    "F4": dict(take=2, file=S + "F4/take_2_engraved_dered_v9refl.mp4", in_sec=0.0, rate=1.3, reverse=False, notes="take 2: dive, touches her reflection at ~3 s, plunges into concentric ripples"),
     "F5a": dict(take=5, in_sec=1.4, rate=1.0, reverse=False, notes="v3 (Jade 3:05): the rainbow pencil (pale-blue eraser, rainbow core). She winds it back like a sword, slashes (1.4-2.5 s, a rainbow arc in its wake) and the swing turns into drawing: she guides the point like a pen and it draws a rainbow line up across the clock (2.5-4.9 s). Curtain bangs, mock neck; desk objects in the skyline. v2 was take 4"),
     "F5b": dict(take=3, in_sec=0.05, rate=1.0, reverse=False, notes="wide; ink drips become agents. v3 (desk objects): take 3 from kf_v3_F5b: giant books, a mug of pencils, ink bottles and a ruler stand among the towers. v2 was take 2"),
     "F5c": dict(take=1, in_sec=0.0, rate=0.8, reverse=False, notes="round 2 (review #10): tight insert, agents drip off the lip like ink (bar 108)"),
@@ -29,16 +29,16 @@ CHOSEN = {
                 notes="v3 (Jade 3:13): still plate kf_v3_F6b_redraw = the engine's exact Penrose staircase (kf_v3_F6b_guide, tools/sectionF/penrose_guide.py) redrawn by nano-banana-pro in the plate's hand; ink-engraved agent sprites (media/shots/F6b/agents) march it clockwise one step per beat (tools/sectionF/modules/penrose_march.js, stairs: false); reused at F7_03. Fallbacks: kf_v3_F6b_plate_crop_dered.png + engine-drawn stairs (first v3 version); v2 take_2_engraved_dered.mp4"),
     "F6c": dict(take=3, in_sec=0.3, rate=1.0, reverse=False, notes="take 2: side-on sprint with the ghost stream drawn in (keyframe kf_ghosts2); take 1 is reused reversed at F7_08 (the rewind that paints)"),
     "F7a": dict(take=2, in_sec=0.0, rate=1.0, reverse=False, notes="ghost stampede; reused at F7_06 until v4"),
-    "F7b": dict(take=3, in_sec=0.05, rate=1.0, reverse=False, notes="her grin. v3 (audit after Jade 3:21): take 3 from kf_v3_F7b: centre part and curtain bangs, mock neck, 1420 / MHz roundel on her left sleeve. v2 was take 2"),
-    "F7c": dict(take=2, in_sec=0.0, rate=1.0, reverse=False, notes="BIG 1: Klimt gold sky. v3 (Jade 3:21): take 2 from kf_v3_F7c_final: curtain bangs, canon jacket, mock-neck top, pale-blue eraser; desk objects (books, mug of pencils, ruler, ink bottle) among the towers. v2 was take 1"),
+    "F7b": dict(take=3, file=S + "F7b/take_3_engraved_dered_patch.mp4", in_sec=0.05, rate=1.0, reverse=False, notes="her grin. v3 (audit after Jade 3:21): take 3 from kf_v3_F7b: centre part and curtain bangs, mock neck, 1420 / MHz roundel on her left sleeve. v2 was take 2"),
+    "F7c": dict(take=2, file=S + "F7c/take_2_engraved_dered_patch.mp4", in_sec=0.0, rate=1.0, reverse=False, notes="BIG 1: Klimt gold sky. v3 (Jade 3:21): take 2 from kf_v3_F7c_final: curtain bangs, canon jacket, mock-neck top, pale-blue eraser; desk objects (books, mug of pencils, ruler, ink bottle) among the towers. v2 was take 1"),
     "F7d": dict(take=1, in_sec=0.0, rate=1.4, reverse=False, notes="clock folds into itself; tail (collapse to a gold point) reused at F7_09"),
     "F7e": dict(take=2, in_sec=0.15, rate=1.0, reverse=False, notes="BIG 2: Banach-Tarski reunion, two Jades merge at ~0.8 s. v3 (audit): take 2, the merged Jade holds one pencil (take 1 left her with one in each hand)"),
     "F7_08": dict(take=3, file=S + "F6c/take_3_rewindpaint.mp4", matte=S + "F6c/take_3_cleanmatte.mp4", in_sec=3.24, rate=1.0,
                   reverse=True, notes="F6c played backward; wipe computed on the reversed clock so colour paints IN as it rewinds"),
-    "F8": dict(take=4, in_sec=0.5, rate=1.0, reverse=False, notes="v3 (audit after Jade 3:21): curtain bangs instead of the blunt fringe, mock neck, white cuffs and hem, orange headphones, 1420 / MHz roundel; the committee of ghosts fades in behind her over the first second. v2 was take 3"),
+    "F8": dict(take=4, file=S + "F8/take_4_engraved_dered_patch.mp4", in_sec=0.5, rate=1.0, reverse=False, notes="v3 (audit after Jade 3:21): curtain bangs instead of the blunt fringe, mock neck, white cuffs and hem, orange headphones, 1420 / MHz roundel; the committee of ghosts fades in behind her over the first second. v2 was take 3"),
     # v6 (Jade 3:42, docs/revisions/v6/o2_erasers.md): *_dered_blue = the same plate with the upper-left pencil's eraser
     # (the one already through the bun) recoloured pale blue in every frame (tools/blue_eraser.py, spec tools/blue_eraser_specs/O2.json); the other stays pink
-    "O2": dict(take=3, file=S + "O2/take_3_engraved_dered_blue.mp4", in_sec=0.0, rate=1.33, reverse=False, notes="v3 (Jade 3:40), retake: the coil is held with one pencil already through it, the second pencil slides through the coil crossing the first (~0.6-1.2 s source), she lets go and it holds, reaches the knob and pushes the door INWARD on its left hinges from ~3.8 s (lands on beat 221.78 at 1.33x); canon jacket back; no sign on the door. Fallback: take 2 at rate 1.4 (bun already pinned). v2: take 1, rate 1.3"),
+    "O2": dict(take=3, file=S + "O2/take_3_engraved_dered_blue_v9rare.mp4", in_sec=0.0, rate=1.33, reverse=False, notes="v9 (Jade 3:40): RARE EARTH lettered under the back dot (tools/v9/rare_earth.py, docs/revisions/v9/fix_11_rare_earth.md). v3 (Jade 3:40), retake: the coil is held with one pencil already through it, the second pencil slides through the coil crossing the first (~0.6-1.2 s source), she lets go and it holds, reaches the knob and pushes the door INWARD on its left hinges from ~3.8 s (lands on beat 221.78 at 1.33x); canon jacket back; no sign on the door. Fallback: take 2 at rate 1.4 (bun already pinned). v2: take 1, rate 1.3"),
 }
 OVR = os.path.join(ROOT, "tools/sectionF/chosen_overrides.json")
 if os.path.exists(OVR):

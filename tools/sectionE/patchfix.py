@@ -67,7 +67,12 @@ def art(scale=0.80, weight=900):
     return np.asarray(im, np.float32) / 255.0
 
 
+STILL = (".png", ".jpg", ".jpeg")
+
+
 def read(path):
+    if path.lower().endswith(STILL):                  # v9: a still is a one-frame clip
+        return [cv2.imread(path)], 24
     cap = cv2.VideoCapture(path)
     fps = cap.get(cv2.CAP_PROP_FPS) or 24
     fr = []
@@ -214,7 +219,25 @@ def main():
     ap.add_argument("--ink", default=None, help="lettering colour r,g,b (default: the ring's own dark)")
     ap.add_argument("--crf", type=int, default=12)
     ap.add_argument("--debug", default=None)
+    # v9 (fix 8): fast, jumpy takes (F7_02: the roundel jumps 20-60 px between held pairs of frames)
+    ap.add_argument("--keys", default=None, help="per-frame seeds 'F:X,Y[,ANG];F:X,Y[,ANG]...': the ring is searched at X,Y "
+                    "on frame F instead of at the previous frame's centre; if ANG is given on every key, the baseline angle "
+                    "is interpolated between the keys instead of carried by optical flow")
+    ap.add_argument("--occ", type=float, default=0.26, help="occluder opening radius (x inner radius): dark shapes thicker "
+                    "than this inside the ring are kept as hair/occluders; raise it when the take's own glyphs are bold")
+    ap.add_argument("--ring-fill", dest="ring_fill", type=float, default=0.0, help="also repaint everything inside this "
+                    "fraction of the fitted inner ellipse, even outside the white hull (glyphs fused to the ring)")
+    ap.add_argument("--drop", default="", help="frames whose ring fit is wrong (e.g. '29,30'): treated as untracked, so "
+                    "the ellipse is interpolated from their neighbours")
+    ap.add_argument("--skip", default="", help="frames to leave untouched (fix them in a second pass with other settings)")
+    ap.add_argument("--sigma", default="0.8,1.6,1.5", help="temporal smoothing of centre, shape, angle (frames); 0 = off")
     a = ap.parse_args()
+    keys = {}
+    if a.keys:
+        for kv in a.keys.replace(" ", "").strip(";").split(";"):
+            kf, kxy = kv.split(":")
+            keys[int(kf)] = [float(v) for v in kxy.split(",")]
+    sig_c, sig_s, sig_a = [float(v) for v in a.sigma.split(",")]
 
     fr, fps = read(a.src)
     H, W = fr[0].shape[:2]
@@ -258,17 +281,25 @@ def main():
         prev = ell[fi]
         for i in order:
             cx, cy, ea, eb, _ = ell_params(prev)
+            if i in keys:
+                cx, cy = keys[i][:2]
             got = step(i, (cx, cy), np.sqrt(ea * eb))
             if got:
                 ell[i], hole[i] = got
                 prev = got[0]
+    for d_ in [int(v) for v in a.drop.split(",") if v.strip()]:
+        ell.pop(d_, None)
+        hole.pop(d_, None)
     frames = list(range(f0, f1 + 1))
     ok = np.array([i in ell for i in frames])
     print(f"tracked {ok.sum()}/{len(frames)} frames; missing: {[i for i, o in zip(frames, ok) if not o][:40]}")
     cen = fill_gaps([ell_params(ell[i])[:2] if i in ell else (0, 0) for i in frames], ok)
     shp = fill_gaps([shape_matrix(ell[i]) if i in ell else np.eye(2) for i in frames], ok)
-    cen = smooth(cen, 0.8)
-    shp = smooth(shp, 1.6)
+    for k, i in enumerate(frames):                   # an untracked frame with a key: trust the key over interpolation
+        if not ok[k] and i in keys:
+            cen[k] = keys[i][:2]
+    cen = smooth(cen, sig_c)
+    shp = smooth(shp, sig_s)
 
     # ---- 2. orientation -------------------------------------------------------------------------------------------------
     # The lettering itself is too garbled to measure a baseline from, so the in-plane rotation is carried from frame to
@@ -294,6 +325,10 @@ def main():
     angs = np.zeros(len(frames))
     if a.rot is not None:
         angs[:] = a.rot
+    elif keys and all(len(v) > 2 for v in keys.values()):
+        kk = sorted(keys)
+        angs = np.interp(frames, kk, [keys[k][2] for k in kk])
+        angs = smooth(angs, sig_a)
     else:
         k0 = fi - f0
         angs[k0] = a.guess
@@ -303,7 +338,7 @@ def main():
             angs[k] = angs[k + 1] + flow_rot(frames[k + 1], frames[k], cen[k + 1], rads[k + 1])
         if a.guess_end is not None:                      # optional drift correction: pin the last frame's angle too
             angs += np.linspace(0, a.guess_end - angs[-1], len(angs)) * (np.arange(len(angs)) >= k0)
-        angs = smooth(angs, 1.5)
+        angs = smooth(angs, sig_a)
     print("baseline angle: start %.1f end %.1f min %.1f max %.1f" % (angs[0], angs[-1], angs.min(), angs.max()))
 
     # ---- 3. paint -------------------------------------------------------------------------------------------------------
@@ -311,7 +346,10 @@ def main():
     out_frames = [f.copy() for f in fr]
     dbg = []
     SS = 4
+    skip = {int(v) for v in a.skip.split(",") if v.strip()}
     for k, i in enumerate(frames):
+        if i in skip:
+            continue
         M = shp[k]
         w_, v_ = np.linalg.eigh(M)
         L = v_ @ np.diag(np.sqrt(np.maximum(w_, 1e-6)))         # unit circle -> ellipse (any L R also does)
@@ -355,9 +393,9 @@ def main():
         if hi != i:                                   # borrowed from the nearest tracked frame, moved with the patch
             sh = np.round(cen[k] - cen[hi - f0]).astype(int)
             hm = np.roll(np.roll(hm, sh[1], 0), sh[0], 1)
-        vis = (rho < 1.04) & (hm > 0)
+        vis = ((rho < 1.04) & (hm > 0)) | (rho < a.ring_fill)
         dark = (gcrop < a.thr) & vis
-        ro = max(2, int(round(0.26 * r)))
+        ro = max(2, int(round(a.occ * r)))
         ker = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (2 * ro + 1, 2 * ro + 1))
         thick = cv2.dilate(cv2.morphologyEx(dark.astype(np.uint8), cv2.MORPH_OPEN, ker), np.ones((3, 3), np.uint8)) > 0
         paint = vis & ~thick
@@ -390,6 +428,10 @@ def main():
         cv2.imwrite(a.debug, np.vstack([np.hstack(dbg[r:r + 8]) for r in range(0, len(dbg), 8)]))
 
     # ---- encode ---------------------------------------------------------------------------------------------------------
+    if a.out.lower().endswith(STILL):
+        cv2.imwrite(a.out, out_frames[0])
+        print("wrote", a.out)
+        return
     p = subprocess.Popen([FFMPEG, "-v", "error", "-y", "-f", "rawvideo", "-pix_fmt", "bgr24", "-s", f"{W}x{H}", "-r", f"{fps}",
                           "-i", "-", "-c:v", "libx264", "-preset", "slow", "-crf", str(a.crf), "-pix_fmt", "yuv420p",
                           "-colorspace", "bt709", "-color_primaries", "bt709", "-color_trc", "bt709", a.out], stdin=subprocess.PIPE)

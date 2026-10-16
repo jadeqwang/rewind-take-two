@@ -15,3 +15,8 @@
 ## Judgement
 
 Good: interior, upside-down sedan passes over the windshield, Jade ducks. Back-of-jacket circle reads slightly grey.
+
+## v9 (fix 1b, 2026-10-15)
+- kf_v9c (nano-banana-pro, tools/v9/v2b3_kf.py): re-staged, Jade in the LEFT (driver) seat; take_2 (Seedance 2.0 720p 4 s,
+  sedan up over the roof) engraved with a hand-built matte (tools/v9/v2b3_matte.py -> take_2_matte/). take_3 rejected
+  (sedan turns white and rights itself). Use: 66.28-67.16 take_2 from 0.45 s at rate 1.5. See docs/revisions/v9/fix_1b_v2b3.md.

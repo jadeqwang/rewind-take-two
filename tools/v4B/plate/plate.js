@@ -1,6 +1,6 @@
 // plate.js (v4, B): a car licence plate drawn in the engraving's hand and corner-pinned onto a tracked plate.
 // First use: D3, the agents' sedan in the wing mirror reads TVA 1729 (Jade's v3 note at 0:26). Reusable for any car:
-// the text is a parameter. Right-reading always (the film's mirror lettering reads normally).
+// the text is a parameter. Right-reading unless params.mirror (v9: plates seen in the rear-view mirror read reversed).
 //
 //   params.text      'TVA 1729' ('\n' stacks two lines; a space is a half-width gap between the groups)
 //   params.corners   [TLx,TLy, TRx,TRy, BRx,BRy, BLx,BLy] design px, keyframable: the track of the plate the TAKE drew
@@ -12,6 +12,8 @@
 //   params.cam       {scale, x, y}, each keyframable: the SAME numbers as the layer transform of the plate under it
 //                    (a push on the video layer). Applied to the corners here instead of to this layer, so the glyphs
 //                    are rasterised at their final size and stay sharp at preview size. Leave the layer untransformed.
+//   params.mirror    true: the whole plate flipped left-right, as seen in a mirror (v9, Jade: the rear-view mirror
+//                    plates read reversed). Default off.
 //   params.light     0..1, keyframable (default 1): how lit the plate is (passing streetlights). Unlit, the field is
 //                    crossed by horizontal ink lines under the letters, the way the engraving darkens a surface: no
 //                    grey. `dim` (default .4) is the share of the field the lines cover at light 0, `pitch` (default
@@ -166,6 +168,7 @@ export function draw(lt, env) {
   const M = 0.05, soft = env.val(p.soft, 0.5), bpd = k * NW / wq;   // bpd: block px per design px
   const blk = scratch('plate_block', NW * k * (1 + 2 * M), NH * k + NW * k * 2 * M), c = blk.g;
   if (soft > 0) c.filter = `blur(${(soft * bpd).toFixed(2)}px)`;
+  if (p.mirror) { c.translate(blk.width, 0); c.scale(-1, 1); }   // v9: the plate as a mirror shows it (whole face flipped)
   c.drawImage(face, NW * k * M, NW * k * M);
   const ux = (q[2] - q[0] + q[4] - q[6]) / 2 / wq, uy = (q[3] - q[1] + q[5] - q[7]) / 2 / wq;
   const vx = (q[6] - q[0] + q[4] - q[2]) / 2 / hq, vy = (q[7] - q[1] + q[5] - q[3]) / 2 / hq;

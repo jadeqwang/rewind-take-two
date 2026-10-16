@@ -2,7 +2,7 @@
 // Cut list locked to the timing.json beat grid. Each row = one cut: [start, end, clip, take, clipIn, rate, extra].
 // Plates are engraved takes (tools/engrave); clips with Jade carry the engrave matte so she stays in colour.
 import verse2B, { RELOAD_SKIP } from './_B_verse2.js';   // rev-B: 94.06–112.96 (the restaged chase) lives in _B_verse2.js
-import carShot from '../../tools/v4B/car/car_shot.js';   // v4: the 1:30 car shot (V2f)
+import carShot from '../../tools/v4B/car/car_shot_v9.js';   // v4: the 1:30 car shot (V2f). v9 #3: with a roof, the mirror hangs on a stem from the header (docs/revisions/v9/fix_2_3_mirrors.md); v8: car_shot.js
 const CAR_START = 89.26;   // v4: the car shot starts on this tracked beat (89.26 = bar 51 beat 3); 90.14 = v3's cut
 const S = 'media/shots/';
 const GIRL = new Set(['V2a3', 'V2b3', 'V2c4', 'V2c5', 'V2d2', 'V2e2', 'V2f2', 'V2h1', 'V2i1', 'V2i2', 'V2i3', 'V2i4',
@@ -33,7 +33,7 @@ const CUTS = [
   [63.62, 64.50, 'V2b1', 1, 1.0, 1],
   [64.50, 65.40, 'V2b1', 1, 2.4, 1.6],
   [65.40, 66.28, 'V2b2', 1, 0.3, 1.3],
-  [66.28, 67.16, 'V2b3', 1, 0.0, 1],
+  [66.28, 67.16, 'V2b3', 2, 0.45, 1.5],   // v9 1b: re-staged in the driver's seat (take_2, hand-built matte; docs/revisions/v9/fix_1b_v2b3.md). v8: take 1, in 0, rate 1
   [67.16, 68.06, 'V2b4', 2, 0.2, 1],
   [68.06, 68.94, 'V2b4', 2, 1.2, 1.2],
   [68.94, 69.82, 'V2a2', 1, 2.5, 1],
@@ -70,7 +70,10 @@ const CUTS = [
 // v6 (Jade 0:59, 1:24, 1:26; docs/revisions/v6/o2_erasers.md): canon is one pale-blue and one pink eraser in her bun.
 // These takes drew both pink: *_blue = the same plate with one eraser recoloured in every frame (tools/blue_eraser.py).
 // The mattes are unchanged.
-const BLUE_ERASER = { V2a3_3: 'take_3_engraved_blue.mp4', V2d2_4: 'take_4_engraved_blue.mp4', V2e2_2: 'take_2_engraved_blue.mp4' };
+// v9: V2d2_4 *_roundel = the red badge repainted as the 1420 / MHz roundel (tools/v9/roundel_decal.py)
+const BLUE_ERASER = { V2a3_3: 'take_3_engraved_blue.mp4', V2d2_4: 'take_4_engraved_blue_roundel.mp4', V2e2_2: 'take_2_engraved_blue.mp4',
+  V2c5_2: 'take_2_engraved_v9sleeve.mp4',     // v9 #10 (Jade 1:17): orange band painted on her right sleeve (tools/v9/sleeve_band.py)
+  V2b3_2: 'take_2_engraved_v9rare2.mp4' };    // v9 #11 (Jade 1:06): RARE EARTH centred under the dot, locked to the fabric; the seat hides what falls behind it (tools/v9/rare_earth.py)
 const plate = (clip, take) => `${S}${clip}/${BLUE_ERASER[`${clip}_${take}`] ?? `take_${take}_engraved.mp4`}`;
 const matte = (clip, take) => ({ src: `${S}${clip}/take_${take}_matte/matte.mp4`, mode: 'luma' });
 

@@ -50,3 +50,9 @@ Cost: $3.46 (3 keyframes, 6 edits, 3 Seedance 720p takes), tag prefix `v4B_coop_
 - `agents/take_1.mp4` (Seedance 2.0 720p 5 s from v2): run in place 0–2.3, thrown up-left 2.3–3.3, land 3.5–4.0, sit up 4.25+. Matte `agents/take_1_matte.mp4` (`tools/v4B/coop/agents.py`: ink + small-hole fill; the springboard wedge the model drew is removed).
 - `hinge.png`, `patch_tail.png` (`tools/v4B/coop/hinge.py`): the drawn iron hinge at the near lip.
 - Phase 3 cost $0.88; total $4.34.
+
+## v9 #4 (2026-10-15): twin colours by identity in C2a/C2b
+
+`tools/v4B/coop/twins.py` (SAM 2.1 two-girl tracking, local GPU, $0) replaces the screen-side split for take c2/take_1:
+`c2t1_v9_bo.mp4` (BLUE layer source), `c2t1_v9_bo_O.mp4` (ORANGE layer source), mattes `c2t1_v9_O.mp4` / `c2t1_v9_B.mp4`;
+tracks and PNG mattes in `c2t1_v9/`. Report: `docs/revisions/v9/fix_4_twins.md`.

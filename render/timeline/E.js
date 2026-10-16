@@ -22,7 +22,12 @@ const G_CLIPS = {
   // v6 (Jade 2:24, docs/revisions/v6/g2_dot.md): *_patch_dot = the same plate with the pale-blue chest dot painted on her
   // left chest in every frame (tools/sectionE/g2_dot.py; placed off the orange band exactly as in G1/G3). Matte unchanged.
   G2: { src: 'media/shots/G2/take_5_engraved_patch_dot.mp4', matte: 'media/shots/G2/take_5_matte/matte.mp4', in: 0.68, rate: 1.15 },  // boom 144.54 lands as the pencil comes free
-  G3: { src: 'media/shots/G3/take_5_engraved_soft_patch.mp4', matte: 'media/shots/G3/take_5_matte/matte_dilated9.mp4', in: 1.3, rate: 1.6 },  // stroke starts ~1.3 s, ~85% drawn at the cut
+  // v9 (audit #5, three legs; Jade round 3 "3 legs is still there"): the take has three trouser legs in every frame, so the
+  // layer is reframed to a medium close-up whose bottom edge tracks her waistband (y keys) while the camera push settles
+  // (scale 1.55 -> 1.40). Timing back to v8. docs/revisions/v9/fix_5_round3_g3.md. v8: no scale/y keys.
+  G3: { src: 'media/shots/G3/take_5_engraved_soft_patch.mp4', matte: 'media/shots/G3/take_5_matte/matte_dilated9.mp4', in: 1.3, rate: 1.6,
+    scale: [[0, 1.55], [0.44, 1.5125], [0.88, 1.475], [1.32, 1.4375], [1.76, 1.4]],
+    y: [[0, 525.2], [0.44, 466.6], [0.88, 411.0], [1.32, 358.4], [1.76, 308.6]] },
 };
 function gShot(id, start, end, drift, note) {
   const c = G_CLIPS[id];
@@ -44,7 +49,16 @@ const V3S_VARIANT = 'B';
 const V3S_T0 = 153.98;
 const V3S_LAG = { A: 0.15, B: 0, C: -0.15 }[V3S_VARIANT];
 // v4 (Jade: glossier hair, no smile; media/sing/NOTES.md, "v4"): same framing, scale and timing as v3. v3: 'media/sing/V3S/v3_sync_1080.mp4'
-const V3S_SRC = 'media/sing/V3S/v4_sync_1080.mp4';
+// v5 (Jade, 2026-10-16: the long-hair photo here): her own photo over the truth plate, photographic; Seedance 2.5 take
+// v5_take_1, sync baked in (+0.05 through "before", 1.24x through the silence 155.60-156.60, then +0.29); media/sing/NOTES.md
+// "v5", docs/revisions/v9/sing_v5.md. Same contract (file time 0 = 153.98, rate 1). v4: 'media/sing/V3S/v4_sync_1080.mp4'
+// v5b (Jade: "yes, do the shoulder retake"): first frame with the frame-right shoulder/arm rounded (v5_first.py V5_REV=b),
+// take v5b_take_2, one lag -0.05 s, eyes closed at 153.98-154.48 replaced by open eyes (_open). v5: 'media/sing/V3S/v5_sync_1080.mp4'
+// v5d (Jade: the couch above her shoulder is not her; "can the model fill those in?"): first frame outpainted by
+// nano-banana-pro with the couch removed (tools/sing/v5_outpaint.py, v5_first.py V5_REV=d); take v5d_take_2 at its
+// measured lag +0.15 (Jade: v5b's measured timing was right); lid droop at 154.35-154.56 replaced by open eyes (_open);
+// the full blink at 156.10-156.35 kept. Ear test: media/sing/review/v5d_V3S_lag+*.mp4. v5b: 'media/sing/V3S/v5b_sync_1080_open.mp4'
+const V3S_SRC = 'media/sing/V3S/v5d_sync_1080_open.mp4';
 // v5 (Jade 2:35: "make that rooftop staircase an actual impossible staircase"): a Penrose stair on the near rooftop
 // (lower left) in place of the square stairwell; the plate is baked into the take, so it is a still overlay over the take
 // (she never comes near it; take, in-point and her matte unchanged). docs/revisions/v5/stairs.md. v4: no 'stairs' layer.
@@ -64,7 +78,7 @@ export default ({ T }) => ({
     // the Bean's rim, but here the mirror shows the truth, so it is written in residue-orange coloured pencil instead of
     // cut in white line. One word per sung onset; behind her (her matte is laid back over it); not over the cutaway.
     { id: 'V3S_lyric', start: 153.98, end: 159.14, layers: (() => {
-      const ARC = 'render/timeline/_arc_lyric.js', HER = { src: 'media/sing/V3S/v4_sync_1080_matte/', mode: 'luma' };
+      const ARC = 'render/timeline/_arc_lyric.js', HER = { src: 'media/sing/V3S/v5d_sync_1080_open_matte/', mode: 'luma' };   // v5b: 'media/sing/V3S/v5b_sync_1080_open_matte/'; v5: 'media/sing/V3S/v5_sync_1080_matte/'; v4: 'media/sing/V3S/v4_sync_1080_matte/'
       const arc = (text, times, r, at) => ({ text, times, cx: 965, cy: 981, r, ...at, size: 88, style: 'pencil', color: '#F08A24' });
       const LEGEND = [arc('THE NIGHT', ['word:the@153', 'word:night@153'], 1014, { to: -31 }), arc('BEFORE', ['word:before@154'], 930, { to: -31 }),
         arc('MY', ['word:my@157'], 1014, { from: 31 }), arc('DISSERTATION', ['word:dissertation@157'], 930, { from: 31 }),
@@ -80,7 +94,7 @@ export default ({ T }) => ({
   shots: [
     gShot('G1', '81:1', '83:1', { boom: 144.54, cx: 990, cy: 600 }, 'G1 float clip pending'),
     gShot('G2', '83:1', '84:1', { boom: 144.54, cx: 1000, cy: 540 }, 'G2 hero clip pending'),
-    gShot('G3', '84:1', '85:1', { boom: 144.54, cx: 1480, cy: 520, bloomAt: 146.85, bloomX: 640, bloomY: 400 }, 'G3 stroke clip pending'),
+    gShot('G3', '84:1', '85:1', { boom: 144.54, cx: 1480, cy: 520, bloomAt: 146.85, bloomX: 580, bloomY: 640 }, 'G3 stroke clip pending'),
     // G4: kick returns - snap to orthographic, 90 degree clunk, the Loop assembles on the music box
     { id: 'G4', start: '85:1', end: '87:1', background: PAPER, layers: [three('render/three/scenes/e_loop.js', { shot: 'G4' })],
       fx: [{ type: 'shake', on: [148.08], amp: 10, decay: 0.25 }] },

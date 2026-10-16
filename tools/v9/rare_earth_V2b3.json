@@ -1,0 +1,130 @@
+{
+ "_note": "v9 fix 11b (Jade approved, 1:06): RARE EARTH under the back dot in V2b3 take 2 (C.js 66.28-67.16, in 0.45 s, rate 1.5 = src f11-42). tools/v9/rare_earth.py. occ = the driver's seat bolster in front of her (locked-off camera; traced on the bolster's ink outline, f12/f40), so letters behind it are hidden. RECOMMENDED: shift_u keys = the lettering sits on the panel midline once she hunches (src f26+: 1.45 dot radii right of the dot centre; this take draws the dot left of her spine), and fully behind the seat while she is upright (f0-21: -0.25); in between (f22-25, the duck) it slides out from behind the seat with her.",
+ "clip": "media/shots/V2b3/take_2_engraved.mp4",
+ "out": "media/shots/V2b3/take_2_engraved_v9rare.mp4",
+ "crf": 16,
+ "x264_extra": [
+  "-tune",
+  "grain",
+  "-movflags",
+  "+faststart"
+ ],
+ "start": [
+  380,
+  790
+ ],
+ "win": 160,
+ "min_area": 3000,
+ "text": "RARE EARTH",
+ "font": "/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf",
+ "tracking": 0.05,
+ "word_space": 1.5,
+ "width": 2.15,
+ "gap": 0.26,
+ "rot": {
+  "0": 2,
+  "21": 2,
+  "22": 5,
+  "24": 10,
+  "26": 12,
+  "44": 12,
+  "96": 12
+ },
+ "anchor_dir": "vertical",
+ "ink": [
+  52,
+  51,
+  56
+ ],
+ "soft": 0.35,
+ "occ": {
+  "poly": [
+   [
+    0,
+    240
+   ],
+   [
+    160,
+    240
+   ],
+   [
+    228,
+    290
+   ],
+   [
+    232,
+    700
+   ],
+   [
+    236,
+    738
+   ],
+   [
+    280,
+    750
+   ],
+   [
+    330,
+    760
+   ],
+   [
+    377,
+    780
+   ],
+   [
+    402,
+    800
+   ],
+   [
+    418,
+    820
+   ],
+   [
+    429,
+    840
+   ],
+   [
+    440,
+    860
+   ],
+   [
+    450,
+    880
+   ],
+   [
+    470,
+    920
+   ],
+   [
+    490,
+    960
+   ],
+   [
+    505,
+    1000
+   ],
+   [
+    525,
+    1040
+   ],
+   [
+    545,
+    1080
+   ],
+   [
+    0,
+    1080
+   ]
+  ],
+  "grow": 3,
+  "feather": 1.0,
+  "gap": 8
+ },
+ "conj": true,
+ "shift_u": {
+  "0": -0.25,
+  "21": -0.25,
+  "26": 1.45,
+  "96": 1.45
+ }
+}

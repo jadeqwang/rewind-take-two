@@ -303,3 +303,135 @@ read as her looking down. `tools/sing/v4_noblink.py` lays the open eyes of frame
 nose, brow and face-side landmarks, feathered eye mask, last two frames blend back) → `media/sing/S1/v4_sync_1080_open.mp4`,
 same frames otherwise, so the sync and matte are unchanged (`v4_sync_1080_open_matte` links to `v4_sync_1080_matte`).
 `render/timeline/A.js` `S1_SRC` uses it; `v4_sync_1080.mp4` is kept.
+
+---
+
+# v5 Jade's photos (2026-10-16, v9 pass)
+
+Jade: "I've added 2 new images to /inputs. can you reshoot the 2 lip sync clips using these 2 new photos? the one with the
+pencils should go in the first singing slot, and the one with long hair styled down should be the second." S1 =
+`inputs/jade_ref_image2_music_video_pencils.png` (hair up, two pencils, pale-blue + pink erasers: film canon); V3S =
+`inputs/jade_ref_image_music_video_long_hair.png`. She is her own photo now: photographic, not watercolor, no repaint.
+E3 not touched. Everything is beside the v4 files with a `v5_` prefix; no v4 or earlier file changed. Full report:
+`docs/revisions/v9/sing_v5.md`.
+
+## Files for the engine
+
+Same contract as v3/v4: **file time 0 = the shot's in-point, rate 1, no lag to add**, 1920x1080, 24 fps, no grain, push or
+grade; per-frame matte dir with `fps.txt` (24).
+
+| Shot | Song in-out | File | Take | Sync baked in | Matte |
+|---|---|---|---|---|---|
+| S1 | 12.60-19.64 | `media/sing/S1/v5_sync_1080_open.mp4` (7.46 s; plain: `v5_sync_1080.mp4`) | `v5_take_2` | one lag, +0.46 s; file frames 0-4 (12.60-12.72) eyes from frame 6 (`v4_noblink.py`) | `v5_sync_1080_open_matte/` -> `v5_sync_1080_matte/` (179 PNG; BiRefNet + pencils keyed back by `v5_pencils.py`; BiRefNet originals in `v5_sync_1080_matte_birefnet/`) |
+| V3S | 153.98-159.14 | `media/sing/V3S/v5_sync_1080.mp4` (5.54 s) | `v5_take_1` | +0.05 to 155.60, 1.24x through the silence 155.60-156.60 (24 cross-faded frames), +0.29 from 156.60 | `v5_sync_1080_matte/` (133 PNG, BiRefNet) |
+
+`render/timeline/A.js` (`S1_SRC`, so `S1_MATTE`) and `render/timeline/E.js` (`V3S_SRC`, `V3S_lyric` HER) point at these;
+the v4 paths are in comments.
+
+## First frames (`tools/sing/v5_first.py`, no paid call)
+
+BiRefNet on each photo (`WC_VER=v5S1|v5V3S wc_comp.py matte`), edge colours decontaminated from the photo's own background
+(F = (I - (1-a)B)/a), laid over the exact plates in the v4 crop (2576x1449). Out: `first/v5_S1_first.jpg`,
+`first/v5_V3S_first.jpg`, `first/v5_her_mask_first_frame_{S1,V3S}.png`; sheet `review/v5_first_vs_v4.jpg`.
+
+| | v4 | v5 S1 | v5 V3S |
+|---|---|---|---|
+| face height / frame height | 0.325 | **0.408** | **0.348** |
+| eye midpoint (1080p) | (941, 403) | (941, 463) | (941, 429) |
+
+Why not v4's size: at v4's face size the pencils photo ends 273 crop px (19 % of the frame) above the bottom edge and the
+long-hair photo 100 px above it with its jacket cut by both photo edges. Least-bad choices, taken:
+- **S1:** scale 1.24x v4's face, eyes 60 px (1080p) lower; the photo then ends 32 photo px short of the bottom: that strip
+  is the photo's own jacket colours carried down (orange left out), the only invented pixels. The lower-left forearm edge
+  is the photo border (straight). Pencils keep 75-110 px of headroom.
+- **V3S:** scale 1.10x, eyes 26 px lower, so the whole 1420 MHz patch stays in frame. Left arm edge = photo border, trimmed
+  to a rounded shoulder and a slight taper (trim only). Right: the patch is cut by the photo edge, so its missing third is
+  taken from the same patch in the pencils photo (affine fit ellipse-to-ellipse + NCC refine, NCC 0.82), and the sleeve
+  runs 45 photo px past the edge in plain fabric colour. Crown: the blue painting seen between hair strands keyed out.
+
+## Takes (`WC_VER=v5 wc_takes.py`, Seedance 2.5 720p avatar, v4 slices and durations; tag `v5_sing_*`)
+
+New prompt (`P5`): "the woman stays photographic and real; the world stays black ink engraving; the two never blend",
+per-shot hair (S1 bun + two pencils, pale-blue + pink erasers, unchanged; V3S long dark hair down), v4 acting (no smile,
+tense, determined, eyes open, head keeps its angle, locked-off, patch sharp, no headphones).
+
+| Take | Frame | Lag (corr / events; 2 s windows) | Verdict |
+|---|---|---|---|
+| S1 `v5_take_1` | 16:9 1280x720 | +0.89 / +0.89 (open 1.08, b 0.89, m 0.61); windows -0.15..+1.35, r .34 | spare: mouth does not follow the voice steadily; no blink in shot |
+| S1 `v5_take_2` | 16:9 1280x720 | +0.60 / +0.50 (open 0.45, b 0.55); windows 13.0-15.0 +0.30..+0.53, r .5-.85 | **pick**; eyes closing at 12.60-12.67 (patched); squint at 19.9 (after the cut) |
+| V3S `v5_take_1` | 16:9 1280x720 | +0.25 / +0.28 (b 0.00, m 0.19); windows +0.03 then +0.29/+0.30 from 155.5, r .68 (.76-.96) | **pick**, piecewise; blinks 154.15-154.35, 157.06-157.23 |
+| V3S `v5_take_2` | 16:9 1280x720 | +0.46 / +0.45; windows -0.18..+1.14, r .38 | spare: unsteady; blinks 154.32, 155.11, 157.07 |
+
+All four: framing locked, face size as the first frame (S1 280-308 px, V3S 241-267 px at 720p), photographic, glasses on,
+pencils and erasers intact in both S1 takes, patch readable.
+
+## What is weak
+
+- Lags are measured (mouth vs vocal level, lip closures, windows), not judged by ear.
+- V3S: right shoulder is squared with a straight outer edge (the sleeve extension; Seedance kept it). Visible at preview size.
+- V3S blinks at 154.15-154.35 (just after the cut-in) and 157.06-157.23 (on "my", before the cutaway at 157.39).
+- S1: faint closed-mouth smile (the photo's) in the wide, 12.60-13.20, before she sings; the bottom 30 px (1080p) of
+  jacket are carried-down colour with faint vertical marks; lower-left jacket edge is a straight vertical.
+- Both are bigger than v4 (S1 face 41 % vs 32.5 %), so she is bigger in the Bean wide opening too.
+- V3S crown: a warm patch where the photo's wooden picture frame shows through her hair (reads as a highlight).
+
+## Cost
+
+Seedance 2.5 720p: S1 2 x 8 s $3.70, V3S 2 x 7 s $3.24. **Total $6.94** of the $20 cap (project $273.06 of $400).
+
+## Rebuild
+
+```
+EPY=tools/engrave/.venv/bin/python; MPY=~/Documents/1-music-shipped/orbital-sunrise-video/video/out/.venv/bin/python
+PY=~/Documents/1-music-shipped/moongazing/.venv/bin/python
+export FFMPEG=~/Documents/1-music-shipped/moongazing/.venv/lib/python3.12/site-packages/imageio_ffmpeg/binaries/ffmpeg-linux-x86_64-v7.0.2
+export FACE_LANDMARKER=~/Documents/1-music-shipped/moongazing/tools/sync/models/face_landmarker.task
+WC_VER=v5S1 $EPY tools/sing/wc_comp.py matte inputs/jade_ref_image2_music_video_pencils.png
+WC_VER=v5V3S $EPY tools/sing/wc_comp.py matte inputs/jade_ref_image_music_video_long_hair.png
+$MPY tools/sing/v5_first.py comp; $MPY tools/sing/v5_first.py sheet
+WC_VER=v5 $PY tools/sing/wc_takes.py submit S1 V3S --n=2; WC_VER=v5 $PY tools/sing/wc_takes.py wait S1 V3S
+$MPY tools/sing/look.py S1 v5_take_2; $MPY tools/sing/look.py V3S v5_take_1        (knots: SYNC_V5 in wc_post.py)
+WC_VER=v5 $PY tools/sing/wc_post.py sync S1; WC_VER=v5 $PY tools/sing/wc_post.py sync V3S
+WC_VER=v5 $EPY tools/sing/wc_post.py matte S1 v5_sync_1080; WC_VER=v5 $EPY tools/sing/wc_post.py matte V3S v5_sync_1080
+$MPY tools/sing/v4_noblink.py media/sing/S1/v5_sync_1080.mp4 media/sing/S1/v5_sync_1080_open.mp4 6 0 4 --fade=2
+$EPY tools/sing/v5_pencils.py media/sing/S1/v5_sync_1080_open.mp4 media/sing/S1/v5_sync_1080_matte
+WC_VER=v5 $PY tools/sing/wc_post.py review_sync S1 media/sing/review/v5_S1_sync_review.mp4 --audio=media/sfx/Rewind_cinematic_sfx_mix_v5coda.mp3
+```
+
+## v5 follow-ups (same day; details in `docs/revisions/v9/sing_v5.md` "Follow-ups")
+
+**Engine now:**
+- S1 = `media/sing/S1/v5c_sync_1080.mp4`: re-tinted photo `media/sing/tint/local_a.png` (`v5_first.py V5_REV=c`), take
+  `v5c_take_2`, lag +0.15 (measured +0.10), first frame held 12.60-12.75, matte `v5c_sync_1080_matte/` with the pencils
+  keyed in.
+- V3S = `media/sing/V3S/v5b_sync_1080_open.mp4`: shoulder retake, take `v5b_take_2` (take 1 was 21:9, rejected), lag
+  -0.05, eyes at 153.98-154.48 opened, matte `v5b_sync_1080_open_matte/`.
+
+**Fallbacks:**
+- S1, the old take re-synced to +0.61: `v5_sync_1080_l061_open.mp4`.
+- Ear tests, old take: `review/v5_S1_lag+0.61/0.76/0.91_*`.
+- Ear tests, new take: `review/v5c_S1_lag+0.00/0.15/0.30_*`.
+
+**Pending Jade's look:**
+- V3S first frame `media/sing/first/v5d_V3S_first.jpg`, outpainted by nano-banana-pro (`tools/sing/v5_outpaint.py`).
+- It removes the couch upholstery that v5/v5b mistook for her shoulder (source x ~930-1086, y ~850-1050, above the
+  epaulet), and completes both arms and the patch. Only pixels beyond the photo's edges come from the model.
+- No take yet. The next step would be `WC_VER=v5d`.
+
+**Spend:** `v5_sing_*` total $14.21 of the $20 cap.
+
+| Tag | Spend |
+|---|---|
+| S1 | $3.70 |
+| V3S | $3.24 |
+| V3S_r2 | $3.24 |
+| S1_tint | $3.70 |
+| V3S_outpaint | $0.33 |
+
+**V3S v5d (wired, supersedes v5b):**
+- File: `media/sing/V3S/v5d_sync_1080_open.mp4` and its matte `v5d_sync_1080_open_matte/`.
+- Take `v5d_take_2` (take 1 rejected: unsteady), measured lag +0.15, wired as measured.
+- The lid droop at 154.35-154.56 is replaced by the open eyes of file frame 8; the full blink at 156.10-156.35 is kept.
+- Ear test: `review/v5d_V3S_lag+0.00/0.15/0.30/0.45_*`.
+- Jade's v5b half-blink was the take's own, on "my", 157.08-157.38 (f3770-f3777).
+- Spend now $17.45 of the $20 cap (tag `v5_sing_V3S_r3`, $3.24).

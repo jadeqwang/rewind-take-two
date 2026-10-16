@@ -3,8 +3,9 @@
 // One engraved still per chop (media/shots/R2/engraved/), cut exactly on the chop onsets from timing.json, each with a
 // small push so nothing is dead-still, a VHS scrub between hits and the iteration counter jumping backward.
 const DIR = 'media/shots/R2/engraved/';
-const STILLS = ['01train', '02marinab', '03picasso', '04bridge', '05fountain', '06watertower', '07riverwalk',
-  '08skydeck', '09lightning', '10gearsb', '11ferris', '12iceb', '13sedanb'];
+// v9: *_patch = the same still with the sleeve roundel re-lettered 1420 / MHz (tools/sectionE/patchfix.py)
+const STILLS = ['01train', '02marinab', '03picasso_patch', '04bridge_patch', '05fountain', '06watertower', '07riverwalk_patch',
+  '08skydeck', '09lightning', '10gearsb_patch', '11ferris', '12iceb_patch', '13sedanb'];
 const ITER = [4093, 4091, 4092, 4089, 4090, 4088, 4086, 4087, 4085, 4084, 4082, 4083, 4081];   // randomized but decreasing; all below 4094 (4094-4098 have their own fates, docs/revisions/v5/counters.md)
 
 export default ({ T }) => {

@@ -187,7 +187,7 @@ export default function verse2B({ T }) {
 
   // ---- 105.98–107.28 along the hotel front: she runs with her head turned back (source 0.35–1.8); nobody behind.
   shots.push({ id: 'B2_glance', start: 105.98, end: 107.28, background: INK, fx: [beatPunch], layers: [
-    { id: 'plate', type: 'video', src: plate('glance'), in: 0.35, rate: 1.1, fit: 'cover' }] });
+    { id: 'plate', type: 'video', src: `${S}B_glance/take_1_engraved_patch.mp4`, in: 0.35, rate: 1.1, fit: 'cover' }] });   // v9: roundel re-lettered 1420 / MHz
 
   // ---- 107.28–108.67 round the corner (take round_corner_b, high three-quarter view, camera locked; same keyframe as
   // round_corner, so the B_roundcornerclean patch still fits). She runs along the front wall; the agent waits around

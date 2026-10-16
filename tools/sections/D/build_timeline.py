@@ -722,8 +722,8 @@ def build():
         return [dict(id=f"btn_{side}", type="image", src=f"{CO}/btn_{side}.png", fit="cover", y=yk),
                 dict(id=f"strip_{side}", type="image", src=f"{CO}/patch_strip_{side}.png", fit="cover")]
 
-    def girl(id_, take, side, sT, yk, start=None):
-        L = dict(id=id_, type="video", src=f"{CO}/{take}_bo.mp4", keepColor=True, srcTime=sT, y=yk,
+    def girl(id_, take, side, sT, yk, start=None, src=None):
+        L = dict(id=id_, type="video", src=src or f"{CO}/{take}_bo.mp4", keepColor=True, srcTime=sT, y=yk,
                  matte=dict(src=f"{CO}/{take}_{side}.mp4", mode="luma"))
         if start is not None:
             L["start"] = start
@@ -784,7 +784,7 @@ def build():
     level("C2a_swap", 132.26, 133.56, (
         [pencil(0), *btn("l", held(None, 0.20)), *btn("r", held(None))],
         [agents_v4(132.26),
-         girl("blue", "c2t1", "R", C2T, held(None)), girl("orange", "c2t1", "Lc", C2T, held(None, 0.20))]),
+         girl("blue", "c2t1_v9", "B", C2T, held(None)), girl("orange", "c2t1_v9", "O", C2T, held(None, 0.20), src=f"{CO}/c2t1_v9_bo_O.mp4")]),
         fx=[dict(type="punch", at=[0.20], amount=0.02)])
     # C2b 133.56-134.88: take c2/take_1 3.56-4.88 (jump cut over the landing; ORANGE stays the girl on the left).
     # 134.00 (bar) BLUE hops off, the far button pops up and the bridge swings up out of the agents' reach; 134.44
@@ -795,7 +795,7 @@ def build():
     level("C2b_letgo", 133.56, 134.88, (
         [pencil([[0, 0, "hold"], [0.44, 0, "outCubic"], [0.64, UP]]), *btn("l", 0), *btn("r", held(None, 0.46))],
         [agents_v4(133.56),
-         girl("blue", "c2t1", "R", C2BT, 0), girl("orange", "c2t1", "Lc", C2BT, 0)]),
+         girl("blue", "c2t1_v9", "B", C2BT, 0), girl("orange", "c2t1_v9", "O", C2BT, 0, src=f"{CO}/c2t1_v9_bo_O.mp4")]),   # v9 #4: twins coloured by identity (tools/v4B/coop/twins.py)
         # v4 (coordinator: "a visible double exposure ... make it a hard cut on the beat"): the white flash on the cut
         # washed both frames together; the cut is now plain. phase 2/3: flash at 0, dur 0.05, amount 0.3
         fx=[dict(type="punch", at=[0.44], amount=0.03)])

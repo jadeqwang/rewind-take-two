@@ -4207,7 +4207,7 @@ export default {
     {
      "id": "blue",
      "type": "video",
-     "src": "media/shots/C_coop/c2t1_bo.mp4",
+     "src": "media/shots/C_coop/c2t1_v9_bo.mp4",
      "keepColor": true,
      "srcTime": [
       [
@@ -4227,14 +4227,14 @@ export default {
       ]
      ],
      "matte": {
-      "src": "media/shots/C_coop/c2t1_R.mp4",
+      "src": "media/shots/C_coop/c2t1_v9_B.mp4",
       "mode": "luma"
      }
     },
     {
      "id": "orange",
      "type": "video",
-     "src": "media/shots/C_coop/c2t1_bo.mp4",
+     "src": "media/shots/C_coop/c2t1_v9_bo_O.mp4",
      "keepColor": true,
      "srcTime": [
       [
@@ -4258,7 +4258,7 @@ export default {
       ]
      ],
      "matte": {
-      "src": "media/shots/C_coop/c2t1_Lc.mp4",
+      "src": "media/shots/C_coop/c2t1_v9_O.mp4",
       "mode": "luma"
      }
     }
@@ -4451,7 +4451,7 @@ export default {
     {
      "id": "blue",
      "type": "video",
-     "src": "media/shots/C_coop/c2t1_bo.mp4",
+     "src": "media/shots/C_coop/c2t1_v9_bo.mp4",
      "keepColor": true,
      "srcTime": [
       [
@@ -4465,14 +4465,14 @@ export default {
      ],
      "y": 0,
      "matte": {
-      "src": "media/shots/C_coop/c2t1_R.mp4",
+      "src": "media/shots/C_coop/c2t1_v9_B.mp4",
       "mode": "luma"
      }
     },
     {
      "id": "orange",
      "type": "video",
-     "src": "media/shots/C_coop/c2t1_bo.mp4",
+     "src": "media/shots/C_coop/c2t1_v9_bo_O.mp4",
      "keepColor": true,
      "srcTime": [
       [
@@ -4486,7 +4486,7 @@ export default {
      ],
      "y": 0,
      "matte": {
-      "src": "media/shots/C_coop/c2t1_Lc.mp4",
+      "src": "media/shots/C_coop/c2t1_v9_O.mp4",
       "mode": "luma"
      }
     }

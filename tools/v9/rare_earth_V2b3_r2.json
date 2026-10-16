@@ -1,0 +1,117 @@
+{
+ "_note": "v9 fix 11, round 2 (Jade 1:06: \"off center ... part of the word should be cut off, the way it naturally would be on a jacket. the words don't move around when you hunch\"). RARE EARTH centred under the back dot in V2b3 take 2 (C.js 66.28-67.16, in 0.45 s, rate 1.5 = src f11-42), tools/v9/rare_earth.py. Position and scale: the dot (ellipse fitted to its visible arc; scaled by its semi-diameters along and across the baseline, scale_dir; centred straight below it, perpendicular to the hem, anchor_dir base). Tilt: the jacket hem below it (rot \"hem\", smoothed; held from the nearest frame where the hem is visible over >=30 columns). No per-frame placement rules. occ = the driver's seat bolster in front of her (static, traced on its ink outline), so whatever falls behind it is hidden.",
+ "clip": "media/shots/V2b3/take_2_engraved.mp4",
+ "out": "media/shots/V2b3/take_2_engraved_v9rare2.mp4",
+ "crf": 16,
+ "x264_extra": [
+  "-tune",
+  "grain",
+  "-movflags",
+  "+faststart"
+ ],
+ "start": [
+  380,
+  790
+ ],
+ "win": 160,
+ "min_area": 3000,
+ "text": "RARE EARTH",
+ "font": "/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf",
+ "tracking": 0.05,
+ "word_space": 1.5,
+ "width": 2.15,
+ "gap": 0.26,
+ "rot": "hem",
+ "anchor_dir": "base",
+ "ink": [
+  52,
+  51,
+  56
+ ],
+ "soft": 0.35,
+ "occ": {
+  "poly": [
+   [
+    0,
+    240
+   ],
+   [
+    160,
+    240
+   ],
+   [
+    228,
+    290
+   ],
+   [
+    232,
+    700
+   ],
+   [
+    236,
+    738
+   ],
+   [
+    280,
+    750
+   ],
+   [
+    330,
+    760
+   ],
+   [
+    377,
+    780
+   ],
+   [
+    402,
+    800
+   ],
+   [
+    418,
+    820
+   ],
+   [
+    429,
+    840
+   ],
+   [
+    440,
+    860
+   ],
+   [
+    450,
+    880
+   ],
+   [
+    470,
+    920
+   ],
+   [
+    490,
+    960
+   ],
+   [
+    505,
+    1000
+   ],
+   [
+    525,
+    1040
+   ],
+   [
+    545,
+    1080
+   ],
+   [
+    0,
+    1080
+   ]
+  ],
+  "grow": 1,
+  "feather": 1.0,
+  "gap": 8
+ },
+ "rib_smooth": 5.0,
+ "scale_dir": true
+}
