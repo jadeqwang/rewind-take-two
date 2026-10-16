@@ -114,15 +114,33 @@ def hybrid(argv):
     """Her exact face (no makeup pass, no sharpening, light freckle concealing only); toned toward the take's skin only
     inside the feather ring so the jaw/hairline seam disappears."""
     SD.hybrid(argv, cand_dir=OUT, look=conceal_only, src_path=SRC, sharpen=0, edge_tone_only=True,
-              label="hybrid (no paid call): her exact face (light_makeup_irl), light conceal only")
+              crop_invalid=True, label="hybrid (no paid call): her exact face (light_makeup_irl), light conceal only")
 
 
-VERDICT = {}     # filled in after looking (see media/sing/selfie/README.md, round 3)
+VERDICT = {      # written after looking at every image (see media/sing/selfie/README.md, round 3)
+    "nb2_1": ("OK", "patch shown; right hair lock moved back"),
+    "nb2_2": ("OK", "patch shown; right hair lock moved back"),
+    "nb2_3": ("REJECT", "chin +5.7% (beyond floor)"),
+    "nb2_4": ("PICK", "most faithful (0.32/1.05px); patch cut"),
+    "nbp_1": ("OK", "patch cut at edge; neck darker"),
+    "nbp_2": ("OK", "patch cut at edge"),
+    "gpt_1": ("OK", "patch shown, hair kept; 1024 wide"),
+    "gpt_2": ("OK", "patch shown, hair kept; 1024 wide"),
+    "gpt_3": ("OK", "patch shown; hair a bit fuller"),
+    "gpt_4": ("OK", "runner-up: patch + both epaulets"),
+    "sdr_1": ("OK", "borderline: face ~4 L darker"),
+    "sdr_2": ("REJECT", "recoloured: face/skin darker"),
+    "sdr_3": ("REJECT", "lips darker L-5, chin -4.1%"),
+    "sdr_4": ("REJECT", "recoloured: lips darker L-4.3"),
+    "hyb_gpt_4": ("PICK", "her exact face; patch + epaulets"),
+    "hyb_nb2_4": ("OK", "her exact face; patch cut at edge"),
+    "hyb_nb2_2": ("OK", "her exact face; hair lock moved back"),
+}
 
 
 def check(argv):
     SD.check(argv, cand_dir=OUT, sheet="contact_sheet_r3.jpg", metrics_name="metrics_r3.json",
-             head=[("r2_pick", PICK2)], verdict={**VERDICT, "r2_pick": ("REF", "round-2 model pick (other photo)")},
+             head=[("r2_pick", PICK2, "noalign")], verdict={**VERDICT, "r2_pick": ("REF", "round-2 model pick (other photo)")},
              src_path=SRC, skin=True, src_label="ORIGINAL light makeup")
 
 

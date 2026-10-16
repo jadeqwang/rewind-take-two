@@ -336,7 +336,7 @@ def _ss01(x):
 
 
 def hybrid(argv, cand_dir=OUT, look=None, src_path=SRC, tone=(0.5, 0.6, 0.6), sharpen=0.6, edge_tone_only=False,
-           label=None):
+           label=None, crop_invalid=False):
     """Her own face (selfie, 2x Lanczos) back onto a take, aligned by landmarks, with the local makeup on it. Works in
     the selfie's framing at 2x (1024x1366). Hair and jacket come from the take; face + hairline + glasses from her.
     look(rgb, L, ref) -> rgb replaces the round-1 makeup() (round 2 passes the glow look; round 3 passes no-op).
@@ -372,6 +372,13 @@ def hybrid(argv, cand_dir=OUT, look=None, src_path=SRC, tone=(0.5, 0.6, 0.6), sh
         if sharpen:
             face = np.clip(face + sharpen * (face - cv2.GaussianBlur(face, (0, 0), 1.2)), 0, 255)   # the 2x upscale is soft
         out = np.clip(w * (1 - m) + face * m + 0.5, 0, 255).astype(np.uint8)
+        if crop_invalid:   # gpt's 2:3 input leaves strips the take never covered: crop them instead of smearing
+            valid = cv2.warpAffine(np.ones(a.shape[:2], np.uint8), M, (W0 * S2, H0 * S2), flags=cv2.INTER_NEAREST) > 0
+            cols = np.where(valid.mean(0) > 0.98)[0]
+            rows = np.where(valid[:, cols].mean(1) > 0.98)[0] if len(cols) else cols
+            if len(cols) and len(rows) and (len(cols) < valid.shape[1] or len(rows) < valid.shape[0]):
+                out = out[rows[0]:rows[-1] + 1, cols[0]:cols[-1] + 1]
+                m = m[rows[0]:rows[-1] + 1, cols[0]:cols[-1] + 1]
         name = "hyb_" + key
         os.makedirs(os.path.join(cand_dir, "_in"), exist_ok=True)
         Image.fromarray(out).save(os.path.join(cand_dir, name + ".png"))
@@ -497,11 +504,18 @@ def check(argv, cand_dir=OUT, sheet="contact_sheet.jpg", metrics_name="metrics.j
             if d.get("out") and os.path.exists(os.path.join(ROOT, d["out"][0])):
                 cands.append(d)
     cands.sort(key=lambda d: _order(d["key"]))
-    cands = [{"key": lab, "model": "reference", "out": [os.path.relpath(p, ROOT)]} for lab, p in head] + cands
+    cands = [{"key": h[0], "model": "reference", "out": [os.path.relpath(h[1], ROOT)], "noalign": len(h) > 2 and h[2] == "noalign"}
+             for h in head] + cands
     os.makedirs(os.path.join(cand_dir, "_in"), exist_ok=True)
     metrics, tiles = {"_noise_floor": floor}, {"original": big}
     for d in cands:
         a = T.load(os.path.join(ROOT, d["out"][0]))
+        if d.get("noalign"):            # a different photo shown for comparison only: fitted into the frame, not measured
+            im = Image.fromarray(a); im.thumbnail((W0 * S2, H0 * S2), Image.LANCZOS)
+            t = Image.new("RGB", (W0 * S2, H0 * S2), (28, 28, 30)); t.paste(im, ((W0 * S2 - im.size[0]) // 2, (H0 * S2 - im.size[1]) // 2))
+            tiles[d["key"]] = np.asarray(t)
+            metrics[d["key"]] = {"model": d["model"], "out_size": [a.shape[1], a.shape[0]], "noalign": True}
+            continue
         L = T.landmarks(a)
         if L is None:
             print("no face:", d["key"]); continue
@@ -564,6 +578,11 @@ def check(argv, cand_dir=OUT, sheet="contact_sheet.jpg", metrics_name="metrics.j
         c = metrics[k]
         st, words = verdict.get(k, ("?", ""))
         col = {"PICK": (120, 220, 140), "OK": (200, 200, 120), "REJECT": (240, 120, 110)}.get(st, (200, 200, 200))
+        if c.get("noalign"):
+            dr.text((x + 2, y), f"{k}  {st}", fill=col, font=font(17))
+            dr.text((x + 2, y + 21), f"{c['out_size'][0]}x{c['out_size'][1]}  different photo: not measured", fill=(170, 170, 175), font=small(11))
+            dr.text((x + 2, y + 40), words[:46], fill=col, font=font(12))
+            continue
         rc, bp = c["ratio_change_pct"], c["brow_pos_change_pct_io"]
         g = (170, 170, 175)
         dr.text((x + 2, y), f"{k}  {st}", fill=col, font=font(17))

@@ -169,3 +169,91 @@ The spelled-out geometry block mostly held. Unlike round 1, no nano-banana take 
 - darkens the upper lash line slightly.
 
 The brows are excluded from every mask. The face is set onto the take as in round 1: face oval out to the hairline plus the glasses band, feathered, toned halfway to the take's skin.
+
+---
+
+# Round 3: jacket only, on her real light-makeup photo
+
+**Source:** Jade put on light makeup in real life and took `inputs/light_makeup_irl.png` (512×683, left unchanged). Her own makeup is the makeup, so this round is the jacket only.
+
+**Ask:** replace the black and floral velvet top with the film's jacket, fitted to her own build: both shoulders and epaulets visible, and the "1420 MHz" patch on her left upper sleeve.
+
+**Leave everything else as photographed:** face, makeup, skin, brows, eyes, glasses, hair, pose. Mid-round, Jade said light smoothing and freckle removal are fine. Heavy airbrushing, recolouring, and any change to geometry or brows still mean rejection.
+
+**Picks:**
+- **Model edit: `selfie_r3_pick_model.png`** (= `r3/nb2_4`, nano-banana-2, 1792×2400).
+  - Shape: the most faithful take of all three rounds. Residual 0.32/1.05 px, every ratio and brow measure within the floor.
+  - Skin: unchanged (cheek texture 0.96×, a*b* shift 1.1; lips 1.03×, 1.8).
+  - Hair: both locks stay in front of her shoulders as photographed, flyaways included.
+  - Jacket: the blue disc and the epaulets show. The patch is partly cut by the right frame edge, which is where her left sleeve sits in this framing.
+- **Hybrid: `selfie_r3_pick_hybrid.png`** (= `r3/hyb_gpt_4`, 907×1363).
+  - Face: her exact face from the photo. No makeup pass, only a light freckle and spot conceal. Her makeup colours are untouched (cheeks and lips shift 0.1 or less in a*b*).
+  - Jacket: from gpt_4, which shows the **whole patch, the disc and both epaulets**, with her hair in both front locks.
+  - The hybrid is cropped to the strip gpt actually rendered, so its edges are not smeared.
+- **Runner-up model edit:** `r3/gpt_4`, the same jacket as the hybrid. It shows the whole patch, but it is only 1024×1536, it was made from a 2:3 crop, and the hair is a bit fuller.
+
+Script: `tools/sing/selfie_r3.py` (`gen`, `hybrid`, `check`). Sheet: `contact_sheet_r3.jpg`, with this photo and the round-2 model pick at the head. The round-2 pick is a different photo, so it is shown but not measured. Numbers: `r3/metrics_r3.json`.
+
+## Spend
+- **Round 3:** $1.81 logged over 14 calls, tagged `selfie_r3_<model>`, with no failures.
+
+  | model | takes | cost |
+  |---|---|---|
+  | gpt-image-2.5 | 4 | $0.85 |
+  | seedream-5-pro | 4 | $0.42 |
+  | nano-banana-2 | 4 | $0.27 |
+  | nano-banana-pro | 2 | $0.27 |
+
+- **Selfie total, rounds 1–3:** $5.70 logged, about $5.9 with round 1's flux-2/try-on under-count.
+
+**Output sizes:**
+- nano-banana-2 / nano-banana-pro: 1792×2400
+- seedream: 1536×2048
+- gpt: 1024×1536, made from a 2:3 crop of the photo
+
+## Checks
+These are the same likeness and brow metrics as before, now measured against `light_makeup_irl.png`.
+- **Noise floor:** residual 0.52/1.58 px; eye ratios up to 7.2% and others up to 2.4% on unchanged copies.
+
+**New skin and makeup check:**
+- **What it measures:** mean L\*a\*b\* and texture energy (mean |L − blur(L, 1.2 px)|) in the cheeks, lips and skin. The candidate is first mapped back to the photo's 1× frame.
+- **Floor:** resampling alone gives a texture ratio of 0.84–0.87 and colour shifts of 0.3 or less.
+- **Flags:**
+  - texture below 0.6× means airbrushed (texture between 0.6× and 0.8× counts as light smoothing, which is allowed);
+  - an a\*b\* shift above 3 means recoloured;
+  - an L shift above 4 means relit or recoloured.
+- **Results:** no take was airbrushed. The flags that fired were all darkening:
+  - the seedream takes darken her face and lips;
+  - nbp_1 and nb2_3 trip the whole-skin L flag only. That comes from the neck under the new collar; their cheeks and lips are unchanged.
+
+## Verdicts
+| key | verdict | notes |
+|---|---|---|
+| nb2_4 | **PICK (model)** | 0.32/1.05 px; skin and lips unchanged; hair as photographed; patch partly cut by the frame edge |
+| gpt_4 | OK, runner-up | 0.57/1.52 px; whole patch and both epaulets; 1024 wide; hair a bit fuller |
+| gpt_1, gpt_2 | OK | patch shown, hair kept; 1024 wide |
+| gpt_3 | OK | patch shown; hair a bit fuller; eyeL and mouth +3.5% (within floor) |
+| nb2_1, nb2_2 | OK | full patch shown, but the hair lock in front of her left shoulder (frame right) was moved behind it |
+| nbp_1, nbp_2 | OK | patch cut at the edge; nbp_1 neck darker (skin L −4.4, cheeks unchanged) |
+| sdr_1 | OK, borderline | face about 3.7 L darker, just under the flag |
+| nb2_3 | REJECT | chin +5.7% (beyond the floor) |
+| sdr_2 | REJECT | recoloured: face and skin darker (L −4.3) |
+| sdr_3 | REJECT | lips darker (L −5.0), chin −4.1%, jaw −3.4% |
+| sdr_4 | REJECT | recoloured: lips darker (L −4.3) |
+| hyb_gpt_4 | **PICK (hybrid)** | her exact face; whole patch and both epaulets |
+| hyb_nb2_4 | OK | her exact face; full photo framing; patch cut at the edge |
+| hyb_nb2_2 | OK | her exact face; full patch; hair lock in front of her left shoulder moved behind it |
+
+**Takes that changed her features:**
+- **Eyes enlarged, face slimmed, or nose or jaw narrowed:** none. The worst geometry was nb2_3's chin.
+- **Brows reshaped:** none beyond the floor.
+
+The models were far more faithful on this frontal, evenly lit photo than on the round-1 selfie.
+
+## Hybrids
+- Same compositing as before: face oval out to the hairline plus the glasses band, feathered and landmark-aligned, at 2× the photo's frame.
+- **This round:**
+  - no makeup pass and no sharpening;
+  - her face is toned toward the take's skin only inside the feather ring, so the seam disappears without recolouring her face;
+  - a light dark-spot conceal (35%) is the only skin change, as Jade allowed;
+  - hybrids built on gpt are cropped to the area gpt actually rendered.
