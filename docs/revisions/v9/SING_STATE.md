@@ -77,3 +77,21 @@ down in both, with no outpaint needed. Full report: `docs/revisions/v9/sing_v6.m
 - Open: Jade picks the sync by ear on `deliverables/wip/sing_review.html` (section "Singing v6"). Then rebuild the
   sync file at her pick (`wc_post.py` `SYNC_V6`, `--name`), re-matte, re-wire, re-render the preview, and re-check the
   eyes at the new in-point.
+
+## v6b: S1 retake for movement and wind (2026-10-17)
+
+Jade on v6: the second clip "feels much more natural than the first ... maybe because there's natural head movement ...
+or maybe the first clip has a little bit of wind in the upper part of the hair but the wind isn't moving any other part
+of the hair. can you add a bit more natural wind and movement to the first singing clip? audio sync is perfect."
+
+- Measured: S1 v6_take_1 yaw range 0.027 and mouth-x range 4.7 px, against V3S v6_take_3's 0.067 and 16.1 px.
+- `WC_VER=v6b` (`wc_takes.py` `P6B`, `WIND6B`): natural singer's nods and tilts, and a steady breeze through all of the
+  hair. 8 takes ($14.80). Takes 4 and 8 were reframed; 5 and 6 slur the 'b'; take 7 is still stiff; take 1 has many
+  blinks; take 3 blinks at the in-point.
+- **Wired: `v6b_take_2`**, yaw 0.129, x 35 px, hair motion about 2x v6. Lag +0.95 (`SYNC_V6B`), read by the 'b' release
+  and the "fore" end, the markers that give v6_take_1 +1.11 against its wired +1.09. A.js
+  `S1_SRC = media/sing/S1/v6b_t2_sync_1080_open.mp4`: the blink at 15.97-16.23 (file frames 81-86) patched from frame 80.
+- Review: `deliverables/wip/sing_review.html` section "v6b" (side-by-side `sing_v6b_S1_vs_v6.mp4`, preview, ear tests
+  `media/sing/review/v6b_S1_lag+{0.80,0.95,1.10}_*`).
+- Weak: cheeks a little full with pressed lips at 13.45-13.55, on "night".
+- Spend about $318.

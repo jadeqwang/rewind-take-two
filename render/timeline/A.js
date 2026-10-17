@@ -55,7 +55,10 @@ const S1_IN = 0 + { A: 0.15, B: 0, C: -0.15 }[LIP];   // clip time at song 12.60
 // "my dissertation defense" (the "night before" window alone locks on pre-roll mouthing). Eyes open on every frame
 // 12.60-16.14, so no noblink; plain BiRefNet matte (no pencils to key). Ear-test variants: media/sing/review/v6_S1_lag*.mp4.
 // media/sing/NOTES.md "v6", docs/revisions/v9/sing_v6.md. v5c +0.90: 'media/sing/S1/v5c_sync_1080_l090_open.mp4'
-const S1_SRC = 'media/sing/S1/v6_sync_1080.mp4';
+// v6b (Jade 2026-10-17: more natural head movement and wind; "audio sync is perfect" on v6): v6b_take_2, lag +0.95 read
+// by the same trace markers that give v6_take_1 its +1.09; the blink at the cutaway (file frames 81-86) patched open.
+// v6 (sync "perfect"): 'media/sing/S1/v6_sync_1080.mp4'
+const S1_SRC = 'media/sing/S1/v6b_t2_sync_1080_open.mp4';
 // slow push over the three singing cuts (1.0 -> 1.08 keeps the band, dot and 1420 MHz roundel in frame)
 const S1_PUSH = (a, b) => ({ from: { scale: a }, to: { scale: b }, ease: 'linear' });
 // v4 (Jade, 0:13: "start further away and then zoom in"): S1 opens on the whole Bean and pushes in to the v3 framing,

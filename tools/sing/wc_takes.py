@@ -141,10 +141,28 @@ if VER != "v3":
     for _k, _d in V4.items():
         SHOTS[_k].update(_d)
         SHOTS[_k]["first"] = SHOTS[_k]["first"].replace("/v3_", f"/{VER}_")
+# v6b (Jade, 2026-10-17, on v6: "the second clip feels much more natural than the first ... maybe because there's natural
+# head movement during the singing instead of stillness? or maybe the first clip has a little bit of wind in the upper part
+# of the hair but the wind isn't moving any other part of the hair. can you add a bit more natural wind and movement to the
+# first singing clip?"). Measured on mouth.json: S1 v6_take_1 yaw range 0.027 / mouth-x range 4.7 px against V3S
+# v6_take_3's 0.067 / 16.1 px. Same first frame, face lock and words as v6; the head-angle lock becomes natural singer's
+# movement and the faint breeze becomes a steady breeze through all of her hair.
+P6B = P6.replace("Her head keeps its angle: no tipping back or turning, only a slight sway. ",
+                 "She moves naturally, like a real singer: small nods and tilts of her head with the phrasing, a slight "
+                 "turn, shoulders rising with each breath; she keeps facing the camera. ").replace(
+                 "Her long dark hair stays worn down, falling straight in front of her shoulders, parted in the middle.",
+                 "Her long dark hair stays worn down, parted in the middle.")
+WIND6B = ("A steady night breeze moves all of her hair: the top, the sides and the long lengths over her shoulders sway "
+          "and lift together, strands drifting across her jacket.")
 if VER.startswith("v6"):
-    P = P6
+    P = P6B if VER == "v6b" else P6
     for _k, _d in V6.items():
         SHOTS[_k].update(_d)
+    if VER == "v6b":
+        for _k in SHOTS:
+            SHOTS[_k]["first"] = SHOTS[_k]["first"].replace("/v6b_", "/v6_")
+            SHOTS[_k]["WHERE"] = ("She stands at night in front of the mirror of Cloud Gate in Chicago; everything behind "
+                                  "her stays exactly as engraved. " + WIND6B)
 if VER.startswith("v5"):
     P = P5
     for _k, _d in V5.items():
@@ -177,7 +195,7 @@ def submit(shot, n=1, res="720p", dry=False, note=""):
         used = [k for k, _ in sidecars(shot)] + [int(f[len(PRE):].split(".")[0]) for f in os.listdir(d)
                                                  if f.startswith(PRE) and f.endswith(".spec.json")]
         k = max(used) + 1 if used else 1
-        tag = {"v3": f"revA_sing_{shot}", "v5": f"v5_sing_{shot}", "v5b": f"v5_sing_{shot}_r2", "v5c": f"v5_sing_{shot}_tint", "v5d": f"v5_sing_{shot}_r3", "v6": f"v6_sing_{shot}"}.get(VER, f"{VER}A_sing_{shot}")
+        tag = {"v3": f"revA_sing_{shot}", "v5": f"v5_sing_{shot}", "v5b": f"v5_sing_{shot}_r2", "v5c": f"v5_sing_{shot}_tint", "v5d": f"v5_sing_{shot}_r3", "v6": f"v6_sing_{shot}", "v6b": f"v6b_sing_{shot}"}.get(VER, f"{VER}A_sing_{shot}")
         spec = {"model": MODEL, "tag": tag, "notes": f"{shot} {PRE}{k} {res} {note}".strip(),
                 "input": {"prompt": prompt, "image": "file:" + os.path.relpath(img, ROOT),
                           "reference_audios": ["file:" + os.path.relpath(aud, ROOT)], "duration": s["duration"],

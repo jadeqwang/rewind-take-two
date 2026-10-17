@@ -160,6 +160,15 @@ SYNC_V6 = {
     "S1": ("v6_take_1", [(12.60, 0.79), (19.64, 7.83)]),
     "V3S": ("v6_take_3", [(153.98, 0.50), (159.14, 5.66)]),
 }
+# v6b: S1 retake for more head movement and a breeze through all of her hair (Jade 2026-10-17, on v6: "the second clip feels
+#   much more natural than the first ... can you add a bit more natural wind and movement to the first singing clip?
+#   audio sync is perfect" -> wc_takes.py P6B). Lag read on the trace by the markers that give +1.11 on v6_take_1 (wired
+#   +1.09, sync "perfect"): the release of the 'b' closure into "fore" and the end of "fore".
+#   v6b_take_2: 'b' release +0.98, "fore" end +0.77, phrase-2 windows +0.90..+0.98 (r .68-.95), look.py corr +0.63 /
+#       events +0.52 (pre-roll). Wired at +0.95.
+SYNC_V6B = {
+    "S1": ("v6b_take_2", [(12.60, 0.65), (19.64, 7.69)]),
+}
 if VER == "v4":
     SYNC = SYNC_V4
 elif VER == "v5":
@@ -172,6 +181,8 @@ elif VER == "v5d":
     SYNC = SYNC_V5D
 elif VER == "v6":
     SYNC = SYNC_V6
+elif VER == "v6b":
+    SYNC = SYNC_V6B
 
 
 def clip_time(keys, t):
