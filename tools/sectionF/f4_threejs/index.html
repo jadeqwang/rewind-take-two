@@ -57,12 +57,18 @@ const uniforms = {
   headP: { value: new THREE.Vector3() }, bU: { value: new THREE.Vector3() }, bF: { value: new THREE.Vector3() },
   bL: { value: new THREE.Vector3() }, mode: { value: 0 }, ss: { value: 2 },
   overlay: { value: null }, useOverlay: { value: 0 },
+  uJ: { value: Array.from({ length: 15 }, () => new THREE.Vector3()) }, uHF: { value: new THREE.Vector3() },
+  plA: { value: new THREE.Vector3() }, plN: { value: new THREE.Vector3() }, plE1: { value: new THREE.Vector3() },
+  plE2: { value: new THREE.Vector3() }, oscale: { value: 2.4 },
+  uHU: { value: new THREE.Vector3() }, uTN: { value: [0, 1, 2].map(() => new THREE.Vector3()) }, uLN: { value: new THREE.Vector3() },
 };
 
 const frag = /* glsl */`
 precision highp float;
 uniform vec2 res; uniform vec3 camPos, camR, camU, camF; uniform float focal;
 uniform vec3 headP, bU, bF, bL; uniform int mode; uniform int ss;
+uniform vec3 plA, plN, plE1, plE2;   // mode 3: the plane her picture lies on (anchor, normal, picture right, picture up)
+uniform float oscale;                // mode 4: orthographic view of the mannequin alone, metres per image height
 uniform sampler2D overlay; uniform int useOverlay;
 varying vec2 vUv;
 
@@ -83,29 +89,36 @@ vec3 beanN(vec3 p) {
   return normalize(vec3(beanF(p + e.xyy) - beanF(p - e.xyy), beanF(p + e.yxy) - beanF(p - e.yxy), beanF(p + e.yyx) - beanF(p - e.yyx)));
 }
 
-// ---------------------------------------------------------------- the mannequin. Local frame: x = her LEFT, y = from her
-// head toward her feet, z = her FRONT. Head centre at the origin; 1.62 m from crown to soles.
+// ---------------------------------------------------------------- the mannequin, articulated (v10b). Local frame: x = her
+// LEFT, y = from her head toward her feet (straight body), z = her FRONT. Joints come from body() in cases.js (uJ, local,
+// head centre at the origin): the spine, neck and head bend back (an arched back, head thrown back), the legs bow back.
+// uJ: 0 head centre, 1 skull base, 2 shoulders (neck base), 3 waist, 4 pelvis, 5/8 hips L/R, 6/9 knees, 7/10 ankles,
+// 11/12 hands L/R, 13/14 toes L/R. uHF/uHU: the head's front and crown directions. uTN: front normals of the neck,
+// chest and belly segments; uLN: front normal of the shins.
+uniform vec3 uJ[15];
+uniform vec3 uHF, uHU, uTN[3], uLN;
 float sdCap(vec3 p, vec3 a, vec3 b, float r) { vec3 pa = p - a, ba = b - a; float h = clamp(dot(pa, ba) / dot(ba, ba), 0.0, 1.0); return length(pa - ba * h) - r; }
-float sdRBox(vec3 p, vec3 b, float r) { vec3 q = abs(p) - b + r; return length(max(q, 0.0)) + min(max(q.x, max(q.y, q.z)), 0.0) - r; }
+float capH(vec3 p, vec3 a, vec3 b) { vec3 pa = p - a, ba = b - a; return clamp(dot(pa, ba) / dot(ba, ba), 0.0, 1.0); }
 vec3 toLocal(vec3 p) { vec3 q = p - headP; return vec3(dot(q, bL), dot(q, bU), dot(q, bF)); }
 vec2 manL(vec3 q) {                     // (distance, part)
-  vec2 r = vec2(length(q) - 0.12, 1.0);                                            // head
-  float t = sdRBox(q - vec3(0.0, 0.47, 0.0), vec3(0.18, 0.28, 0.11), 0.05);       // torso
-  if (t < r.x) r = vec2(t, 2.0);
-  float nk = sdCap(q, vec3(0.0, 0.1, 0.0), vec3(0.0, 0.22, 0.0), 0.055);           // neck
-  if (nk < r.x) r = vec2(nk, 2.0);
-  float ar = sdCap(q, vec3(-0.78, 0.26, 0.0), vec3(0.78, 0.26, 0.0), 0.05);        // arms out in a T
-  if (ar < r.x) r = vec2(ar, 3.0);
-  float hl = length(q - vec3(0.84, 0.26, 0.0)) - 0.075;                            // LEFT hand: cyan
-  if (hl < r.x) r = vec2(hl, 4.0);
-  float hr = length(q - vec3(-0.84, 0.26, 0.0)) - 0.075;                           // RIGHT hand: magenta
-  if (hr < r.x) r = vec2(hr, 5.0);
-  float lg = min(sdCap(q, vec3(0.09, 0.74, 0.0), vec3(0.085, 1.46, 0.0), 0.08),
-                 sdCap(q, vec3(-0.09, 0.74, 0.0), vec3(-0.085, 1.46, 0.0), 0.08));  // legs together
-  if (lg < r.x) r = vec2(lg, 6.0);
-  float ft = min(sdRBox(q - vec3(0.09, 1.55, 0.06), vec3(0.06, 0.05, 0.13), 0.02),
-                 sdRBox(q - vec3(-0.09, 1.55, 0.06), vec3(0.06, 0.05, 0.13), 0.02)); // shoes point to her front
-  if (ft < r.x) r = vec2(ft, 7.0);
+  vec2 r = vec2(length(q - uJ[0]) - 0.115, 1.0);                                   // head
+  float d;
+  d = sdCap(q, uJ[1], uJ[2], 0.055); if (d < r.x) r = vec2(d, 2.0);                 // neck
+  d = sdCap(q, uJ[2] + vec3(0.07, 0.0, 0.0), uJ[3] + vec3(0.05, 0.0, 0.0), 0.12);
+  d = min(d, sdCap(q, uJ[2] - vec3(0.07, 0.0, 0.0), uJ[3] - vec3(0.05, 0.0, 0.0), 0.12));
+  if (d < r.x) r = vec2(d, 3.0);                                                    // chest (two capsules: wide)
+  d = min(sdCap(q, uJ[3] + vec3(0.05, 0.0, 0.0), uJ[4] + vec3(0.06, 0.0, 0.0), 0.11),
+          sdCap(q, uJ[3] - vec3(0.05, 0.0, 0.0), uJ[4] - vec3(0.06, 0.0, 0.0), 0.11));
+  if (d < r.x) r = vec2(d, 4.0);                                                    // belly / hips
+  d = min(sdCap(q, uJ[2] + vec3(0.15, 0.0, 0.0), uJ[11], 0.05), sdCap(q, uJ[2] - vec3(0.15, 0.0, 0.0), uJ[12], 0.05));
+  if (d < r.x) r = vec2(d, 5.0);                                                    // arms out in a T
+  d = length(q - uJ[11]) - 0.075; if (d < r.x) r = vec2(d, 6.0);                    // LEFT hand: cyan
+  d = length(q - uJ[12]) - 0.075; if (d < r.x) r = vec2(d, 7.0);                    // RIGHT hand: magenta
+  d = min(min(sdCap(q, uJ[5], uJ[6], 0.085), sdCap(q, uJ[6], uJ[7], 0.07)),
+          min(sdCap(q, uJ[8], uJ[9], 0.085), sdCap(q, uJ[9], uJ[10], 0.07)));
+  if (d < r.x) r = vec2(d, 8.0);                                                    // legs together
+  d = min(sdCap(q, uJ[7], uJ[13], 0.06), sdCap(q, uJ[10], uJ[14], 0.06));
+  if (d < r.x) r = vec2(d, 9.0);                                                    // shoes, toes to her front
   return r;
 }
 float manD(vec3 p) { return manL(toLocal(p)).x; }
@@ -117,28 +130,34 @@ vec3 manColor(vec3 p) {
   vec3 q = toLocal(p);
   float part = manL(q).y;
   vec3 c;
-  if (part < 1.5) {                       // head: red, with a cream FACE disc (two eyes, a mouth) on her front
+  vec3 FRONT = vec3(1.0, 0.85, 0.1), BAND = vec3(1.0, 0.45, 0.05), BACK = vec3(0.07, 0.08, 0.2);
+  if (part < 1.5) {                       // head: red, with a cream FACE disc (eyes toward the crown, a mouth) on her front
     c = vec3(0.85, 0.12, 0.1);
-    vec3 u = normalize(q);
-    if (u.z > 0.55) {
+    vec3 v = q - uJ[0];
+    if (dot(normalize(v), uHF) > 0.5) {
       c = vec3(1.0, 0.88, 0.72);
-      vec2 f = q.xy;
-      if (length(f - vec2(0.04, -0.02)) < 0.018 || length(f - vec2(-0.04, -0.02)) < 0.018) c = vec3(0.05);
-      if (abs(f.x) < 0.035 && abs(f.y - 0.05) < 0.008) c = vec3(0.6, 0.1, 0.1);
+      vec2 f = vec2(v.x, dot(v, uHU));
+      if (length(f - vec2(0.04, 0.025)) < 0.018 || length(f - vec2(-0.04, 0.025)) < 0.018) c = vec3(0.05);
+      if (abs(f.x) < 0.035 && abs(f.y + 0.045) < 0.009) c = vec3(0.6, 0.1, 0.1);
     }
-  } else if (part < 2.5) {                // torso: FRONT bright yellow with an orange band; BACK dark navy with a white X
-    if (q.z > 0.0) {
-      c = vec3(1.0, 0.85, 0.1);
-      if (abs(q.y - 0.38) < 0.04) c = vec3(1.0, 0.45, 0.05);
-    } else {
-      c = vec3(0.07, 0.08, 0.2);
-      vec2 b = vec2(q.x, q.y - 0.47);
-      if ((abs(b.x - b.y * 0.62) < 0.035 || abs(b.x + b.y * 0.62) < 0.035) && abs(b.y) < 0.25) c = vec3(0.95);
+  } else if (part < 2.5) {                // neck: front cream (throat), back navy
+    c = dot(q - mix(uJ[1], uJ[2], capH(q, uJ[1], uJ[2])), uTN[0]) > 0.0 ? vec3(1.0, 0.88, 0.72) : BACK;
+  } else if (part < 3.5) {                // chest: FRONT yellow with an orange band; BACK navy with a white X
+    float h = capH(q, uJ[2], uJ[3]);
+    vec3 cp = mix(uJ[2], uJ[3], h);
+    if (dot(q - cp, uTN[1]) > 0.0) c = abs(h - 0.35) < 0.08 ? BAND : FRONT;
+    else {
+      c = BACK;
+      vec2 b = vec2(q.x, (h - 0.5) * 0.26);
+      if ((abs(b.x - b.y * 1.1) < 0.03 || abs(b.x + b.y * 1.1) < 0.03) && abs(h - 0.5) < 0.45) c = vec3(0.95);
     }
-  } else if (part < 3.5) c = vec3(0.92);
-  else if (part < 4.5) c = vec3(0.0, 0.85, 0.95);
-  else if (part < 5.5) c = vec3(0.95, 0.1, 0.8);
-  else if (part < 6.5) c = vec3(0.15, 0.3, 0.85);
+  } else if (part < 4.5) {                // belly: FRONT yellow, BACK navy
+    float h = capH(q, uJ[3], uJ[4]);
+    c = dot(q - mix(uJ[3], uJ[4], h), uTN[2]) > 0.0 ? FRONT : BACK;
+  } else if (part < 5.5) c = vec3(0.92);
+  else if (part < 6.5) c = vec3(0.0, 0.85, 0.95);
+  else if (part < 7.5) c = vec3(0.95, 0.1, 0.8);
+  else if (part < 8.5) c = vec3(0.15, 0.3, 0.85);
   else c = vec3(0.1, 0.85, 0.2);
   return c;
 }
@@ -229,15 +248,32 @@ vec4 refmap(vec3 d) {
   if (h.y < 0.5 || h.y > 1.5) return vec4(0.0);
   vec3 p = camPos + h.x * d;
   vec3 r = reflect(d, beanN(p));
-  float den = dot(r, bF);
+  float den = dot(r, plN);
   if (abs(den) < 1e-5) return vec4(0.0);
-  float t = dot(headP - p, bF) / den;
+  float t = dot(plA - p, plN) / den;
   if (t <= 0.0) return vec4(0.0);
-  vec3 q = p + r * t - headP;
-  return vec4(dot(q, bL), dot(q, bU), 1.0, 1.0);
+  vec3 q = p + r * t - plA;
+  return vec4(dot(q, plE1), dot(q, plE2), 1.0, 1.0);
 }
 
 void main() {
+  if (mode == 4) {                       // the pose reference: her alone, orthographic, on white
+    vec3 acc4 = vec3(0.0);
+    for (int sy = 0; sy < 2; sy++) for (int sx = 0; sx < 2; sx++) {
+      vec2 uv = (gl_FragCoord.xy + vec2(float(sx), float(sy)) * 0.5 - 0.25 - 0.5 * res) / res.y;
+      vec3 o = camPos + (camR * uv.x + camU * uv.y) * oscale;
+      float t = 0.0; vec3 c = vec3(1.0);
+      for (int i = 0; i < 300; i++) {
+        float dm = manD(o + t * camF);
+        if (dm < 0.0008) { c = shadeMan(o + t * camF); break; }
+        t += dm * 0.9;
+        if (t > 60.0) break;
+      }
+      acc4 += c;
+    }
+    gl_FragColor = vec4(pow(acc4 / 4.0, vec3(1.0 / 1.15)), 1.0);
+    return;
+  }
   if (mode == 3) {
     vec2 uv = (gl_FragCoord.xy - 0.5 * res) / res.y;
     gl_FragColor = refmap(normalize(camF * focal + camR * uv.x + camU * uv.y));
@@ -281,6 +317,10 @@ function setPose(P) {
   uniforms.camU.value.fromArray(P.cam.u); uniforms.camF.value.fromArray(P.cam.f); uniforms.focal.value = P.cam.focal;
   uniforms.headP.value.fromArray(P.head); uniforms.bU.value.fromArray(P.bU); uniforms.bF.value.fromArray(P.bF);
   uniforms.bL.value.fromArray(P.bL);
+  P.body.J.forEach((j, i) => uniforms.uJ.value[i].fromArray(j));
+  uniforms.uHF.value.fromArray(P.body.hf); uniforms.uHU.value.fromArray(P.body.hu);
+  P.body.tn.forEach((n, i) => uniforms.uTN.value[i].fromArray(n));
+  uniforms.uLN.value.fromArray(P.body.ln);
 }
 // render one view; returns a PNG data URL. opts: {case, dist, mode, ss}
 window.renderView = (opts) => {
@@ -306,6 +346,10 @@ window.renderMap = (opts) => {
   const C = CASES[opts.case];
   const P = pose(C, opts.frac * pose(C, -1).startDist);
   setPose(P);
+  const V = opts.plane;      // {anchorL, nL, e1L, e2L} in her local frame (mirrorView in cases.js)
+  const toW = v => [0, 1, 2].map(i => P.bL[i] * v[0] + P.bU[i] * v[1] + P.bF[i] * v[2]);
+  uniforms.plA.value.fromArray(P.head.map((h, i) => h + toW(V.anchorL)[i]));
+  uniforms.plN.value.fromArray(toW(V.nL)); uniforms.plE1.value.fromArray(toW(V.e1L)); uniforms.plE2.value.fromArray(toW(V.e2L));
   uniforms.mode.value = 3;
   renderer.setRenderTarget(rt);
   renderer.render(scene, cam);
@@ -323,8 +367,28 @@ window.renderMap = (opts) => {
   const u8 = new Uint8Array(xy.buffer);
   for (let i = 0; i < u8.length; i += 0x8000) s += String.fromCharCode.apply(null, u8.subarray(i, i + 0x8000));
   const add = (a, b, k) => a.map((v, i) => v + b[i] * k);
-  return { data: btoa(s), w, h, box: opts.box, crown: project(P, add(P.head, P.bU, -0.12)), soles: project(P, add(P.head, P.bU, 1.6)),
+  // her crown (lowest point of her head) and the tops of her shoes (highest point of her feet), as the comp measures
+  // them in the footage
+  const Jw = P.body.J.map(j => toW(j).map((v, i) => v + P.head[i]));
+  const feet = [7, 10, 13, 14].map(k => Jw[k]).reduce((a, b) => (a[1] > b[1] ? a : b));
+  return { data: btoa(s), w, h, box: opts.box, crown: project(P, add(Jw[0], P.bU, -0.115)), soles: project(P, add(feet, P.bU, 0.06)),
            headc: project(P, P.head), pose: P };
+};
+// the pose reference (mode 4): the mannequin alone, orthographic along view direction V.fL (her local frame), centred on
+// V.anchorL, V.e1L right and V.e2L up, oscale metres per image height. PNG data URL.
+window.renderRef = (opts) => {
+  const C = CASES[opts.case];
+  const P = pose(C, opts.frac * pose(C, -1).startDist);
+  setPose(P);
+  const V = opts.plane;
+  const toW = v => [0, 1, 2].map(i => P.bL[i] * v[0] + P.bU[i] * v[1] + P.bF[i] * v[2]);
+  const f = toW(V.fL);
+  uniforms.camPos.value.fromArray(P.head.map((h, i) => h + toW(V.anchorL)[i] - f[i] * 30));
+  uniforms.camF.value.fromArray(f); uniforms.camR.value.fromArray(toW(V.e1L)); uniforms.camU.value.fromArray(toW(V.e2L));
+  uniforms.oscale.value = opts.oscale || 2.4;
+  uniforms.mode.value = 4;
+  renderer.render(scene, cam);
+  return canvas.toDataURL('image/png');
 };
 window.CASES = CASES;
 window.isLost = () => renderer.getContext().isContextLost();

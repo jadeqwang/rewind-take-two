@@ -1,163 +1,187 @@
 # v10 F4: the Bean reflection, checked in three.js (3:00.02-3:03.56)
 
-Status: done. Two versions built, the EDL swap is below. The lead integrates and renders.
+Status: done (v10b, after Jade's two corrections of 2026-10-18). One output, `..._v10refl_front2.mp4`. The EDL swap is
+below; the lead integrates and renders.
 
-Jade's note (2026-10-18): "it should be her front that is visible in the bean's reflection as she's falling, and in the
-reflection her feet should be above. … worth thinking it out in three.js and doing a quick little check of that fall."
+Jade's notes (2026-10-18):
+- "it should be her front that is visible in the bean's reflection as she's falling, and in the reflection her feet
+  should be above."
+- "you're currently looking at her back outside of the bean, it's just that her hair is covering the large pale blue
+  dot. you should actually see the front of her jacket and mock neck crop top in the reflection."
+- "the reason you can see her face is because her back is arched."
 
 ## The answer
-**In the shot as drawn, with her front to the camera and the Bean behind her, the Bean shows her BACK, with her feet
-ABOVE (the same way up as she is).** Her front only shows in the reflection if the mirror is under her and floor-like.
-Then her feet point DOWN, which is what v9 did. Front and feet-above together need her to face the Bean, and then the
-camera would see her back. So physics agrees with half of Jade's note (feet above) but not the other half (front).
+**Jade is right on both counts. In F4 the Bean shows her FRONT, with her feet ABOVE (the same way up as she is),
+mirror-reversed.**
 
-In the drawn geometry (case A below):
-- **Where:** just below her crown, on her centre line, where the Bean's front face is close to upright (14 deg from vertical at the
-  contact point). Not hidden behind her: the camera is about level with her head, so the mirror point that sees her is
-  below her head in the frame.
-- **Which side:** her back (the mannequin's dark back with the white X, the red back of the head, no face).
-- **Which way up:** feet up, head down, like her. Its feet point at her crown, so the two figures stack nearly feet to head.
-  Mirror-reversed left to right, as any reflection is.
-- **Size and motion** (1080p, her arm span is about 540 px):
+**My first pass (v10a) was wrong, and so was v9.** Both read her as facing the camera because her face shows at the
+bottom of her head. The shot actually shows her back:
+- her hair streams up her back and covers the pale-blue dot on the back of her jacket;
+- the headphone band crosses the back of her head;
+- the orange straps hang on the backs of the cargo pants;
+- the 1420 MHz patch is on her left arm as seen from behind.
 
-  | F4 src frame | song | to the mirror | reflection (w x h) | of her width / height | top-bottom y (her crown at 608) |
+The face shows because her back is arched and her head is thrown back past horizontal. Her face turns down and back
+toward the camera, which is why it reads the right way up (eyes above mouth) under her crown. With her back to the
+camera, a wall-like mirror in front of her shows her front. I built v10a's back version on the misread, and it is
+withdrawn.
+
+### In the drawn geometry (case A, articulated mannequin)
+- **Which side:** her front: jacket front, mock-neck crop top, throat. Her face is turned toward the camera, so the
+  mirror sees the underside of her chin and her hair rather than her eyes.
+- **Which way up:** feet up, head down, like her. Mirror-reversed left to right: the pencil hand stays on picture-left
+  and the 1420 patch on picture-right, on the same sides as her own.
+- **Where:** just below her crown, on her centre line. The Bean's face there is close to upright (its normal is 14° above
+  horizontal). The camera is about level with her head, so the mirror point that sees her is below her head in frame,
+  and the reflection is not hidden behind her.
+- **Size and motion** (1080p; her arm span is about 470 px in the check):
+
+  | F4 src frame | song | her head to the mirror | reflection (w x h) | top-bottom y (her crown at 608) | hidden behind her |
   |---|---|---|---|---|---|
-  | 0  | 3:00.02 (f4320) | 11.4 m | 72 x 28 px   | 13% / 5%  | 646-674 |
-  | 20 | 3:00.66 (f4335) | 8.9 m  | 90 x 40      | 17% / 8%  | 644-684 |
-  | 40 | 3:01.30 (f4351) | 5.8 m  | 132 x 62     | 25% / 12% | 634-696 |
-  | 52 | 3:01.69 (f4360) | 3.8 m  | 182 x 94     | 34% / 18% | 608-702 |
-  | 60 | 3:01.94 (f4366) | 2.4 m  | 238 x 130    | 44% / 25% (20% of it behind her) | 570-700 |
-  | 70 | 3:02.26 (f4374) | 0.8 m  | 368 x 212    | 68% / 41% (44% behind her) | 462-674 |
-  | 76 | 3:02.44 (f4378) | 0.15 m | 466 x 264    | 87% / 51% (54% behind her) | 372-636 |
+  | 0  | 3:00.02 (f4320) | 11.4 m | 66 x 28 px | 646-674 | 0 |
+  | 20 | 3:00.66 (f4335) | 8.9 m  | 84 x 40    | 644-684 | 0 |
+  | 40 | 3:01.30 (f4351) | 5.9 m  | 120 x 64   | 632-696 | 0 |
+  | 52 | 3:01.69 (f4360) | 4.0 m  | 162 x 94   | 608-702 | 0 |
+  | 60 | 3:01.94 (f4366) | 2.6 m  | 210 x 130  | 572-702 | 17% |
+  | 70 | 3:02.26 (f4374) | 1.1 m  | 316 x 210  | 472-682 | 45% |
+  | 76 | 3:02.44 (f4378) | 0.4 m  | 390 x 266  | 390-656 | 58% |
 
-  It starts tiny and flattened: the Bean curves much more top to bottom than side to side, so the image is squashed about
-  2.5x vertically. It grows smoothly. Its head stays just under her crown while its feet climb up behind her body.
-- **Near the surface:** it grows toward life size and slides up behind her. From about 3:01.9 (src 60) her body hides
-  more and more of it. At contact only its arms, shoulders and the back of its head show under her face, and the rest is
-  behind her. A near-upright mirror meets her back to back, not face to face.
+  It starts tiny and flattened: the Bean curves much more top to bottom than side to side, so the image is squashed
+  vertically. It grows smoothly. Its head stays just under her crown while its feet climb up behind her body. Near
+  contact it is nearly life size and more than half hidden behind her: her belly leads into the mirror, and the
+  reflection's front meets hers.
 
-The cue in the brief checks out. In the drawing the reflected horizon trees sit just under her head, and by src 60-66
-they are right beside it. In the check the trees reflect where the Bean's normal is close to horizontal. That is the
-wall-like front face her line of sight runs into.
+The brief's cue checks out. The horizon trees reflect just under her head (and beside it by src 60-66) because the
+Bean's normal there is close to horizontal: the wall-like front face that her line of sight runs into.
 
 ## The three.js check
-`tools/sectionF/f4_threejs/` (open `index.html` from any local web server at the repo root. It has a case picker, a distance
-slider, normal/x-ray/id views and a frame-0 overlay. Headless renders come from `render.mjs`.)
+`tools/sectionF/f4_threejs/`. Open `index.html` from any local web server at the repo root; it has a case picker, a
+distance slider, normal/x-ray/id views and a frame-0 overlay. Headless renders come from `render.mjs`.
 - **Reflection method: ray tracing (sphere-traced signed distances) in a three.js ShaderMaterial**, not a CubeCamera.
-  Every pixel marches the scene. A ray that hits the Bean reflects about the exact normal of the Bean's implicit surface
-  and is marched again (up to 3 bounces), so a nearby object's reflection is exact for this curved mirror. Limits: the
-  far world (plaza tiles, a ring of trees at 48 m, buildings at 130 m, sky) is analytic. There is no Bean self-shadowing
-  and no ground shadow. The lens is a pinhole, while the drawing has a fisheye-like barrel (buildings lean out at the
-  edges). The mannequin is rigid.
+  Each pixel marches the scene. A ray that hits the Bean reflects about the exact normal of the Bean's implicit surface
+  and is marched again (up to 3 bounces), so a nearby figure's reflection is exact for this curved mirror.
+  - Limits: the far world (plaza tiles, a ring of trees at 48 m, buildings at 130 m, sky) is analytic. There are no
+    shadows. The lens is a pinhole, while the drawing has a fisheye-like barrel.
 - **Bean:** a superellipsoid 20 x 13 x 10 m (exponent 2.6) standing on the plaza, with a 7 m x 3.7 m omphalos arch cut
   underneath.
-- **Mannequin:** 1.62 m, T-pose, legs together, head down. FRONT: a cream face disc with eyes and mouth, plus a bright
-  yellow chest with an orange band. BACK: dark navy with a white X and a red back of the head. Cyan LEFT hand, magenta
-  RIGHT hand, green shoes, blue legs.
-- **Camera fit (case A):** 5.8 m up, 22 m from the Bean's centre, pitched 4 deg up, 69 deg horizontal lens (focal 1.15
-  image heights). Her head is 4.2 m in front of the camera at frame pixel (958, 575), which gives her 535 px size. She moves
-  with the camera along its line of sight through her head (the footage keeps her head still while the Bean swells around
-  it). Her distance per frame comes from the Bean's width in the F4 matte: the camera's distance goes as 1/width, and
-  contact is at about src 77. The fit, with frame 0 overlaid: ![fit](f4/threejs/fit_caseA_frame0.jpg)
-  The Bean's width and the reflected horizon height match. The drawn Bean is a little taller and its arch higher.
+- **Mannequin (v10b, articulated):** joints at the pelvis, waist, shoulders, neck and head, plus hips, knees and ankles
+  (`body()` / `ARCH` in `cases.js`).
+  - She is back to the camera and head-first. Her spine extends 5°/10° (belly/chest), her neck 25°, and her head 100°
+    more, so it is thrown back 140° in all and the face turns down and back toward the camera.
+  - Her legs bow back 6°+6°. Her arms are out in a T, swept 22° toward her feet.
+  - FRONT: cream face disc with eyes toward the crown, cream throat, yellow chest with an orange band, yellow belly.
+    BACK: navy with a white X, and a red back of the head. Cyan LEFT hand, magenta RIGHT hand, blue legs, green shoes.
+- **Camera fit (case A):** 5.8 m up, 22 m from the Bean's centre, pitched 4° up, 69° horizontal lens.
+  - Her head is 4.2 m out at frame pixel (958, 575). She moves with the camera along its line of sight (the footage
+    keeps her head still while the Bean swells round it).
+  - Her distance per frame comes from the Bean's width in the F4 matte (camera distance goes as 1/width); contact is at
+    about src 77.
+  - Bean fit, frame 0 overlaid: ![fit](f4/threejs/fit_caseA_frame0.jpg)
+- **Pose fit**, src 0/20/60 next to the mannequin from the same camera, and 50/50:
+  ![pose](f4/threejs/posefit_caseA.jpg)
+  - The face shows under the crown the right way up, the head is at the bottom, the arms rise toward the feet and the
+    pencil (right) hand is on picture-left, as in the drawing.
+  - The drawn neck is longer than anatomy allows. I gave the mannequin a 16 cm neck to match it.
 - **Cases** (each sheet: top row normal, second row x-ray, where her direct image is drawn at 30% so whatever is behind her
   shows):
-  - **A, as drawn** (front face, normal 14 deg above horizontal): back, feet up. ![A](f4/threejs/case_A.jpg)
-  - **B, higher camera** (13 m up, 10 deg down, contact on the upper shoulder, normal 67 deg up): back, feet up for most of
-    the fall. At about 1 m it flattens edge-on (src ~70), then flips to front with feet DOWN just before contact.
+  - **A, as drawn** (front face, normal 14° up): front, feet up. ![A](f4/threejs/case_A.jpg)
+  - **B, higher camera** (13 m up, 10° down, contact on the upper shoulder, normal 67° up): front, feet up for most of
+    the fall. It flattens edge-on at about 1 m (src ~70) and turns feet-down just before contact.
     ![B](f4/threejs/case_B.jpg)
-  - **C, floor-like** (the keyframe prompt's "from high above", 50 deg down, she drops onto the top, normal 86 deg up):
-    front, feet DOWN, seen mostly as the crown of her head and her shoulders. ![C](f4/threejs/case_C.jpg)
-  - **D, case A with her facing the Bean:** front with face, feet UP. This is Jade's picture, but the camera then sees
-    her back, not her face. ![D](f4/threejs/case_D.jpg)
-  - Zoomed crops of all four (cases down, src 0/40/60/70/76 across, normal over x-ray): ![zoom](f4/threejs/zoom.jpg)
-- Numbers per case and frame (bbox, size, how much is hidden behind her): `docs/revisions/v10/f4/threejs/measure.json`.
-  Raw renders: `docs/revisions/v10/f4/threejs/raw/`.
+  - **C, floor-like** ("from high above", 50° down, she drops onto the top, normal 86° up): front, feet down.
+    ![C](f4/threejs/case_C.jpg)
+  - Zoomed crops (cases down; src 0/40/60/70/76 across; normal over x-ray): ![zoom](f4/threejs/zoom.jpg)
+- Numbers per case and frame are in `docs/revisions/v10/f4/threejs/measure.json`. Raw renders are in `.../threejs/raw/`.
 
-How much the answer depends on the uncertain geometry: front or back depends only on whether the mirror point lies behind
-her body's plane. For any camera that sees her front with the Bean behind her, it does, except at the very end over an
-up-facing surface (B, C). "Feet above" holds while the surface behind her is closer to a wall than a floor. That covers
-A, and B until about 1 m out. Case A's sizes are tied to its fit, and the real Bean is rounder, so treat them as ±30%.
+How much depends on the uncertain geometry:
+- **Front or back:** that she shows her front only needs the mirror to lie on her front side, which holds in every case.
+- **Feet above:** holds while the surface in front of her is more wall than floor. That covers A, and B until about 1 m
+  out.
+- **Sizes:** tied to case A's fit and an approximate Bean, so treat them as ±30%.
 
 ## What I built (comp, no video regeneration)
-`tools/sectionF/f4_reflection_v10.py` keeps v9's clean-up of the video model's reflection (plates and ring fill,
-v9 caches) and draws a new reflection from the check:
-1. `f4_threejs/refmap.mjs` renders case A at every source frame's distance (0-80) in a map mode. For each mirror
-   pixel, the reflected ray is followed to her body plane and the point it lands on (metres along her left and from head
-   to feet) is stored. The maps are in `media/shots/F4/v10_work/maps/`, with the per-frame distance fractions in
-   `schedule.json`.
-2. A flat picture of her is laid on that plane and sampled through the map. Position, size, the vertical squash, the
-   curvature distortion and the mirror reversal all come from the ray tracer. The check frame is matched to the footage
-   by her crown (band + 112 px) and her crown-to-soles length.
-3. Cooled and darkened like v9 (BGR x [1.0, 0.95, 0.88] x 0.88), at 0.9 opacity, clipped to the Bean matte. It rides the
-   ripples from src 70 and fades out over src 72-80 as the mirror goes liquid (v9's timing). Her own pixels go back on
-   top, which hides the part of the reflection behind her.
+`tools/sectionF/f4_reflection_v10.py` keeps v9's clean-up of the video model's reflection and draws a new reflection
+from the check.
+1. **The plane.** `cases.js mirrorView()` finds what the mirror sees of her: the camera ray whose reflection passes
+   through the middle of her torso (at src 60, the view runs from 16° below her toward her front). A plane through
+   her torso faces that view.
+2. **The maps.** `refmap.mjs` renders case A at every source frame's distance (0-80) in a map mode: for each mirror
+   pixel, the point on that plane its reflected ray lands on. The maps are in `media/shots/F4/v10b_work/maps/`.
+3. **The painting.** `refmap.mjs --ref` renders the articulated mannequin orthographically along that view, which is
+   the pose the mirror sees (`media/shots/F4/v10_front/pose_ref_mirror_view.png`). `tools/sectionF/f4_front_gen.py`
+   painted her in that pose with nano-banana-pro (refs: that pose turned upright, the outfit sheet, her F4 frame 40).
+   - `front_2.jpg` is used: head thrown back, chin and throat up, black mock-neck crop top under the open white
+     jacket, orange bands, pale-blue dot on her left chest, 1420 MHz on her LEFT sleeve, orange headphones, cargo pants
+     with orange straps, white sneakers, hair falling behind her, pencil in her right hand.
+   - Checked: two arms, two legs, patch and pencil on the right sides. `front_3` had the pencil in the wrong hand.
+4. **The comp.** The painting is turned head-down, matted with BiRefNet, fitted to the pose reference by its box, and
+   sampled through the maps. Position, size, squash, curvature distortion and mirror reversal all come from the ray
+   tracer.
+   - It is cooled and darkened like v9 (BGR x [1.0, 0.95, 0.88] x 0.88), at 0.9 opacity, clipped to the Bean matte.
+   - It rides the ripples from src 70 and fades out over src 72-80 (v9's timing).
+   - Her own pixels go back on top.
+5. **Re-plates** (`tools/sectionF/f4_replate_v10.py`; Bria fibo-edit-1.5 on v9's clean composite). v9's hole is grown
+   60 px, plus a column down the pink band for the video model's glow.
+   - Re-plated keyframes 12-68 (every 4) into `media/shots/F4/v10b_plates/`. Its `chosen.json` keeps v9's plates for
+     0-8 and 72-79.
+   - Bria kept painting a reflected head when her head was in the crop, so keyframes 56-68 use a crop that starts under
+     her head.
+   - The gap in the reflected tree line with two lone trees (src ~12-36) and the pale streak down the pink band
+     (src ~18-60) are gone.
 
-- **BACK (physics):** the picture is a painted back view in the same pose, `media/shots/F4/v10_back/back_3.jpg`. It came
-  from `tools/sectionF/f4_back_gen.py`, a nano-banana-pro call with her F4 frame 40 and the outfit sheet as refs: back of
-  the head with hair, headphones from behind, the jacket back with the pale-blue circle and "RARE EARTH", pants back
-  pockets, sneaker heels, pencil hand on the correct side. It is matted with BiRefNet. In the mirror the "RARE EARTH"
-  text reads reversed, as it should.
-- **FRONT (Jade's version):** the picture is her own front pixels from the same frame, mirror-reversed, so the
-  headphones, face, patch and pencil match by construction. It uses the same place, size and motion as the back
-  version, with feet above. This is what she would see if she faced the Bean. Here she faces the camera, so a mirror
-  could not show it.
+Output: `media/shots/F4/take_2_engraved_dered_v10refl_front2.mp4` (1920x1080, 24 fps, 121 frames, CRF 12, timing
+identical to the source).
 
-Outputs (1920x1080, 24 fps, 121 frames, CRF 12, timing identical to the source):
-- `media/shots/F4/take_2_engraved_dered_v10refl_back.mp4`: physics.
-- `media/shots/F4/take_2_engraved_dered_v10refl_front.mp4`: Jade's version.
-- `media/shots/F4/take_2_engraved_dered_v10refl.mp4`: a copy of `_back` (the physically right one).
-
-Before/after (rows: v9 now in the cut, v10 BACK, v10 FRONT; labelled with src frame, song m:ss and song frame):
+Before/after (rows: v9 in the cut, v10 front2; labelled with src frame, song m:ss and song frame):
 - ![detail](f4/before_after_detail.jpg) (crops round her head, src 0-74)
 - ![full](f4/before_after_full.jpg) (whole frames)
-- Debug strips (source over output, every 6th frame): `docs/revisions/v10/f4/debug_back.jpg`, `debug_front.jpg`.
+- Debug strip (source over output, every 6th frame): `docs/revisions/v10/f4/debug_front2.jpg`
 
 Rebuild:
 ```
-node tools/sectionF/f4_threejs/render.mjs --out docs/revisions/v10/f4/threejs/raw      # the check (GPU Chrome)
+node tools/sectionF/f4_threejs/render.mjs --out docs/revisions/v10/f4/threejs/raw            # the check (GPU Chrome)
 ~/Documents/1-music-shipped/moongazing/.venv/bin/python tools/sectionF/f4_threejs/sheets.py docs/revisions/v10/f4/threejs/raw docs/revisions/v10/f4/threejs
+~/Documents/1-music-shipped/moongazing/.venv/bin/python tools/sectionF/f4_threejs/posefit.py docs/revisions/v10/f4/threejs/raw docs/revisions/v10/f4/threejs/posefit_caseA.jpg
 tools/engrave/.venv/bin/python tools/sectionF/f4_reflection_v10.py media/shots/F4/take_2_engraved_dered_patch.mp4 \
-    media/shots/F4/take_2_engraved_dered_v10refl_back.mp4 --side back      # (--side front for Jade's version)
+    media/shots/F4/take_2_engraved_dered_v10refl_front2.mp4                     # makes the maps on first run
 ~/Documents/1-music-shipped/moongazing/.venv/bin/python tools/sectionF/f4_v10_sheets.py
 ```
 
-## Exact EDL swap (the lead applies it. I didn't edit `F_edl.json`, `edl.py` or any timeline.)
-In `media/shots/F_edl.json`, F4 shot, pick one:
+Withdrawn (v10a, built on the misread and deleted): `_v10refl.mp4`, `_v10refl_back.mp4`, `_v10refl_front.mp4`.
+The back painting `media/shots/F4/v10_back/back_3.jpg` is unused.
+
+## Exact EDL swap (the lead applies it; I didn't edit `F_edl.json`, `edl.py` or any timeline)
+In `media/shots/F_edl.json`, F4 shot:
 ```diff
 -  "file": "media/shots/F4/take_2_engraved_dered_v9refl.mp4",
-+  "file": "media/shots/F4/take_2_engraved_dered_v10refl.mp4",          # = _back, physics
++  "file": "media/shots/F4/take_2_engraved_dered_v10refl_front2.mp4",
 ```
-or, for Jade's version, `"media/shots/F4/take_2_engraved_dered_v10refl_front.mp4"`. Nothing else changes: in, out,
-clip_in, rate, fx and text stay as they are. To survive an `edl.py` rebuild, set the same file in `tools/sectionF/edl.py`
-CHOSEN["F4"]. Its `_dered` lookup only adds a suffix when that file exists, and `..._v10refl_dered.mp4` doesn't.
+Nothing else changes: in, out, clip_in, rate, fx and text stay as they are. To survive an `edl.py` rebuild, set the same
+file in `tools/sectionF/edl.py` CHOSEN["F4"]. Its `_dered` lookup only adds a suffix when that file exists, and
+`..._front2_dered.mp4` doesn't.
 
-## Weak list (src frame -> song m:ss, song frame = song s x 24)
-- **Physics makes it small early.** Up to about src 40 (3:01.30, f4351) the reflection is a small, flat figure under
-  her chin: 72 x 28 px at 1080p at src 0, which is 36 x 14 at preview size. It only reads as "her" from about src 50
-  (3:01.62). v9's was much bigger. If Jade wants it bigger sooner, that is a stylistic cheat. The check says the real Bean
-  would show this little.
-- **Lone trees and a gap in the reflected horizon under her, src ~12-36 (3:00.40-3:01.17, f4329-f4348).** v9's Bria
-  plates left a gap in the tree line where the old reflection's legs were, with two isolated little trees in it. v9's big
-  reflection covered it. The new one is smaller and sits higher, so it shows now. Two automatic refills (row-shift fill,
-  tree-band fill) made it worse and were dropped. Fix: re-plate those keyframes (4 x Bria at $0.03), or paint the band.
-- **Pale streak down the pink/blue band below her, src ~18-60 (3:00.60-3:01.94, f4334-f4366).** This is the same cause:
-  plate fill where the old feet were. It is soft, but it sits on the centre line.
-- **The back view is a cleaner drawing than the engraved footage** (flat cel colour, light hatching). It is small and
-  tinted until about src 50 (3:01.62). At src 60-70 (3:01.9-3:02.3) it is 250-370 px wide and reads a little smoother than
-  her. The jacket back reads pale blue after the chrome tint.
-- **The back view is one still.** Her hair moves and its hair doesn't. This only shows from src ~60 (3:01.94, f4366),
-  when it is big.
-- **The front version, src 60-72 (3:01.9-3:02.3, f4366-4375):** two upside-down copies of her face are stacked one
-  under the other (hers, then the reflection's below its shoulders), so it can read as a double. That is the shape of
-  Jade's ask in this geometry. Physically it would only happen with her facing the Bean.
-- **Ripple and fade, src 70-80 (3:02.26-3:02.58, f4374-4382):** unchanged from v9 (a dissolve into the rings, not a
-  splash). v9's dark dent under her chin at src 80-92 is unchanged.
-- **Geometry limits:** the drawing isn't a consistent pinhole camera, and the Bean model is approximate. The placement
-  follows case A's fit, so the reflection's gap below her crown and its growth rate are good to about ±30%.
-- **Not checked:** the engine's 1.0-1.1 zoom, the flashes and the "never stop" text over the new clips. Check them in the
+## Weak list (src frame -> song m:ss; song frame = song s x 24)
+- **Small early.** Up to about src 40 (3:01.30, f4351) the reflection is a small, flat figure under her chin: 66 x 28 px
+  at 1080p at src 0, which is 33 x 14 at preview size. It reads as "her" from about src 50 (3:01.62). v9's was much
+  bigger. A bigger one sooner would be a stylistic cheat.
+- **The painting is a cleaner drawing than the engraved footage** (flat cel colour, light hatching), and its hair is a
+  still. Both show from src ~60 (3:01.94, f4366), when it is 200-300 px wide. After the chrome tint the white jacket
+  reads pale blue.
+- **Flat picture on a plane.** The mapping treats her as a flat picture facing the mirror, so near contact
+  (src 70-77, 3:02.26-3:02.49) the arched body's depth isn't in the warp. The ripples and fade cover most of it.
+- **Re-plate seams.** Re-plated keyframes differ a little from each other and are cross-faded between keys, so the
+  tile lines in the patched column can shimmer slightly at src 12-68 when frame-stepping. At src 69-72 (3:02.23-3:02.33)
+  the plates hand back to v9's, and a faint glow returns in the pink band just before the ripples.
+- **Ripple and fade, src 70-80 (3:02.26-3:02.58, f4374-4382):** unchanged from v9. It is a dissolve into the rings, not
+  a splash. v9's dark dent under her chin at src 80-92 is also unchanged.
+- **Geometry limits:** the drawing isn't a consistent pinhole camera, the Bean model is approximate, and the drawn neck
+  is longer than anatomy allows. Placement and growth follow case A's fit to about ±30%.
+- **Not checked:** the engine's 1.0-1.1 zoom, the flashes and the "never stop" text over the new clip. Check them in the
   lead's preview.
 
 ## Spend
-$0.54: 4 x google/nano-banana-pro at $0.1344 (tag `v10_f4back`). back_1 had four arms, back_2 and back_4 were cropped at
-the feet, back_3 is used. The project total is now $398.75 of the $600 cap.
+- v10a back painting: $0.54 (4 x nano-banana-pro, tag `v10_f4back`). Now unused.
+- v10b front painting: $0.40 (3 x nano-banana-pro, tag `v10b_f4front`).
+- v10b re-plates: $1.02 (34 x Bria fibo-edit-1.5 at $0.03, tag `v10b_f4plate`). This includes retries: the first
+  instruction painted big trees, and keyframes 56-68 kept painting a reflected head or blobs.
+- Total v10: $1.96. The project is at $400.17 of the $600 cap.

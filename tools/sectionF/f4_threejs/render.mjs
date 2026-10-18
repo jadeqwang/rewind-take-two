@@ -1,5 +1,5 @@
 // Headless renders of the F4 Bean mirror check (index.html) with the system Chrome on the GPU.
-//   node tools/sectionF/f4_threejs/render.mjs --out DIR [--cases A,B,C,D] [--frames 0,20,40,52,60,70,76] [--modes 0,1,2]
+//   node tools/sectionF/f4_threejs/render.mjs --out DIR [--cases A,B,C] [--frames 0,20,40,52,60,70,76] [--modes 0,1,2]
 //        [--w 960 --h 540] [--override '{"cam0":[0,7.5,22],"tilt":-4}']   (override: try other case fields, for the fit)
 // Writes DIR/{case}_f{frame}_{mode}.png and DIR/poses.json. Run from the repo root.
 import { createRequire } from 'module';
@@ -17,7 +17,7 @@ const args = Object.fromEntries(process.argv.slice(2).reduce((a, x, i, all) => (
 const OUT = args.out || join(HERE, 'out');
 mkdirSync(OUT, { recursive: true });
 const W = +(args.w || 960), H = +(args.h || 540);
-const cases = String(args.cases || 'A,B,C,D').split(',');
+const cases = String(args.cases || 'A,B,C').split(',');
 const { FRAMES } = await import('./cases.js');
 const fr = args.frames ? String(args.frames).split(',').map(Number) : FRAMES.map(f => f[0]);
 const dists = fr.map(f => FRAMES.find(x => x[0] === f));   // [frame, fraction of the start distance]

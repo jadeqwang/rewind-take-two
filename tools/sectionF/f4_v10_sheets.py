@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-"""Before/after sheets for v10 F4 (docs/revisions/v10/f4/). Crops round her head and the reflection.
+"""Before/after sheets for v10b F4 (v9 | front2) (docs/revisions/v10/f4/). Crops round her head and the reflection.
     ~/Documents/1-music-shipped/moongazing/.venv/bin/python tools/sectionF/f4_v10_sheets.py
 """
 import json
@@ -13,9 +13,8 @@ ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)
 FF = os.path.expanduser("~/Documents/1-music-shipped/moongazing/.venv/lib/python3.12/site-packages/imageio_ffmpeg/binaries/ffmpeg-linux-x86_64-v7.0.2")
 S = os.path.join(ROOT, "media/shots/F4")
 OUT = os.path.join(ROOT, "docs/revisions/v10/f4")
-CLIPS = [("v9 (now in the cut)", "take_2_engraved_dered_v9refl.mp4"),
-         ("v10 BACK (physics)", "take_2_engraved_dered_v10refl_back.mp4"),
-         ("v10 FRONT (Jade)", "take_2_engraved_dered_v10refl_front.mp4")]
+CLIPS = [("v9 (in the cut)", "take_2_engraved_dered_v9refl.mp4"),
+         ("v10 front2", "take_2_engraved_dered_v10refl_front2.mp4")]
 IN, RATE = 180.02, 1.3
 font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 17)
 bold = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 19)

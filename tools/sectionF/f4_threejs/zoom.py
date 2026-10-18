@@ -6,7 +6,7 @@ import json, sys, os
 from PIL import Image, ImageDraw, ImageFont
 hi, meas, out = sys.argv[1], json.load(open(sys.argv[2])), sys.argv[3]
 font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 15)
-cases = "ABCD"
+cases = sys.argv[4].split(",") if len(sys.argv) > 4 else ["A", "B", "C"]
 frames = [0, 40, 60, 70, 76]
 TW, TH = 300, 200
 sheet = Image.new("RGB", (TW * len(frames), 2 * TH * len(cases)), (20, 20, 20))
