@@ -14,7 +14,9 @@ her torso facing the mirror (refmap.mjs, plane from mirrorView in cases.js). A p
 (media/shots/F4/v10_front/front_2.jpg, nano-banana-pro from the check's own orthographic pose reference
 pose_ref_mirror_view.png) is laid on that plane.
 
-    tools/engrave/.venv/bin/python tools/sectionF/f4_reflection_v10.py IN.mp4 OUT.mp4 [--debug SHEET.jpg]
+    tools/engrave/.venv/bin/python tools/sectionF/f4_reflection_v10.py IN.mp4 OUT.mp4 [--variant front2|front3] [--debug SHEET.jpg]
+front3 (Jade's variant): case A3 (less arched), the painting front3_1.png (her face), and the back of her head
+(media/shots/F4/v10_head/head_2.png, f4_head_gen.py) painted over the face the video model drew under her crown.
 
 IN is the roundel-fixed plate (media/shots/F4/take_2_engraved_dered_patch.mp4), as for v9.
 """
@@ -36,8 +38,20 @@ XC, CHIN = R.XC, R.CHIN
 TC = 77                 # contact (the check's schedule reaches her head to the mirror here)
 RIP0, FADE0, FADE1 = 70, 72, 80     # as v9: ripples from 70; the reflection fades out 72-80 as the mirror goes liquid
 BOX = (480, 200, 1440, 1080)         # check pixels rendered for the maps
-PAINT = os.path.join(ROOT, "media/shots/F4/v10_front/front_2.jpg")          # upright as generated
-POSEREF = os.path.join(ROOT, "media/shots/F4/v10_front/pose_ref_mirror_view.png")   # head down, as the mirror sees her
+# variants: the check's case, the painting of what the mirror sees (upright as generated), its pose reference (head
+# down, as the mirror sees her), the work dir, and (front3) the painted back of her head for the camera's view
+VARIANTS = {
+    "front2": dict(case="A", paint="media/shots/F4/v10_front/front_2.jpg",
+                   poseref="media/shots/F4/v10_front/pose_ref_mirror_view.png", work="media/shots/F4/v10b_work", head=None),
+    "front3": dict(case="A3", paint="media/shots/F4/v10_front3/front3_1.png",
+                   poseref="media/shots/F4/v10_front3/pose_ref_mirror_view.png", work="media/shots/F4/v10c_work",
+                   head="media/shots/F4/v10_head/head_2.png"),
+}
+PAINT = POSEREF = CASE = None
+# the back-of-head paint (front3): head_2.png is a 400 px crop at (758, 357) of src 30 (band 497.6), scaled up
+HEAD_X0, HEAD_Y0, HEAD_N, HEAD_BAND = 758, 357, 400, 497.6
+HEAD_SX, HEAD_SY = 0.93, 0.82     # shrink the painted head (a head seen from behind is smaller than the drawn face)
+HEAD_TOP = 12                     # rows under the band top where the paint starts (the band itself stays hers)
 REF_K = 1600 / 2.4      # pose reference: pixel = 800 + (x, -y) * REF_K for picture-plane coords (x, y) in metres
 TINT = np.array([1.0, 0.95, 0.88], np.float32) * 0.88     # chrome: a touch cooler and darker (BGR)
 
@@ -83,7 +97,7 @@ def maps(fracs, work):
         meta = json.load(open(js))
         if all(str(i) in meta and abs(meta[str(i)]["frac"] - f) < 1e-6 for i, f in want):
             return meta, d
-    subprocess.run(["node", os.path.join(HERE, "f4_threejs/refmap.mjs"), "--case", "A", "--fracs", json.dumps(want),
+    subprocess.run(["node", os.path.join(HERE, "f4_threejs/refmap.mjs"), "--case", CASE, "--fracs", json.dumps(want),
                     "--out", d, "--box", ",".join(map(str, BOX))], check=True)
     return json.load(open(js)), d
 
@@ -176,20 +190,66 @@ def grow_hole(Rm, her, band, grow=60, column=110, top=45):
     return m
 
 
+def head_source(path):
+    """The painted back of her head: premultiplied BGRA (400 x 400, BiRefNet matte of the girl) in crop pixels."""
+    im = cv2.resize(cv2.imread(path), (HEAD_N, HEAD_N), interpolation=cv2.INTER_AREA)
+    cache = path.rsplit(".", 1)[0] + "_matte.png"
+    if not os.path.exists(cache):
+        import torch
+        from matte import get_birefnet
+        net = get_birefnet("cuda")
+        big = cv2.imread(path)
+        t = torch.from_numpy(big[..., ::-1].copy()).permute(2, 0, 1)[None].float().cuda() / 255
+        cv2.imwrite(cache, (net(t)[0, 0].cpu().numpy() * 255).astype(np.uint8))
+    a = cv2.resize(cv2.imread(cache, 0), (HEAD_N, HEAD_N), interpolation=cv2.INTER_AREA).astype(np.float32) / 255
+    cols = (a[:, XC - HEAD_X0 - 50:XC - HEAD_X0 + 50] > 0.5).any(1)
+    crown = float(np.where(cols)[0].max()) - (HEAD_BAND - HEAD_Y0)      # the painted crown, band-relative, unshrunk
+    return np.dstack([im.astype(np.float32) * a[..., None], a]), crown
+
+
+def head_zone_ext(band, H, W):
+    """Where the paint replaces her: an oval round her face, the hair framing it and the ear cups, from just under the
+    band top (feathered), in footage pixels. Her sleeves and collar points either side stay hers."""
+    yy, xx = np.mgrid[0:H, 0:W].astype(np.float32)
+    dx, dy = xx - XC, yy - band
+    z = ((dx / 84.0) ** 2 + ((dy - 66) / 56.0) ** 2 < 1) & (dy > HEAD_TOP)
+    return cv2.GaussianBlur(z.astype(np.float32), (0, 0), 3)
+
+
+def head_layer(hsrc, band, H, W):
+    """The painted head moved onto this frame (it rides the band) and shrunk about the band: premultiplied colour, alpha."""
+    yy, xx = np.mgrid[0:H, 0:W].astype(np.float32)
+    dx, dy = xx - XC, yy - band
+    cx = (XC - HEAD_X0) + dx / HEAD_SX
+    cy = (HEAD_BAND - HEAD_Y0) + np.where(dy > HEAD_TOP, HEAD_TOP + (dy - HEAD_TOP) / HEAD_SY, dy)
+    s = cv2.remap(hsrc, cx.astype(np.float32), cy.astype(np.float32), cv2.INTER_LINEAR, borderMode=cv2.BORDER_CONSTANT, borderValue=0)
+    # only the head itself (hair mass, band, ear cups), not the painting's own sleeves and collars
+    keep = ((dx / (84.0 * HEAD_SX)) ** 2 + ((dy - 66) / 60.0) ** 2 < 1).astype(np.float32)
+    keep = cv2.GaussianBlur(keep, (0, 0), 2)
+    return s[..., :3] * keep[..., None], s[..., 3] * keep
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("src")
     ap.add_argument("out")
     ap.add_argument("--work", default=os.path.join(ROOT, "media/shots/F4/v9_work"))
     ap.add_argument("--plates", default=os.path.join(ROOT, "media/shots/F4/v10b_plates"))
-    ap.add_argument("--v10work", default=os.path.join(ROOT, "media/shots/F4/v10b_work"))
+    ap.add_argument("--v10work", default=None, help="default: the variant's work dir")
     ap.add_argument("--last", type=int, default=104)
     ap.add_argument("--only", default=None)
     ap.add_argument("--dump", default=None)
     ap.add_argument("--debug", default=None)
     ap.add_argument("--noref", action="store_true", help="debug: the cleaned plate only, no new reflection")
+    ap.add_argument("--variant", choices=list(VARIANTS), default="front2")
     a = ap.parse_args()
 
+    global PAINT, POSEREF, CASE
+    V = VARIANTS[a.variant]
+    PAINT, POSEREF = [os.path.join(ROOT, V[k]) for k in ("paint", "poseref")]
+    CASE = V["case"]
+    a.v10work = a.v10work or os.path.join(ROOT, V["work"])
+    hsrc, crown_p = head_source(os.path.join(ROOT, V["head"])) if V["head"] else (None, None)
     fr = R.read(a.src)
     H, W = fr[0].shape[:2]
     n = min(len(fr), a.last + 1)
@@ -205,7 +265,8 @@ def main():
     json.dump([round(f, 4) for f in fracs], open(os.path.join(a.v10work, "schedule.json"), "w"))
     meta, mdir = maps(fracs, a.v10work)
     psrc, pfit = painting()
-    print("painting fit (ax, bx, ay, by):", [round(v, 3) for v in pfit])
+    print(a.variant, "painting fit (ax, bx, ay, by):", [round(float(v), 3) for v in pfit],
+          "head crown (band-relative, unshrunk):", crown_p)
     yy, xx = np.mgrid[0:H, 0:W]
     soles0 = soles_of(Mj[0], hp[0])
     log = {}
@@ -270,12 +331,35 @@ def main():
             lum = cv2.cvtColor(np.clip(model, 0, 255).astype(np.uint8), cv2.COLOR_BGR2GRAY).astype(np.float32)[..., None]
             shade = ring_dark * (0.75 + 0.5 * (lum / 255.0))
             base = base * (1 - pit) + shade * pit
+        # ---------------------------------------------------------------- front3: the back of her head
+        crown_off = CHIN
+        if hsrc is not None and i <= 100:
+            Z = head_zone_ext(hp[i], H, W)
+            pc, pa = head_layer(hsrc, hp[i], H, W)
+            # only where she still is (her head sinks into the liquid mirror from ~78)
+            there = cv2.dilate((Jm > 0.3).astype(np.uint8), np.ones((9, 9), np.uint8)).astype(np.float32)
+            pa = pa * there
+            pc = pc * there[..., None]
+            # under her old head: background. Inpaint ALL of her in a window round the head (so the fill only draws on the
+            # mirror, not on her sleeves), and use it inside the zone
+            y0w, y1w = max(0, int(hp[i]) - 60), min(H, int(hp[i]) + 200)
+            x0w, x1w = XC - 260, XC + 260
+            old = cv2.dilate((Jm[y0w:y1w, x0w:x1w] > 0.05).astype(np.uint8), np.ones((9, 9), np.uint8))
+            if old.any():
+                b8 = np.clip(base[y0w:y1w, x0w:x1w], 0, 255).astype(np.uint8)
+                fill = base.copy()
+                fill[y0w:y1w, x0w:x1w] = cv2.inpaint(b8, old, 9, cv2.INPAINT_TELEA).astype(np.float32)
+                base = base * (1 - Z[..., None]) + fill * Z[..., None]
+            im = im * (1 - Z[..., None]) + pc / np.maximum(pa, 1e-3)[..., None] * Z[..., None]
+            Jm = Jm * (1 - Z) + pa * Z
+            her = Jm > 0.4
+            crown_off = HEAD_TOP + (crown_p - HEAD_TOP) * HEAD_SY      # the painted crown, band-relative
         # ---------------------------------------------------------------- the new reflection, from the check
         op = 0.9 * float(np.clip((FADE1 - i) / (FADE1 - FADE0), 0, 1))
         if op > 0 and str(i) in meta and not a.noref:
             m = meta[str(i)]
             mp = np.fromfile(os.path.join(mdir, f"map_{i:03d}.bin"), np.float32).reshape(m["h"], m["w"], 3)
-            crown_f = chin
+            crown_f = hp[i] + crown_off
             # her size in the footage vs the check: crown-to-soles (her soles from the frame-0 matte, carried with
             # the band: she keeps her size in the shot and the late mattes lose her feet in the flash)
             soles_f = soles0 + (hp[i] - hp[0])

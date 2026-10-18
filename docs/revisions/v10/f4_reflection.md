@@ -1,7 +1,8 @@
 # v10 F4: the Bean reflection, checked in three.js (3:00.02-3:03.56)
 
-Status: done (v10b, after Jade's two corrections of 2026-10-18). One output, `..._v10refl_front2.mp4`. The EDL swap is
-below; the lead integrates and renders.
+Status: done. Two outputs for Jade to choose from: `..._v10refl_front2.mp4` (arched, as drawn) and
+`..._v10refl_front3.mp4` (her variant: less arched, the back of her head to the camera, her face in the Bean; see
+**front3** below). The EDL swap is below; the lead integrates and renders.
 
 Jade's notes (2026-10-18):
 - "it should be her front that is visible in the bean's reflection as she's falling, and in the reflection her feet
@@ -132,7 +133,7 @@ from the check.
 Output: `media/shots/F4/take_2_engraved_dered_v10refl_front2.mp4` (1920x1080, 24 fps, 121 frames, CRF 12, timing
 identical to the source).
 
-Before/after (rows: v9 in the cut, v10 front2; labelled with src frame, song m:ss and song frame):
+Before/after (rows: v9 in the cut, v10 front2, v10 front3; labelled with src frame, song m:ss and song frame):
 - ![detail](f4/before_after_detail.jpg) (crops round her head, src 0-74)
 - ![full](f4/before_after_full.jpg) (whole frames)
 - Debug strip (source over output, every 6th frame): `docs/revisions/v10/f4/debug_front2.jpg`
@@ -144,21 +145,106 @@ node tools/sectionF/f4_threejs/render.mjs --out docs/revisions/v10/f4/threejs/ra
 ~/Documents/1-music-shipped/moongazing/.venv/bin/python tools/sectionF/f4_threejs/posefit.py docs/revisions/v10/f4/threejs/raw docs/revisions/v10/f4/threejs/posefit_caseA.jpg
 tools/engrave/.venv/bin/python tools/sectionF/f4_reflection_v10.py media/shots/F4/take_2_engraved_dered_patch.mp4 \
     media/shots/F4/take_2_engraved_dered_v10refl_front2.mp4                     # makes the maps on first run
+tools/engrave/.venv/bin/python tools/sectionF/f4_reflection_v10.py media/shots/F4/take_2_engraved_dered_patch.mp4 \
+    media/shots/F4/take_2_engraved_dered_v10refl_front3.mp4 --variant front3
 ~/Documents/1-music-shipped/moongazing/.venv/bin/python tools/sectionF/f4_v10_sheets.py
 ```
 
 Withdrawn (v10a, built on the misread and deleted): `_v10refl.mp4`, `_v10refl_back.mp4`, `_v10refl_front.mp4`.
 The back painting `media/shots/F4/v10_back/back_3.jpg` is unused.
 
+## front3: less arched, her face in the reflection (Jade 2026-10-18)
+Jade: "can you try a version where her back is less arched and we see her face in the reflection (and the back of her
+head in the nonreflected version)?"
+
+### Three.js
+Case `A3` (`ARCH3` in `cases.js`): the same camera, path and per-frame distances as case A.
+- Her back is barely arched (2°/3°), her neck straight, and her head tucked 8°. Her legs bow 2°+2° and her arms are as
+  before.
+- The camera now sees the BACK of her head: red, no face.
+- The Bean shows her FRONT with her FACE, mirror-reversed, feet above, head down. The face is upside down in the frame:
+  her eyes sit on the crown side (lower) and her mouth above.
+- It is seen nearly face-on: the mirror looks up at her from 18° below her front (`mirrorView`: view (0, 0.31, -0.95)
+  in her frame), so it is only slightly foreshortened.
+- Sheets:
+  - pose fit: ![pose3](f4/threejs/front3/posefit_front3.jpg)
+  - case `A3` with x-ray: ![A3](f4/threejs/front3/case_A_front3.jpg)
+  - zoom: ![zoom3](f4/threejs/front3/zoom_front3.jpg)
+  - numbers: `docs/revisions/v10/f4/threejs/front3/measure.json`
+- The mannequin's torso is longer in the frame now (head not thrown back), so its shoulders sit higher than the drawn
+  ones. **The drawn body still reads arched**, because I only repainted her head, not her torso and legs (as asked).
+- Reflection size (1080p, her crown at 608):
+
+  | src | song | reflection (w x h) | y | hidden behind her |
+  |---|---|---|---|---|
+  | 0  | 3:00.02 (f4320) | 66 x 32  | 642-674 | 0 |
+  | 40 | 3:01.30 (f4351) | 118 x 68 | 628-696 | 0 |
+  | 52 | 3:01.69 (f4360) | 162 x 100 | 602-702 | 4% |
+  | 60 | 3:01.94 (f4366) | 210 x 138 | 562-700 | 23% |
+  | 70 | 3:02.26 (f4374) | 316 x 224 | 454-678 | 48% |
+  | 76 | 3:02.44 (f4378) | 392 x 274 | 370-644 | 58% |
+
+  Her face in the reflection is about 1/7 of the reflection's height: about 10 px tall at src 40, 20 px at src 60 and
+  32 px at src 70 (1080p).
+
+### The camera's view: the back of her head (`f4_reflection_v10.py --variant front3`)
+- **The paint.** One nano-banana-pro edit (`tools/sectionF/f4_head_gen.py`) of a 400 px crop round her head at src 30.
+  It replaced the face with the back of her head: glossy black hair, the orange band across it, and both ear cups.
+  `head_2.png` is used.
+- **The tracking.** The painted head rides the headphone band track (her head only translates in this shot). It is
+  shrunk to 93% across and 82% down from the band, so the crown sits about band + 104 instead of the chin's band + 112:
+  a head seen from behind, a little smaller than the drawn face.
+- **The compositing.** It is pasted inside a feathered oval round her old face, hair framing and ear cups. Her own band,
+  hair above it, sleeves and collar points stay hers. Where the old face stuck out beyond the new crown, the mirror is
+  inpainted from round her head.
+- It is one still, so it can't boil. It only goes where her matte says she still is, so it sinks with her into the
+  liquid mirror from about src 78.
+- 1:1 before/after (front2's drawn face over front3's painted head, src 0/30/60/74):
+  ![head](f4/front3_head_1to1.jpg)
+
+### The reflection: her front with her face
+- **The pose reference.** The check renders case A3 orthographically from the mirror's view
+  (`media/shots/F4/v10_front3/pose_ref_mirror_view.png`).
+- **The painting.** `f4_front_gen.py --pose front3` painted her in that pose: face toward us, eyes gently closed, jacket
+  front, mock-neck crop top, headphones, the 1420 patch on her LEFT sleeve, pencil in her right hand, cargo pants with
+  straps, sneakers.
+  - `front3_1.png` is used: two arms, two legs, sides correct, colored-pencil hatching closest to the footage.
+  - `front3_2` had the pencil in the wrong hand.
+- **The comp.** The same ray-traced mapping as front2 (maps in `media/shots/F4/v10c_work/maps/`): mirror-reversed,
+  feet up, the same squash, ripple and fade. Its crown is aligned to the new painted crown.
+- **When the face reads.** It is upside down in the frame. It reads as a face (closed eyes, mouth) from about src 62-66
+  (3:02.0-3:02.1, f4368-4371) at 1080p, and it is plain by src 70. At src 50-60 it is a small light oval under the
+  reflection's hair.
+- The plates are the v10b re-plates, unchanged.
+
+Output: `media/shots/F4/take_2_engraved_dered_v10refl_front3.mp4` (1920x1080, 24 fps, 121 frames, same timing).
+- Sheets (v9 | front2 | front3): `f4/before_after_detail.jpg`, `f4/before_after_full.jpg`
+- Debug strip: `f4/debug_front3.jpg`
+- Two-up video (front2 | front3, the same 1100x900 crop at (410, 180) scaled to 880x720 as the v9-vs-front2 one):
+  `deliverables/wip/f4_reflection_front2_vs_front3.mp4`
+
+front3 weak spots:
+- **Arched body.** The body still reads arched (only the head changed), so a straight-backed girl in the mirror sits
+  under an arched-looking one.
+- **Head style.** The painted head is a smoother, glossier drawing than the engraved hair round it, which shows at 1:1.
+  It does not move with the hair strands next to it, but those barely move.
+- **Grey smudge around src 30** (3:00.98, f4343): a faint smudge either side of the new crown where the inpaint meets
+  the collar points.
+- **Small face early.** Before src 62 the face in the reflection is too small to read as a face.
+- **Ghost hands, front2 and front3, src 64-72** (3:02.07-3:02.33, f4369-4375): faint ghost hands either side of the
+  reflection's hands. They are leftovers of the video model's own reflection's hands, which v9's big reflection used to
+  cover.
+
 ## Exact EDL swap (the lead applies it; I didn't edit `F_edl.json`, `edl.py` or any timeline)
-In `media/shots/F_edl.json`, F4 shot:
+In `media/shots/F_edl.json`, F4 shot, whichever Jade picks:
 ```diff
 -  "file": "media/shots/F4/take_2_engraved_dered_v9refl.mp4",
-+  "file": "media/shots/F4/take_2_engraved_dered_v10refl_front2.mp4",
++  "file": "media/shots/F4/take_2_engraved_dered_v10refl_front2.mp4",     # arched, as drawn
++  "file": "media/shots/F4/take_2_engraved_dered_v10refl_front3.mp4",     # or: less arched, her face in the Bean
 ```
 Nothing else changes: in, out, clip_in, rate, fx and text stay as they are. To survive an `edl.py` rebuild, set the same
 file in `tools/sectionF/edl.py` CHOSEN["F4"]. Its `_dered` lookup only adds a suffix when that file exists, and
-`..._front2_dered.mp4` doesn't.
+`..._front2_dered.mp4` / `..._front3_dered.mp4` don't.
 
 ## Weak list (src frame -> song m:ss; song frame = song s x 24)
 - **Small early.** Up to about src 40 (3:01.30, f4351) the reflection is a small, flat figure under her chin: 66 x 28 px
@@ -184,4 +270,6 @@ file in `tools/sectionF/edl.py` CHOSEN["F4"]. Its `_dered` lookup only adds a su
 - v10b front painting: $0.40 (3 x nano-banana-pro, tag `v10b_f4front`).
 - v10b re-plates: $1.02 (34 x Bria fibo-edit-1.5 at $0.03, tag `v10b_f4plate`). This includes retries: the first
   instruction painted big trees, and keyframes 56-68 kept painting a reflected head or blobs.
-- Total v10: $1.96. The project is at $400.17 of the $600 cap.
+- front3: $0.67 (3 x nano-banana-pro for the front painting, tag `v10c_f4front3`; 2 x nano-banana-pro for the back of
+  her head, tag `v10c_f4head`).
+- Total v10: $2.63. The project is at $400.85 of the $600 cap.

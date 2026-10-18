@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-"""Before/after sheets for v10b F4 (v9 | front2) (docs/revisions/v10/f4/). Crops round her head and the reflection.
+"""Before/after sheets for v10 F4 (v9 | front2 | front3), and the front3 back-of-head sheet at 1:1 (docs/revisions/v10/f4/). Crops round her head and the reflection.
     ~/Documents/1-music-shipped/moongazing/.venv/bin/python tools/sectionF/f4_v10_sheets.py
 """
 import json
@@ -14,7 +14,8 @@ FF = os.path.expanduser("~/Documents/1-music-shipped/moongazing/.venv/lib/python
 S = os.path.join(ROOT, "media/shots/F4")
 OUT = os.path.join(ROOT, "docs/revisions/v10/f4")
 CLIPS = [("v9 (in the cut)", "take_2_engraved_dered_v9refl.mp4"),
-         ("v10 front2", "take_2_engraved_dered_v10refl_front2.mp4")]
+         ("v10 front2", "take_2_engraved_dered_v10refl_front2.mp4"),
+         ("v10 front3", "take_2_engraved_dered_v10refl_front3.mp4")]
 IN, RATE = 180.02, 1.3
 font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 17)
 bold = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 19)
@@ -54,6 +55,24 @@ def sheet(idx, name, cw=520, ch=390, full=False):
     print("wrote", name)
 
 
+def head_sheet(idx, name):
+    """1:1 crops round her head, front2 (the drawn face under her crown) over front3 (the painted back of her head)."""
+    rows = [(lab, frames(os.path.join(S, f), idx)) for lab, f in CLIPS[1:]]
+    cw, ch = 360, 320
+    im = Image.new("RGB", (220 + len(idx) * cw, len(rows) * ch + 30), (18, 18, 18))
+    d = ImageDraw.Draw(im)
+    for k, i in enumerate(idx):
+        d.text((220 + k * cw + 6, 6), label(i), fill=(240, 240, 240), font=font)
+    for r, (lab, fr) in enumerate(rows):
+        d.text((8, 30 + r * ch + ch // 2 - 10), lab, fill=(240, 160, 64), font=bold)
+        for k, i in enumerate(idx):
+            b = int(band[i])
+            im.paste(Image.fromarray(fr[i]).crop((958 - cw // 2, b - 90, 958 + cw // 2, b - 90 + ch)), (220 + k * cw, 30 + r * ch))
+    im.save(os.path.join(OUT, name), quality=92)
+    print("wrote", name)
+
+
 os.makedirs(OUT, exist_ok=True)
 sheet([0, 20, 40, 52, 60, 66, 70, 74], "before_after_detail.jpg")
 sheet([0, 30, 52, 66, 74, 84], "before_after_full.jpg", full=True)
+head_sheet([0, 30, 60, 74], "front3_head_1to1.jpg")
