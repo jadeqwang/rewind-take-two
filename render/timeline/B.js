@@ -66,7 +66,7 @@ export default ({ T }) => ({
         whip(2.34, 0.6, 300, 760, 1), whip(3.68, 0.4, 820, 240, 2), whip(4.6, 0.3, 520, 600, 3), whip(5.48, 0.25, 200, 900, 4), whip(6.36, 0.2, 700, 380, 5),
         { type: 'solid', stage: 'post', color: PAPER, rect: [36, 40, 380, 54], opacity: 0.92 },
         { type: 'canvas', module: 'hud', stage: 'post',
-          params: { mode: 'iteration', value: [[0, 4095], [4.85, 4095, 'inOutCubic'], [5.2, 4096]], snap: false, side: 'left', color: INK, size: 24 } },
+          params: { mode: 'iteration', value: [[0, 4095], [0.6, 4095, 'inCubic'], [4.6, 1]], snap: false, side: 'left', color: INK, size: 24 } },   // Jade 2026-10-18: the rewind rolls the counter all the way back to ITERATION 1, held from 6.5 s (verse 1, her ID, is iteration 1); was [[0, 4095], [4.85, 4095, 'inOutCubic'], [5.2, 4096]]
         { type: 'solid', stage: 'post', color: PAPER, rect: [36, 104, 300, 92], opacity: 0.92 },
         { type: 'canvas', module: 'hud', stage: 'post',
           params: { mode: 'rewind', x: 40, y: 172, color: INK, accent: ORANGE, multiplier: [[0, 2, 'hold'], [1.78, 4, 'hold'], [3.58, 8, 'hold'], [4.46, 16, 'hold']] } },

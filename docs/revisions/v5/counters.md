@@ -8,7 +8,22 @@ ITERATION 4,097 ×4,097, the timer counts down, goes negative and then counts up
 - The timer shows **this run's time**. The grass level is later in the game than the car chase, so the clock jumps
   forward at the respawn.
 
-## The map
+## 2026-10-18 renumbering (Jade)
+
+Jade: "the first iteration we see (where she hands over her ID) [should] be iteration 1, and then the quick succession of
+shots that all have different numbers be increasing. a two digit number, a few 3 and 4 digit numbers. perhaps pick numbers
+of some significance before we get to 4095?"
+
+- **C2 teaser (1.9-7.24):** the rewind rolls `ITERATION` from 4,095 all the way down to **1**, accelerating with the ◀◀
+  multiplier (`inCubic`, 2.5-6.5 s), then holds on 1 into the title. It no longer ticks to 4,096.
+- **Verse 1 (0:12-0:40, her ID at 0:34) is iteration 1.** It has no HUD of its own.
+- **R2 death tableaux (0:42.65-0:48.42) count UP:** 42 (the Answer), 137 (1/fine-structure constant), 314 (pi), 404 (not
+  found), 1,024 (2^10), 1,420 (the hydrogen line, as on her patch), 1,618 (golden ratio), 1,729 (Hardy-Ramanujan; the
+  0:26 plate's TVA 1729), 2,048 (2^11), 2,520 (lcm of 1-10), 2,718 (e), 2,998 (c = 2.998e8 m/s), 4,093 (the largest prime
+  below 4,096).
+- 4,096 is now never shown; the ×4,096 death count in 4,097's HUD still holds.
+
+## The map (before 2026-10-18; rows 4,081-4,093 and 4,096 are superseded above)
 
 | Iteration | On screen | Fate | HUD |
 |---|---|---|---|

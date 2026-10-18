@@ -30,6 +30,9 @@ MODEL = "bytedance/seedance-2.5"
 VER = os.environ.get("WC_VER", "v3")      # v4: WC_VER=v4 (new first frames: glossier hair, less smile); docs/revisions/v4/A.md
 #                                            v5: WC_VER=v5 (Jade's two photos, photographic; media/sing/NOTES.md "v5")
 #                                            v6: WC_VER=v6 (Jade's approved selfie for both slots; media/sing/NOTES.md "v6")
+#                                            v7: WC_VER=v7 (Jade's two new selfies, full expression; media/sing/NOTES.md "v7")
+#                                            v8: WC_VER=v8 (sultry test: P8, relit medium-shot first frames; NOTES.md "v8")
+#                                            v9w: WC_VER=v9w (warm watercolour stills, P8's acting: P9W; NOTES.md "v9w")
 PRE = f"{VER}_take_"
 
 P = ("A picture comes to life and stays the same picture in every frame: the woman is a soft colour painting in gentle brushed "
@@ -86,7 +89,7 @@ LOOK = {
                HAIRPRE="", HAIR="long glossy dark hair"),
     "v5": dict(BEGIN="She never smiles: from the calm, closed mouth of the first frame she", EYES="steady",
                HAIRPRE="", HAIR="dark hair"),
-}["v5" if VER[:2] in ("v5", "v6") else VER]      # v5b = the v5 prompt on the V3S shoulder-retake first frame (v5_first.py V5_REV=b); v5c = S1 from the re-tinted photo (V5_REV=c)
+}["v5" if VER[:2] in ("v5", "v6", "v7", "v8", "v9") else VER]      # v5b = the v5 prompt on the V3S shoulder-retake first frame (v5_first.py V5_REV=b); v5c = S1 from the re-tinted photo (V5_REV=c)
 # v5 (Jade, 2026-10-16: "reshoot the 2 lip sync clips using these 2 new photos"): she is her own PHOTO now, laid over the
 # engraved plate (tools/sing/v5_first.py), so the prompt no longer calls her a painting. The film's point is that she
 # mismatches the engraved world: she stays photographic, the world stays ink. Hair differs per shot (S1: the pencils
@@ -163,6 +166,146 @@ if VER.startswith("v6"):
             SHOTS[_k]["first"] = SHOTS[_k]["first"].replace("/v6b_", "/v6_")
             SHOTS[_k]["WHERE"] = ("She stands at night in front of the mirror of Cloud Gate in Chicago; everything behind "
                                   "her stays exactly as engraved. " + WIND6B)
+# v7 (Jade, 2026-10-18: "reshoot the 2 singing clips ... using the 2 new selfies ... the first clip using hairup with pencils
+# and the second clip using hairdown. please use a natural amount of wind for hair movement, and the normal amount of
+# expression that you would expect from a singer in a music video. I think some of the shortcomings of previous versions
+# came from a lack of expression."). First frames: tools/sing/v7_first.py (outpainted shoulders, v7_outpaint.py). Kept from
+# P6/P6B: photographic woman vs ink world, the face-identity lock, glasses, jacket, no headphones, locked-off camera. Gone:
+# "never smiles", "brows relaxed, no frown", "head keeps its angle". New: a music-video singer's full-face performance, and
+# a natural light breeze (S1: flyaways around the bun drift, bun and pencils stay put; V3S: all of the long hair sways).
+P7 = ("A photograph comes to life: the woman is a real, photographed person; the world behind her is a hard black-and-white "
+      "wood engraving drawn to all four edges, as in the first frame. She stays photographic, the world stays ink engraving, "
+      "and the two never blend; she is never painted or drawn. She sings {WORDS} {ACT} She "
+      "performs it like a singer in a music video, emotionally invested, singing with her whole face: her brows lift and knit "
+      "with the phrasing, her eyes are alive and engaged with the camera, her cheeks and jaw work, and her mouth opens wide on "
+      "the open vowels. Urgent, longing, a little haunted; no beaming grin, no mugging or grimacing. Full natural "
+      "blinks are fine; her lids never hang half-closed. She moves naturally: small nods, tilts and turns of her head with the "
+      "phrasing, breath lifting her shoulders, always facing the camera. Her face stays her own, exactly as in the first "
+      "frame: same face shape and width, eye size, nose, jaw, brows, skin and light makeup; never beautify, slim "
+      "or smooth her or enlarge her eyes. Her thin gunmetal-and-teal glasses stay on. {HAIR} Her white jacket stays "
+      "unchanged: stand-up collar and snaps, black turtleneck, orange bands, blue disc, round '1420 MHz' sleeve patch. "
+      "No headphones. Static locked-off camera, no zoom: framed chest-up exactly as in the first "
+      "frame. {WHERE} No new text.")
+V7 = {
+    "S1": dict(ACT="The song is about being hunted through time the night before her PhD defense.",
+               HAIR=("Her hair is up in a loose messy bun with two yellow pencils in it, pink eraser at the picture's left, "
+                     "pale-blue eraser at the right; both pencils stay exactly in place, never falling out. A natural light "
+                     "breeze: the loose strands and flyaways around the bun and temples drift and lift; bun and pencils stay "
+                     "put.")),
+    "V3S": dict(ACT="The song is about being hunted through time the night before her PhD defense.",
+                HAIR=("Her long dark hair stays worn down, parted in the middle. A natural light breeze sways it gently "
+                      "through all of her hair, the top, the sides and the long lengths, strands drifting.")),
+}
+# v7 round 2 (WC_V7R=2, takes 5+): round 1 overshot. V3S takes 1-4 all went to a pained, tearful face (brows knitted
+# hard throughout, a wide shouting "night" at ~154.3 in t1/t4, bared teeth in t4 157.4-158.1, eyes shut 0.7-1.3 s in t2/t3);
+# S1 t2 beamed on "night". So: the same whole-face singing, but composed, with the over-acting named as what not to do and
+# the eyes held open on the camera (only quick blinks). The intro sentence is shortened to make room (2000-char limit).
+P7B = P7.replace("She stays photographic, the world stays ink engraving, "
+                 "and the two never blend; she is never painted or drawn.",
+                 "She stays photographic, the world stays ink, and the two never blend.").replace(
+    "She performs it like a singer in a music video, emotionally invested, singing with her whole face: her brows lift and "
+    "knit with the phrasing, her eyes are alive and engaged with the camera,",
+    "She performs it like a singer in a music video, emotionally invested and singing with her whole face, but composed: "
+    "her brows lift and draw together naturally with the phrasing, her eyes stay open and engaged with the camera,").replace(
+    "Urgent, longing, a little haunted; no beaming grin, no mugging or grimacing. Full natural blinks are fine; her lids never "
+    "hang half-closed.",
+    "Urgent and longing, a little haunted; never crying, pained, grinning or grimacing, no bared teeth. Only quick full "
+    "blinks; she never sings with her eyes shut or lids half-closed.")
+P7B = P7B.replace("a hard black-and-white", "a black-and-white").replace("Her face stays her own, exactly as in the first frame:",
+                                                                         "Her face stays exactly as in the first frame:")
+assert P7B.count("composed") == 1 and "no bared teeth" in P7B and "the two never blend." in P7B, "P7B replace missed"
+# v7 round 3 (WC_V7R=3, V3S takes 11+): round 2's V3S takes 5-9 still read as crying (brows knitted and raised in the
+# middle throughout, a pained mouth, a wide cry on "night"). The hair-down photo's resting face (inner brows a little up,
+# lips parted) plus "longing / haunted" keeps pulling the model there. Same whole-face singing and urgency, framed as
+# confident and strong; brows lift with the phrasing and relax between phrases.
+P7C = P7B.replace(
+    "She performs it like a singer in a music video, emotionally invested and singing with her whole face, but composed: "
+    "her brows lift and draw together naturally with the phrasing, her eyes stay open and engaged with the camera, her "
+    "cheeks and jaw work, and her mouth opens wide on the open vowels. Urgent and longing, a little haunted; never crying, "
+    "pained, grinning or grimacing, no bared teeth.",
+    "She performs it like a confident singer in a music video, emotionally invested and singing with her whole face: "
+    "strong, sure and urgent, with a touch of longing, never sad, tearful or pained. Her brows lift with the phrasing and "
+    "relax between phrases; her eyes stay bright and engaged with the camera; her cheeks and jaw work, and her mouth opens "
+    "wide on the open vowels. No grinning, grimacing or bared teeth.")
+assert "confident singer" in P7C, "P7C replace missed"
+LINE7 = ("'The night before my dissertation defense' from the reference audio, her lips shaping each syllable in time "
+         "with the voice, closing on the 'b' of 'before' and the 'm' of 'my'.")
+if VER == "v7":
+    P = {"2": P7B, "3": P7C}.get(os.environ.get("WC_V7R", "1"), P7)
+    for _k, _d in V7.items():
+        SHOTS[_k]["ACT"] = _d["ACT"]
+        SHOTS[_k]["WORDS"] = LINE7
+        SHOTS[_k]["LOOK"] = {**LOOK, "HAIR": _d["HAIR"]}
+        SHOTS[_k]["WHERE"] = ("She stands at night in front of the mirror of Cloud Gate in Chicago; everything behind her "
+                              "stays exactly as engraved.")
+        if os.environ.get("WC_V7R", "1") in ("2", "3"):
+            SHOTS[_k]["ACT"] = "The song: she is hunted through time the night before her PhD defense."
+            SHOTS[_k]["WHERE"] = "She stands at night in front of the mirror of Cloud Gate in Chicago; the engraving never changes."
+# v8 (sultry TEST round, Jade approved 2026-10-18; Kenton on v7: "much better ... but there's something about the original
+# one (in watercolor art) that this one is lacking"; Jade: "some kind of sultry vibe?"). Against watercolor v4, v7 reads as
+# a square-on video call with raised brows, wide eyes and wide enunciation. P8: head a little turned, chin slightly down,
+# eyes up to the lens; brows low and relaxed; a calm, steadily half-lowered gaze (never sinking and hanging, never shut;
+# quick full blinks OK); soft close-mic lips (still closing on 'b' and 'm'); slow, languid movement; a hint of a knowing
+# smile in the eyes, no grin. First frames: tools/sing/v8_first.py (medium shot, warm side light). Identity lock, glasses,
+# jacket, pencils and the light breeze are kept from P7.
+P8 = ("A photograph comes to life: the woman is a real, photographed person; the world behind her is a black-and-white wood "
+      "engraving drawn to all four edges, as in the first frame. She stays photographic, the world stays ink, and the two "
+      "never blend. She sings {WORDS} She sings it soft and close to the microphone: small, controlled lip movements, no "
+      "wide enunciation. Sultry and self-possessed. In the first moments she turns her head a little to one side and lowers "
+      "her chin slightly, looking up into the lens. A calm, half-lowered gaze: her lids rest steadily a little lowered, "
+      "never sinking further and never shut; only quick full blinks. Her brows stay low and relaxed: never raised, no "
+      "forehead lift, never knit. Slow, languid movement. A hint of a knowing smile in her eyes, never a grin; never pained, "
+      "sad, tearful or wide-eyed. The warm light from one side stays as in the first frame. Her face stays exactly as in "
+      "the first frame: same face shape and width, eye size, nose, jaw, brows, skin and light makeup; never beautify, slim "
+      "or smooth her or enlarge her eyes. Her thin gunmetal-and-teal glasses stay on. {HAIR} Her white jacket stays "
+      "unchanged: stand-up collar and snaps, black turtleneck, orange bands, blue disc, round '1420 MHz' sleeve patch. No "
+      "headphones. Static locked-off camera, no zoom: framed exactly as in the first frame. {WHERE} No new text.")
+V8_HAIR = {
+    "S1": V7["S1"]["HAIR"],
+    "V3S": ("Her long dark hair stays worn down, parted in the middle, falling over her shoulders. A natural light breeze "
+            "sways it gently through all of her hair, a strand drifting across one side of her face."),
+}
+if VER == "v8":
+    P = P8
+    for _k, _h in V8_HAIR.items():
+        SHOTS[_k]["ACT"] = ""
+        SHOTS[_k]["WORDS"] = LINE7
+        SHOTS[_k]["LOOK"] = {**LOOK, "HAIR": _h}
+        SHOTS[_k]["WHERE"] = "She stands at night in front of the mirror of Cloud Gate in Chicago; the engraving never changes."
+# v9w (Jade 2026-10-18: "i like warm watercolour warm light. can you animate those and let me see the lip sync on those
+# with v8's acting directions"): first frames from the painted stills (media/sing/style/v8 glow_*__fixx2, fixed and
+# upscaled by tools/sing/v9w_stills.py, placed by tools/sing/v9w_first.py). P8's acting, plus: she is a watercolour
+# painting that stays painted (v3's P in spirit); a jaw lock (Jade on the old watercolour: "a little bit strange
+# distortion in the chin that was a little bit unnatural"): face, jaw and chin keep the first frame's shape, only lips, lids
+# and brows move, small slow head turns, the breeze carries the motion; and a harder eyes-open line (every v8 take shut her
+# eyes for 0.3-1.2 s).
+P9W = ("A watercolour painting comes to life and stays the same painting in every frame: the woman is painted in warm "
+       "transparent washes on rice paper, lit warm from one side; the world behind her is a black-and-white wood engraving "
+       "drawn to all four edges, as in the first frame. She stays painted, never photographic; the world stays black ink; the "
+       "two never blend. She sings {WORDS} Soft and close to the microphone: small, controlled lip movements, no wide "
+       "enunciation. Sultry and self-possessed. Her head turns a little to one side, chin slightly lowered, eyes looking up "
+       "into the lens. Her eyes stay open the whole time, looking into the lens, with a calm, half-lowered gaze; only quick "
+       "full blinks, never closed for longer. Brows low and relaxed, never raised or knit. A hint of a knowing smile in her "
+       "eyes, never a grin; never pained or wide-eyed. Her face, jaw and chin keep exactly the shape of the first frame: only "
+       "her lips, lids and brows move; the head turns are small, slow and rigid. A light breeze in her hair carries most of "
+       "the movement. Her face stays exactly as painted: same face shape, eye size, nose and features; never redraw, "
+       "beautify or slim her. Her thin glasses stay on. {HAIR} Her white jacket stays as painted: collar and snaps, dark "
+       "top, orange bands, blue disc, round '1420 MHz' sleeve patch. No headphones. Static locked-off camera, no zoom: "
+       "framed exactly as in the first frame. {WHERE} No new text.")
+V9W_HAIR = {
+    "S1": ("Her dark hair is up in a loose messy bun with two yellow pencils in it, pink eraser at the picture's left, "
+           "pale-blue eraser at the right; both pencils stay exactly in place. The breeze lifts the flyaways around the bun "
+           "and temples; bun and pencils stay put."),
+    "V3S": ("Her long dark hair stays worn down, parted in the middle, falling over her shoulders; the breeze sways it "
+            "gently, a strand drifting across one side of her face."),
+}
+if VER == "v9w":
+    P = P9W
+    for _k, _h in V9W_HAIR.items():
+        SHOTS[_k]["ACT"] = ""
+        SHOTS[_k]["WORDS"] = LINE7
+        SHOTS[_k]["LOOK"] = {**LOOK, "HAIR": _h}
+        SHOTS[_k]["WHERE"] = "She stands at night in front of the mirror of Cloud Gate in Chicago; the engraving never changes."
 if VER.startswith("v5"):
     P = P5
     for _k, _d in V5.items():
@@ -195,7 +338,7 @@ def submit(shot, n=1, res="720p", dry=False, note=""):
         used = [k for k, _ in sidecars(shot)] + [int(f[len(PRE):].split(".")[0]) for f in os.listdir(d)
                                                  if f.startswith(PRE) and f.endswith(".spec.json")]
         k = max(used) + 1 if used else 1
-        tag = {"v3": f"revA_sing_{shot}", "v5": f"v5_sing_{shot}", "v5b": f"v5_sing_{shot}_r2", "v5c": f"v5_sing_{shot}_tint", "v5d": f"v5_sing_{shot}_r3", "v6": f"v6_sing_{shot}", "v6b": f"v6b_sing_{shot}"}.get(VER, f"{VER}A_sing_{shot}")
+        tag = {"v3": f"revA_sing_{shot}", "v5": f"v5_sing_{shot}", "v5b": f"v5_sing_{shot}_r2", "v5c": f"v5_sing_{shot}_tint", "v5d": f"v5_sing_{shot}_r3", "v6": f"v6_sing_{shot}", "v6b": f"v6b_sing_{shot}", "v7": f"v7_sing_{shot}" + {"2": "_r2", "3": "_r3"}.get(os.environ.get("WC_V7R", "1"), ""), "v8": f"v8_sing_{shot}", "v9w": f"v9w_sing_{shot}"}.get(VER, f"{VER}A_sing_{shot}")
         spec = {"model": MODEL, "tag": tag, "notes": f"{shot} {PRE}{k} {res} {note}".strip(),
                 "input": {"prompt": prompt, "image": "file:" + os.path.relpath(img, ROOT),
                           "reference_audios": ["file:" + os.path.relpath(aud, ROOT)], "duration": s["duration"],

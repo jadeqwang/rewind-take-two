@@ -7,7 +7,7 @@ the key, the yellow pencil body next to them joins it, and a stroke as wide as t
 covers the silver ferrule between them.
 
     EPY=tools/engrave/.venv/bin/python      (needs OpenCV + PyAV)
-    $EPY tools/sing/v5_pencils.py media/sing/S1/v5_sync_1080_open.mp4 media/sing/S1/v5_sync_1080_matte
+    $EPY tools/sing/v5_pencils.py media/sing/S1/v5_sync_1080_open.mp4 media/sing/S1/v5_sync_1080_matte [--ferrule]
         -> the matte PNGs updated in place (max with the pencil key); the BiRefNet originals are kept once in
            <matte>_birefnet/; <matte>_pencils_check.jpg (frame crops: picture / old matte / new matte)
 """
@@ -20,6 +20,11 @@ import numpy as np
 from PIL import Image
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+
+FERRULE = False      # v7 (--ferrule): an eraser with no pencil body beside it (the body hidden in her hair as she tilts)
+#                      is joined to the nearest hair in the matte instead, so its silver ferrule is not dropped and the
+#                      eraser does not float free of her head (S1 v7_sync_1080_open file frame 30)
 
 
 def key(rgb, matte):
@@ -47,6 +52,14 @@ def key(rgb, matte):
         d = cv2.distanceTransform((lab != k).astype(np.uint8), cv2.DIST_L2, 3)
         body = yel & (d < 45)
         if body.sum() < 6:
+            if FERRULE:
+                hy, hx = np.nonzero(matte[h0:h1, x0:x1] > 128)
+                if len(hy):
+                    dd = np.hypot(hx - cen[k][0], hy - cen[k][1])
+                    j = int(np.argmin(dd))
+                    if dd[j] < 70:
+                        w = max(3, int(round(0.8 * 2 * np.sqrt(st[k, cv2.CC_STAT_AREA] / np.pi))))
+                        cv2.line(m, tuple(int(v) for v in cen[k]), (int(hx[j]), int(hy[j])), 1, w)
             continue
         by, bx = np.nonzero(body)
         w = max(3, int(round(0.8 * 2 * np.sqrt(st[k, cv2.CC_STAT_AREA] / np.pi))))
@@ -69,8 +82,10 @@ def main(src, mdir):
             p = os.path.join(bak, f"{i:05d}.png")
             if not os.path.exists(p):
                 break
-            rgb = f.to_ndarray(format="rgb24")
             old = np.asarray(Image.open(p), np.float32)
+            rgb = f.to_ndarray(format="rgb24")
+            if rgb.shape[:2] != old.shape:                   # v9w: 720p takes against 1080 mattes
+                rgb = np.asarray(Image.fromarray(rgb).resize((old.shape[1], old.shape[0]), Image.LANCZOS))
             new = np.maximum(old, key(rgb, old) * 255)
             Image.fromarray(np.clip(new, 0, 255).astype(np.uint8)).save(os.path.join(mdir, f"{i:05d}.png"))
             if i % 30 == 0:
@@ -84,4 +99,6 @@ def main(src, mdir):
 
 
 if __name__ == "__main__":
-    main(sys.argv[1], sys.argv[2])
+    FERRULE = "--ferrule" in sys.argv
+    a = [x for x in sys.argv[1:] if not x.startswith("--")]
+    main(a[0], a[1])

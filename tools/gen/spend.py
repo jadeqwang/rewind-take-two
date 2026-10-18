@@ -8,7 +8,7 @@ Logs read (list-price estimates; the real bill can't be read with the wrangler t
 Rules: failed sync calls (ok=false) are not counted; relay jobs count from submit and are refunded when they error
 (errored runs are normally not billed).
 
-Cap: REWIND_CAP (or VGEN_CAP) env, default $400 for the whole project. cf.generate(), gen.submit() and
+Cap: REWIND_CAP (or VGEN_CAP) env, default $600 for the whole project (raised from $400 by Jade, 2026-10-18). cf.generate(), gen.submit() and
 vgen.submit() all call check() before spending and refuse to exceed it.
 
     python tools/gen/spend.py            # total, cap, breakdown by model
@@ -22,7 +22,7 @@ import sys
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 GENLOG = os.path.join(ROOT, "media", "genlog.jsonl")
 VSPEND = os.path.join(ROOT, "media", "gen", "spend.jsonl")
-CAP_USD = float(os.environ.get("REWIND_CAP", os.environ.get("VGEN_CAP", "400")))
+CAP_USD = float(os.environ.get("REWIND_CAP", os.environ.get("VGEN_CAP", "600")))
 
 
 def _lines(p):

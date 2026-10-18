@@ -58,7 +58,16 @@ const S1_IN = 0 + { A: 0.15, B: 0, C: -0.15 }[LIP];   // clip time at song 12.60
 // v6b (Jade 2026-10-17: more natural head movement and wind; "audio sync is perfect" on v6): v6b_take_2, lag +0.95 read
 // by the same trace markers that give v6_take_1 its +1.09; the blink at the cutaway (file frames 81-86) patched open.
 // v6 (sync "perfect"): 'media/sing/S1/v6_sync_1080.mp4'
-const S1_SRC = 'media/sing/S1/v6b_t2_sync_1080_open.mp4';
+// v7 (Jade 2026-10-18: "reshoot the 2 singing clips ... using the 2 new selfies ... the first clip using hairup with
+// pencils"; natural wind, a singer's normal expression): inputs/selfie_hairup_jade_jacket_retouch_v2.png, shoulders
+// outpainted (tools/sing/v7_outpaint.py, v7_first.py), take v7_take_1 at its measured lag +0.87; blinks at the in-point
+// (file frames 0-6) and at the cutaway (82-89) patched open; matte BiRefNet + pencil key (--ferrule) + v7_matte_fix.py.
+// docs/revisions/v9/sing_v7.md. v6b: 'media/sing/S1/v6b_t2_sync_1080_open.mp4'
+// v9w (Jade 2026-10-18 picked the warm watercolour: "hair up: 0.7 is slightly better ... yes, wire them in"): the painted
+// still animated with v8's acting (tools/sing/v9w_*.py, wc_takes.py P9W), take v9w_take_4 at lag +0.70 (Jade's ear;
+// measured +0.85); the blink at 12.93-13.22 (file frames 8-15) patched open; matte BiRefNet + v9w_pencils.py.
+// docs/revisions/v9/sing_v9w.md. v7: 'media/sing/S1/v7_sync_1080_open.mp4'
+const S1_SRC = 'media/sing/S1/v9w_sync_1080_l070_open.mp4';
 // slow push over the three singing cuts (1.0 -> 1.08 keeps the band, dot and 1420 MHz roundel in frame)
 const S1_PUSH = (a, b) => ({ from: { scale: a }, to: { scale: b }, ease: 'linear' });
 // v4 (Jade, 0:13: "start further away and then zoom in"): S1 opens on the whole Bean and pushes in to the v3 framing,
@@ -306,7 +315,7 @@ export default ({ T }) => ({
     // render/timeline/_arc_lyric.js), one word per sung onset, behind her (her matte is laid back over it). S1x: "MY
     // DISSERTATION DEFENSE" (no comma, Jade v4) on the plaza paving of the reflection. Layer times are local to 12.60: S1 0-3.54, S1x 3.54-7.04.
     { id: 'A_S1_lyric', start: 12.6, end: 19.64, layers: (() => {
-      const ARC = 'render/timeline/_arc_lyric.js', HER = { src: S1_MATTE, mode: 'luma' };   // v6: S1_MATTE = 'media/sing/S1/v6_sync_1080_matte/'; v5c +0.90: 'media/sing/S1/v5c_sync_1080_l090_open_matte/' (-> v5c_sync_1080_l090_matte/); v5c: S1_MATTE = 'media/sing/S1/v5c_sync_1080_matte/'; v5: 'media/sing/S1/v5_sync_1080_l061_open_matte/' (-> v5_sync_1080_l061_matte/); v4 A: 'media/sing/S1/v4_sync_1080_matte/'
+      const ARC = 'render/timeline/_arc_lyric.js', HER = { src: S1_MATTE, mode: 'luma' };   // v9w: S1_MATTE = 'media/sing/S1/v9w_sync_1080_l070_open_matte/' (-> v9w_sync_1080_l070_matte/); v7: 'media/sing/S1/v7_sync_1080_open_matte/'; v6b: 'media/sing/S1/v6b_t2_sync_1080_open_matte/'; v6: S1_MATTE = 'media/sing/S1/v6_sync_1080_matte/'; v5c +0.90: 'media/sing/S1/v5c_sync_1080_l090_open_matte/' (-> v5c_sync_1080_l090_matte/); v5c: S1_MATTE = 'media/sing/S1/v5c_sync_1080_matte/'; v5: 'media/sing/S1/v5_sync_1080_l061_open_matte/' (-> v5_sync_1080_l061_matte/); v4 A: 'media/sing/S1/v4_sync_1080_matte/'
       const arc = (text, times, r, at) => ({ text, times, cx: 965, cy: 981, r, ...at, size: 88, style: 'woodcut' });
       const LEFT = [arc('THE NIGHT', ['word:the@13', 'word:night@13'], 1014, { to: -31 }), arc('BEFORE', ['word:before@13'], 930, { to: -31 })];
       // S1x: the plate drifts left about 38 px/s; the quad rides it (plate px before the layer's 1.04 scale)

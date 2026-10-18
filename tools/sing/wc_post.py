@@ -169,6 +169,50 @@ SYNC_V6 = {
 SYNC_V6B = {
     "S1": ("v6b_take_2", [(12.60, 0.65), (19.64, 7.69)]),
 }
+# v7: Jade's two new selfies (hair up with pencils for S1, hair down for V3S), full singer's expression (wc_takes.py P7 /
+#   P7B / P7C; tools/sing/v7_first.py; docs/revisions/v9/sing_v7.md).
+#   S1 v7_take_1 (round 1, P7): look.py corr +0.869 (r .57); events open +0.825, 'b' +0.802, 'm' +0.739, end +1.025
+#       (median +0.81); 2 s windows from 13.9 on +0.88..+0.97 (r .50-.89); on the trace the release of the 'b' closure
+#       into "fore" lands at 13.88-13.90 on the voice's dip (13.88) at +0.87 (late at +0.80, before the dip at +0.95).
+#       Wired at the measured +0.87, untouched frames.
+#   V3S v7_take_12 (round 3, P7C; rounds 1-2 overacted): look.py corr -0.152 (r .60); events open -0.30, 'b' -0.21,
+#       'm' -0.27, end -0.13 (median -0.24); 2 s windows from 155.2 on -0.13..-0.20 (r .47-.89); on the trace at -0.20 the
+#       'b' closure sits on 154.72, the 'm' of "my" releases at ~157.17 (voice ~157.15) and the mouth falls with the phrase
+#       end (159.14); -0.30 is late on the 'b', -0.10 early. Wired at the measured -0.20 (the take's mouth runs EARLY),
+#       untouched frames.
+SYNC_V7 = {
+    "S1": ("v7_take_1", [(12.60, 0.57), (19.64, 7.61)]),
+    "V3S": ("v7_take_12", [(153.98, 0.10), (159.14, 5.26)]),
+}
+# v8 (sultry TEST, not wired; wc_takes.py P8, tools/sing/v8_first.py; docs/revisions/v9/sing_v8.md).
+#   S1 v8_take_3: look.py corr +0.890 (r .66); events +0.83/+0.68/+0.61/+0.94; 2 s windows 13.9-17.9 +0.71..+1.07 (r .44-.90);
+#       on the trace at +0.85 the 'b' release into "fore" lands at ~13.90 (voice 13.88), the 'm' release at 16.29 and the
+#       phrase end with the voice (18.45). Measured +0.85. BUT its first frame's matte had lost the pink eraser, and so did
+#       all three takes (v8_take_1..3): kept as the alternative, media/sing/S1/v8t3_sync_1080*.mp4 (S1 t3 was
+#       [(12.60, 0.55), (19.64, 7.59)]).
+#   S1 v8_take_4 (first frame re-keyed with both pencils; takes 4-6): corr +0.712 (r .49); events +0.74/+0.64/+0.95/+0.82;
+#       on the trace at +0.80 the mouth opens on "The night" (13.15-13.45), closes for the 'b' (13.5-13.85) and opens on
+#       "fore" at 13.95 (voice 13.88); phrase 2 (under the cutaway) drifts to ~+1.0. Measured +0.80 on the on-screen phrase.
+#       (t6: steady +1.27 on phrase 2 but its mouth stays nearly shut through "The night"; t5: lag unusable.)
+#   V3S v8_take_3: corr +0.452 (r .61); events +0.66/+0.46/+0.23/+0.58 (median +0.52); windows 155.2-158.7 +0.10..+0.48;
+#       on the trace at +0.45 the 'b' closure sits on 154.72 and the 'm' releases at 157.12. Measured +0.45.
+SYNC_V8 = {
+    "S1": ("v8_take_4", [(12.60, 0.50), (19.64, 7.54)]),
+    "V3S": ("v8_take_3", [(153.98, 0.75), (159.14, 5.91)]),
+}
+# v9w (warm watercolour, P9W; tools/sing/v9w_*.py; docs/revisions/v9/sing_v9w.md). Not wired.
+#   S1 v9w_take_4: look.py corr +0.848 (r .63); events +0.83/+0.55/+0.86/+0.94; 2 s windows 13.9 +0.84, phrase 2
+#       +0.88..+0.93; on the trace at +0.85 the 'b' release into "fore" lands on the voice's dip (13.88) and the 'm' release
+#       at 16.30 (voice 16.29). Measured +0.85. No eye patch on screen (one quick full blink 12.80-13.10).
+#   V3S v9w_take_4 (patched: v9w_take_4_open, take frames 11-17 from 9): look.py events +0.41/-0.00/+0.14/+0.17, 2 s
+#       windows mostly +0.14..+0.18; on the trace at +0.15 the 'b' closure sits on 154.6-154.7 and the 'm' on 157.1.
+#       Measured +0.15.
+SYNC_V9W = {
+    "S1": ("v9w_take_4", [(12.60, 0.40), (19.64, 7.44)]),       # Jade by ear (2026-10-18): "hair up: 0.7 is slightly
+    #                                                               better" -> +0.70, written as v9w_sync_1080_l070 (--name);
+    #                                                               measured +0.85 was [(12.60, 0.55), (19.64, 7.59)]
+    "V3S": ("v9w_take_4_open", [(153.98, 0.45), (159.14, 5.61)]),  # Jade: "the one you picked for hair down looks good"
+}
 if VER == "v4":
     SYNC = SYNC_V4
 elif VER == "v5":
@@ -183,6 +227,12 @@ elif VER == "v6":
     SYNC = SYNC_V6
 elif VER == "v6b":
     SYNC = SYNC_V6B
+elif VER == "v7":
+    SYNC = SYNC_V7
+elif VER == "v8":
+    SYNC = SYNC_V8
+elif VER == "v9w":
+    SYNC = SYNC_V9W
 
 
 def clip_time(keys, t):

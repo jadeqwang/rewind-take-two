@@ -6,7 +6,12 @@ const DIR = 'media/shots/R2/engraved/';
 // v9: *_patch = the same still with the sleeve roundel re-lettered 1420 / MHz (tools/sectionE/patchfix.py)
 const STILLS = ['01train', '02marinab', '03picasso_patch', '04bridge_patch', '05fountain', '06watertower', '07riverwalk_patch',
   '08skydeck', '09lightning', '10gearsb_patch', '11ferris', '12iceb_patch', '13sedanb'];
-const ITER = [4093, 4091, 4092, 4089, 4090, 4088, 4086, 4087, 4085, 4084, 4082, 4083, 4081];   // randomized but decreasing; all below 4094 (4094-4098 have their own fates, docs/revisions/v5/counters.md)
+// Jade 2026-10-18: verse 1 (her ID) is iteration 1, so the deaths after it count UP, through numbers that mean something:
+// 42 (the Answer), 137 (1/fine-structure), 314 (pi), 404 (not found), 1024 (2^10), 1420 (the hydrogen line, her patch), 1618 (golden
+// ratio), 1729 (Hardy-Ramanujan taxicab, the 0:26 plate's TVA 1729), 2048 (2^11), 2520 (lcm 1..10), 2718 (e), 2998 (c, 2.998e8 m/s),
+// 4093 (the largest prime below 4096). All below 4094 (4094-4098 have their own fates, docs/revisions/v5/counters.md).
+// Was [4093, 4091, 4092, 4089, 4090, 4088, 4086, 4087, 4085, 4084, 4082, 4083, 4081] (randomized, decreasing).
+const ITER = [42, 137, 314, 404, 1024, 1420, 1618, 1729, 2048, 2520, 2718, 2998, 4093];
 
 export default ({ T }) => {
   const chops = T.lists.vocal_chops.map(c => (typeof c === 'number' ? c : c.start)).filter(t => t >= 42.6 && t < 48.5);

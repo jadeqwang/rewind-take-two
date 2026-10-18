@@ -95,3 +95,78 @@ of the hair. can you add a bit more natural wind and movement to the first singi
   `media/sing/review/v6b_S1_lag+{0.80,0.95,1.10}_*`).
 - Weak: cheeks a little full with pressed lips at 13.45-13.55, on "night".
 - Spend about $318.
+
+## v7: both shots reshot from Jade's two new selfies, with a singer's expression (2026-10-18)
+
+Jade: "reshoot the 2 singing clips ... the first clip using hairup with pencils and the second clip using hairdown ... a
+natural amount of wind ... the normal amount of expression that you would expect from a singer in a music video." Full
+report: `docs/revisions/v9/sing_v7.md`.
+
+| Shot | Wired file | Take | Lag |
+|---|---|---|---|
+| S1 0:12.60-0:19.64 | A.js `media/sing/S1/v7_sync_1080_open.mp4` (hair up, pencils) | v7_take_1 (prompt P7) | +0.87 measured; blinks at file frames 0-6 and 82-89 patched |
+| V3S 2:33.98-2:39.14 | E.js `media/sing/V3S/v7_sync_1080_open.mp4` (hair down) | v7_take_12 (prompt P7C, round 3) | -0.20 measured; partial blink at file frames 25-29 patched |
+
+- The selfies are close-ups, so the shoulders, arms and lower chest were outpainted (nano-banana-pro;
+  `tools/sing/v7_outpaint.py`). Every pixel the photos show is their own.
+- S1 matte: BiRefNet, then `v5_pencils.py --ferrule`, then `v7_matte_fix.py` (the pencil bases, a plate sliver).
+- Expression against v6: inner-brow range S1 0.46 against 0.18 (v6) and 0.25 (v6b); V3S 0.50 against 0.24.
+- V3S needed three prompt rounds: "longing / haunted" gave a crying face on this photo. The pick asks for "confident,
+  strong, urgent, a touch of longing".
+- Review: `deliverables/wip/sing_review.html` section "Singing v7" (previews `sing_v7_{S1,V3S}_preview.mp4`,
+  side-by-sides `sing_v7_{S1,V3S}_vs_v6.mp4`, ear tests `media/sing/review/v7_*_lag*`).
+- Open: Jade picks the sync by ear. Then rebuild at her pick (`SYNC_V7`, `--name`), redo the eye patches, matte and
+  pencil key, re-wire and re-render the preview.
+- Renders need `FFMPEG` exported, or the preview prepare step cannot probe the new files.
+- Spend +$42.17 (24 Seedance takes and 10 image fills); the project is at $360.36. `spend.py`'s cap is still $400.
+
+## v8: "sultry" TEST round (2026-10-18; not wired, v7 stays in the film)
+
+Kenton found v7 lacking something the watercolor had, and Jade asked for "some kind of sultry vibe?". Report:
+`docs/revisions/v9/sing_v8.md`.
+
+| Shot | Test file (not wired) | Take | Lag |
+|---|---|---|---|
+| S1 | `media/sing/S1/v8_sync_1080_open.mp4` | v8_take_4 | +0.80 measured; slow closes at file frames 29-37 and 59-69 patched |
+| V3S | `media/sing/V3S/v8_sync_1080_open.mp4` | v8_take_3 | +0.45 measured; opening (0-14) and 74-83 patched |
+
+- **New:** prompt `P8` (head turned and chin down, eyes up, brows low, half-lowered gaze, soft close-mic lips, a hint of
+  smile in the eyes) and `tools/sing/v8_first.py` (face 0.30 of the frame height, wider shoulders, a local warm side
+  light as a gain layer over her own pixels).
+- **S1 alternative:** `v8t3_sync_1080_open.mp4`, more sultry but without the pink eraser. My first v8 S1 first frame had
+  lost it in the matte; that is fixed now.
+- **Review:** `deliverables/wip/sing_review.html` section "Singing v8 (sultry test)", with three-panel videos
+  `sing_v8_{S1,V3S}_vs_v7_v4.mp4` (watercolor v4 | v7 | v8).
+- **Open:** Jade compares and decides whether v8 replaces v7. If yes, set the ear-picked lag in `SYNC_V8`, rebuild,
+  redo the eye patches, matte and pencil key, and wire as in sing_v8.md.
+- **Spend:** v8 $18.35; the project is at $384.34.
+
+## v9w: the warm watercolour stills animated with v8's acting (2026-10-18; TEST, not wired, v7 stays)
+
+Jade: "i like warm watercolour warm light. can you animate those and let me see the lip sync". Report:
+`docs/revisions/v9/sing_v9w.md`.
+
+| Shot | Test file | Take | Lag |
+|---|---|---|---|
+| S1 | `media/sing/S1/v9w_sync_1080.mp4` (+ `_matte/`) | v9w_take_4 | +0.85 measured; no eye patch |
+| V3S | `media/sing/V3S/v9w_sync_1080.mp4` (+ `_matte/`) | v9w_take_4_open (two lid-dips patched) | +0.15 measured |
+
+- **Stills:** the hair fixed locally (`tools/sing/v9w_stills.py`; face pixels unchanged) and upscaled to 3072 wide.
+- **Prompt `P9W`:** a painting that stays painted, a jaw lock, harder on eyes open.
+- **S1 t4 has the steadiest jaw measured on any take**, v4 included.
+- **Review:** `deliverables/wip/sing_review.html` section "Singing v9w", lip-sync clips first (composited over the plate,
+  eye fixes in).
+- **Open:** Jade picks the sync by ear and decides v7, v8 or v9w.
+- **Spend:** $13.87; the project is at $398.21 of the $600 cap.
+
+### v9w wired (2026-10-18)
+
+Jade: "hair up: 0.7 is slightly better. the one you picked for hair down looks good. yes, wire them in."
+
+| Shot | Wired file | Lag |
+|---|---|---|
+| S1 0:12.60-0:19.64 | A.js `media/sing/S1/v9w_sync_1080_l070_open.mp4` (matte `_open_matte/` -> `v9w_sync_1080_l070_matte/`) | +0.70, Jade's ear; blink at file frames 8-15 patched |
+| V3S 2:33.98-2:39.14 | E.js `media/sing/V3S/v9w_sync_1080.mp4`, HER `v9w_sync_1080_matte/` | +0.15 |
+
+- Previews: `deliverables/wip/sing_v9w_{S1,V3S}_wired_preview.mp4`. The v7 paths are in comments.
+- `v9w_pencils.py` now template-matches both pencils (all 193 frames matched).

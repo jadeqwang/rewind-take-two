@@ -512,3 +512,78 @@ trace plot. `tools/sing/v6_lagwin.py` prints the window and sliding-window lags.
 
 Seedance 2.5 720p: S1 2 x 8 s $3.70, V3S 4 x 7 s $6.47. **Total $10.17** (project estimate $293.23 -> $303.40). The
 genlog writes two lines per job, so a plain sum doubles it.
+
+# v7 Jade's two new selfies, a singer's expression (2026-10-18)
+
+S1 is from `inputs/selfie_hairup_jade_jacket_retouch_v2.png` (hair up, pink and pale-blue pencils), over
+`plate_close_1`. V3S is from `inputs/selfie_hairdown_jade_jacket_retouch_v2.png`, over `plate_truth_1`. Full report:
+`docs/revisions/v9/sing_v7.md`.
+
+## Files for the engine
+
+Same contract as v3-v6: file time 0 = the shot's in-point, rate 1, 1920x1080, 24 fps, per-frame matte dir with `fps.txt`.
+
+| Shot | Song in-out | File | Take | Sync | Matte |
+|---|---|---|---|---|---|
+| S1 | 12.60-19.64 | `media/sing/S1/v7_sync_1080_open.mp4` (179 fr) | `v7_take_1` | +0.87; eyes patched on file frames 0-6 and 82-89 | `v7_sync_1080_open_matte/` (BiRefNet + pencil key `--ferrule` + `v7_matte_fix.py`) |
+| V3S | 153.98-159.14 | `media/sing/V3S/v7_sync_1080_open.mp4` (133 fr) | `v7_take_12` | -0.20; eyes patched on file frames 25-29 | `v7_sync_1080_open_matte/` (BiRefNet) |
+
+## First frames
+
+- `tools/sing/v7_outpaint.py`: the selfies cover only the middle third of the frame at v6's scale, so the shoulders,
+  arms and lower chest are model fills. Used: `S1_nbp_2` and `V3S_nbp_5`. The photo is pasted back; the jacket seam is
+  ~100 px inside the side edges and flow-aligned.
+- `tools/sing/v7_first.py`: v6 geometry (face 0.35 of the frame height, eyes at 1080p (941, 429)). V3S has a luminance
+  key for the door trim seen through her hair.
+
+## Takes (tags `v7_sing_*`, `_r2`, `_r3`)
+
+- Prompts `P7` / `P7B` / `P7C` in `wc_takes.py` (`WC_V7R`). The face lock is kept; the never-smile, relaxed-brow and
+  head-angle locks are removed; a natural breeze is added.
+- 8 S1 takes and 16 V3S takes; S1 t3 and V3S t10 were 21:9.
+- Rounds 1-2 overacted on V3S (crying, shouting, eyes shut). Round 3 ("confident ... never sad, tearful or pained")
+  gave t12.
+- Spares: S1 t8, V3S t14.
+- `tools/sing/v7_expr.py` measures expression (blendshape and brow-lift ranges, head roll and yaw) and identity.
+  `tools/sing/v7_trace.py` plots mouth against voice at given lags.
+
+## Ear tests
+
+- S1: `media/sing/review/v7_S1_lag+{0.42..1.32}_*`. 0.87 is wired.
+- V3S: `v7_V3S_lag{-0.35,-0.20,-0.05,+0.10}_*`. -0.20 is wired.
+
+## Cost
+
+$42.17: Seedance $40.69 and image fills $1.48. The project estimate went from $318.20 to $360.36.
+
+# v8 "sultry" TEST round (2026-10-18; not wired)
+
+Report: `docs/revisions/v9/sing_v8.md`.
+
+- **Prompt:** `P8` (`WC_VER=v8`). Tags `v8_sing_*`.
+- **First frames:** `tools/sing/v8_first.py` gives the medium shot (face 0.30 of the frame height) with a warm side
+  light (S1 lit from frame-right, V3S from frame-left). S1's wider shoulders come from `outpaint/v8/S1_nbp_1`
+  (`v7_outpaint.py OP_VER=v8`); V3S keeps v7's fill. The S1 pencils are keyed into the first-frame alpha.
+- **Test files:**
+  - S1: `S1/v8_sync_1080_open.mp4` (v8_take_4, +0.80), matte `_matte/` (BiRefNet + pencils `--ferrule` + v7_matte_fix).
+  - V3S: `V3S/v8_sync_1080_open.mp4` (v8_take_3, +0.45), matte `_matte/` (BiRefNet).
+  - S1 alternative: `S1/v8t3_sync_1080_open*` (no pink eraser).
+- **Measured against v7:** median browInnerUp 0.78 → 0.49 / 0.55, median jawOpen 0.17 → 0.05 (S1) and 0.12 → 0.04 (V3S),
+  chin slightly lower. V3S head roll range 5.3° (watercolor 5.6°).
+- **Ear tests:** `review/v8_S1_lag*`, `review/v8_V3S_lag*`, `review/v8t3_S1_lag*`.
+- **Cost:** $18.35.
+
+# v9w warm watercolour, v8's acting (2026-10-18; TEST, not wired)
+
+Report: `docs/revisions/v9/sing_v9w.md`.
+
+- **Stills:** `media/sing/style/v9w/{S1,V3S}_2k.png`, from the style agent's glow fixx2 stills. The hair is recoloured
+  locally (S1 orange wash out; V3S gold cast down); Real-ESRGAN/Lanczos at 2x.
+- **First frames:** `media/sing/first/v9w_{S1,V3S}_first.jpg` (`tools/sing/v9w_first.py`), v8's medium shot.
+- **Takes:** `WC_VER=v9w` (`P9W`), 4 per shot, tags `v9w_sing_*`. Picks S1 t4 (+0.85) and V3S t4 (+0.15, patched in the
+  take as `v9w_take_4_open`).
+- **Files:** `S1/v9w_sync_1080.mp4` and `V3S/v9w_sync_1080.mp4`, with `_matte/` dirs (S1 pencils:
+  `tools/sing/v9w_pencils.py`, moving the first frame's whole pencils with the take's yellow bodies).
+- **Jaw stability:** `tools/sing/v9w_jaw.py`. S1 t4 upper-jaw residual p95 .041 against watercolour v4's .106.
+- **Ear tests (composited over the plate, eye fixes in):** `review/v9w_{S1,V3S}_lag*` (`tools/sing/v9w_post.py ear`).
+- **Cost:** $13.87.

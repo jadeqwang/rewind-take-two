@@ -61,7 +61,16 @@ const V3S_LAG = { A: 0.15, B: 0, C: -0.15 }[V3S_VARIANT];
 // v6 (Jade: the approved selfie for both singing slots, "let's just use the hair down in both"): the same figure as S1
 // (tools/sing/v6_first.py) over plate_truth_1; take v6_take_3 at its measured lag +0.20, untouched frames, eyes open
 // throughout (no blink, no droop). Ear test: media/sing/review/v6_V3S_lag*.mp4. v5d: 'media/sing/V3S/v5d_sync_1080_open.mp4'
-const V3S_SRC = 'media/sing/V3S/v6_sync_1080.mp4';
+// v7 (Jade 2026-10-18: "reshoot the 2 singing clips ... the second clip using hairdown"; natural wind, a singer's normal
+// expression): inputs/selfie_hairdown_jade_jacket_retouch_v2.png, shoulders outpainted (tools/sing/v7_outpaint.py,
+// v7_first.py); take v7_take_12 (round 3, prompt P7C) at its measured lag -0.20; the partial blink at 155.10-155.19
+// (file frames 25-29) patched open (_open). Ear test: media/sing/review/v7_V3S_lag*.mp4. docs/revisions/v9/sing_v7.md.
+// v6: 'media/sing/V3S/v6_sync_1080.mp4'
+// v9w (Jade 2026-10-18 picked the warm watercolour; "the one you picked for hair down looks good ... yes, wire them in"):
+// the painted still animated with v8's acting (tools/sing/v9w_*.py, wc_takes.py P9W), take v9w_take_4 with two lid-dips
+// patched in the take (v9w_take_4_open), measured lag +0.15. docs/revisions/v9/sing_v9w.md.
+// v7: 'media/sing/V3S/v7_sync_1080_open.mp4'
+const V3S_SRC = 'media/sing/V3S/v9w_sync_1080.mp4';
 // v5 (Jade 2:35: "make that rooftop staircase an actual impossible staircase"): a Penrose stair on the near rooftop
 // (lower left) in place of the square stairwell; the plate is baked into the take, so it is a still overlay over the take
 // (she never comes near it; take, in-point and her matte unchanged). docs/revisions/v5/stairs.md. v4: no 'stairs' layer.
@@ -81,7 +90,7 @@ export default ({ T }) => ({
     // the Bean's rim, but here the mirror shows the truth, so it is written in residue-orange coloured pencil instead of
     // cut in white line. One word per sung onset; behind her (her matte is laid back over it); not over the cutaway.
     { id: 'V3S_lyric', start: 153.98, end: 159.14, layers: (() => {
-      const ARC = 'render/timeline/_arc_lyric.js', HER = { src: 'media/sing/V3S/v6_sync_1080_matte/', mode: 'luma' };   // v5d: 'media/sing/V3S/v5d_sync_1080_open_matte/'; v5b: 'media/sing/V3S/v5b_sync_1080_open_matte/'; v5: 'media/sing/V3S/v5_sync_1080_matte/'; v4: 'media/sing/V3S/v4_sync_1080_matte/'
+      const ARC = 'render/timeline/_arc_lyric.js', HER = { src: 'media/sing/V3S/v9w_sync_1080_matte/', mode: 'luma' };   // v7: 'media/sing/V3S/v7_sync_1080_open_matte/'; v6: 'media/sing/V3S/v6_sync_1080_matte/'; v5d: 'media/sing/V3S/v5d_sync_1080_open_matte/'; v5b: 'media/sing/V3S/v5b_sync_1080_open_matte/'; v5: 'media/sing/V3S/v5_sync_1080_matte/'; v4: 'media/sing/V3S/v4_sync_1080_matte/'
       const arc = (text, times, r, at) => ({ text, times, cx: 965, cy: 981, r, ...at, size: 88, style: 'pencil', color: '#F08A24' });
       const LEGEND = [arc('THE NIGHT', ['word:the@153', 'word:night@153'], 1014, { to: -31 }), arc('BEFORE', ['word:before@154'], 930, { to: -31 }),
         arc('MY', ['word:my@157'], 1014, { from: 31 }), arc('DISSERTATION', ['word:dissertation@157'], 930, { from: 31 }),

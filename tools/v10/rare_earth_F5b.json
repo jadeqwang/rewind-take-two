@@ -1,0 +1,47 @@
+{
+ "_note": "v10 (Jade 2026-10-18, 3:07): RARE EARTH on the cropped jacket's back in F5b, under the dot, bending with the hem (tools/v10/rare_earth_F5b.py). Canon geometry in dot radii from inputs/jade_in_outfit.png BACK (as tools/v9/rare_earth_O2.json).",
+ "clip": "media/shots/F5b/take_3_engraved_dered.mp4",
+ "out": "media/shots/F5b/take_3_engraved_dered_v10rare.mp4",
+ "song_in": 187.08,
+ "clip_in": 0.05,
+ "rate": 1.0,
+ "used": [
+  1,
+  43
+ ],
+ "crf": 13,
+ "start": [
+  1465,
+  548
+ ],
+ "text": "RARE EARTH",
+ "font": "/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf",
+ "tracking": 0.05,
+ "word_space": 1.5,
+ "width": 2.15,
+ "gap": 0.28,
+ "ink": [
+  52,
+  51,
+  56
+ ],
+ "soft": 0.35,
+ "flex": 1.0,
+ "texture": {
+  "edge": 0.025,
+  "grain": 0.12,
+  "min_density": 0.78
+ },
+ "frames": [
+  [
+   0,
+   66
+  ]
+ ],
+ "flow": true,
+ "flow_k": 0.2,
+ "lattice": [
+  9,
+  3
+ ]
+}
