@@ -1,6 +1,8 @@
 # v10 F4: the Bean reflection, checked in three.js (3:00.02-3:03.56)
 
-Status: **Jade chose the blend** (2026-10-18; see **blend** at the end), wired in `F_edl.json` and `edl.py` CHOSEN["F4"].
+Status: **front2 is wired** in `F_edl.json` and `edl.py` CHOSEN["F4"] (Jade 2026-10-18: "the falling figure and the
+reflection are front2 (where you see the neck in the reflection)"). It replaced the blend (see **blend** at the end),
+which went into the first v10 1080p master; the front2 cut is `deliverables/rewind_v10b_*`.
 Earlier, two outputs for Jade to choose from: `..._v10refl_front2.mp4` (arched, as drawn) and
 `..._v10refl_front3.mp4` (her variant: less arched, the back of her head to the camera, her face in the Bean; see
 **front3** below). The EDL swap is below; the lead integrates and renders.
