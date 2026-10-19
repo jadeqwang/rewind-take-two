@@ -1,6 +1,7 @@
 # v10 F4: the Bean reflection, checked in three.js (3:00.02-3:03.56)
 
-Status: done. Two outputs for Jade to choose from: `..._v10refl_front2.mp4` (arched, as drawn) and
+Status: **Jade chose the blend** (2026-10-18; see **blend** at the end), wired in `F_edl.json` and `edl.py` CHOSEN["F4"].
+Earlier, two outputs for Jade to choose from: `..._v10refl_front2.mp4` (arched, as drawn) and
 `..._v10refl_front3.mp4` (her variant: less arched, the back of her head to the camera, her face in the Bean; see
 **front3** below). The EDL swap is below; the lead integrates and renders.
 
@@ -273,3 +274,30 @@ file in `tools/sectionF/edl.py` CHOSEN["F4"]. Its `_dered` lookup only adds a su
 - front3: $0.67 (3 x nano-banana-pro for the front painting, tag `v10c_f4front3`; 2 x nano-banana-pro for the back of
   her head, tag `v10c_f4head`).
 - Total v10: $2.63. The project is at $400.85 of the $600 cap.
+
+## blend: front2's girl over front3's reflection (Jade 2026-10-18)
+Jade: "an impossible blend. the irl part from front2 and the reflection from front3, but also correcting the leg gap
+mismatch in front3's reflection."
+- **The camera's view:** front2's view, untouched: arched, with her face under her crown and no paint-over.
+- **The mirror:** front3's reflection: case A3 maps (shared from `v10c_work`), her face upside down, feet above. Its
+  crown is aligned to front2's chin, as front2's reflection was. Geometrically impossible on purpose: an arched girl
+  whose mirror shows a straight-backed one with her face toward the Bean.
+- **Leg gap:** in `front3_1.png` she stands with her feet apart: the inner gap opens from 8 px at the crotch to 210 px
+  at the shoes. In the shot her legs are nearly together, as in the pose reference. `tools/sectionF/f4_legs_pinch.py`
+  closes the gap to 28 px by moving only the splayed leg (her left, picture-right in the upright painting), up to 191 px
+  at the shoe, so it turns about its hip to hang straight. The straight leg, which already matches her body in the shot,
+  stays put. Round 1 pulled both legs in by half (up to 95 px each), which tilted the straight one; Jade: "closed in
+  favor of the leg that's to the side rather than the leg that's straight". Output: `media/shots/F4/v10_front3/front3_1_legs.png`. In the mirror, the V
+  of legs at src 40-56 (3:01.30-3:01.81) is now a closed pair.
+- Output: `media/shots/F4/take_2_engraved_dered_v10refl_blend.mp4` (same format and timing). No new paid calls ($0).
+- Sheets: `f4/blend_vs_front3.jpg` (1:1, src 40/56/64/70; rows front3, round 1, now), `f4/blend_full.jpg`. Debug strip: `f4/debug_blend.jpg`.
+- Three-up (front2 | front3 | blend, the same crop): `deliverables/wip/f4_reflection_front2_front3_blend.mp4`
+- Weak spots: front2's and front3's apply here. The reflection's face reads from about src 62 (3:02.0). The teal smudge
+  left of the reflection at src ~56 is in front2 too (a re-plate seam).
+
+Rebuild:
+```
+tools/engrave/.venv/bin/python tools/sectionF/f4_legs_pinch.py media/shots/F4/v10_front3/front3_1.png media/shots/F4/v10_front3/front3_1_legs.png
+tools/engrave/.venv/bin/python tools/sectionF/f4_reflection_v10.py media/shots/F4/take_2_engraved_dered_patch.mp4 \
+    media/shots/F4/take_2_engraved_dered_v10refl_blend.mp4 --variant blend
+```

@@ -14,7 +14,8 @@ her torso facing the mirror (refmap.mjs, plane from mirrorView in cases.js). A p
 (media/shots/F4/v10_front/front_2.jpg, nano-banana-pro from the check's own orthographic pose reference
 pose_ref_mirror_view.png) is laid on that plane.
 
-    tools/engrave/.venv/bin/python tools/sectionF/f4_reflection_v10.py IN.mp4 OUT.mp4 [--variant front2|front3] [--debug SHEET.jpg]
+    tools/engrave/.venv/bin/python tools/sectionF/f4_reflection_v10.py IN.mp4 OUT.mp4 [--variant front2|front3|blend] [--debug SHEET.jpg]
+blend: front2's camera view with front3's reflection, its legs closed (f4_legs_pinch.py).
 front3 (Jade's variant): case A3 (less arched), the painting front3_1.png (her face), and the back of her head
 (media/shots/F4/v10_head/head_2.png, f4_head_gen.py) painted over the face the video model drew under her crown.
 
@@ -46,6 +47,11 @@ VARIANTS = {
     "front3": dict(case="A3", paint="media/shots/F4/v10_front3/front3_1.png",
                    poseref="media/shots/F4/v10_front3/pose_ref_mirror_view.png", work="media/shots/F4/v10c_work",
                    head="media/shots/F4/v10_head/head_2.png"),
+    # Jade's "impossible blend": front2's camera view (arched, her face under her crown, untouched) over front3's
+    # reflection (case A3, her face), with the painting's legs closed to match hers (f4_legs_pinch.py)
+    "blend": dict(case="A3", paint="media/shots/F4/v10_front3/front3_1_legs.png",
+                  poseref="media/shots/F4/v10_front3/pose_ref_mirror_view.png", work="media/shots/F4/v10d_work",
+                  maps="media/shots/F4/v10c_work", head=None),
 }
 PAINT = POSEREF = CASE = None
 # the back-of-head paint (front3): head_2.png is a 400 px crop at (758, 357) of src 30 (band 497.6), scaled up
@@ -263,7 +269,7 @@ def main():
     nref = FADE1 + 1
     fracs = schedule(nref)
     json.dump([round(f, 4) for f in fracs], open(os.path.join(a.v10work, "schedule.json"), "w"))
-    meta, mdir = maps(fracs, a.v10work)
+    meta, mdir = maps(fracs, os.path.join(ROOT, V["maps"]) if "maps" in V else a.v10work)
     psrc, pfit = painting()
     print(a.variant, "painting fit (ax, bx, ay, by):", [round(float(v), 3) for v in pfit],
           "head crown (band-relative, unshrunk):", crown_p)

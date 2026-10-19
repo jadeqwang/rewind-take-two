@@ -20,7 +20,8 @@ CHOSEN = {
     # frame (tools/jacket_back.py, spec tools/jacket_back_specs/F2.json)
     "F2": dict(take=3, file=S + "F2/take_3_engraved_dered_back.mp4", in_sec=0.0, rate=1.0, reverse=False, notes="true wall-run up the tower (take 2); bar 100 jumps to 3.24 s (reaching the top and launching off it) with a 1.12x punch-in"),
     "F3": dict(take=1, in_sec=0.0, rate=1.0, reverse=False, notes="Relativity hall; the engine snaps a 90-degree roll on the downbeat"),
-    "F4": dict(take=2, file=S + "F4/take_2_engraved_dered_v9refl.mp4", in_sec=0.0, rate=1.3, reverse=False, notes="take 2: dive, touches her reflection at ~3 s, plunges into concentric ripples"),
+    # v10 (Jade 2026-10-18, docs/revisions/v10/f4_reflection.md): blend = front2 in the shot, front3's reflection (her face), legs closed
+    "F4": dict(take=2, file=S + "F4/take_2_engraved_dered_v10refl_blend.mp4", in_sec=0.0, rate=1.3, reverse=False, notes="take 2: dive, touches her reflection at ~3 s, plunges into concentric ripples"),
     "F5a": dict(take=5, in_sec=1.4, rate=1.0, reverse=False, notes="v3 (Jade 3:05): the rainbow pencil (pale-blue eraser, rainbow core). She winds it back like a sword, slashes (1.4-2.5 s, a rainbow arc in its wake) and the swing turns into drawing: she guides the point like a pen and it draws a rainbow line up across the clock (2.5-4.9 s). Curtain bangs, mock neck; desk objects in the skyline. v2 was take 4"),
     "F5b": dict(take=3, file=S + "F5b/take_3_engraved_dered_v10rare.mp4", in_sec=0.05, rate=1.0, reverse=False, notes="wide; ink drips become agents. v3 (desk objects): take 3 from kf_v3_F5b: giant books, a mug of pencils, ink bottles and a ruler stand among the towers. v2 was take 2"),
     "F5c": dict(take=1, in_sec=0.0, rate=0.8, reverse=False, notes="round 2 (review #10): tight insert, agents drip off the lip like ink (bar 108)"),
